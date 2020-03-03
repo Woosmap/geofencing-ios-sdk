@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "LocationTableViewContoller.tableView(_:numberOfRowsInSection:):LocationTableViewContoller.swift">
+      </ContextState>
+      <ContextState
+         contextName = "LocationService.searchAPIRequest(locationId:):Monitor.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "lastSearchLocation!.distance(from: currentLocation!)">
+            </PersistentString>
+            <PersistentString
+               value = "lastSearchLocation!.distance(from: currentLocation!) &lt; searchAPIDistanceFilter">
+            </PersistentString>
+            <PersistentString
+               value = "lastSearchLocation!.distance(from: currentLocation!) &lt; searchAPIDistanceFilter &amp;&amp; timeEllapsed &lt; searchAPITimeFilter">
+            </PersistentString>
+            <PersistentString
+               value = "timeEllapsed &gt; searchAPITimeFilter">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LocationTableViewContoller.tableView(_:cellForRowAt:):LocationTableViewContoller.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPath.item">
+            </PersistentString>
+            <PersistentString
+               value = "indexPath.section">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LocationTableViewContoller.viewDidLoad():LocationTableViewContoller.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "loc.date?.description">
+            </PersistentString>
+            <PersistentString
+               value = "Date(timeIntervalSince1970: loc.date!.timeIntervalSince1970)">
+            </PersistentString>
+            <PersistentString
+               value = "loc.date?.stringFromDate()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LocationTableViewContoller.sortDataBydate():LocationTableViewContoller.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "loc.locationId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "LocationService.updateLocation(locations:):Monitor.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "theLastLocation.distance(from: location)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in LocationService.searchAPIRequest():Monitor.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "response.statusCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.mapView(_:rendererFor:):MapViewController.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
