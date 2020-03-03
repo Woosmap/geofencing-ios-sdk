@@ -68,7 +68,11 @@ In this sample, location fetched is then used to perform a request to the Woosma
 <p align="center">
   <img alt="Google map Static" src="/assets/1Marker.png" width="50%">
 </p>
+
 * If you don't use any third party API and don’t define API keys, the notification will only display the location (lat/long) of the user.
+<p align="center">
+  <img alt="Google map Static" src="/assets/userLocation.png" width="50%">
+</p>
 
 
 ## Usage 
@@ -163,7 +167,7 @@ For create a gpx files, the following tool converts a Google Maps link (also wor
 To emulate, foolow instruction here :  http://www.madebyuppercut.com/testing-geolocation-ios-app/
 
 
-Additional Documentation
+## Additional Documentation
 
 * [Enabling Location](./doc/EnablingLocation.md) : To use location, first thing is enabling associated services on the user device. Find out here how to do it and more importantly what are the different permissions and consequences of choices made by the user
 * [Enabling the Push Notification Service](./doc/EnablingPushNotificationService.md) : As for location, user has to accept Push Notification, here are what to set in your app, associated permissions for the user, APNS registering process and tips to test it all.
