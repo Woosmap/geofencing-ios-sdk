@@ -34,8 +34,10 @@ Going over the code above:
 3.  The completion handler receives a Bool which indicates if authorization was successful. In this case, you just print the result.
 
 Build and run. When the app launches, you should receive a prompt that asks for permission to send you notifications. (see illustration below)
+<p align="center">
+  <img alt="Notification Allow" src="/assets/notifallow.png" width="30%">
+</p>
 
-![alt text](/assets/ios/notifallow.png "Notification Allow")
 
 Calling `registerForPushNotifications()` here ensures the app will attempt to register for push notifications any time it’s launched.
 
