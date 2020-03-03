@@ -1,6 +1,8 @@
+In order to retrieve the mobile location when necessary (a notification payload asking for the location), you need temporarily set the Location Manager in the main thread when receiving proper notifications. Here is a trick to do so.
+
 ## Check Payload
 
-Check if in the payload you have the parameter "category = location" in the json.
+Check presence of the parameter "category = location" in the payload Json.
 ```swift
 if let category = aps["category"] as? NSString {
 	if (category == "location") {
@@ -24,11 +26,9 @@ func setupLocationManager(){
 	locationManager.startUpdatingLocation()
 }
 ```
-In our case, we will create a CLLocationManager when we receive a notification in the didReceiveNotificationRequest method. The location manager performs his operations outside the mainThread. To execute its operations you must include it in the mainThread operation queue and wait for the end of the manager's operations execution.
-
-By placing this operation in the main queue, we are sure that the configuration of eating takes place on the main thread.
-
-On the callback event of location manager to update locations, we can get an An array of `CLLocation` objects containing the location data. After that, you must the location manager update by call the method :
+In our case, we will create a CLLocationManager when we receive a notification in the didReceiveNotificationRequest method. The location manager performs its operations outside the mainThread. To execute its operations you must include it in the mainThread operation queue and wait for the end of the manager's operations execution.
+By placing this operation on the main queue, you ensure that setting up the manager happens on the main thread.
+On the callback event of location manager to update locations, we can get an array of CLLocation objects containing the location data. After that, you must stop the location manager update by call the method :
 ```swift
 // Stop location service
 locationManager.stopUpdatingLocation()
