@@ -10,9 +10,9 @@ Three services are available to obtain the position of a user:
 ## Geofencing iOS
 
 
-The service of significant displacements of the phone using too much the battery of the mobile application without giving us enough points, we developed method using geofencing IOs.
+The service of significant displacements of the phone using too much the battery of the mobile application without giving us enough points, we developed method using geofencing iOS.
 
 As a user moves, we create geofencing zones around them. When the user leaves or enters one of these zones, the application will wake up (background-active), request a position, send it, then calculate new geofencing zones according to the position obtained.
 <p align="center">
-  <img alt="GeoSearch with Regions detections" src="/assets/GeoSearch3.png" width="50%">
+  <img alt="GeoSearch with Regions detections" src="/assets/WoosmapGeofencing3.png" width="30%">
 </p>
