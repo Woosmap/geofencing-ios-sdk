@@ -12,6 +12,8 @@
 		A20DDE7823EAFB9E00124E56 /* DataLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7723EAFB9E00124E56 /* DataLocation.swift */; };
 		A20DDE7A23EAFBCF00124E56 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7923EAFBCF00124E56 /* LocationModel.swift */; };
 		A20DDE7D23EAFC1900124E56 /* Location.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7B23EAFC1900124E56 /* Location.xcdatamodeld */; };
+		A2140412241955A900537968 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; };
+		A2140413241955A900537968 /* WoosmapGeofencing.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A216FB8B23E9CE720003AAC8 /* AppDelegate.swift */; };
 		A216FB9223E9CE760003AAC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9123E9CE760003AAC8 /* Assets.xcassets */; };
 		A216FB9523E9CE760003AAC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9423E9CE760003AAC8 /* Preview Assets.xcassets */; };
@@ -21,6 +23,8 @@
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
 		A2AC8537240E743800C65900 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC8536240E743800C65900 /* NotificationService.swift */; };
 		A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2AC8534240E743800C65900 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A2B6E7E12419231A006C4F19 /* VisitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E02419231A006C4F19 /* VisitModel.swift */; };
+		A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E324192536006C4F19 /* DataVisit.swift */; };
 		A2F095A223EAD36B007A5419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F095A023EAD36B007A5419 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +46,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A2140414241955AA00537968 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A2140413241955A900537968 /* WoosmapGeofencing.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2AC853F240E743800C65900 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -75,6 +90,8 @@
 		A2AC8534240E743800C65900 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AC8536240E743800C65900 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A2AC8538240E743800C65900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2B6E7E02419231A006C4F19 /* VisitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitModel.swift; sourceTree = "<group>"; };
+		A2B6E7E324192536006C4F19 /* DataVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVisit.swift; sourceTree = "<group>"; };
 		A2F095A123EAD36B007A5419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2140412241955A900537968 /* WoosmapGeofencing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +119,7 @@
 			children = (
 				A20DDE7923EAFBCF00124E56 /* LocationModel.swift */,
 				A238041823EC6A14002F53F2 /* POIModel.swift */,
+				A2B6E7E02419231A006C4F19 /* VisitModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -116,6 +135,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		A2140410241955A900537968 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A216FB7F23E9CE720003AAC8 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +149,7 @@
 				A2AC8535240E743800C65900 /* NotificationService */,
 				A216FB8923E9CE720003AAC8 /* Products */,
 				A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */,
+				A2140410241955A900537968 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -165,6 +192,7 @@
 			children = (
 				A20DDE7723EAFB9E00124E56 /* DataLocation.swift */,
 				A238041B23EC6A95002F53F2 /* DataPOI.swift */,
+				A2B6E7E324192536006C4F19 /* DataVisit.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -197,6 +225,7 @@
 				A216FB8523E9CE720003AAC8 /* Frameworks */,
 				A216FB8623E9CE720003AAC8 /* Resources */,
 				A2AC853F240E743800C65900 /* Embed App Extensions */,
+				A2140414241955AA00537968 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -306,9 +335,11 @@
 			files = (
 				A238041923EC6A14002F53F2 /* POIModel.swift in Sources */,
 				A20DDE7823EAFB9E00124E56 /* DataLocation.swift in Sources */,
+				A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */,
 				A20DDE7023EAD6D300124E56 /* LocationTableViewContoller.swift in Sources */,
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
+				A2B6E7E12419231A006C4F19 /* VisitModel.swift in Sources */,
 				A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */,
 				A20DDE7A23EAFBCF00124E56 /* LocationModel.swift in Sources */,
 				A20DDE7D23EAFC1900124E56 /* Location.xcdatamodeld in Sources */,

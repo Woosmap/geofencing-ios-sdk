@@ -18,6 +18,8 @@ public var currentLocationTimeFilter = 0
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
 
+//Active visit
+public var visitEnable = true
 
 // delay for obsolote notification
 public var outOfTimeDelay = 300

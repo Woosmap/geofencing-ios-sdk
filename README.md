@@ -77,7 +77,7 @@ In this sample, location fetched is then used to perform a request to the Woosma
 
 ## Usage 
 The first step that should always be done each time your app is launched (in Foreground AND Background) is to set your Woosmap Private key Search API. This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is Launched.
-Set the `locationServiceDelegate` and `searchAPIDataDelegate` to retrieve data of location and POI when the data is ready. 
+Set the `locationServiceDelegate`, `searchAPIDataDelegate` and  `visitDelegate` to retrieve data of location, POI when the data is ready and visit data if the the visit is enable. 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Set private key Search API
@@ -94,10 +94,14 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
         
-        // Check if the authorization Status of location Manager
-        if (CLLocationManager.authorizationStatus() != .notDetermined) {
-            WoosmapGeofencing.shared.startMonitoringInBackground()
-        }
+        // Enable Visit and set delegate of protocol Visit
+        WoosmapGeofencing.shared.setVisitEnable(enable: true)
+        WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
+ 
+         // Check if the authorization Status of location Manager
+         if (CLLocationManager.authorizationStatus() != .notDetermined) {
+             WoosmapGeofencing.shared.startMonitoringInBackground()
+         }
     return true
 }
 ```
@@ -149,6 +153,18 @@ func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: UUID) {
 func serachAPIError(error: String) {
        // Catch Error
        NSLog("\(error)")
+}
+```
+
+For the visits, in the app delegate, you can retrieve the visit like this : 
+```swift
+func processVisit(visit: CLVisit) {
+    let calendar = Calendar.current
+    let departureDate = calendar.component(.year, from: visit.departureDate) != 4001 ? visit.departureDate : nil
+    let arrivalDate = calendar.component(.year, from: visit.arrivalDate) != 4001 ? visit.arrivalDate : nil
+    let visitToSave = VisitModel(arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude, dateCaptured:Date() , accuracy: visit.horizontalAccuracy)
+    
+    createVisit(visit: visitToSave)
 }
 ```
 

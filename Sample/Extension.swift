@@ -13,6 +13,12 @@ public extension POI {
     }
 }
 
+public extension Visit {
+    internal func convertToModel()-> VisitModel {
+        return VisitModel(arrivalDate: self.arrivalDate, departureDate: self.departureDate, latitude: self.latitude, longitude: self.longitude, dateCaptured:self.departureDate , accuracy: self.accuracy)
+    }
+}
+
 
 public extension Date {
     func stringFromDate()-> String {

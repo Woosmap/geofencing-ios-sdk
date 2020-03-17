@@ -11,7 +11,7 @@
         <!--Map View Controller-->
         <scene sceneID="c2l-DW-y44">
             <objects>
-                <viewController id="Yuc-vP-sKp" customClass="MapViewController" customModule="GeoSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Yuc-vP-sKp" customClass="MapViewController" customModule="SampleGeofencing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0kc-Vd-p9E">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -62,7 +62,7 @@
         <!--Places-->
         <scene sceneID="qu5-pi-pZ2">
             <objects>
-                <tableViewController title="Places" id="kdG-ig-q87" customClass="LocationTableViewContoller" customModule="GeoSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Places" id="kdG-ig-q87" customClass="LocationTableViewContoller" customModule="SampleGeofencing" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YNf-kX-tv4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +93,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="POICell" rowHeight="75" id="1ML-l2-Xa3" userLabel="POICell" customClass="POITableCellView" customModule="GeoSearch" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="POICell" rowHeight="75" id="1ML-l2-Xa3" userLabel="POICell" customClass="POITableCellView" customModule="SampleGeofencing" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="71.5" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1ML-l2-Xa3" id="jJx-DW-S9Z">
@@ -136,13 +136,56 @@
                                     <outlet property="time" destination="BMX-Pc-p1V" id="bEx-Fb-iVc"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VisitCell" rowHeight="75" id="rlD-ez-t1G" userLabel="VisitCell" customClass="VisitTableCellView" customModule="SampleGeofencing" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="146.5" width="375" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rlD-ez-t1G" id="9qX-Km-xry">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SeK-yJ-GQT">
+                                            <rect key="frame" x="16" y="11" width="44.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTP-of-bOT">
+                                            <rect key="frame" x="317" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISc-sr-zzA">
+                                            <rect key="frame" x="16" y="37" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="eTP-of-bOT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SeK-yJ-GQT" secondAttribute="trailing" constant="8" symbolic="YES" id="O41-vK-hzI"/>
+                                        <constraint firstItem="ISc-sr-zzA" firstAttribute="top" secondItem="SeK-yJ-GQT" secondAttribute="bottom" constant="5" id="QhW-59-thW"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="eTP-of-bOT" secondAttribute="trailing" id="Xg2-a1-Wnb"/>
+                                        <constraint firstItem="ISc-sr-zzA" firstAttribute="leading" secondItem="9qX-Km-xry" secondAttribute="leadingMargin" id="ZtY-sH-CEy"/>
+                                        <constraint firstItem="SeK-yJ-GQT" firstAttribute="top" secondItem="9qX-Km-xry" secondAttribute="topMargin" id="eee-HC-YRN"/>
+                                        <constraint firstItem="SeK-yJ-GQT" firstAttribute="leading" secondItem="9qX-Km-xry" secondAttribute="leadingMargin" id="fzf-so-Lto"/>
+                                        <constraint firstItem="eTP-of-bOT" firstAttribute="top" secondItem="9qX-Km-xry" secondAttribute="topMargin" id="jw0-OL-NRe"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ISc-sr-zzA" secondAttribute="trailing" constant="20" symbolic="YES" id="wae-NA-Gld"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="info" destination="ISc-sr-zzA" id="WjQ-Tl-CIc"/>
+                                    <outlet property="location" destination="SeK-yJ-GQT" id="wSs-KO-4iA"/>
+                                    <outlet property="time" destination="eTP-of-bOT" id="tcu-ai-hfn"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="kdG-ig-q87" id="9ya-va-S2a"/>
                             <outlet property="delegate" destination="kdG-ig-q87" id="S16-o4-x6e"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Places" largeTitleDisplayMode="always" id="wPB-GA-Tna">
+                    <navigationItem key="navigationItem" title="Location &amp; POI" largeTitleDisplayMode="always" id="wPB-GA-Tna">
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="XmE-v0-ErS">
                             <color key="tintColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <connections>
@@ -155,10 +198,10 @@
             </objects>
             <point key="canvasLocation" x="1508" y="-318.89055472263868"/>
         </scene>
-        <!--List-->
+        <!--Places & POI-->
         <scene sceneID="BWS-vg-nQM">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ISR-aY-LXU" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ISR-aY-LXU" userLabel="Places &amp; POI" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="List" image="recents" id="Mlh-Ja-20l"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uqF-9x-umx">

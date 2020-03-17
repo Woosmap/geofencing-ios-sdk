@@ -15,6 +15,10 @@ public protocol RegionsServiceDelegate {
     func updateRegions(regions: Set<CLRegion>)
 }
 
+public protocol VisitServiceDelegate {
+    func processVisit(visit: CLVisit)
+}
+
 public extension Date {
     /// Returns the amount of seconds from another date
     func seconds(from date: Date) -> Int {
@@ -36,6 +40,7 @@ public protocol LocationManagerProtocol {
     func stopMonitoringSignificantLocationChanges()
     func stopMonitoring(for: CLRegion)
     func startMonitoring(for: CLRegion)
+    func startMonitoringVisits()
 }
 
 extension CLLocationManager: LocationManagerProtocol {}
@@ -50,6 +55,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public var locationServiceDelegate: LocationServiceDelegate?
     public var searchAPIDataDelegate: SearchAPIDelegate?
     public var regionDelegate: RegionsServiceDelegate?
+    public var visitDelegate: VisitServiceDelegate?
     
     init(locationManger: LocationManagerProtocol?) {
         
@@ -65,6 +71,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         myLocationManager.distanceFilter = 10
         myLocationManager.pausesLocationUpdatesAutomatically = true
         myLocationManager.delegate = self
+        if visitEnable {
+            myLocationManager.startMonitoringVisits()
+        }
         
     }
     
@@ -85,6 +94,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func startUpdatingLocation() {
         self.requestAuthorization()
         self.locationManager?.startUpdatingLocation()
+        self.locationManager?.startMonitoringVisits()
     }
     
     func stopUpdatingLocation() {
@@ -99,6 +109,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func stopMonitoringSignificantLocationChanges() {
         self.locationManager?.stopMonitoringSignificantLocationChanges()
     }
+    
     
     func stopMonitoringCurrentRegions() {
         if (self.locationManager?.monitoredRegions != nil) {
@@ -122,6 +133,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             self.stopMonitoringCurrentRegions()
             self.startMonitoringCurrentRegions(regions: RegionsGenerator().generateRegionsFrom(location: self.currentLocation!))
         }
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        updateVisit(visit: visit)
+        self.startUpdatingLocation()
     }
     
 
@@ -158,6 +174,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
+    }
+    
+    func updateVisit(visit: CLVisit) {
+        guard let delegate = self.visitDelegate else {
+            return
+        }
+        delegate.processVisit(visit: visit)
     }
     
     func updateLocation(locations: [CLLocation]){

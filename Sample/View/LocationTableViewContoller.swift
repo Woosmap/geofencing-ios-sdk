@@ -9,6 +9,7 @@ import UIKit
 enum dataType {
     case POI
     case location
+    case visit
 }
 
 class PlaceData  {
@@ -20,6 +21,11 @@ class PlaceData  {
     public var distance: Double = 0.0
     public var zipCode: String?
     public var type: dataType
+    public var accuracy: Double = 0.0
+    public var arrivalDate: Date?
+    public var departureDate: Date?
+    public var duration: Int
+    
     
     public init() {
         self.date = Date()
@@ -28,11 +34,19 @@ class PlaceData  {
         self.locationDescription = ""
         self.distance = 0.0
         self.zipCode = ""
+        self.accuracy = 0.0
+        self.duration = 0
         self.type = dataType.location
     }
 }
 
 class POITableCellView: UITableViewCell {
+    @IBOutlet weak var location: UILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var info: UILabel!
+}
+
+class VisitTableCellView: UITableViewCell {
     @IBOutlet weak var location: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var info: UILabel!
@@ -57,12 +71,45 @@ class LocationTableViewContoller: UITableViewController {
             selector: #selector(newPOIAdded(_:)),
             name: .newPOISaved,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(newVisitAdded(_:)),
+            name: .newVisitSaved,
+            object: nil)
         
     }
+    
     
     func loadData() {
         placeToShow.removeAll()
         
+        //Mock data
+        /*for POI in DataPOI().readPOI() {
+            let placeData = PlaceData()
+            placeData.date = POI.date
+            placeData.latitude = POI.latitude
+            placeData.longitude = POI.longitude
+            placeData.departureDate = POI.date?.addingTimeInterval(3600)
+            placeData.arrivalDate = POI.date
+            if (placeData.arrivalDate == nil || placeData.departureDate == nil) {
+                placeData.duration = 0
+            } else {
+                placeData.duration = placeData.departureDate!.seconds(from: placeData.arrivalDate!)
+            }
+            placeData.type = dataType.visit
+            placeToShow.append(placeData)
+        }*/
+        
+        let visits = DataVisit().readVisits()
+        for visit in visits {
+            let placeData = PlaceData()
+            placeData.date = visit.date
+            placeData.latitude = visit.latitude
+            placeData.longitude = visit.longitude
+            placeData.type = dataType.visit
+            placeToShow.append(placeData)
+        
+        }
         let locations = DataLocation().readLocations()
         
         for location in locations {
@@ -97,10 +144,17 @@ class LocationTableViewContoller: UITableViewController {
         tableView.reloadData()
     }
     
+    @objc func newVisitAdded(_ notification: Notification) {
+        loadData()
+        tableView.reloadData()
+    }
+    
     
     @IBAction func purgePressed(_ sender: Any) {
         DataLocation().eraseLocations()
         DataPOI().erasePOI()
+        DataVisit().eraseVisits()
+        
         placeToShow.removeAll()
         tableView.reloadData()
     }
@@ -132,12 +186,24 @@ class LocationTableViewContoller: UITableViewController {
             cell.textLabel?.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude) 
             cell.detailTextLabel?.text = placeData.date!.stringFromDate()
             return cell
-        } else {
+        } else if (placeData.type == dataType.POI) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "POICell", for: indexPath) as! POITableCellView
             cell.location.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
             cell.time.text = placeData.date!.stringFromDate()
             cell.info.numberOfLines = 3
             cell.info.text = "City = " + placeData.city! + "\nZipcode = " + placeData.zipCode!  + "\nDistance = " + String(format:"%f",placeData.distance)
+            return cell
+        } else { // Visit
+            let cell = tableView.dequeueReusableCell(withIdentifier: "VisitCell", for: indexPath) as! VisitTableCellView
+            cell.location.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
+            cell.time.text = placeData.date!.stringFromDate()
+            if (placeData.duration == 0) {
+                cell.info.text = "Ongoing"
+                cell.info.numberOfLines = 1
+            } else {
+                cell.info.numberOfLines = 3
+                cell.info.text = "Duration = " + String(format: "%d", placeData.duration) + "\nDeparture Date =  " + placeData.departureDate!.stringFromDate() + "\nArrival Date =  " + placeData.arrivalDate!.stringFromDate()
+            }
             return cell
         }
         
