@@ -9,8 +9,8 @@ For  `allowsBackgroundLocationUpdates`, ensure that you’ve enabled the Backgro
 
 iOS 13 has the following three location permissions (ignore Denied since it ignores the permission):
 
--   **Allow While Using App**  — has superpowers of Allowed when the app is in foreground
--   **Allow Once**  — temporary Allow While Using App
+-   **Allow While Using App**  — has superpowers allowed when the app is in foreground
+-   **Allow Once**  — temporary allow While Using App
 -   **Allowed**  — deferred until really needed
 
 

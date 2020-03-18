@@ -8,8 +8,8 @@ During the last two years, we analysed, exploited and followed the evolution of 
 We are convinced that location is an effective way for App makers to propose tailor made and locally contextualised interactions with mobile users.
 But knowing the location of a user is not enough. Knowing from what a user is close to or what he is visiting is the important part. So we decided to share our findings and tricks for location collection on mobile to help you focus on this real value of location. 
 
-This repository is designed to share samples of codes on iOS to take the best of location in your mobile apps and go a step further in Location Intelligence.
-Woosmap Geofencing code samples should help you build Rich Push Notifications (highlighted with a Location context), analyse your mobile users surroundings (search for proximity to your assets, competitors, etc) and much more on both mobile iOS.
+This repository is designed to share samples of codes and a SDK on iOS to take the best of location in your mobile apps and go one step further in Location Intelligence.
+Woosmap Geofencing SDK and sample app should help you build Rich Push Notifications (highlighted with a Location context), analyse your mobile users surroundings (search for proximity to your assets, competitors, etc) and much more on iOS.
 
 ## Contributing
 
@@ -27,7 +27,7 @@ The official site for the library is at https://community.woosmap.com/geolocatio
 
 ### Get user location 
 
-Get the location of user with most optimization battery and search the nearest POI. In this sample, we call a search API Woosmap to get the POIs nearrest of the location of the user with use less battery.
+Get the user's location while optimising battery usage and search the nearest POIs. In this sample, we call a Woosmap search API to retrieve the stores closest to the user's location while using little battery.
 
 <p align="center">
   <img alt="WoosmapGeofencing" src="/assets/WoosmapGeofencing1.png" width="30%">
@@ -35,8 +35,8 @@ Get the location of user with most optimization battery and search the nearest P
 
 ### Enrich Notification with user location and POIs (Points of Interest)
 
-Get the location of a user on notification reception, to complete the payload with local information from third parties APIs. 
-In this sample, location fetched is then used to perform a request to the Woosmap Search API to get the closest POIs (Points of Interest) to the location of the user. In addition, a call to Google Static Map is performed to enrich the notification with a map displaying the user location and the closest POI.
+Get the location of a user on notification reception, to complete the payload with local information from third parties APIs.  
+In this sample, fetched location is then used to perform a request to the Woosmap Search API to get the closest POIs (Points of Interest) to the location of the user. In addition, a call to Google Static Map is performed to enrich the notification with a map displaying the user's location and the closest POIs.
 
 <p align="center">
   <img alt="Notification Location" src="/assets/2Markers.png" width="50%">
@@ -44,7 +44,7 @@ In this sample, location fetched is then used to perform a request to the Woosma
 
 ##  Pre-requisites
 
-- iOS 13 and above.
+- iOS 13 and above
 - Xcode 11 and above
 - APNS Credentials
 
@@ -56,7 +56,7 @@ In this sample, location fetched is then used to perform a request to the Woosma
 ## Get Keys
 
 * If you don't use the Woosmap API with key, you can only get the location of the user.
-* If you want to retrieve the closest of your store from the user location, load your assets in a Woosmap Project and get a Woosmap Key API [see Woosmap developer documentation](https://developers.woosmap.com/get-started).
+* If you want to retrieve the closest store the user's location, load your assets in a Woosmap Project and get a Woosmap Key API [see Woosmap developer documentation](https://developers.woosmap.com/get-started).
 <p align="center">
   <img alt="WoosmapGeofencing with POI from Search API" src="/assets/WoosmapGeofencing2.png" width="30%">
 </p>
@@ -64,7 +64,7 @@ In this sample, location fetched is then used to perform a request to the Woosma
   <img alt="Search API" src="/assets/UserLocationPOI.png" width="50%">
 </p>
 
-* If you want a map in the notification, get Google Maps API Key for requesting a static map [see Google documentation](https://developers.google.com/maps/documentation/maps-static/get-api-key).
+* If you want to display a map in the notification, get Google Maps API Key for requesting a static map [see Google documentation](https://developers.google.com/maps/documentation/maps-static/get-api-key).
 <p align="center">
   <img alt="Google map Static" src="/assets/1Marker.png" width="50%">
 </p>
@@ -76,8 +76,8 @@ In this sample, location fetched is then used to perform a request to the Woosma
 
 
 ## Usage 
-The first step that should always be done each time your app is launched (in Foreground AND Background) is to set your Woosmap Private key Search API. This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is Launched.
-Set the `locationServiceDelegate`, `searchAPIDataDelegate` and  `visitDelegate` to retrieve data of location, POI when the data is ready and visit data if the the visit is enable. 
+The first step that should always be done each time your app is launched (in Foreground AND Background) is to set your Woosmap Private key Search API. This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
+Set the `locationServiceDelegate`, `searchAPIDataDelegate` and  `visitDelegate` to retrieve data of location, POI when the data is ready and visit data if the the visit is enabled. 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Set private key Search API
@@ -115,7 +115,7 @@ func applicationDidEnterBackground(_ application: UIApplication) {
 }
 ```
 
-Too keep our SDK up to date with user's data we need to call `didBecomeActive` in the proper AppDelegate method too.
+To keep our SDK up to date with user's data, we need to call `didBecomeActive` in the proper AppDelegate method too.
 ```swift
 func applicationDidBecomeActive(_ application: UIApplication) {
     WoosmapGeofencing.shared.didBecomeActive()
@@ -123,7 +123,7 @@ func applicationDidBecomeActive(_ application: UIApplication) {
 }
 ```
 
-In your class delegate, retrieve location data and POI date :
+In your class delegate, retrieve location data and POI date:
 ```swift
 func tracingLocation(locations: [CLLocation], locationId: UUID) {
         let location = locations.last!
@@ -156,7 +156,7 @@ func serachAPIError(error: String) {
 }
 ```
 
-For the visits, in the app delegate, you can retrieve the visit like this : 
+For the visits, in the app delegate, you can retrieve the visit like this: 
 ```swift
 func processVisit(visit: CLVisit) {
     let calendar = Calendar.current
@@ -178,22 +178,22 @@ func processVisit(visit: CLVisit) {
 
 
 ## GPX files
-To testing geolocation in an iOS app, you can mock a route to simulate locations.  
-For create a gpx files, the following tool converts a Google Maps link (also works with Google Maps Directions) to a .gpx file : https://mapstogpx.com/mobiledev.php
-To emulate, foolow instruction here :  http://www.madebyuppercut.com/testing-geolocation-ios-app/
+To test geolocation in an iOS app, you can mock a route to simulate locations.  
+To create a gpx files, the following tool converts a Google Maps link (also works with Google Maps Directions) to a .gpx file: https://mapstogpx.com/mobiledev.php
+To emulate, follow instructions here :  http://www.madebyuppercut.com/testing-geolocation-ios-app/
 
 
 ## Additional Documentation
 
-* [Enabling Location](./doc/EnablingLocation.md) : To use location, first thing is enabling associated services on the user device. Find out here how to do it and more importantly what are the different permissions and consequences of choices made by the user
-* [Enabling the Push Notification Service](./doc/EnablingPushNotificationService.md) : As for location, user has to accept Push Notification, here are what to set in your app, associated permissions for the user, APNS registering process and tips to test it all.
-* [Notifications Service Extensions](./doc/NotificationsServiceExtensions.md) : If you are here, it’s because you want custom notifications. Find out here how to handle those.
-* [Setup the location manager](./doc/SetupLocationManager.md) : How to configure the Location Manager in the Notification Service Extension. 
-* [Check Timestamp of the payload](./doc/CheckTimestampPayload.md) : Because differences may occur between sending time and reception time, you may need to check it before retrieving a location.
-* [Enabling Location in different lifecycle](./doc/EnablingLocationLifecycle.md) : how to use location manager in different lifecycle (Foreground, Background) of the app
-* [Get Location with optimizations](./doc/GetLocationOptimizations.md) : To optimize detection mouvement with battery usage.
-* [APIs request](./doc/APIsRequest.md) : Find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
-* [Notification APIs request](./doc/APIsRequestInNotification.md) : In use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
+* [Enabling Location](./doc/EnablingLocation.md): To use location, first thing is enabling associated services on the user device. Find out here how to do it and more importantly what are the different permissions and consequences of choices made by the user
+* [Enabling the Push Notification Service](./doc/EnablingPushNotificationService.md): As for location, user has to accept Push Notification, you can find here what to set in your app, associated permissions for the user, APNS registering process and tips to test it all.
+* [Notifications Service Extensions](./doc/NotificationsServiceExtensions.md): if you are here, it’s because you want custom notifications. Find out here how to handle those.
+* [Setup the location manager](./doc/SetupLocationManager.md): how to configure the Location Manager in the Notification Service Extension. 
+* [Check Timestamp of the payload](./doc/CheckTimestampPayload.md): because differences may occur between sending time and reception time, you may need to check it before retrieving a location.
+* [Enabling Location in different lifecycle](./doc/EnablingLocationLifecycle.md): how to use location manager in different lifecycle (Foreground, Background) of the app
+* [Get Location with optimizations](./doc/GetLocationOptimizations.md): to optimize detection mouvement with battery usage.
+* [APIs request](./doc/APIsRequest.md): find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
+* [Notification APIs request](./doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
 
 
 

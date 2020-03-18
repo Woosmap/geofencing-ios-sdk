@@ -1,6 +1,6 @@
 ## Find the Nearest POIs
 
-After receive the user location, the SDK make a request to the searchAPI to get the nearest POI. We can modify the request and add others filters to improve your results in the method `searchAPIRequest`: 
+After receiving the user location, the SDK makes a request to the searchAPI to get the nearest POI. We can modify the request and add other filters to improve your results in the method `searchAPIRequest`: 
 ```swift
 func searchAPIRequest(locationId: UUID){
         guard let delegate = self.searchAPIDataDelegate else {
@@ -56,5 +56,5 @@ func searchAPIRequest(locationId: UUID){
     }
 ```
 
-To send the POI call the method `delegate.searchAPIResponseData` with the data result. 
+To send the POI, call the method `delegate.searchAPIResponseData` with the data result. 
 
