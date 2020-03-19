@@ -106,6 +106,13 @@ class LocationTableViewContoller: UITableViewController {
             placeData.date = visit.date
             placeData.latitude = visit.latitude
             placeData.longitude = visit.longitude
+            if(visit.arrivalDate == nil || visit.departureDate == nil) {
+                placeData.duration = 0
+            } else {
+                placeData.duration = visit.departureDate!.seconds(from: visit.arrivalDate!)
+                placeData.arrivalDate = visit.arrivalDate
+                placeData.departureDate = visit.departureDate
+            }
             placeData.type = dataType.visit
             placeToShow.append(placeData)
         
@@ -183,7 +190,7 @@ class LocationTableViewContoller: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
             cell.textLabel?.numberOfLines = 3
                         
-            cell.textLabel?.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude) 
+            cell.textLabel?.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
             cell.detailTextLabel?.text = placeData.date!.stringFromDate()
             return cell
         } else if (placeData.type == dataType.POI) {

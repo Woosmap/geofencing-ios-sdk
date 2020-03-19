@@ -145,14 +145,16 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     
     func annotationForVisit(_ visit: VisitModel) -> MKAnnotation {
         let annotation = MyPointAnnotation()
+        annotation.title = "Visit " + visit.dateCaptured.stringFromDate()
+        
         var duration = "Ongoing"
         if (visit.arrivalDate == nil || visit.departureDate == nil) {
             duration = "Ongoing"
         } else {
             duration = String(visit.departureDate!.seconds(from: visit.arrivalDate!))
+            annotation.subtitle = "Departure Date : " + visit.departureDate!.stringFromDate() + "\nArrival Date : " + visit.arrivalDate!.stringFromDate() + "\nDuration : " + duration
         }
-        annotation.title = "Visit " + visit.dateCaptured.stringFromDate()
-        annotation.subtitle = "Departure Date : " + visit.departureDate!.stringFromDate() + "\nArrival Date : " + visit.arrivalDate!.stringFromDate() + "\nDuration : " + duration
+        
         annotation.pinTintColor = .yellow
         annotation.coordinate = CLLocationCoordinate2D(latitude: visit.latitude, longitude: visit.longitude)
         return annotation
