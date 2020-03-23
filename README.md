@@ -8,8 +8,10 @@ During the last two years, we analysed, exploited and followed the evolution of 
 We are convinced that location is an effective way for App makers to propose tailor made and locally contextualised interactions with mobile users.
 But knowing the location of a user is not enough. Knowing from what a user is close to or what he is visiting is the important part. So we decided to share our findings and tricks for location collection on mobile to help you focus on this real value of location. 
 
-This repository is designed to share samples of codes and a SDK on iOS to take the best of location in your mobile apps and go one step further in Location Intelligence.
-Woosmap Geofencing SDK and sample app should help you build Rich Push Notifications (highlighted with a Location context), analyse your mobile users surroundings (search for proximity to your assets, competitors, etc) and much more on iOS.
+This repository is designed to share samples of codes and a SDK on iOS to take the best of location in your mobile apps. 
+We had 3 main focus when developing and sharing this code: take full advantage of location capabilities of mobile devices, doing so in a battery friendly way and be fair with user privacy (see [Enabling Location](./doc/EnablingLocation.md)).
+
+Woosmap Geofencing SDK and sample app should help you build Rich Push Notifications (highlighted with a Location context), analyse your mobile users surroundings (search for proximity to your assets, competitors, etc) and much more on iOS to go a step further on Location Intelligence.
 
 ## Contributing
 
@@ -27,7 +29,7 @@ The official site for the library is at https://community.woosmap.com/geolocatio
 
 ### Get user location 
 
-Get the user's location while optimising battery usage and search the nearest POIs. In this sample, we call a Woosmap search API to retrieve the stores closest to the user's location while using little battery.
+Collect in background user's locations and host them in a local database. Call the Woosmap Search API to retrieve closest stores to each location to locally contextualized users journeys.
 
 <p align="center">
   <img alt="WoosmapGeofencing" src="/assets/WoosmapGeofencing1.png" width="30%">
@@ -40,6 +42,13 @@ In this sample, fetched location is then used to perform a request to the Woosma
 
 <p align="center">
   <img alt="Notification Location" src="/assets/2Markers.png" width="50%">
+</p>
+
+### Detect Visits (spending time at one place) of your users 
+Get the location and the time spent when a user is visiting places. Once again use the Woosmap Search API if needed to detect if your users visit your stores, your competitors or POI you may want to monitor. 
+
+<p align="center">
+  <img alt="Visit" src="/assets/visit.png" width="50%">
 </p>
 
 ##  Pre-requisites
@@ -76,7 +85,7 @@ In this sample, fetched location is then used to perform a request to the Woosma
 
 
 ## Usage 
-The first step that should always be done each time your app is launched (in Foreground AND Background) is to set your Woosmap Private key Search API. This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
+Be sure your Private Key for the Woosmap Search API is set every time your app is launched (in Foreground AND Background). This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
 Set the `locationServiceDelegate`, `searchAPIDataDelegate` and  `visitDelegate` to retrieve data of location, POI when the data is ready and visit data if the the visit is enabled. 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -106,7 +115,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
-In order to be sure to avoid loosing data, you also need to call `startMonitoringInBackground` in the proper AppDelegate method : 
+In order to avoid loosing data, you also need to call `startMonitoringInBackground` in the proper AppDelegate method : 
 ```swift
 func applicationDidEnterBackground(_ application: UIApplication) {
     if (CLLocationManager.authorizationStatus() != .notDetermined) {
@@ -115,7 +124,7 @@ func applicationDidEnterBackground(_ application: UIApplication) {
 }
 ```
 
-To keep our SDK up to date with user's data, we need to call `didBecomeActive` in the proper AppDelegate method too.
+To keep the SDK up to date with user's data, you need to call `didBecomeActive` in the proper AppDelegate method too.
 ```swift
 func applicationDidBecomeActive(_ application: UIApplication) {
     WoosmapGeofencing.shared.didBecomeActive()
