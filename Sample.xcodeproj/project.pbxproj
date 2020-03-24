@@ -18,9 +18,12 @@
 		A216FB9223E9CE760003AAC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9123E9CE760003AAC8 /* Assets.xcassets */; };
 		A216FB9523E9CE760003AAC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9423E9CE760003AAC8 /* Preview Assets.xcassets */; };
 		A216FB9823E9CE760003AAC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9623E9CE760003AAC8 /* LaunchScreen.storyboard */; };
+		A235A0B2242A570300B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
+		A235A0B3242A570C00B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
 		A238041923EC6A14002F53F2 /* POIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041823EC6A14002F53F2 /* POIModel.swift */; };
 		A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041B23EC6A95002F53F2 /* DataPOI.swift */; };
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
+		A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A32229242911F900C98018 /* TokenIdViewController.swift */; };
 		A2AC8537240E743800C65900 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC8536240E743800C65900 /* NotificationService.swift */; };
 		A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2AC8534240E743800C65900 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A2B6E7E12419231A006C4F19 /* VisitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E02419231A006C4F19 /* VisitModel.swift */; };
@@ -29,6 +32,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A277BD5F242A27420098F01A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A216FBA823E9CEA70003AAC8;
+			remoteInfo = WoosmapGeofencing;
+		};
+		A277BD61242A27AB0098F01A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A216FBA823E9CEA70003AAC8;
+			remoteInfo = WoosmapGeofencing;
+		};
 		A2AC8525240E6C9B00C65900 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
@@ -83,9 +100,11 @@
 		A216FB9723E9CE760003AAC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A216FB9923E9CE760003AAC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WoosmapGeofencing.xcodeproj; path = WoosmapGeofencing/WoosmapGeofencing.xcodeproj; sourceTree = "<group>"; };
+		A235A0B1242A570300B51E1F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A238041823EC6A14002F53F2 /* POIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIModel.swift; sourceTree = "<group>"; };
 		A238041B23EC6A95002F53F2 /* DataPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataPOI.swift; path = ../Model/DataPOI.swift; sourceTree = "<group>"; };
 		A273027D23EB0BB00042FC5A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		A2A32229242911F900C98018 /* TokenIdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenIdViewController.swift; sourceTree = "<group>"; };
 		A2AC852F240E73FB00C65900 /* SampleGeofencing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleGeofencing.entitlements; sourceTree = "<group>"; };
 		A2AC8534240E743800C65900 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AC8536240E743800C65900 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -131,6 +150,7 @@
 				A216FB9623E9CE760003AAC8 /* LaunchScreen.storyboard */,
 				A20DDE7223EAF66D00124E56 /* MapViewController.swift */,
 				A20DDE6F23EAD6D300124E56 /* LocationTableViewContoller.swift */,
+				A2A32229242911F900C98018 /* TokenIdViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -170,6 +190,7 @@
 				A20DDE7623EAFB5C00124E56 /* View */,
 				A20DDE7423EAFB4C00124E56 /* Model */,
 				A216FB8B23E9CE720003AAC8 /* AppDelegate.swift */,
+				A235A0B1242A570300B51E1F /* Settings.swift */,
 				A216FB9123E9CE760003AAC8 /* Assets.xcassets */,
 				A216FB9923E9CE760003AAC8 /* Info.plist */,
 				A216FB9323E9CE760003AAC8 /* Preview Content */,
@@ -230,6 +251,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A277BD60242A27420098F01A /* PBXTargetDependency */,
 				A2AC853A240E743800C65900 /* PBXTargetDependency */,
 			);
 			name = Sample;
@@ -248,6 +270,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A277BD62242A27AB0098F01A /* PBXTargetDependency */,
 			);
 			name = NotificationService;
 			productName = NotificationService;
@@ -335,7 +358,9 @@
 			files = (
 				A238041923EC6A14002F53F2 /* POIModel.swift in Sources */,
 				A20DDE7823EAFB9E00124E56 /* DataLocation.swift in Sources */,
+				A235A0B2242A570300B51E1F /* Settings.swift in Sources */,
 				A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */,
+				A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */,
 				A20DDE7023EAD6D300124E56 /* LocationTableViewContoller.swift in Sources */,
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
@@ -351,6 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A235A0B3242A570C00B51E1F /* Settings.swift in Sources */,
 				A2AC8537240E743800C65900 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +384,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A277BD60242A27420098F01A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WoosmapGeofencing;
+			targetProxy = A277BD5F242A27420098F01A /* PBXContainerItemProxy */;
+		};
+		A277BD62242A27AB0098F01A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WoosmapGeofencing;
+			targetProxy = A277BD61242A27AB0098F01A /* PBXContainerItemProxy */;
+		};
 		A2AC853A240E743800C65900 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A2AC8533240E743800C65900 /* NotificationService */;
@@ -506,16 +542,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sample/SampleGeofencing.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sample/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.Sample;
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies;
 				PRODUCT_NAME = SampleGeofencing;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -529,16 +567,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sample/SampleGeofencing.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sample/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.Sample;
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies;
 				PRODUCT_NAME = SampleGeofencing;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -549,14 +589,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				INFOPLIST_FILE = NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.Sample.NotificationService;
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -568,14 +611,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				INFOPLIST_FILE = NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.Sample.NotificationService;
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

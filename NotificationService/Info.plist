@@ -17,9 +17,14 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>
@@ -27,5 +32,11 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location data are collected and analysed anonymously to build your location profile. This profile will help your Woozy acquire skills and awareness from its environment :D</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location data are collected and analysed anonymously to build your location profile. This profile will help your Woozy acquire skills and awareness from its environment :D</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location data are collected and analysed anonymously to build your location profile. This profile will help your Woozy acquire skills and awareness from its environment :D</string>
 </dict>
 </plist>

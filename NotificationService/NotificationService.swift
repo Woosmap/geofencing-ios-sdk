@@ -83,7 +83,7 @@ open class NotificationService: UNNotificationServiceExtension,CLLocationManager
             // Get the current coordiante
             let userLatitude: String = String(format: "%f", currentLocation!.coordinate.latitude)
             let userLongitude: String = String(format:"%f", currentLocation!.coordinate.longitude)
-            
+
             if(!searchWoosmapKey.isEmpty && !GoogleStaticMapKey.isEmpty) {
                 // Show Notifcation with the nearest POI and static map
                 showNotificationWithPOIAndGMP(myLatitude: userLatitude, myLongitude: userLongitude)
