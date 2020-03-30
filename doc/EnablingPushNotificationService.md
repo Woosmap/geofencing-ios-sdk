@@ -7,9 +7,9 @@ After loading, it should look like this:
 
 ## Asking for User Notifications Permission
 
-There are two steps you take to register for push notifications. First, you must get the user’s permission to show notifications. Then, you can register the device to receive remote (push) notifications. If all goes well, the system will then provide you with a  **_device token_**, which you can think of as an “address” to this device.
+Two steps to register for push notifications: first, you must get the user’s permission to show notifications. Then, you can register the device to receive remote (push) notifications. If all goes well, the system will then provide you with a  **_device token_**, which you can think of as an “address” of this device.
 
-You’ll register for push notifications immediately after the app launches. Ask for user permissions, first.
+You’ll register for push notifications immediately after the app launches. Ask for user permissions first.
 
 Open  **_AppDelegate.swift_**  and add the following to the top of the file:
 ```swift
@@ -30,7 +30,7 @@ func application(_application: UIApplication, didFinishLaunchingWithOptions laun
 Going over the code above:
 
 1.  `UNUserNotificationCenter`  handles all notification-related activities in the app.
-2.  You invoke  `requestAuthorization(options:completionHandler:)`  to (you guessed it) request authorization to show notifications. The passed  `options`  indicate the types of notifications you want your app to use – here you’re requesting alert, sound and badge.
+2.  You invoke  `requestAuthorization(options:completionHandler:)`  to request authorization to show notifications (you guessed it). The passed  `options` indicate the types of notifications you want your app to use – here you’re requesting alert, sound and badge.
 3.  The completion handler receives a Bool which indicates if authorization was successful. In this case, you just print the result.
 
 Build and run. When the app launches, you should receive a prompt that asks for permission to send you notifications. (see illustration below)
@@ -57,9 +57,9 @@ func application(_ application: UIApplication, didFailToRegisterForRemoteNotific
 	NSLog("Error on getting remote notification token : \(error.localizedDescription)")
 }
 ```
-Once the registration completes, iOS calls  `application(_:didRegisterForRemoteNotificationsWithDeviceToken:)`  if successful. If not, it calls  `application(_:didFailToRegisterForRemoteNotificationsWithError:)`.
+Once the registration completes, iOS calls  `application(_:didRegisterForRemoteNotificationsWithDeviceToken:)` if successful. If not, it calls  `application(_:didFailToRegisterForRemoteNotificationsWithError:)`.
 
-The current implementation of  `application(_:didRegisterForRemoteNotificationsWithDeviceToken:)`  looks cryptic, but it’s simply taking  `deviceToken`  and converting it to a string. The device token is the fruit of this process. It’s provided by APNs and uniquely identifies this app on this particular device. When sending a push notification, the server uses tokens as “addresses” to deliver to the correct devices. In your app, you would now send this token to your server, so that it could be saved and later used for sending notifications.
+The current implementation of  `application(_:didRegisterForRemoteNotificationsWithDeviceToken:)` looks cryptic, but it’s simply taking  `deviceToken` and converting it to a string. The device token is the fruit of this process. It’s provided by APNs and uniquely identifies this app on this particular device. When sending a push notification, the server uses tokens as “addresses” to deliver to the correct devices. In your app, you would now send this token to your server, so that it could be saved and later used for sending notifications.
 
 That’s it! Build and run on a device. You should receive a token in the console output. 
 

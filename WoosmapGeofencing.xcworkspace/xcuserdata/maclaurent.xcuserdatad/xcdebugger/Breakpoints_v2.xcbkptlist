@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "239E3443-CEB0-4B86-9BC0-AAF92C87FE7A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WoosmapGeofencing/WoosmapGeofencing/Monitor.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "searchAPIRequest(locationId:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "187AA397-71E8-4F9D-B907-69FA1383D4F0"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -30,8 +14,8 @@
             filePath = "WoosmapGeofencing/WoosmapGeofencing/Monitor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "searchAPIRequest(locationId:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,42 +30,26 @@
             filePath = "WoosmapGeofencing/WoosmapGeofencing/Monitor.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
             landmarkName = "searchAPIRequest(locationId:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "E846F062-8999-4E0E-948D-57126485C674 - 5dff948065ffd8db"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "WoosmapGeofencing.LocationService.searchAPIRequest(locationId: Foundation.UUID) -&gt; ()"
-                  moduleName = "WoosmapGeofencing"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclaurent/dev/woosmap-geofencing-ios-sdk/WoosmapGeofencing/WoosmapGeofencing/Monitor.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "225"
-                  endingLineNumber = "225"
-                  offsetFromSymbolStart = "4765">
-               </Location>
-               <Location
-                  uuid = "E846F062-8999-4E0E-948D-57126485C674 - 8f1ade51ea27e591"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in WoosmapGeofencing.LocationService.searchAPIRequest(locationId: Foundation.UUID) -&gt; ()"
-                  moduleName = "WoosmapGeofencing"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/maclaurent/dev/woosmap-geofencing-ios-sdk/WoosmapGeofencing/WoosmapGeofencing/Monitor.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "192"
-                  endingLineNumber = "192"
-                  offsetFromSymbolStart = "337">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8D43FE1-A1D2-4E9B-ADBD-EF963DEA2A52"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WoosmapGeofencing/WoosmapGeofencing/Monitor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "updateVisit(visit:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

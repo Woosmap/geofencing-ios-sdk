@@ -54,6 +54,10 @@ import UIKit
         searchAPITimeFilter = time
     }
     
+    public func setVisitEnable(enable: Bool) {
+        visitEnable = enable
+    }
+    
     public func startMonitoringInForeGround() {
         if self.locationService == nil  {
             return

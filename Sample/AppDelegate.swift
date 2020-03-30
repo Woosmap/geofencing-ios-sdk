@@ -16,7 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Set private key Search API
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: "YOUR_WOOSMAP_API_KEY")
+        WoosmapGeofencing.shared.setWoosmapAPIKey(key: searchWoosmapKey)
+        WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
         // Set your filter on position location and search
         WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
@@ -28,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Set delegate of protocol Location and POI
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
+        
+        // Enable Visit and set delegate of protocol Visit
+        WoosmapGeofencing.shared.setVisitEnable(enable: true)
+        WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
         
         // Check if the authorization Status of location Manager
         if (CLLocationManager.authorizationStatus() != .notDetermined) {
@@ -51,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         print("this will return '32 bytes' in iOS 13+ rather than the token \(tokenString)")
         NSLog("%%%%% THE the token: %@", tokenString);
+        UserDefaults.standard.set(tokenString, forKey:"TokenID")
     }
     
     // Handle remote notification registration. (failed)

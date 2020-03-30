@@ -11,7 +11,7 @@
         <!--Map View Controller-->
         <scene sceneID="c2l-DW-y44">
             <objects>
-                <viewController id="Yuc-vP-sKp" customClass="MapViewController" customModule="GeoSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Yuc-vP-sKp" customClass="MapViewController" customModule="SampleGeofencing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0kc-Vd-p9E">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -53,6 +53,7 @@
                     <connections>
                         <segue destination="ISR-aY-LXU" kind="relationship" relationship="viewControllers" id="G5m-MP-rUI"/>
                         <segue destination="Udf-8T-ACp" kind="relationship" relationship="viewControllers" id="rb9-h8-YeV"/>
+                        <segue destination="1uf-Yt-5bA" kind="relationship" relationship="viewControllers" id="LI2-oC-qeX"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1lA-9a-V3o" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -62,7 +63,7 @@
         <!--Places-->
         <scene sceneID="qu5-pi-pZ2">
             <objects>
-                <tableViewController title="Places" id="kdG-ig-q87" customClass="LocationTableViewContoller" customModule="GeoSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Places" id="kdG-ig-q87" customClass="LocationTableViewContoller" customModule="SampleGeofencing" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YNf-kX-tv4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +94,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="POICell" rowHeight="75" id="1ML-l2-Xa3" userLabel="POICell" customClass="POITableCellView" customModule="GeoSearch" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="POICell" rowHeight="75" id="1ML-l2-Xa3" userLabel="POICell" customClass="POITableCellView" customModule="SampleGeofencing" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="71.5" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1ML-l2-Xa3" id="jJx-DW-S9Z">
@@ -136,13 +137,56 @@
                                     <outlet property="time" destination="BMX-Pc-p1V" id="bEx-Fb-iVc"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VisitCell" rowHeight="75" id="rlD-ez-t1G" userLabel="VisitCell" customClass="VisitTableCellView" customModule="SampleGeofencing" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="146.5" width="375" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rlD-ez-t1G" id="9qX-Km-xry">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SeK-yJ-GQT">
+                                            <rect key="frame" x="16" y="11" width="44.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTP-of-bOT">
+                                            <rect key="frame" x="317" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISc-sr-zzA">
+                                            <rect key="frame" x="16" y="37" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="eTP-of-bOT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SeK-yJ-GQT" secondAttribute="trailing" constant="8" symbolic="YES" id="O41-vK-hzI"/>
+                                        <constraint firstItem="ISc-sr-zzA" firstAttribute="top" secondItem="SeK-yJ-GQT" secondAttribute="bottom" constant="5" id="QhW-59-thW"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="eTP-of-bOT" secondAttribute="trailing" id="Xg2-a1-Wnb"/>
+                                        <constraint firstItem="ISc-sr-zzA" firstAttribute="leading" secondItem="9qX-Km-xry" secondAttribute="leadingMargin" id="ZtY-sH-CEy"/>
+                                        <constraint firstItem="SeK-yJ-GQT" firstAttribute="top" secondItem="9qX-Km-xry" secondAttribute="topMargin" id="eee-HC-YRN"/>
+                                        <constraint firstItem="SeK-yJ-GQT" firstAttribute="leading" secondItem="9qX-Km-xry" secondAttribute="leadingMargin" id="fzf-so-Lto"/>
+                                        <constraint firstItem="eTP-of-bOT" firstAttribute="top" secondItem="9qX-Km-xry" secondAttribute="topMargin" id="jw0-OL-NRe"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ISc-sr-zzA" secondAttribute="trailing" constant="20" symbolic="YES" id="wae-NA-Gld"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="info" destination="ISc-sr-zzA" id="WjQ-Tl-CIc"/>
+                                    <outlet property="location" destination="SeK-yJ-GQT" id="wSs-KO-4iA"/>
+                                    <outlet property="time" destination="eTP-of-bOT" id="tcu-ai-hfn"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="kdG-ig-q87" id="9ya-va-S2a"/>
                             <outlet property="delegate" destination="kdG-ig-q87" id="S16-o4-x6e"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Places" largeTitleDisplayMode="always" id="wPB-GA-Tna">
+                    <navigationItem key="navigationItem" title="Location &amp; POI" largeTitleDisplayMode="always" id="wPB-GA-Tna">
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="XmE-v0-ErS">
                             <color key="tintColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <connections>
@@ -155,11 +199,11 @@
             </objects>
             <point key="canvasLocation" x="1508" y="-318.89055472263868"/>
         </scene>
-        <!--List-->
+        <!--Places & POI-->
         <scene sceneID="BWS-vg-nQM">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ISR-aY-LXU" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="List" image="recents" id="Mlh-Ja-20l"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ISR-aY-LXU" userLabel="Places &amp; POI" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Locations &amp; POI" image="mappin.and.ellipse" catalog="system" id="Mlh-Ja-20l" userLabel="Locations &amp; POI"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uqF-9x-umx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
@@ -185,7 +229,7 @@
         <scene sceneID="7Mf-04-th5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Udf-8T-ACp" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" image="search" id="KYt-1Z-hWU"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="KYt-1Z-hWU"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hG9-0D-hJn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -208,9 +252,68 @@
             </objects>
             <point key="canvasLocation" x="672" y="375.36945812807886"/>
         </scene>
+        <!--Token Id-->
+        <scene sceneID="Svh-Xt-u7e">
+            <objects>
+                <viewController title="Token Id" id="1uf-Yt-5bA" userLabel="Token Id" customClass="TokenIdViewController" customModule="SampleGeofencing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cNe-3f-HZM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Location Notification" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QNH-61-sa7">
+                                <rect key="frame" x="36.5" y="20" width="302" height="41"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Token id:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8EX-ic-mne">
+                                <rect key="frame" x="134" y="181" width="107" height="34"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IXV-Xt-5ex">
+                                <rect key="frame" x="10" y="245" width="355" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="xo2-vV-cZf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="1uf-Yt-5bA" id="5Bc-Ad-0mf"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
+                            <constraint firstItem="QNH-61-sa7" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="JPW-sq-X3G"/>
+                            <constraint firstItem="8EX-ic-mne" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="NE3-nb-7W0"/>
+                            <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="IXV-Xt-5ex" secondAttribute="trailing" constant="10" id="VVA-VI-Xt9"/>
+                            <constraint firstItem="IXV-Xt-5ex" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="10" id="VsI-ER-Tg8"/>
+                            <constraint firstItem="8EX-ic-mne" firstAttribute="top" secondItem="QNH-61-sa7" secondAttribute="bottom" constant="120" id="ZWi-dT-aZL"/>
+                            <constraint firstItem="IXV-Xt-5ex" firstAttribute="top" secondItem="8EX-ic-mne" secondAttribute="bottom" constant="30" id="bMw-23-EeJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wjg-3b-2Rh"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Token Id" image="envelope.open" catalog="system" id="CqW-FZ-KHE"/>
+                    <connections>
+                        <outlet property="TokenLabel" destination="IXV-Xt-5ex" id="vd8-mP-ab1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lnK-sz-o0u" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="671" y="1049"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="recents" width="16" height="16"/>
-        <image name="search" width="16" height="16"/>
+        <image name="envelope.open" catalog="system" width="64" height="60"/>
+        <image name="map" catalog="system" width="64" height="56"/>
+        <image name="mappin.and.ellipse" catalog="system" width="58" height="64"/>
     </resources>
 </document>
