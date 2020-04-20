@@ -32,7 +32,6 @@ Thank you for your suggestions!
 Woosmap Geofencing is released under the MIT License. See LICENSE file for details.
 
 ## Links
-The official site for the library is at https://community.woosmap.com/geolocation-push-notification/.
 
 
 ##  Overview
