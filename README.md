@@ -62,7 +62,7 @@ Get the location and the time spent when a user is visiting places. Once again u
 
 ##  Pre-requisites
 
-- iOS 13 and above
+- iOS 11 and above
 - Xcode 11 and above
 - APNS Credentials
 
