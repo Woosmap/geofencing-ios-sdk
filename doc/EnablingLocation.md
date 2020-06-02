@@ -28,7 +28,7 @@ Always Allow permission isn’t there by default in the new permission dialog. I
 
 Let’s see how that works with the different kinds of location authorizations.
 
-![alt text](https://raw.githubusercontent.com/woosmap/woosmap-geofencing/master/assets/ios/location-prompt-flow-ios-13.png "Prompt flow")
+![alt text](https://raw.githubusercontent.com/woosmap/woosmap-geofencing-ios-sdk/master/assets/location-prompt-flow-ios-13.png "Prompt flow")
 
 ## Request Authorization
 
