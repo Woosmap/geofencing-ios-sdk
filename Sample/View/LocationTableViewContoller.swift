@@ -5,14 +5,17 @@
 //
 
 import UIKit
+import CoreData
+import WoosmapGeofencing
 
 enum dataType {
     case POI
     case location
     case visit
+    case ZOI
 }
 
-class PlaceData  {
+class PlaceData : PropertyPlace  {
     public var date: Date?
     public var latitude: Double = 0.0
     public var longitude: Double = 0.0
@@ -38,7 +41,34 @@ class PlaceData  {
         self.duration = 0
         self.type = dataType.location
     }
+    
+    func listPropertiesWithValues(reflect: Mirror? = nil) -> String{
+        let mirror = reflect ?? Mirror(reflecting: self)
+        if mirror.superclassMirror != nil {
+            self.listPropertiesWithValues(reflect: mirror.superclassMirror)
+        }
+        var values = ""
+        for (_, attr) in mirror.children.enumerated() {
+            if attr.label != nil {
+                values += "\(attr.value),"
+            }
+        }
+        
+        return values
+    }
 }
+
+protocol PropertyPlace {
+    func propertyNames() -> [String]
+}
+
+extension PropertyPlace
+{
+    func propertyNames() -> [String] {
+        return Mirror(reflecting: self).children.compactMap { $0.label }
+    }
+}
+
 
 class POITableCellView: UITableViewCell {
     @IBOutlet weak var location: UILabel!
@@ -53,7 +83,6 @@ class VisitTableCellView: UITableViewCell {
 }
 
 class LocationTableViewContoller: UITableViewController {
-    
     var placeToShow = [PlaceData]()
     
     override func viewDidLoad() {
@@ -117,6 +146,8 @@ class LocationTableViewContoller: UITableViewController {
             placeToShow.append(placeData)
         
         }
+       
+        
         let locations = DataLocation().readLocations()
         
         for location in locations {
@@ -135,6 +166,8 @@ class LocationTableViewContoller: UITableViewController {
             }
             placeToShow.append(placeData)
         }
+        
+        
         
         //POI and Location sorted
         placeToShow = placeToShow.sorted(by: { $0.date!.compare($1.date!) == .orderedDescending })
@@ -156,15 +189,91 @@ class LocationTableViewContoller: UITableViewController {
         tableView.reloadData()
     }
     
+    @IBAction func exportDB(_ sender: Any) {
+        exportDatabase()
+    }
+    
     
     @IBAction func purgePressed(_ sender: Any) {
         DataLocation().eraseLocations()
         DataPOI().erasePOI()
         DataVisit().eraseVisits()
-        
+        DataZOI().eraseZOIs()
         placeToShow.removeAll()
         tableView.reloadData()
     }
+    
+    func exportDatabase() {
+        let exportString = createExportString()
+        saveAndExport(exportString: exportString)
+    }
+
+    func saveAndExport(exportString: [String]) {
+        let exportFilePath = NSTemporaryDirectory() + "itemlist.csv"
+        let exportFileURL = NSURL(fileURLWithPath: exportFilePath)
+        FileManager.default.createFile(atPath: exportFilePath, contents: NSData() as Data, attributes: nil)
+        var fileHandle: FileHandle? = nil
+        do {
+            fileHandle = try FileHandle(forWritingTo: exportFileURL as URL)
+        } catch {
+            print("Error with fileHandle")
+        }
+
+        if fileHandle != nil {
+            fileHandle!.seekToEndOfFile()
+            let csvData = exportString.joined(separator: "\n").data(using: String.Encoding.utf8, allowLossyConversion: false)
+            fileHandle!.write(csvData!)
+
+            fileHandle!.closeFile()
+
+            let firstActivityItem = NSURL(fileURLWithPath: exportFilePath)
+            let activityViewController : UIActivityViewController = UIActivityViewController(
+                activityItems: [firstActivityItem], applicationActivities: nil)
+
+            activityViewController.excludedActivityTypes = [
+                UIActivity.ActivityType.assignToContact,
+                UIActivity.ActivityType.saveToCameraRoll,
+                UIActivity.ActivityType.postToFlickr,
+                UIActivity.ActivityType.postToVimeo,
+                UIActivity.ActivityType.postToTencentWeibo
+            ]
+
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+    }
+
+    func createExportString() -> [String] {
+        var CSVString: [String] = []
+        
+        var exportPlace = placeToShow
+        
+        //add ZOI
+        let zois = DataZOI().readZOIs()
+        let sMercator = SphericalMercator()
+        for zoi in zois {
+            let placeData = PlaceData()
+            placeData.latitude = sMercator.x2lon(aX: zoi.latMean)
+            placeData.longitude = sMercator.y2lat(aY: zoi.lngMean)
+            placeData.type = dataType.ZOI
+            placeData.duration = Int(zoi.duration)
+            placeData.arrivalDate = zoi.startTime
+            placeData.departureDate = zoi.endTime
+            exportPlace.append(placeData)
+        }
+            
+        for (index, itemList) in exportPlace.enumerated() {
+            if(index == 0){
+                let colummAr = itemList.propertyNames()
+                CSVString.append(colummAr.joined(separator: ","))
+            }
+            CSVString.append(itemList.listPropertiesWithValues())
+
+        }
+        print("This is what the app will export: \(CSVString)")
+        return CSVString
+    }
+    
+
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Locations"
@@ -200,7 +309,7 @@ class LocationTableViewContoller: UITableViewController {
             cell.info.numberOfLines = 3
             cell.info.text = "City = " + placeData.city! + "\nZipcode = " + placeData.zipCode!  + "\nDistance = " + String(format:"%f",placeData.distance)
             return cell
-        } else { // Visit
+        } else  { // visit
             let cell = tableView.dequeueReusableCell(withIdentifier: "VisitCell", for: indexPath) as! VisitTableCellView
             cell.location.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
             cell.time.text = placeData.date!.stringFromDate()

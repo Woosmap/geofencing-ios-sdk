@@ -3,16 +3,13 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "LocationTableViewContoller.tableView(_:numberOfRowsInSection:):LocationTableViewContoller.swift">
-      </ContextState>
-      <ContextState
          contextName = "LocationService.searchAPIRequest(locationId:):Monitor.swift">
          <PersistentStrings>
             <PersistentString
-               value = "lastSearchLocation!.distance(from: currentLocation!)">
+               value = "lastSearchLocation!.distance(from: currentLocation!) &lt; searchAPIDistanceFilter">
             </PersistentString>
             <PersistentString
-               value = "lastSearchLocation!.distance(from: currentLocation!) &lt; searchAPIDistanceFilter">
+               value = "lastSearchLocation!.distance(from: currentLocation!)">
             </PersistentString>
             <PersistentString
                value = "lastSearchLocation!.distance(from: currentLocation!) &lt; searchAPIDistanceFilter &amp;&amp; timeEllapsed &lt; searchAPITimeFilter">
@@ -21,6 +18,12 @@
                value = "timeEllapsed &gt; searchAPITimeFilter">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.mapView(_:rendererFor:):MapViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "LocationTableViewContoller.newLocationAdded(_:):LocationTableViewContoller.swift">
       </ContextState>
       <ContextState
          contextName = "LocationTableViewContoller.tableView(_:cellForRowAt:):LocationTableViewContoller.swift">
@@ -37,13 +40,13 @@
          contextName = "LocationTableViewContoller.viewDidLoad():LocationTableViewContoller.swift">
          <PersistentStrings>
             <PersistentString
+               value = "loc.date?.stringFromDate()">
+            </PersistentString>
+            <PersistentString
                value = "loc.date?.description">
             </PersistentString>
             <PersistentString
                value = "Date(timeIntervalSince1970: loc.date!.timeIntervalSince1970)">
-            </PersistentString>
-            <PersistentString
-               value = "loc.date?.stringFromDate()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -52,6 +55,17 @@
          <PersistentStrings>
             <PersistentString
                value = "loc.locationId">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DataZOI.createZOIFromLocation(visit:):DataZOI.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MapViewController.viewDidLoad():MapViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "list_zois">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -72,7 +86,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MapViewController.mapView(_:rendererFor:):MapViewController.swift">
+         contextName = "LocationTableViewContoller.tableView(_:numberOfRowsInSection:):LocationTableViewContoller.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

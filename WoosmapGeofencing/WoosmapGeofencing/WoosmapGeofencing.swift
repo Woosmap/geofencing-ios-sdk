@@ -10,6 +10,8 @@ import UIKit
 @objcMembers public class WoosmapGeofencing: NSObject {
      
     public var locationService : LocationService!
+    public var sphericalMercator : SphericalMercator!
+    public var visitPoint : MyPoint!
     var locationManager: CLLocationManager? = CLLocationManager()
     
     /**
@@ -29,6 +31,14 @@ import UIKit
     public func getLocationService() -> LocationService {
         return locationService
     }
+    
+    public func getSphericalMercator() -> SphericalMercator {
+        return sphericalMercator
+    }
+    
+    public func getVisitPoint() -> MyPoint {
+        return visitPoint
+    }
 
     public func initServices() {
         if self.locationService == nil {
@@ -42,6 +52,10 @@ import UIKit
     
     public func setGMPAPIKey(key: String) {
         GoogleStaticMapKey = key
+    }
+    
+    public func setSearchWoosmapAPI(api: String) {
+        searchWoosmapAPI = api
     }
     
     public func setCurrentPositionFilter(distance: Double, time: Int) {

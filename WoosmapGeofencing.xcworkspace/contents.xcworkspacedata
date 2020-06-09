@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Sample/Data/ZOI+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Sample/Data/ZOI+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:Sample/Data/Visit+CoreDataClass.swift">
    </FileRef>
    <FileRef

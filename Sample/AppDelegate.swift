@@ -19,9 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: searchWoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
+        // Set the search Woosmap API
+        WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
+        
         // Set your filter on position location and search
-        WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
-        WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
+        //WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
+        //WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
         
         // Initialize the framework
         WoosmapGeofencing.shared.initServices()
@@ -33,6 +36,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
         WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
+        
+        //MockData Visit
+        //DataVisit().mockVisitData()
+        
         
         // Check if the authorization Status of location Manager
         if (CLLocationManager.authorizationStatus() != .notDetermined) {

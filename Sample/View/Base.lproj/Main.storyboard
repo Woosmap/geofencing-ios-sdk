@@ -81,7 +81,7 @@
                                             <rect key="frame" x="16" y="12" width="36.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <color key="textColor" red="0.00073369615710000005" green="0.67797017100000001" blue="0.93599194289999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="textColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mYq-Pk-W7l">
@@ -187,6 +187,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Location &amp; POI" largeTitleDisplayMode="always" id="wPB-GA-Tna">
+                        <barButtonItem key="leftBarButtonItem" title="Export" id="7kV-Wb-6l7">
+                            <connections>
+                                <action selector="exportDB:" destination="kdG-ig-q87" id="8qF-BQ-eJr"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="XmE-v0-ErS">
                             <color key="tintColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <connections>
