@@ -82,7 +82,7 @@ func prepareDataForDB(){
 
 func trace() {
     for (index, _) in list_zois.enumerated() {
-        geometry_Figmm(zois_gmm_info: &list_zois[index])
+        geometryFigmm(zois_gmm_info: &list_zois[index])
     }
 }
 
@@ -128,11 +128,11 @@ func createInitialCluster(newVisitPoint:MyPoint) {
     if (list_zois.isEmpty) {
         zois_gmm_info["prior_probability"] = 1.0
     } else {
-        var prior_probability = 1.0;
+        var accumulator_sum = 1.0;
         for gmm_info in list_zois {
-            prior_probability +=  gmm_info["accumulator"] as! Double;
+            accumulator_sum +=  gmm_info["accumulator"] as! Double;
         }
-        zois_gmm_info["prior_probability"] = 1/prior_probability
+        zois_gmm_info["prior_probability"] = 1/accumulator_sum
     }
     
     zois_gmm_info["age"] = 1.0
@@ -321,7 +321,7 @@ func getProbabilityOfXKnowingCluster(cov_determinants: [Double], sqr_mahalanobis
 }
 
 
-func geometry_Figmm(zois_gmm_info:inout Dictionary<String, Any>){
+func geometryFigmm(zois_gmm_info:inout Dictionary<String, Any>){
     typealias Scalar = Double
     
     let covariance_matrix_inverse: Matrix<Scalar> = zois_gmm_info["covariance_matrix_inverse"] as! Matrix<Scalar>

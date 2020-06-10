@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
         
         //MockData Visit
-        //DataVisit().mockVisitData()
+        //MockDataVisit().mockVisitData()
         
         
         // Check if the authorization Status of location Manager

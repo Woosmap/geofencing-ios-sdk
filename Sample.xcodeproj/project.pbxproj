@@ -18,6 +18,7 @@
 		A216FB9223E9CE760003AAC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9123E9CE760003AAC8 /* Assets.xcassets */; };
 		A216FB9523E9CE760003AAC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9423E9CE760003AAC8 /* Preview Assets.xcassets */; };
 		A216FB9823E9CE760003AAC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A216FB9623E9CE760003AAC8 /* LaunchScreen.storyboard */; };
+		A21DC0C4248FF50000E45471 /* MockDataVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21DC0C3248FF50000E45471 /* MockDataVisit.swift */; };
 		A2245470247D578600A0B8B0 /* DataZOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224546F247D578600A0B8B0 /* DataZOI.swift */; };
 		A235A0B2242A570300B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
 		A235A0B3242A570C00B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
@@ -101,6 +102,7 @@
 		A216FB9723E9CE760003AAC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A216FB9923E9CE760003AAC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WoosmapGeofencing.xcodeproj; path = WoosmapGeofencing/WoosmapGeofencing.xcodeproj; sourceTree = "<group>"; };
+		A21DC0C3248FF50000E45471 /* MockDataVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataVisit.swift; sourceTree = "<group>"; };
 		A224546F247D578600A0B8B0 /* DataZOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataZOI.swift; sourceTree = "<group>"; };
 		A235A0B1242A570300B51E1F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A238041823EC6A14002F53F2 /* POIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIModel.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				A238041B23EC6A95002F53F2 /* DataPOI.swift */,
 				A2B6E7E324192536006C4F19 /* DataVisit.swift */,
 				A224546F247D578600A0B8B0 /* DataZOI.swift */,
+				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				A20DDE7A23EAFBCF00124E56 /* LocationModel.swift in Sources */,
 				A20DDE7D23EAFC1900124E56 /* Location.xcdatamodeld in Sources */,
 				A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */,
+				A21DC0C4248FF50000E45471 /* MockDataVisit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
