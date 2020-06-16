@@ -35,7 +35,7 @@ Going over the code above:
 
 Build and run. When the app launches, you should receive a prompt that asks for permission to send you notifications. (see illustration below)
 <p align="center">
-  <img alt="Notification Allow" src="/assets/notifallow.png" width="30%">
+  <img alt="Notification Allow" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/notifallow.png" width="30%">
 </p>
 
 
