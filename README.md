@@ -8,7 +8,7 @@ We are convinced that location is an effective way for App makers to propose tai
 But knowing the location of a user is not enough. Knowing from what a user is close to or what he is visiting is the important part. So we decided to share our findings and tricks for location collection on mobile to help you focus on this real value of location. 
 
 This repository is designed to share samples of codes and a SDK on iOS to take the best of location in your mobile apps. 
-We had 3 main focus when developing and sharing this code: take full advantage of location capabilities of mobile devices, doing so in a battery friendly way and be fair with user privacy (see [Enabling Location](./doc/EnablingLocation.md)).
+We had 3 main focus when developing and sharing this code: take full advantage of location capabilities of mobile devices, doing so in a battery friendly way and be fair with user privacy (see [Enabling Location](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/EnablingLocation.md)).
 
 Woosmap Geofencing SDK and sample app should help you build Rich Push Notifications (highlighted with a Location context), analyse your mobile users surroundings (search for proximity to your assets, competitors, etc) and much more on iOS to go a step further on Location Intelligence.
 
@@ -191,15 +191,15 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 
 ## Additional Documentation
 
-* [Enabling Location](./doc/EnablingLocation.md): To use location, first thing is enabling associated services on the user device. Find out here how to do it and more importantly what are the different permissions and consequences of choices made by the user
-* [Enabling the Push Notification Service](./doc/EnablingPushNotificationService.md): As for location, user has to accept Push Notification, you can find here what to set in your app, associated permissions for the user, APNS registering process and tips to test it all.
-* [Notifications Service Extensions](./doc/NotificationsServiceExtensions.md): if you are here, it’s because you want custom notifications. Find out here how to handle those.
-* [Setup the location manager](./doc/SetupLocationManager.md): how to configure the Location Manager in the Notification Service Extension. 
-* [Check Timestamp of the payload](./doc/CheckTimestampPayload.md): because differences may occur between sending time and reception time, you may need to check it before retrieving a location.
-* [Enabling Location in different lifecycle](./doc/EnablingLocationLifecycle.md): how to use location manager in different lifecycle (Foreground, Background) of the app
-* [Get Location with optimizations](./doc/GetLocationOptimizations.md): to optimize detection mouvement with battery usage.
-* [APIs request](./doc/APIsRequest.md): find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
-* [Notification APIs request](./doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
+* [Enabling Location](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/EnablingLocation.md): To use location, first thing is enabling associated services on the user device. Find out here how to do it and more importantly what are the different permissions and consequences of choices made by the user
+* [Enabling the Push Notification Service](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/EnablingPushNotificationService.md): As for location, user has to accept Push Notification, you can find here what to set in your app, associated permissions for the user, APNS registering process and tips to test it all.
+* [Notifications Service Extensions](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/NotificationsServiceExtensions.md): if you are here, it’s because you want custom notifications. Find out here how to handle those.
+* [Setup the location manager](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/SetupLocationManager.md): how to configure the Location Manager in the Notification Service Extension. 
+* [Check Timestamp of the payload](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/CheckTimestampPayload.md): because differences may occur between sending time and reception time, you may need to check it before retrieving a location.
+* [Enabling Location in different lifecycle](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/EnablingLocationLifecycle.md): how to use location manager in different lifecycle (Foreground, Background) of the app
+* [Get Location with optimizations](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/GetLocationOptimizations.md): to optimize detection mouvement with battery usage.
+* [APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequest.md): find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
+* [Notification APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
 
 
 ## Contributing
