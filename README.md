@@ -177,16 +177,16 @@ func processVisit(visit: CLVisit) {
 ## Simulate Notification
 
 * Get the notification token in the log debug or on the main screen of the demo app.
-* Install the app PushNotification from the github : https://github.com/noodlewerk/NWPusher. This desktop app will help you simulate notification sending if you do not have any other Notification Solutions.
-* Enter your push certificate : https://github.com/noodlewerk/NWPusher#certificate
+* Install the app PushNotification from the github: <https://github.com/noodlewerk/NWPusher>. This desktop app will help you simulate notification sending if you do not have any other Notification Solutions.
+* Enter your push certificate: <https://github.com/noodlewerk/NWPusher#certificate>
 * Enter a message in json format like this "{"location":"1","timestamp":"1589288354"}". The object "location" allows to have a location (lat/long) displayed in the notification. The "timestamp" object validates the delay between the server time and the mobile time to check if the retrieved location is not outdated (if difference between server and mobile time is greater than 300 sec, notification will not be displayed).
-* If you want to send notification directly from an iOS app, you can use this project : https://github.com/noodlewerk/NWPusher#push-from-ios. Follow instructions to change the p12 file and enter the token of the notification app.
+* If you want to send notification directly from an iOS app, you can use this project: <https://github.com/noodlewerk/NWPusher#push-from-ios>. Follow instructions to change the p12 file and enter the token of the notification app.
 
 
 ## GPX files
 To test geolocation in an iOS app, you can mock a route to simulate locations.  
-To create a gpx files, the following tool converts a Google Maps link (also works with Google Maps Directions) to a .gpx file: https://mapstogpx.com/mobiledev.php
-To emulate, follow instructions here :  http://www.madebyuppercut.com/testing-geolocation-ios-app/
+To create a gpx files, the following tool converts a Google Maps link (also works with Google Maps Directions) to a .gpx file: <https://mapstogpx.com/mobiledev.php>
+To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-geolocation-ios-app/>
 
 
 ## Additional Documentation
