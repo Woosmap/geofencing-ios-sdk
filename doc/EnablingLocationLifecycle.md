@@ -1,5 +1,4 @@
-﻿
-##  LifeCycle
+﻿##  LifeCycle
 
 According to official [documentation]( [https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle]), the app can be in four different states:
 * Foreground active, the app is turned on and in use. Only the user can decide to exit this state.
@@ -13,7 +12,7 @@ As soon as the app enters the suspended state (in other words the app is still r
 
 To enable continuous location updates is a two-step process beginning with addition of an entry to the project Info.plist file. This is most easily achieved by enabling the location updates background mode in the Xcode Capabilities panel as shown in :
 <p align="center">
-  <img alt="Background Mode" src="/assets/BackgroundMode.png" width="50%">
+  <img alt="Background Mode" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/BackgroundMode.png" width="50%">
 </p>
 
 Within the app code, continuous updates are enabled by setting the allowsBackgroundLocationUpdates property of the location manager to true:
