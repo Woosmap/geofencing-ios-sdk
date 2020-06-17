@@ -1,5 +1,4 @@
-﻿
-##  LifeCycle
+﻿##  LifeCycle
 
 According to official [documentation]( [https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle]), the app can be in four different states:
 * Foreground active, the app is turned on and in use. Only the user can decide to exit this state.
