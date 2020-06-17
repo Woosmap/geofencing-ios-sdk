@@ -1,4 +1,3 @@
-
 ##  Get user location
 According to official [documentation](https://developer.apple.com/documentation/corelocation/getting_the_user_s_location), we do not decide how many locations the system will send us, or how often. On the other hand, the system sends us back all the information compiled from the various instruments at its disposal. It does not make sense to try to double the information with the observation of the gyroscope, the accelerometer or the compass.
 The OS analyzes all of its sensors, and defines what the user is doing to send us the most reliable information possible. Models with a motion coprocessor (from 5S) see their CPU usage (and therefore battery) greatly reduced for processing this information, which allows our application to also consume little energy.
@@ -8,7 +7,6 @@ Three services are available to obtain the position of a user:
 * **Significant-change location service**, there are no general rules that define such a move. Overall, the cross-checked information indicates that it is necessary to get out of a radius of 500m and about 5 minutes apart (depending on the speed of movement) between two positions. It would appear that trips are notified when the phone changes the relay antenna. As seen above, even if the application is not running, it can be woken up when a new significant movement is detected. In our case the application is woken up to save the new position. On the other hand, the position provided by default is only imprecise, the SDK therefore turns on the GPS time to recover a better position, send it and then return the hand.
 
 ## Geofencing iOS
-
 
 The service of significant displacements of the phone using too much the battery without giving us enough points, we developed method using geofencing iOS.
 
