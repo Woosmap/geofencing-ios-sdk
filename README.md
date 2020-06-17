@@ -398,7 +398,7 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 * [Get Location with optimizations](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/GetLocationOptimizations.md): to optimize detection mouvement with battery usage.
 * [APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequest.md): find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
 * [Notification APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
-* [ZOI Algorithm]((https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/ZOIAlgorithm.md): Find out how ZOI are built from visits.
+* [ZOI Algorithm](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/ZOIAlgorithm.md): Find out how ZOI are built from visits.
 
 
 ## Contributing
