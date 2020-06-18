@@ -1,3 +1,4 @@
+
 ## Overview
 
 Notification extensions allow you to change the payload for notifications, and content extensions allow you to display a custom interface for notifications. They give a delay to process the notification payloads before the notification is displayed to the user. For example, upload an image, GIF, Video, decrypt the text to display it in the notification.

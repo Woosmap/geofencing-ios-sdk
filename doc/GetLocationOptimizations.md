@@ -1,4 +1,6 @@
+
 ##  Get user location
+
 According to official [documentation](https://developer.apple.com/documentation/corelocation/getting_the_user_s_location), we do not decide how many locations the system will send us, or how often. On the other hand, the system sends us back all the information compiled from the various instruments at its disposal. It does not make sense to try to double the information with the observation of the gyroscope, the accelerometer or the compass.
 The OS analyzes all of its sensors, and defines what the user is doing to send us the most reliable information possible. Models with a motion coprocessor (from 5S) see their CPU usage (and therefore battery) greatly reduced for processing this information, which allows our application to also consume little energy.
 

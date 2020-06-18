@@ -1,3 +1,4 @@
+
 ## Find the Nearest POIs
 
 After receiving the user location, the SDK makes a request to the searchAPI to get the nearest POI. We can modify the request and add other filters to improve your results in the method `searchAPIRequest`: 
