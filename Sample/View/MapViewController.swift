@@ -20,14 +20,55 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     var circles: [MKCircle] = []
     var zoiPolygon: [MKPolygon] = []
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.circles = []
+        self.zoiPolygon = []
+        
+        let overlays = mapView.overlays
+        mapView.removeOverlays(overlays)
+        
+        let annontations = mapView.annotations
+        mapView.removeAnnotations(annontations)
+        
+        for poi:POI in DataPOI().readPOI() {
+            mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+        }
+        
+        for visit:Visit in DataVisit().readVisits() {
+            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+        }
+        
+        for zoi:ZOI in DataZOI().readZOIs() {
+            let polygon = wktToMkPolygon(wkt: zoi.wktPolygon!)
+            let departureDate = zoi.endTime
+            let arrivalDate = zoi.startTime
+            let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(zoi.duration))
+            let duration = "\(h) hrs \(m) mins \(s) secs"
+            let nbVisits = String(zoi.idVisits!.count)
+            var title = "Departure Date : " + departureDate!.stringFromDate()
+            title += "\nArrival Date : " + arrivalDate!.stringFromDate()
+            title += "\nNb Visits : " + nbVisits
+            title += "\nDuration : " + duration
+                 
+            polygon.title = title
+            mapView.addOverlay(polygon)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.userTrackingMode = .follow
         self.circles = []
         self.zoiPolygon = []
+        
+        mapView.delegate = self as MKMapViewDelegate
         let overlays = mapView.overlays
         mapView.removeOverlays(overlays)
-        mapView.delegate = self as MKMapViewDelegate
+        
+        let buttonItem = MKUserTrackingBarButtonItem(mapView: mapView)
+        self.navigationItem.rightBarButtonItem = buttonItem
+        
         WoosmapGeofencing.shared.getLocationService().regionDelegate = self
         
         for poi:POI in DataPOI().readPOI() {
@@ -121,10 +162,21 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                 
                 let height = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 120)
                 label1.addConstraint(height)
-                annotationView!.image = UIImage(named:"ic_visit")
+                let pinImage = UIImage(named: "ic_visit")
+                let size = CGSize(width: 20, height: 30)
+                UIGraphicsBeginImageContext(size)
+                pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+
+                annotationView!.image = resizedImage
             } else {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "POIAnnotation")
-                annotationView!.image = UIImage(named:"ic_poi")
+                let pinImage = UIImage(named: "ic_poi")
+                let size = CGSize(width: 30, height: 30)
+                UIGraphicsBeginImageContext(size)
+                pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                annotationView!.image = resizedImage
             }
             
         } else {

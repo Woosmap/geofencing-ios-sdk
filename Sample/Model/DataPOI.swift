@@ -11,7 +11,7 @@ import CoreLocation
 import WoosmapGeofencing
 
 class DataPOI:SearchAPIDelegate  {
-    func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: UUID) {
+    func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
         for feature in (searchAPIData.features)! {
             let city = feature.properties!.address!.city!
             let zipCode = feature.properties!.address!.zipcode!
@@ -41,12 +41,12 @@ class DataPOI:SearchAPIDelegate  {
         return searchAPIData
     }
     
-    func getPOIbyLocationID(locationId: UUID)-> POI? {
+    func getPOIbyLocationID(locationId: String)-> POI? {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         do {
             let fetchRequest = NSFetchRequest<POI>(entityName: "POI")
-            fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "locationId == %@", locationId)
             let fetchedResults = try context.fetch(fetchRequest)
             if let aPOI = fetchedResults.first {
                return aPOI

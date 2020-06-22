@@ -6,7 +6,7 @@ import Foundation
 
 import Foundation
 struct VisitModel {
-    var visitId: UUID!
+    var visitId: String!
     var arrivalDate: Date?
     var departureDate: Date?
     var latitude: Double

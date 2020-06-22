@@ -14,7 +14,7 @@ class DataLocation:LocationServiceDelegate  {
     
     var lastLocation: CLLocation?
     
-    func tracingLocation(locations: [CLLocation], locationId: UUID) {
+    func tracingLocation(locations: [CLLocation], locationId: String) {
         let location = locations.last!
         
         let locationToSave = LocationModel(locationId: locationId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, dateCaptured: Date(), descriptionToSave: "description")
@@ -76,7 +76,7 @@ class DataLocation:LocationServiceDelegate  {
         }
     }
     
-    func getLocationFromUUID(id:UUID) -> Location? {
+    func getLocationFromUUID(id:String) -> Location? {
         var locations = [Location]()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
         let managedContext = appDelegate.persistentContainer.viewContext

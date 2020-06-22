@@ -204,12 +204,13 @@ class LocationTableViewContoller: UITableViewController {
     }
     
     func exportDatabase() {
+        loadData()
         let exportString = createExportString()
         saveAndExport(exportString: exportString)
     }
 
     func saveAndExport(exportString: [String]) {
-        let exportFilePath = NSTemporaryDirectory() + "itemlist.csv"
+        let exportFilePath = NSTemporaryDirectory() + "Geofencing.csv"
         let exportFileURL = NSURL(fileURLWithPath: exportFilePath)
         FileManager.default.createFile(atPath: exportFilePath, contents: NSData() as Data, attributes: nil)
         var fileHandle: FileHandle? = nil
@@ -252,8 +253,8 @@ class LocationTableViewContoller: UITableViewController {
         let sMercator = SphericalMercator()
         for zoi in zois {
             let placeData = PlaceData()
-            placeData.latitude = sMercator.x2lon(aX: zoi.latMean)
-            placeData.longitude = sMercator.y2lat(aY: zoi.lngMean)
+            placeData.latitude = sMercator.y2lat(aY: zoi.lngMean)
+            placeData.longitude = sMercator.x2lon(aX: zoi.latMean)
             placeData.type = dataType.ZOI
             placeData.duration = Int(zoi.duration)
             placeData.arrivalDate = zoi.startTime

@@ -1,13 +1,14 @@
 import Foundation
 import CoreLocation
+import UserNotifications
 
 public protocol LocationServiceDelegate {
-    func tracingLocation(locations: [CLLocation], locationId: UUID)
+    func tracingLocation(locations: [CLLocation], locationId: String)
     func tracingLocationDidFailWithError(error: Error)
 }
 
 public protocol SearchAPIDelegate {
-    func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: UUID)
+    func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String)
     func serachAPIError(error: String)
 }
 
@@ -187,8 +188,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         guard let delegate = self.locationServiceDelegate else {
             return
         }
-        
+    
         let location = locations.last!
+    
         
         if (self.currentLocation != nil ) {
 
@@ -205,13 +207,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
         //create Location ID
-        let locationId = UUID()
+        let locationId = UUID().uuidString
         delegate.tracingLocation(locations: locations, locationId: locationId)
         self.currentLocation = location
         searchAPIRequest(locationId:locationId)
     }
     
-    func searchAPIRequest(locationId: UUID){
+    func searchAPIRequest(locationId: String){
         guard let delegate = self.searchAPIDataDelegate else {
             return
         }

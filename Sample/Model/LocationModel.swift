@@ -7,7 +7,7 @@
 import Foundation
 
 struct LocationModel {
-    var locationId: UUID!
+    var locationId: String!
     var latitude: Double!
     var longitude: Double!
     var dateCaptured: Date!

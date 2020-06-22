@@ -88,7 +88,7 @@ class MockDataVisit {
             let lng = Double(coord[0].trimmingCharacters(in: .whitespaces))!
             let accuracy = Double(coord[3].trimmingCharacters(in: .whitespaces))!
             
-            let visitToSave = VisitModel(visitId: UUID(), arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:Date() , accuracy: accuracy)
+            let visitToSave = VisitModel(visitId: UUID().uuidString, arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:Date() , accuracy: accuracy)
             
             DataVisit().createVisit(visit: visitToSave)
         }

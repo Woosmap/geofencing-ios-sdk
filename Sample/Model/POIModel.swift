@@ -6,7 +6,7 @@
 
 import Foundation
 struct POIModel {
-    var locationId: UUID!
+    var locationId: String!
     var city: String!
     var zipCode: String!
     var distance: Double!

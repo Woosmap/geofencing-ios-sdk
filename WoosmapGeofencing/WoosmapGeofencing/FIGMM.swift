@@ -189,7 +189,7 @@ func predict_as_dict(visitPoint: MyPoint) {
     
     let indexMaxProbPrior = result_x_j_prob_prior_prob_Array.firstIndex(of: max(result_x_j_prob_prior_prob_Array))
     
-    var idVisitsArray:[UUID] =  list_zois[indexMaxProbPrior!]["idVisits"] as! [UUID]
+    var idVisitsArray:[String] =  list_zois[indexMaxProbPrior!]["idVisits"] as! [String]
     idVisitsArray.append(visitPoint.getId())
     list_zois[indexMaxProbPrior!]["idVisits"] = idVisitsArray
    
@@ -401,20 +401,20 @@ public class MyPoint {
     var x: Double
     var y: Double
     var accuracy: Double
-    var id: UUID
+    var id: String
     var startTime: Date?
     var endTime: Date?
     
     init(){
         self.x = 0
         self.y = 0
-        self.id = UUID()
+        self.id = UUID().uuidString
         self.accuracy = 20.0
         self.startTime = Date()
         self.endTime = Date()
     }
     
-    init(x:Double, y:Double, id:UUID) {
+    init(x:Double, y:Double, id:String) {
         self.x = x
         self.y = y
         self.id = id
@@ -423,7 +423,7 @@ public class MyPoint {
         self.endTime = Date()
     }
     
-    public init(x:Double, y:Double, accuracy:Double, id:UUID, startTime:Date, endTime:Date) {
+    public init(x:Double, y:Double, accuracy:Double, id:String, startTime:Date, endTime:Date) {
         self.x = x
         self.y = y
         self.id = id
@@ -444,7 +444,7 @@ public class MyPoint {
         return accuracy
     }
     
-    func getId() -> UUID {
+    func getId() -> String {
         return id
     }
     

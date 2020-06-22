@@ -36,13 +36,13 @@ class DataZOI {
         let context = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "ZOI", in: context)!
         let newZOi = ZOI(entity: entity, insertInto: context)
-        newZOi.setValue(UUID(), forKey: "zoiId")
+        newZOi.setValue(UUID().uuidString, forKey: "zoiId")
         newZOi.setValue(zoi["idVisits"], forKey: "idVisits")
         
         var visitArrivalDate = [Date]()
         var visitDepartureDate = [Date]()
         var duration = 0
-        for id in zoi["idVisits"] as! [UUID] {
+        for id in zoi["idVisits"] as! [String] {
             let visit = DataVisit().getVisitFromUUID(id: id)
             visitArrivalDate.append(visit!.arrivalDate!)
             visitDepartureDate.append(visit!.departureDate!)

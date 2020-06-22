@@ -12,18 +12,19 @@ import WoosmapGeofencing
 
 class DataVisit:VisitServiceDelegate  {
     
+    
     func processVisit(visit: CLVisit) {
         let calendar = Calendar.current
         let departureDate = calendar.component(.year, from: visit.departureDate) != 4001 ? visit.departureDate : nil
         let arrivalDate = calendar.component(.year, from: visit.arrivalDate) != 4001 ? visit.arrivalDate : nil
-        if (arrivalDate != nil && departureDate != nil) {
-            let visitToSave = VisitModel(visitId: UUID(), arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude, dateCaptured:Date() , accuracy: visit.horizontalAccuracy)
+        
+        if(arrivalDate != nil && departureDate != nil) {
+            let visitToSave = VisitModel(visitId: UUID().uuidString, arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude, dateCaptured:Date() , accuracy: visit.horizontalAccuracy)
             createVisit(visit: visitToSave)
         }
-        
-        
+
     }
-    
+       
     func readVisits()-> Array<Visit> {
         var visits = [Visit]()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
@@ -39,6 +40,7 @@ class DataVisit:VisitServiceDelegate  {
     }
     
     func createVisit(visit: VisitModel) {
+    DispatchQueue.main.async(execute: {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "Visit", in: context)!
@@ -56,8 +58,9 @@ class DataVisit:VisitServiceDelegate  {
         catch let error as NSError {
             print("Could not insert. \(error), \(error.userInfo)")
         }
-        NotificationCenter.default.post(name: .newVisitSaved, object: self)
+        NotificationCenter.default.post(name: .newVisitSaved, object: self,userInfo: ["Visit": visit])
         DataZOI().createZOIFromVisit(visit: newVisit)
+        });
     }
     
     func eraseVisits() {
@@ -73,21 +76,21 @@ class DataVisit:VisitServiceDelegate  {
         }
     }
     
-    func getVisitFromUUID(id:UUID) -> Visit? {
-        var visits = [Visit]()
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<Visit>(entityName: "Visit")
-        fetchRequest.predicate = NSPredicate(format: "visitId == %@", id as CVarArg)
+    func getVisitFromUUID(id:String) -> Visit? {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         do {
-            visits = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
+            let fetchRequest = NSFetchRequest<Visit>(entityName: "Visit")
+            fetchRequest.predicate = NSPredicate(format: "visitId == %@", id)
+            let fetchedResults = try context.fetch(fetchRequest)
+            if let aVisit = fetchedResults.first {
+               return aVisit
+            }
         }
-        if visits.isEmpty {
-            return nil
+        catch {
+            print ("fetch task failed", error)
         }
-        return visits.first!
+        return nil
+        
     }
     
 }
