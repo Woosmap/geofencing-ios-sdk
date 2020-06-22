@@ -1,4 +1,3 @@
-
 ##  Get user location
 According to official [documentation](https://developer.apple.com/documentation/corelocation/getting_the_user_s_location), we do not decide how many locations the system will send us, or how often. On the other hand, the system sends us back all the information compiled from the various instruments at its disposal. It does not make sense to try to double the information with the observation of the gyroscope, the accelerometer or the compass.
 The OS analyzes all of its sensors, and defines what the user is doing to send us the most reliable information possible. Models with a motion coprocessor (from 5S) see their CPU usage (and therefore battery) greatly reduced for processing this information, which allows our application to also consume little energy.
@@ -9,10 +8,9 @@ Three services are available to obtain the position of a user:
 
 ## Geofencing iOS
 
-
 The service of significant displacements of the phone using too much the battery without giving us enough points, we developed method using geofencing iOS.
 
 As a user moves, we create geofencing zones around them. When the user leaves or enters one of these zones, the application will wake up (background-active), request a position, send it, then calculate new geofencing zones according to the obtained position.
 <p align="center">
-  <img alt="GeoSearch with Regions detections" src="/assets/WoosmapGeofencing3.png" width="30%">
+  <img alt="GeoSearch with Regions detections" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/WoosmapGeofencing3.png" width="30%">
 </p>
