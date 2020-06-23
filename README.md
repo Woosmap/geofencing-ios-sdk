@@ -57,7 +57,7 @@ Identify areas of interest for your users (location where they spend time, once 
 
 ##  Pre-requisites
 
-- iOS 11 and above
+- iOS 10 and above
 - Xcode 11 and above
 - APNS Credentials
 - Surge dependency [https://github.com/Jounce/Surge](https://github.com/Jounce/Surge) : A Swift library that uses the Accelerate framework to provide high-performance functions for matrix math, digital signal processing, and image manipulation. 
