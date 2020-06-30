@@ -30,6 +30,8 @@ Let’s see how that works with the different kinds of location authorizations.
 
 ![Prompt flow](https://raw.githubusercontent.com/woosmap/woosmap-geofencing-ios-sdk/master/assets/location-prompt-flow-ios-13.png)
 
+If user will press the best positive answer in that case which is Allow While Using App the operating system will remember that.System will present user alert at some point of time when some special event occurs. System will present alert with Keep Only While Using and Change to Always Allow options. For more information you can check on video from WWDC 2019 : https://developer.apple.com/videos/play/wwdc2019/705/
+
 ## Request Authorization
 
 You can request of two authorization cases.
