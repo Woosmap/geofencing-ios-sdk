@@ -4,7 +4,7 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="locationDescription" optional="YES" attributeType="String"/>
-        <attribute name="locationId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="locationId" optional="YES" attributeType="String"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <entity name="POI" representedClassName="POI" syncable="YES" codeGenerationType="class">
@@ -12,7 +12,7 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="locationId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="locationId" optional="YES" attributeType="String"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String"/>
     </entity>
@@ -23,10 +23,30 @@
         <attribute name="departureDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="visitId" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ZOI" representedClassName="ZOI" syncable="YES" codeGenerationType="class">
+        <attribute name="accumulator" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="age" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="covariance_det" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="idVisits" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="[String]"/>
+        <attribute name="latMean" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lngMean" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="prior_probability" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="wktPolygon" optional="YES" attributeType="String"/>
+        <attribute name="x00Covariance_matrix_inverse" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="x01Covariance_matrix_inverse" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="x10Covariance_matrix_inverse" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="x11Covariance_matrix_inverse" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="zoiId" optional="YES" attributeType="String"/>
     </entity>
     <elements>
         <element name="Location" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="POI" positionX="-63" positionY="9" width="128" height="148"/>
-        <element name="Visit" positionX="-63" positionY="45" width="128" height="133"/>
+        <element name="Visit" positionX="-63" positionY="45" width="128" height="148"/>
+        <element name="ZOI" positionX="-63" positionY="63" width="128" height="283"/>
     </elements>
 </model>

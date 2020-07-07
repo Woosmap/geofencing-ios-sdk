@@ -2,7 +2,7 @@
 //  Location+CoreDataProperties.swift
 //  
 //
-//  Created by Mac de Laurent on 14/02/2020.
+//  Created by Mac de Laurent on 18/06/2020.
 //
 //
 
@@ -19,7 +19,7 @@ extension Location {
     @NSManaged public var date: Date?
     @NSManaged public var latitude: Double
     @NSManaged public var locationDescription: String?
-    @NSManaged public var locationId: UUID?
+    @NSManaged public var locationId: String?
     @NSManaged public var longitude: Double
 
 }

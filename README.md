@@ -48,11 +48,20 @@ Get the location and the time spent when a user is visiting places. Once again u
   <img alt="Visit" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/visit.png" width="50%">
 </p>
 
+### Detect Zone of Interest (cluster) of your users
+Identify areas of interest for your users (location where they spend time, once or recurrently).
+<p align="center">
+  <img alt="Visit" src="/assets/ZOI1.png" width="50%">
+  <img alt="Visit" src="/assets/ZOI2.png" width="50%">
+</p>
+
 ##  Pre-requisites
 
-- iOS 11 and above
+- iOS 10 and above
 - Xcode 11 and above
 - APNS Credentials
+- Surge dependency [https://github.com/Jounce/Surge](https://github.com/Jounce/Surge) : A Swift library that uses the Accelerate framework to provide high-performance functions for matrix math, digital signal processing, and image manipulation. 
+
 
 ## Installation
 * Download the latest code version or add the repository as a git submodule to your git-tracked project.
@@ -174,6 +183,195 @@ func processVisit(visit: CLVisit) {
 }
 ```
 
+Retrieve Zone of Interest
+ZOIs are built from visits, grouped by proximity. We use the Fast Incremental Gaussian Mixture Model of classification Algorithm  [FIGMM](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0139931) to build and update our ZOI according to visits recurrency along time.
+
+Create the ZOI when a visit is created :
+```swift
+func createVisit(visit: VisitModel) {
+	...
+    DataZOI().createZOIFromVisit(visit: newVisit)
+}
+```
+
+To create ZOI, you must retrieve all the ZOI in database, calculate the new ZOIs, erase the old ZOIs in database, save the new ZOIs:
+```swift
+func createZOIFromVisit(visit : Visit) {
+   	//Retrieve the zois in database
+    let sMercator = SphericalMercator()
+    var zoisFromDB: [Dictionary<String, Any>] = []
+    for zoiFromDB in readZOIs(){
+        var zoiToAdd = Dictionary<String, Any>()
+        zoiToAdd["prior_probability"] = zoiFromDB.prior_probability
+        zoiToAdd["mean"] = [zoiFromDB.latMean, zoiFromDB.lngMean]
+        zoiToAdd["age"] = zoiFromDB.age
+        zoiToAdd["accumulator"] = zoiFromDB.accumulator
+        zoiToAdd["idVisits"] = zoiFromDB.idVisits
+        zoiToAdd["startTime"] = zoiFromDB.startTime
+        zoiToAdd["endTime"] = zoiFromDB.endTime
+        zoiToAdd["covariance_det"] = zoiFromDB.covariance_det
+        zoiToAdd["x00Covariance_matrix_inverse"] = zoiFromDB.x00Covariance_matrix_inverse
+        zoiToAdd["x01Covariance_matrix_inverse"] = zoiFromDB.x01Covariance_matrix_inverse
+        zoiToAdd["x10Covariance_matrix_inverse"] = zoiFromDB.x10Covariance_matrix_inverse
+        zoiToAdd["x11Covariance_matrix_inverse"] = zoiFromDB.x11Covariance_matrix_inverse
+        zoisFromDB.append(zoiToAdd)
+        
+    }
+    
+    // Set the data zois for calculation
+    setListZOIsFromDB(zoiFromDB: zoisFromDB)
+
+	// Calculation
+    let list_zoi = figmmForVisit(newVisitPoint: MyPoint(x: sMercator.lon2x(aLong: visit.longitude), y: sMercator.lat2y(aLat:visit.latitude),accuracy: visit.accuracy, id:visit.visitId!, startTime: visit.arrivalDate!, endTime: visit.departureDate!))
+    
+    // Erase the old data
+    eraseZOIs()
+    
+    // Store zoi in database
+    for zoi in list_zoi{
+        createZOIFrom(zoi: zoi)
+    }
+    
+}
+```
+
+When you store a ZOI in database, you must define the duration the ZOI, the departure and arrival date time like that: 
+```swift
+func createZOIFrom(zoi: Dictionary<String, Any>) {
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let context = appDelegate.persistentContainer.viewContext
+    let entity = NSEntityDescription.entity(forEntityName: "ZOI", in: context)!
+    let newZOi = ZOI(entity: entity, insertInto: context)
+    newZOi.setValue(UUID(), forKey: "zoiId")
+    newZOi.setValue(zoi["idVisits"], forKey: "idVisits")
+    
+    var visitArrivalDate = [Date]()
+    var visitDepartureDate = [Date]()
+    var duration = 0
+    for id in zoi["idVisits"] as! [UUID] {
+        let visit = DataVisit().getVisitFromUUID(id: id)
+        visitArrivalDate.append(visit!.arrivalDate!)
+        visitDepartureDate.append(visit!.departureDate!)
+        duration += visit!.departureDate!.seconds(from: visit!.arrivalDate!)
+    }
+    let startTime = visitArrivalDate.reduce(visitArrivalDate[0], { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 ? $0 : $1 } )
+    let endTime = visitDepartureDate.reduce(visitDepartureDate[0], { $0.timeIntervalSince1970 > $1.timeIntervalSince1970 ? $0 : $1 } )
+    
+    newZOi.setValue(startTime , forKey: "startTime")
+    newZOi.setValue(endTime, forKey: "endTime")
+    newZOi.setValue(duration, forKey: "duration")
+    newZOi.setValue((zoi["mean"] as! Array<Any>)[0] as! Double, forKey: "latMean")
+    newZOi.setValue((zoi["mean"] as! Array<Any>)[1] as! Double, forKey: "lngMean")
+    newZOi.setValue(zoi["age"] , forKey: "age")
+    newZOi.setValue(zoi["accumulator"] , forKey: "accumulator")
+    newZOi.setValue(zoi["covariance_det"] , forKey: "covariance_det")
+    newZOi.setValue(zoi["prior_probability"] , forKey: "prior_probability")
+    newZOi.setValue(zoi["x00Covariance_matrix_inverse"], forKey: "x00Covariance_matrix_inverse")
+    newZOi.setValue(zoi["x01Covariance_matrix_inverse"], forKey: "x01Covariance_matrix_inverse")
+    newZOi.setValue(zoi["x10Covariance_matrix_inverse"], forKey: "x10Covariance_matrix_inverse")
+    newZOi.setValue(zoi["x11Covariance_matrix_inverse"], forKey: "x11Covariance_matrix_inverse")
+    newZOi.setValue(zoi["WktPolygon"], forKey: "wktPolygon")
+    
+    do {
+        try context.save()
+    }
+    catch let error as NSError {
+        print("Could not insert. \(error), \(error.userInfo)")
+    }
+
+}
+```
+
+Each ZOI includes the following informations:
+
+ - The id of the ZOI
+
+```swift
+public var zoiId: UUID?
+```
+ - The list of id visits included in this ZOI
+ 
+```swift
+public var idVisits: [UUID]?
+```
+
+ - The latitude and longitude of the center of the ZOI (useful if you need to qualify the place of the visit with a search request over POIs or assets)
+ 
+```swift
+public var lngMean: Double
+```
+
+```swift
+public var latMean: Double
+```
+
+- Age is used to determine if a ZOI should be deleted by the algorithm *(only for calculation of ZOI)*
+
+```swift
+public var age: Double
+```
+
+- Represents the number of visits used to build the ZOI  *(only for calculation of ZOI)*
+
+```swift
+public var accumulator: Double
+```
+
+- The covariance determinant  *(only for calculation of ZOI)*
+
+```swift
+public var covariance_det: Double
+```
+
+- Estimation of probability  *(only for calculation of ZOI)*
+
+```swift
+public var prior_probability: Double
+```
+
+- The covariance of a cluster  *(only for calculation of ZOI)*
+
+```swift
+public var x00Covariance_matrix_inverse: Double
+```
+
+```swift
+public var x01Covariance_matrix_inverse: Double
+```
+
+```swift
+public var x10Covariance_matrix_inverse: Double
+```
+
+```swift
+public var x11Covariance_matrix_inverse: Double
+```
+
+- The entry date for the first ZOI visit
+
+```swift
+public var startTime: Date?
+```
+
+ - The exit date of the last ZOI visit
+ 
+```swift
+public var endTime: Date?
+```
+
+- The duration of all the accumulated visits of the ZOI
+
+```swift
+public var duration: Int64
+```
+
+- This is the [Well-known text representation of geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) of the ZOI polygon.
+ For your tests, if you need to explore those WKT and see what they look like on a map, you can use this tool [https://arthur-e.github.io/Wicket/sandbox-gmaps3.html](https://arthur-e.github.io/Wicket/sandbox-gmaps3.html).
+ 
+```swift
+public var wktPolygon: String?
+```
+
 ## Simulate Notification
 
 * Get the notification token in the log debug or on the main screen of the demo app.
@@ -200,6 +398,7 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 * [Get Location with optimizations](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/GetLocationOptimizations.md): to optimize detection mouvement with battery usage.
 * [APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequest.md): find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
 * [Notification APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
+* [ZOI Algorithm](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/ZOIAlgorithm.md): Find out how ZOI are built from visits.
 
 
 ## Contributing
