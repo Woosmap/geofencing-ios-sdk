@@ -51,8 +51,8 @@ Get the location and the time spent when a user is visiting places. Once again u
 ### Detect Zone of Interest (cluster) of your users
 Identify areas of interest for your users (location where they spend time, once or recurrently).
 <p align="center">
-  <img alt="Visit" src="/assets/ZOI1.png" width="50%">
-  <img alt="Visit" src="/assets/ZOI2.png" width="50%">
+  <img alt="Visit" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master//assets/ZOI1.png" width="50%">
+  <img alt="Visit" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master//assets/ZOI2.png" width="50%">
 </p>
 
 ##  Pre-requisites
