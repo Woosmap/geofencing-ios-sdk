@@ -11,6 +11,7 @@
 		A2245475247D591800A0B8B0 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2245474247D591800A0B8B0 /* Surge */; };
 		A238041523EC0DBA002F53F2 /* SearchAPiJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */; };
 		A238041723EC663E002F53F2 /* settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041623EC663E002F53F2 /* settings.swift */; };
+		A23975E724B5B6750088D007 /* ZOIQualifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23975E624B5B6750088D007 /* ZOIQualifiers.swift */; };
 		A2AC852D240E6D9E00C65900 /* WoosmapGeofencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */; };
 		A2F0959D23E9D0C1007A5419 /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F0959C23E9D0C1007A5419 /* Monitor.swift */; };
 		A2F0959F23E9D5F9007A5419 /* RegionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F0959E23E9D5F9007A5419 /* RegionGenerator.swift */; };
@@ -22,6 +23,7 @@
 		A2245471247D58B900A0B8B0 /* FIGMM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIGMM.swift; sourceTree = "<group>"; };
 		A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAPiJson.swift; sourceTree = "<group>"; };
 		A238041623EC663E002F53F2 /* settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settings.swift; sourceTree = "<group>"; };
+		A23975E624B5B6750088D007 /* ZOIQualifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZOIQualifiers.swift; sourceTree = "<group>"; };
 		A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoosmapGeofencing.swift; sourceTree = "<group>"; };
 		A2F0959C23E9D0C1007A5419 /* Monitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monitor.swift; sourceTree = "<group>"; };
 		A2F0959E23E9D5F9007A5419 /* RegionGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionGenerator.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				A2F0959E23E9D5F9007A5419 /* RegionGenerator.swift */,
 				A238041623EC663E002F53F2 /* settings.swift */,
 				A2245471247D58B900A0B8B0 /* FIGMM.swift */,
+				A23975E624B5B6750088D007 /* ZOIQualifiers.swift */,
 			);
 			path = WoosmapGeofencing;
 			sourceTree = "<group>";
@@ -160,6 +163,7 @@
 				A2F0959D23E9D0C1007A5419 /* Monitor.swift in Sources */,
 				A2F0959F23E9D5F9007A5419 /* RegionGenerator.swift in Sources */,
 				A238041723EC663E002F53F2 /* settings.swift in Sources */,
+				A23975E724B5B6750088D007 /* ZOIQualifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

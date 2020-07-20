@@ -6,7 +6,7 @@
 
 import Foundation
 
- //Woosmap SearchAPI Key
+//Woosmap SearchAPI Key
 public var searchWoosmapKey = ""
 public var searchWoosmapAPI = "http://api.woosmap.com/stores/search/?private_key=\(searchWoosmapKey)&lat=%@&lng=%@&stores_by_page=1"
 
@@ -20,6 +20,7 @@ public var searchAPITimeFilter = 0
 
 //Active visit
 public var visitEnable = true
+public var accuracyVisitFilter = 50.0
 
 // delay for obsolote notification
 public var outOfTimeDelay = 300

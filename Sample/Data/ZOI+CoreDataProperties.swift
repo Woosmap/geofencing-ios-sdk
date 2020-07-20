@@ -2,7 +2,7 @@
 //  ZOI+CoreDataProperties.swift
 //  
 //
-//  Created by Mac de Laurent on 18/06/2020.
+//  Created by Mac de Laurent on 15/07/2020.
 //
 //
 
@@ -24,8 +24,10 @@ extension ZOI {
     @NSManaged public var idVisits: [String]?
     @NSManaged public var latMean: Double
     @NSManaged public var lngMean: Double
+    @NSManaged public var period: String?
     @NSManaged public var prior_probability: Double
     @NSManaged public var startTime: Date?
+    @NSManaged public var weekly_density: [Double]?
     @NSManaged public var wktPolygon: String?
     @NSManaged public var x00Covariance_matrix_inverse: Double
     @NSManaged public var x01Covariance_matrix_inverse: Double

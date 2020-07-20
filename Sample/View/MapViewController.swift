@@ -13,12 +13,16 @@ class MyPointAnnotation : MKPointAnnotation {
     var label : String?
 }
 
+class CustomPolygon : MKPolygon {
+    var color: UIColor?
+}
+
 
 class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     var circles: [MKCircle] = []
-    var zoiPolygon: [MKPolygon] = []
+    var zoiPolygon: [CustomPolygon] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -50,8 +54,18 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             title += "\nArrival Date : " + arrivalDate!.stringFromDate()
             title += "\nNb Visits : " + nbVisits
             title += "\nDuration : " + duration
-                 
+            title += "\nPeriod : " + zoi.period!
+            
+            if((zoi.period!) == "HOME_PERIOD") {
+                polygon.color = .green
+            } else if ((zoi.period!) == "WORK_PERIOD") {
+                polygon.color = .red
+            } else {
+                polygon.color = .cyan
+            }
+            
             polygon.title = title
+            zoiPolygon.append(polygon)
             mapView.addOverlay(polygon)
         }
     }
@@ -66,6 +80,9 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         let overlays = mapView.overlays
         mapView.removeOverlays(overlays)
         
+        let annontations = mapView.annotations
+        mapView.removeAnnotations(annontations)
+        
         let buttonItem = MKUserTrackingBarButtonItem(mapView: mapView)
         self.navigationItem.rightBarButtonItem = buttonItem
         
@@ -73,10 +90,6 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         
         for poi:POI in DataPOI().readPOI() {
             mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
-        }
-        
-        for visit:Visit in DataVisit().readVisits() {
-            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
         }
         
         for zoi:ZOI in DataZOI().readZOIs() {
@@ -90,9 +103,23 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             title += "\nArrival Date : " + arrivalDate!.stringFromDate()
             title += "\nNb Visits : " + nbVisits
             title += "\nDuration : " + duration
-                 
+            title += "\nPeriod : " + zoi.period!
+            
+            if((zoi.period!) == "HOME_PERIOD") {
+                polygon.color = .green
+            } else if ((zoi.period!) == "WORK_PERIOD") {
+                polygon.color = .red
+            } else {
+                polygon.color = .cyan
+            }
+            
             polygon.title = title
+            zoiPolygon.append(polygon)
             mapView.addOverlay(polygon)
+        }
+        
+        for visit:Visit in DataVisit().readVisits() {
+            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
         }
         
         
@@ -127,7 +154,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         let coordinate = self.mapView.convert(point, toCoordinateFrom: nil)
         let mappoint = MKMapPoint(coordinate)
         for overlay in self.mapView.overlays {
-            if let polygon = overlay as? MKPolygon {
+            if let polygon = overlay as? CustomPolygon {
                 guard let renderer = self.mapView.renderer(for: polygon) as? MKPolygonRenderer else { continue }
                 let tapPoint = renderer.point(for: mappoint)
                 if renderer.path.contains(tapPoint) {
@@ -158,16 +185,14 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                 
                 let width = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 300)
                 label1.addConstraint(width)
-                
-                
                 let height = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 120)
                 label1.addConstraint(height)
+                
                 let pinImage = UIImage(named: "ic_visit")
                 let size = CGSize(width: 20, height: 30)
                 UIGraphicsBeginImageContext(size)
                 pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                 let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-
                 annotationView!.image = resizedImage
             } else {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "POIAnnotation")
@@ -178,12 +203,9 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                 let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                 annotationView!.image = resizedImage
             }
-            
         } else {
             annotationView?.annotation = annotation
-            
         }
-        
         annotationView?.canShowCallout = true
         
         return annotationView
@@ -204,10 +226,13 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             renderer.lineWidth = 3
             return renderer
             
-        } else if overlay is MKPolygon {
+        } else if overlay is CustomPolygon {
             let polygonView = MKPolygonRenderer(overlay: overlay)
             polygonView.strokeColor = .blue
-            polygonView.fillColor = .cyan
+            polygonView.fillColor = (overlay as! CustomPolygon).color!
+            if ((overlay as! CustomPolygon).color! == .cyan) {
+                polygonView.alpha = 0.2
+            }
             polygonView.lineWidth = 1
             
             return polygonView
@@ -239,6 +264,15 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             title += "\nArrival Date : " + arrivalDate!.stringFromDate()
             title += "\nNb Visits : " + nbVisits
             title += "\nDuration : " + duration
+            title += "\nPeriod : " + zoi.period!
+            
+            if((zoi.period!) == "HOME_PERIOD") {
+                polygon.color = .green
+            } else if ((zoi.period!) == "WORK_PERIOD") {
+                polygon.color = .red
+            } else {
+                polygon.color = .cyan
+            }
             
             polygon.title = title
             zoiPolygon.append(polygon)
@@ -278,7 +312,6 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             annotation.subtitle = "Departure Date : " + visit.departureDate!.stringFromDate() + "\nArrival Date : " + visit.arrivalDate!.stringFromDate() + "\nDuration : " + duration
         }
         
-        annotation.pinTintColor = .yellow
         annotation.coordinate = CLLocationCoordinate2D(latitude: visit.latitude, longitude: visit.longitude)
         return annotation
     }
@@ -293,7 +326,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         
     }
     
-    func wktToMkPolygon(wkt:String) -> MKPolygon {
+    func wktToMkPolygon(wkt:String) -> CustomPolygon {
         let str1 = wkt.replacingOccurrences(of: "POLYGON", with: "")
         let str2 = str1.replacingOccurrences(of: "(", with: "")
         let str3 = str2.replacingOccurrences(of: ")", with: "")
@@ -305,13 +338,13 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             locations.append(location)
         }
         var coordinates = locations.map({(location: CLLocation) -> CLLocationCoordinate2D in return location.coordinate})
-        let polygon = MKPolygon(coordinates: &coordinates, count: locations.count)
-       
+        let polygon = CustomPolygon(coordinates: &coordinates, count: locations.count)
+        
         return polygon
     }
     
     func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
-      return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
 }

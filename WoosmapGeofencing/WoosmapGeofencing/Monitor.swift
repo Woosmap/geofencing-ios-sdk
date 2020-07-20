@@ -141,7 +141,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.startUpdatingLocation()
     }
     
-
+    
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard locations.last != nil else {
@@ -181,19 +181,21 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         guard let delegate = self.visitDelegate else {
             return
         }
-        delegate.processVisit(visit: visit)
+        if(visit.horizontalAccuracy < accuracyVisitFilter ) {
+            delegate.processVisit(visit: visit)
+        }
     }
     
     func updateLocation(locations: [CLLocation]){
         guard let delegate = self.locationServiceDelegate else {
             return
         }
-    
+        
         let location = locations.last!
-    
+        
         
         if (self.currentLocation != nil ) {
-
+            
             let theLastLocation = self.currentLocation!
             
             let timeEllapsed = abs(locations.last!.timestamp.seconds(from: theLastLocation.timestamp))
@@ -266,7 +268,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         task.resume()
         
     }
-   
+    
     public func tracingLocationDidFailWithError(error: Error){
         print("\(error)")
     }
@@ -286,5 +288,5 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.startUpdatingLocation()
         self.startMonitoringSignificantLocationChanges()
     }
-
+    
 }
