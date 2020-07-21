@@ -55,6 +55,15 @@ Identify areas of interest for your users (location where they spend time, once 
   <img alt="Visit" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master//assets/ZOI2.png" width="50%">
 </p>
 
+### Classification of Zone of Interest (cluster) 
+The classification of zone of interest (zois) aims to assign them types, such as "home", "work", ...
+<p align="center">
+  <img alt="Classification" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/Classification.png" width="50%">
+</p>
+
+In order to determine the zois in which the user returns weekly, we will calculate for each zoi the number of different weeks that the user has spent there.
+A zoi is considered to be recurrent if the number of weeks spent indoors is greater than or equal to the average of the weeks spent in the zones.
+
 ##  Pre-requisites
 
 - iOS 10 and above
@@ -359,6 +368,11 @@ public var startTime: Date?
 public var endTime: Date?
 ```
 
+ - The weekly density of the ZOI visit  *(only for classification of ZOI)*
+```swift
+public var weekly_density: [Double]?
+```
+
 - The duration of all the accumulated visits of the ZOI
 
 ```swift
@@ -399,6 +413,7 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 * [APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequest.md): find out here how to use Woosmap Search API to “geo contextualize” the location of your users. 
 * [Notification APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
 * [ZOI Algorithm](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/ZOIAlgorithm.md): Find out how ZOI are built from visits.
+* [ZOI Classification](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/Classification.md): Find out how Classification are built from duration of ZOI.
 
 
 ## Contributing

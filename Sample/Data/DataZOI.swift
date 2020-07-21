@@ -161,7 +161,7 @@ class DataZOI {
         setListZOIsFromDB(zoiFromDB: zoisFromDB)
         
         let list_zoi = figmmForVisit(newVisitPoint: LoadedVisit(x: sMercator.lon2x(aLong: visit.longitude), y: sMercator.lat2y(aLat:visit.latitude),accuracy: visit.accuracy, id:visit.visitId!, startTime: visit.arrivalDate!, endTime: visit.departureDate!))
-        print(list_zoi.count)
+
         eraseZOIs()
         saveZoisInDB(zois: list_zoi)
     }

@@ -26,110 +26,19 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.circles = []
-        self.zoiPolygon = []
-        
-        let overlays = mapView.overlays
-        mapView.removeOverlays(overlays)
-        
-        let annontations = mapView.annotations
-        mapView.removeAnnotations(annontations)
-        
-        for poi:POI in DataPOI().readPOI() {
-            mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
-        }
-        
-        for visit:Visit in DataVisit().readVisits() {
-            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
-        }
-        
-        for zoi:ZOI in DataZOI().readZOIs() {
-            let polygon = wktToMkPolygon(wkt: zoi.wktPolygon!)
-            let departureDate = zoi.endTime
-            let arrivalDate = zoi.startTime
-            let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(zoi.duration))
-            let duration = "\(h) hrs \(m) mins \(s) secs"
-            let nbVisits = String(zoi.idVisits!.count)
-            var title = "Departure Date : " + departureDate!.stringFromDate()
-            title += "\nArrival Date : " + arrivalDate!.stringFromDate()
-            title += "\nNb Visits : " + nbVisits
-            title += "\nDuration : " + duration
-            title += "\nPeriod : " + zoi.period!
-            
-            if((zoi.period!) == "HOME_PERIOD") {
-                polygon.color = .green
-            } else if ((zoi.period!) == "WORK_PERIOD") {
-                polygon.color = .red
-            } else {
-                polygon.color = .cyan
-            }
-            
-            polygon.title = title
-            zoiPolygon.append(polygon)
-            mapView.addOverlay(polygon)
-        }
+        //Add object on the map
+        initMap()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.userTrackingMode = .follow
-        self.circles = []
-        self.zoiPolygon = []
-        
         mapView.delegate = self as MKMapViewDelegate
-        let overlays = mapView.overlays
-        mapView.removeOverlays(overlays)
-        
-        let annontations = mapView.annotations
-        mapView.removeAnnotations(annontations)
         
         let buttonItem = MKUserTrackingBarButtonItem(mapView: mapView)
         self.navigationItem.rightBarButtonItem = buttonItem
         
         WoosmapGeofencing.shared.getLocationService().regionDelegate = self
-        
-        for poi:POI in DataPOI().readPOI() {
-            mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
-        }
-        
-        for zoi:ZOI in DataZOI().readZOIs() {
-            let polygon = wktToMkPolygon(wkt: zoi.wktPolygon!)
-            let departureDate = zoi.endTime
-            let arrivalDate = zoi.startTime
-            let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(zoi.duration))
-            let duration = "\(h) hrs \(m) mins \(s) secs"
-            let nbVisits = String(zoi.idVisits!.count)
-            var title = "Departure Date : " + departureDate!.stringFromDate()
-            title += "\nArrival Date : " + arrivalDate!.stringFromDate()
-            title += "\nNb Visits : " + nbVisits
-            title += "\nDuration : " + duration
-            title += "\nPeriod : " + zoi.period!
-            
-            if((zoi.period!) == "HOME_PERIOD") {
-                polygon.color = .green
-            } else if ((zoi.period!) == "WORK_PERIOD") {
-                polygon.color = .red
-            } else {
-                polygon.color = .cyan
-            }
-            
-            polygon.title = title
-            zoiPolygon.append(polygon)
-            mapView.addOverlay(polygon)
-        }
-        
-        for visit:Visit in DataVisit().readVisits() {
-            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
-        }
-        
-        
-        /*
-         //Mock data
-         for poi:POI in DataPOI().readPOI() {
-         let visitToSave = VisitModel(arrivalDate: poi.date, departureDate: poi.date?.addingTimeInterval(3600), latitude: poi.latitude, longitude: poi.longitude, dateCaptured:poi.date, accuracy:0.0)
-         mapView.addAnnotation(annotationForVisit(visitToSave))
-         }*/
-        
         
         NotificationCenter.default.addObserver(
             self,
@@ -144,9 +53,56 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
-        
         self.mapView.addGestureRecognizer(tap)
         
+        //Add object on the map
+        initMap()
+        
+    }
+    
+    func initMap() {
+        self.circles = []
+        self.zoiPolygon = []
+        
+        let overlays = mapView.overlays
+        mapView.removeOverlays(overlays)
+        
+        let annontations = mapView.annotations
+        mapView.removeAnnotations(annontations)
+        
+        for poi:POI in DataPOI().readPOI() {
+            mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+        }
+        
+        for visit:Visit in DataVisit().readVisits() {
+            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+        }
+        
+        for zoi:ZOI in DataZOI().readZOIs() {
+            let polygon = wktToMkPolygon(wkt: zoi.wktPolygon!)
+            let departureDate = zoi.endTime
+            let arrivalDate = zoi.startTime
+            let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(zoi.duration))
+            let duration = "\(h) hrs \(m) mins \(s) secs"
+            let nbVisits = String(zoi.idVisits!.count)
+            var title = "Departure Date : " + departureDate!.stringFromDate()
+            title += "\nArrival Date : " + arrivalDate!.stringFromDate()
+            title += "\nNb Visits : " + nbVisits
+            title += "\nDuration : " + duration
+            title += "\nPeriod : " + zoi.period!
+            
+            if((zoi.period!) == "HOME_PERIOD") {
+                polygon.color = .green
+            } else if ((zoi.period!) == "WORK_PERIOD") {
+                polygon.color = .red
+            } else {
+                polygon.color = .cyan
+            }
+            
+            polygon.title = title
+            zoiPolygon.append(polygon)
+            mapView.addOverlay(polygon)
+        }
     }
     
     @objc func mapTapped(_ gesture: UITapGestureRecognizer){
