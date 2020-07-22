@@ -39,6 +39,7 @@ class DataVisit:VisitServiceDelegate  {
         return visits
     }
     
+    
     func createVisit(visit: VisitModel) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext

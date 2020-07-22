@@ -10,11 +10,13 @@ import WoosmapGeofencing
 
 class MyPointAnnotation : MKPointAnnotation {
     var pinTintColor: UIColor?
-    var label : String?
+    var visitId : String?
 }
 
 class CustomPolygon : MKPolygon {
     var color: UIColor?
+    var period: String?
+    var visitsId: [String] = []
 }
 
 
@@ -93,13 +95,17 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             
             if((zoi.period!) == "HOME_PERIOD") {
                 polygon.color = .green
+                polygon.period = "HOME_PERIOD"
             } else if ((zoi.period!) == "WORK_PERIOD") {
-                polygon.color = .red
+                polygon.color = .brown
+                polygon.period = "WORK_PERIOD"
             } else {
                 polygon.color = .cyan
+                polygon.period = "OTHER"
             }
             
             polygon.title = title
+            polygon.visitsId = zoi.idVisits!
             zoiPolygon.append(polygon)
             mapView.addOverlay(polygon)
         }
@@ -143,11 +149,20 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                 label1.addConstraint(width)
                 let height = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 120)
                 label1.addConstraint(height)
-                
-                let pinImage = UIImage(named: "ic_visit")
+            
+                let period = getPeriodOfVisit(annotation: annotation)
+                var pinImage:UIImage = UIImage()
+                if(period == "HOME_PERIOD") {
+                    pinImage = UIImage(named: "ic_visit_home")!
+                }else if (period == "WORK_PERIOD"){
+                    pinImage = UIImage(named: "ic_visit_work")!
+                }else {
+                    pinImage = UIImage(named: "ic_visit_other")!
+                }
+        
                 let size = CGSize(width: 20, height: 30)
                 UIGraphicsBeginImageContext(size)
-                pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                pinImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                 let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                 annotationView!.image = resizedImage
             } else {
@@ -165,6 +180,17 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         annotationView?.canShowCallout = true
         
         return annotationView
+    }
+    
+    func getPeriodOfVisit(annotation:MKAnnotation) -> String {
+        let visitId = (annotation as! MyPointAnnotation).visitId
+        for polygon in zoiPolygon{
+            if (((polygon.visitsId.contains(visitId!)))) {
+                return polygon.period!
+            }
+        }
+        
+        return "OTHER"
     }
     
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -224,13 +250,17 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             
             if((zoi.period!) == "HOME_PERIOD") {
                 polygon.color = .green
+                polygon.period = "HOME_PERIOD"
             } else if ((zoi.period!) == "WORK_PERIOD") {
-                polygon.color = .red
+                polygon.color = .brown
+                polygon.period = "WORK_PERIOD"
             } else {
                 polygon.color = .cyan
+                polygon.period = "OTHER"
             }
             
             polygon.title = title
+            polygon.visitsId = zoi.idVisits!
             zoiPolygon.append(polygon)
         }
         
@@ -269,6 +299,8 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         }
         
         annotation.coordinate = CLLocationCoordinate2D(latitude: visit.latitude, longitude: visit.longitude)
+        annotation.pinTintColor = .red
+        annotation.visitId = visit.visitId
         return annotation
     }
     

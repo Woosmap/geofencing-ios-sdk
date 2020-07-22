@@ -2,7 +2,7 @@
 //  ZOI+CoreDataProperties.swift
 //  
 //
-//  Created by Mac de Laurent on 15/07/2020.
+//  Created by Mac de Laurent on 22/07/2020.
 //
 //
 
