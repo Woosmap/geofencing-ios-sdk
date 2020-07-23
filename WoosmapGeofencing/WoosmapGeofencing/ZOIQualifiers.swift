@@ -347,6 +347,7 @@ func update_weekly_density(visitPoint:LoadedVisit, zoi_gmminfo: inout Dictionary
     while(start_time < visitPoint.endTime!) {
         let hour = myCalendar.component(.hour, from: start_time)
         var day = myCalendar.component(.weekday, from: start_time)
+        // shift day number to have Monday is 0 and Sunday is 6
         if(day == 1) {
             day =  6;
         } else {
