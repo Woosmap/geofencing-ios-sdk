@@ -14,14 +14,14 @@ The average of the number of weeks spent in the zones is therefore M = 9/3 = 3.
 Zois z1 and z3 are therefore considered to be recurrent.
 
 
-In order to exclude zones with short visits (passing by more than spending time in it) we also apply a second filter: the time spent in a zoi has to be greater than or equal to 5% of the time spent in all of the zois. 
+In order to exclude zones with short visits (passing by more than spending time in it) we also apply a second filter: the time spent in a zoi (sum of multiple visit durations) has to be greater than or equal to 5% of the time spent in all of the zois (sum of all visit durations of all zones). 
 
 ### Determination of weekly and daily attendance intervals
 On one week of 168 hours, we calculate the number of times the user was within the zoi for each hour of the week. We sum the hours over the weeks for the zoi.
 We determine the daily intervals by choosing the one hour time slots above the average.
 
 ### Classification of the zoi according to previous intervals
-Once the daily intervals are obtained for a zone, we compare them to defined intervals (HOME, WORK ....) in order to qualify them.
+Once the daily intervals are obtained for a zone, we compare them to defined intervals (HOME, WORK, OTHER) in order to qualify them.
 
 These intervals are defined like this :
 ```swift
