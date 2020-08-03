@@ -1,20 +1,20 @@
 ## Classification of ZOI
 
-The classification of areas of interest (zois) aims to assign them types, such as "home", "work", ...
+The classification of zones of interest (zois) aims to assign them types, currently "home" (where the user is supposed to live), "work" (where the user is supposed to work) or "other" (zones where the user spent time recurrently but on time periods not corresponding to classic Home or Work presence).
 The classification method chosen consists of 3 steps. 
 
 ### Determining zois where the user returns recurrently
-In order to determine the zois in which the user returns weekly, we calculate for each zoi the number of different weeks that the user has spent there.
-A zoi is considered to be recurrent if the number of weeks spent inside is greater than or equal to the average number of the weeks spent in the zones.
+In order to determine the zois in which the user returns, we calculate for each zoi the number of different weeks that the user has spent there.
+A zoi is considered to be recurrent if the number of weeks spent inside is greater than or equal to the average number of the weeks spent in all the zones.
 
 #### Example
 A user U, having three zois, z1, z2 and z3.
-We consider that the user has spent a number of weeks w1, w2 and w3 in z1, z2 and z3 where w1 = 3, w2 = 2, w3 = 4.
-The average of the weeks spent in the zones is therefore M = 9/3 = 3
+We consider that the user has spent time in the zones z1, z2 and z3 for a number of weeks w1, w2 and w3 where w1 = 3, w2 = 2, w3 = 4.
+The average of the number of weeks spent in the zones is therefore M = 9/3 = 3.  
 Zois z1 and z3 are therefore considered to be recurrent.
 
 
-In order not to select zois that would be recurrent because of a passage more than a real presence, we will also apply a second filter: the time spent in a zoi has to be greater than or equal to 5% of the time spent in all of the zois. 
+In order to exclude zones with short visits (passing by more than spending time in it) we also apply a second filter: the time spent in a zoi has to be greater than or equal to 5% of the time spent in all of the zois. 
 
 ### Determination of weekly and daily attendance intervals
 On one week of 168 hours, we calculate the number of times the user was within the zoi for each hour of the week. We sum the hours over the weeks for the zoi.
