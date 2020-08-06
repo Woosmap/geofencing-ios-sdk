@@ -436,8 +436,8 @@ public class LoadedVisit {
     var y: Double
     var accuracy: Double
     var id: String
-    var startTime: Date?
-    var endTime: Date?
+    public var startTime: Date?
+    public var endTime: Date?
     
     init(){
         self.x = 0

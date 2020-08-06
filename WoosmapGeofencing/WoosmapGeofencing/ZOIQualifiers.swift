@@ -11,8 +11,8 @@ import Surge
 
 public var list_zois_qualifiers: [Dictionary<String, Any>] = []
 
-let EXIT_TYPE = "exit";
-let ENTRY_TYPE = "entry";
+public let EXIT_TYPE = "exit";
+public let ENTRY_TYPE = "entry";
 
 var PERIODS: [Dictionary<String, Any>] = []
 var HOME_PERIOD: [Dictionary<String, Any>] = []
@@ -87,7 +87,7 @@ func update_recurrent_zois_status() {
     }
 }
 
-func qualify_recurrent_zoi(zois_gmm_info: inout Dictionary<String, Any>){
+public func qualify_recurrent_zoi(zois_gmm_info: inout Dictionary<String, Any>){
     let weekly_density = zois_gmm_info["weekly_density"] as! [Double]
     get_average_presence_intervals(weekly_density: weekly_density, zois_gmm_info: &zois_gmm_info)
     
@@ -112,7 +112,7 @@ func qualify_recurrent_zoi(zois_gmm_info: inout Dictionary<String, Any>){
     
 }
 
-func get_periods_length(period_segments: Dictionary<String, Any>) -> Int{
+public func get_periods_length(period_segments: Dictionary<String, Any>) -> Int{
     var periods_length = 0
     
     for (_,value) in period_segments{
@@ -124,7 +124,7 @@ func get_periods_length(period_segments: Dictionary<String, Any>) -> Int{
     return periods_length
 }
 
-func get_time_on_period(period_segments: Dictionary<String, Any>, average_intervals: [Dictionary<String, Any>]) -> Int {
+public func get_time_on_period(period_segments: Dictionary<String, Any>, average_intervals: [Dictionary<String, Any>]) -> Int {
     var time_spent_on_periods = 0
     
     var compact_intervals = [[Int]] ()
@@ -150,7 +150,7 @@ func get_time_on_period(period_segments: Dictionary<String, Any>, average_interv
     return time_spent_on_periods;
 }
 
-func intervals_intersection_length(interval1_start: Int, interval1_end: Int, interval2_start: Int, interval2_end: Int) -> Int{
+public func intervals_intersection_length(interval1_start: Int, interval1_end: Int, interval2_start: Int, interval2_end: Int) -> Int{
     // We check for intersection
     if((interval1_start <= interval2_start &&  interval2_start <= interval1_end) ||
         (interval1_start <= interval2_end && interval2_end <= interval1_end) ||
@@ -162,7 +162,7 @@ func intervals_intersection_length(interval1_start: Int, interval1_end: Int, int
     }
 }
 
-func get_average_presence_intervals(weekly_density: [Double], zois_gmm_info: inout Dictionary<String, Any>) {
+public func get_average_presence_intervals(weekly_density: [Double], zois_gmm_info: inout Dictionary<String, Any>) {
     let daily_presence_intervals = extract_daily_presence_intervals_from_weekly_density(weekly_density: weekly_density)
     
     if (daily_presence_intervals.count == 0) {
@@ -235,7 +235,7 @@ func get_average_presence_intervals(weekly_density: [Double], zois_gmm_info: ino
     
 }
 
-func add_first_entry_and_last_exit_to_intervals_if_needed(daily_interval: inout [Dictionary<String, Any>]) {
+public func add_first_entry_and_last_exit_to_intervals_if_needed(daily_interval: inout [Dictionary<String, Any>]) {
     if(!daily_interval.isEmpty) {
         let first_interval = daily_interval.first!
         if((first_interval["type"] as! String) == EXIT_TYPE) {
@@ -255,7 +255,7 @@ func add_first_entry_and_last_exit_to_intervals_if_needed(daily_interval: inout 
     }
 }
 
-func extract_daily_presence_intervals_from_weekly_density(weekly_density: [Double]) -> Dictionary<String, Any> {
+public func extract_daily_presence_intervals_from_weekly_density(weekly_density: [Double]) -> Dictionary<String, Any> {
     let weekly_density_mean = Surge.mean(weekly_density)
     
     var daily_presence_intervals = Dictionary<String, Any>()
@@ -316,27 +316,30 @@ func update_zoi_time_info() {
 }
 
 
-func extract_time_and_weeks_from_interval(visitPoint:LoadedVisit, zoi_gmminfo: inout Dictionary<String, Any>) {
+public func extract_time_and_weeks_from_interval(visitPoint:LoadedVisit, zoi_gmminfo: inout Dictionary<String, Any>) {
     let duration =  Int("\(zoi_gmminfo["duration"]!)")
     zoi_gmminfo["duration"] = duration! + visitPoint.endTime!.seconds(from: visitPoint.startTime!)
     
     let myCalendar = Calendar(identifier: .gregorian)
-    let startWeekOfYear = myCalendar.component(.weekOfYear, from: visitPoint.startTime!)
+    var startWeekOfYear = myCalendar.component(.weekOfYear, from: visitPoint.startTime!)
     let endWeekOfYear = myCalendar.component(.weekOfYear, from: visitPoint.endTime!)
+    if(startWeekOfYear > endWeekOfYear){
+        startWeekOfYear = startWeekOfYear - 52
+    }
+    let period = endWeekOfYear - startWeekOfYear
     
     var weeks_on_zoi:[Int] = zoi_gmminfo["weeks_on_zoi"] as! [Int]
-    if(!weeks_on_zoi.contains(startWeekOfYear)){
-        weeks_on_zoi.append(startWeekOfYear);
+    for weekNumber in 0...period{
+        if(!weeks_on_zoi.contains(startWeekOfYear + weekNumber)){
+            weeks_on_zoi.append(startWeekOfYear + weekNumber)
+        }
     }
-    if(!weeks_on_zoi.contains(endWeekOfYear)){
-        weeks_on_zoi.append(endWeekOfYear);
-    }
-    
+
     zoi_gmminfo["weeks_on_zoi"] = weeks_on_zoi
 }
 
 
-func update_weekly_density(visitPoint:LoadedVisit, zoi_gmminfo: inout Dictionary<String, Any>) {
+public func update_weekly_density(visitPoint:LoadedVisit, zoi_gmminfo: inout Dictionary<String, Any>) {
     var start_time = visitPoint.startTime!
     var myCalendar = Calendar.current
     // *** define calendar components to use as well Timezone to UTC ***

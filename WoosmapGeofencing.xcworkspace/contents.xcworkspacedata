@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:WoosmapGeofencing/WoosmapGeofencingTests/ZoiQualifierTests.swift">
+   </FileRef>
+   <FileRef
       location = "group:Sample/Data/ZOI+CoreDataClass.swift">
    </FileRef>
    <FileRef
