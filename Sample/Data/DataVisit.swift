@@ -22,9 +22,9 @@ class DataVisit:VisitServiceDelegate  {
             let visitToSave = VisitModel(visitId: UUID().uuidString, arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude, dateCaptured:Date() , accuracy: visit.horizontalAccuracy)
             createVisit(visit: visitToSave)
         }
-
+        
     }
-       
+    
     func readVisits()-> Array<Visit> {
         var visits = [Visit]()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
@@ -39,8 +39,8 @@ class DataVisit:VisitServiceDelegate  {
         return visits
     }
     
+    
     func createVisit(visit: VisitModel) {
-    DispatchQueue.main.async(execute: {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "Visit", in: context)!
@@ -60,7 +60,6 @@ class DataVisit:VisitServiceDelegate  {
         }
         NotificationCenter.default.post(name: .newVisitSaved, object: self,userInfo: ["Visit": visit])
         DataZOI().createZOIFromVisit(visit: newVisit)
-        });
     }
     
     func eraseVisits() {
@@ -83,7 +82,7 @@ class DataVisit:VisitServiceDelegate  {
             fetchRequest.predicate = NSPredicate(format: "visitId == %@", id)
             let fetchedResults = try context.fetch(fetchRequest)
             if let aVisit = fetchedResults.first {
-               return aVisit
+                return aVisit
             }
         }
         catch {

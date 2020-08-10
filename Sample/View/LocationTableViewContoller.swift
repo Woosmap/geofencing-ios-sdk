@@ -83,10 +83,21 @@ class VisitTableCellView: UITableViewCell {
 }
 
 class LocationTableViewContoller: UITableViewController {
+    let btn = UIButton(type: .custom)
     var placeToShow = [PlaceData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        btn.frame = CGRect(x: 230, y: 500, width: 100, height: 100)
+        btn.setTitle("Test Data", for: .normal)
+        btn.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+        btn.clipsToBounds = true
+        btn.layer.cornerRadius = 50
+        btn.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        btn.layer.borderWidth = 3.0
+        btn.addTarget(self,action: #selector(mockDataAction), for: .touchUpInside)
+        view.addSubview(btn)
         
         loadData()
         
@@ -108,26 +119,30 @@ class LocationTableViewContoller: UITableViewController {
         
     }
     
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let  off = scrollView.contentOffset.y
+        btn.frame = CGRect(x: self.view.bounds.width - btn.frame.size.width, y: off + 550, width: btn.frame.size.width, height: btn.frame.size.height)
+    }
     
     func loadData() {
         placeToShow.removeAll()
         
         //Mock data
         /*for POI in DataPOI().readPOI() {
-            let placeData = PlaceData()
-            placeData.date = POI.date
-            placeData.latitude = POI.latitude
-            placeData.longitude = POI.longitude
-            placeData.departureDate = POI.date?.addingTimeInterval(3600)
-            placeData.arrivalDate = POI.date
-            if (placeData.arrivalDate == nil || placeData.departureDate == nil) {
-                placeData.duration = 0
-            } else {
-                placeData.duration = placeData.departureDate!.seconds(from: placeData.arrivalDate!)
-            }
-            placeData.type = dataType.visit
-            placeToShow.append(placeData)
-        }*/
+         let placeData = PlaceData()
+         placeData.date = POI.date
+         placeData.latitude = POI.latitude
+         placeData.longitude = POI.longitude
+         placeData.departureDate = POI.date?.addingTimeInterval(3600)
+         placeData.arrivalDate = POI.date
+         if (placeData.arrivalDate == nil || placeData.departureDate == nil) {
+         placeData.duration = 0
+         } else {
+         placeData.duration = placeData.departureDate!.seconds(from: placeData.arrivalDate!)
+         }
+         placeData.type = dataType.visit
+         placeToShow.append(placeData)
+         }*/
         
         let visits = DataVisit().readVisits()
         for visit in visits {
@@ -144,9 +159,8 @@ class LocationTableViewContoller: UITableViewController {
             }
             placeData.type = dataType.visit
             placeToShow.append(placeData)
-        
+            
         }
-       
         
         let locations = DataLocation().readLocations()
         
@@ -166,8 +180,6 @@ class LocationTableViewContoller: UITableViewController {
             }
             placeToShow.append(placeData)
         }
-        
-        
         
         //POI and Location sorted
         placeToShow = placeToShow.sorted(by: { $0.date!.compare($1.date!) == .orderedDescending })
@@ -193,6 +205,21 @@ class LocationTableViewContoller: UITableViewController {
         exportDatabase()
     }
     
+    @objc func mockDataAction(){
+        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.gray
+        loadingIndicator.startAnimating();
+
+        alert.view.addSubview(loadingIndicator)
+        present(alert, animated: true, completion: {
+            MockDataVisit().mockVisitData()
+        })
+        dismiss(animated: false, completion: nil)
+    }
+    
     
     @IBAction func purgePressed(_ sender: Any) {
         DataLocation().eraseLocations()
@@ -208,7 +235,7 @@ class LocationTableViewContoller: UITableViewController {
         let exportString = createExportString()
         saveAndExport(exportString: exportString)
     }
-
+    
     func saveAndExport(exportString: [String]) {
         let exportFilePath = NSTemporaryDirectory() + "Geofencing.csv"
         let exportFileURL = NSURL(fileURLWithPath: exportFilePath)
@@ -219,18 +246,18 @@ class LocationTableViewContoller: UITableViewController {
         } catch {
             print("Error with fileHandle")
         }
-
+        
         if fileHandle != nil {
             fileHandle!.seekToEndOfFile()
             let csvData = exportString.joined(separator: "\n").data(using: String.Encoding.utf8, allowLossyConversion: false)
             fileHandle!.write(csvData!)
-
+            
             fileHandle!.closeFile()
-
+            
             let firstActivityItem = NSURL(fileURLWithPath: exportFilePath)
             let activityViewController : UIActivityViewController = UIActivityViewController(
                 activityItems: [firstActivityItem], applicationActivities: nil)
-
+            
             activityViewController.excludedActivityTypes = [
                 UIActivity.ActivityType.assignToContact,
                 UIActivity.ActivityType.saveToCameraRoll,
@@ -238,11 +265,11 @@ class LocationTableViewContoller: UITableViewController {
                 UIActivity.ActivityType.postToVimeo,
                 UIActivity.ActivityType.postToTencentWeibo
             ]
-
+            
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
-
+    
     func createExportString() -> [String] {
         var CSVString: [String] = []
         
@@ -261,20 +288,20 @@ class LocationTableViewContoller: UITableViewController {
             placeData.departureDate = zoi.endTime
             exportPlace.append(placeData)
         }
-            
+        
         for (index, itemList) in exportPlace.enumerated() {
             if(index == 0){
                 let colummAr = itemList.propertyNames()
                 CSVString.append(colummAr.joined(separator: ","))
             }
             CSVString.append(itemList.listPropertiesWithValues())
-
+            
         }
         print("This is what the app will export: \(CSVString)")
         return CSVString
     }
     
-
+    
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Locations"
@@ -299,7 +326,7 @@ class LocationTableViewContoller: UITableViewController {
         if (placeData.type == dataType.location) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
             cell.textLabel?.numberOfLines = 3
-                        
+            
             cell.textLabel?.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
             cell.detailTextLabel?.text = placeData.date!.stringFromDate()
             return cell

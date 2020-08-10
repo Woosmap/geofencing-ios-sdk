@@ -5,13 +5,13 @@ import CoreLocation
 import UIKit
 
 /**
-        WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
+ WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
  */
 @objcMembers public class WoosmapGeofencing: NSObject {
-     
+    
     public var locationService : LocationService!
     public var sphericalMercator : SphericalMercator!
-    public var visitPoint : MyPoint!
+    public var visitPoint : LoadedVisit!
     var locationManager: CLLocationManager? = CLLocationManager()
     
     /**
@@ -25,7 +25,7 @@ import UIKit
     private override init () {
         super.init()
         self.initServices()
-
+        
     }
     
     public func getLocationService() -> LocationService {
@@ -36,10 +36,10 @@ import UIKit
         return sphericalMercator
     }
     
-    public func getVisitPoint() -> MyPoint {
+    public func getVisitPoint() -> LoadedVisit {
         return visitPoint
     }
-
+    
     public func initServices() {
         if self.locationService == nil {
             self.locationService = LocationService(locationManger: self.locationManager)
@@ -72,6 +72,10 @@ import UIKit
         visitEnable = enable
     }
     
+    public func setAccuracyVisitFilter(accuracy:Double) {
+        accuracyVisitFilter = accuracy
+    }
+    
     public func startMonitoringInForeGround() {
         if self.locationService == nil  {
             return
@@ -80,8 +84,8 @@ import UIKit
     }
     
     /**
-        Call this method from the DidFinishLaunchWithOptions method of your App Delegate
-    */
+     Call this method from the DidFinishLaunchWithOptions method of your App Delegate
+     */
     public func startMonitoringInBackground() {
         if self.locationService == nil  {
             NSLog("WoosmapGeofencing is not initiated")
@@ -101,7 +105,7 @@ import UIKit
         }
         self.startMonitoringInBackground()
     }
-
+    
     func trackingChanged(tracking: Bool) {
         if !tracking {
             self._stopAllMonitoring()

@@ -23,8 +23,8 @@ func chi_squared_value(probability: Double) -> Double{
     return -2 * log(1 - probability)
 }
 
-public func figmmForVisit(newVisitPoint:MyPoint) -> [Dictionary<String, Any>]{
-  
+public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>]{
+    
     // Learning
     let zois_have_been_updated = incrementZOI( point: newVisitPoint)
     
@@ -34,18 +34,32 @@ public func figmmForVisit(newVisitPoint:MyPoint) -> [Dictionary<String, Any>]{
     }
     
     // Removing spurious components
-    clean_clusters()
+    //clean_clusters()
     
     // Update prior
     update_zois_prior()
     
+    //Assocaite Visit to the zoi
     predict_as_dict(visitPoint: newVisitPoint)
+    
+    clean_clusters_without_visit()
+    
+    list_zois = updateZoisQualifications(zois: list_zois)
     
     trace()
     
     prepareDataForDB()
     
     return list_zois
+}
+
+func clean_clusters_without_visit() {
+    for (index, zois_gmm_info) in list_zois.enumerated() {
+        let listVisit:[LoadedVisit] = zois_gmm_info["visitPoint"] as! [LoadedVisit]
+        if(listVisit.isEmpty) {
+            list_zois.remove(at: index)
+        }
+    }
 }
 
 public func setListZOIsFromDB(zoiFromDB:[Dictionary<String, Any>]) {
@@ -105,7 +119,7 @@ func clean_clusters() {
     }
 }
 
-func createInitialCluster(newVisitPoint:MyPoint) {
+func createInitialCluster(newVisitPoint:LoadedVisit) {
     // We use a multiplier because of true visit are not exactly on the position of the point.
     // So we left more variance to create clusters
     let covariance_multiplier = 2.0
@@ -140,15 +154,32 @@ func createInitialCluster(newVisitPoint:MyPoint) {
     zois_gmm_info["updated"] = true
     zois_gmm_info["covariance_det"] = pow(covariance_initial_value, 2)
     zois_gmm_info["idVisits"] = []
+    zois_gmm_info["visitPoint"] = []
     zois_gmm_info["startTime"] = newVisitPoint.startTime
     zois_gmm_info["endTime"] = newVisitPoint.endTime
+    
+    
+    // DATA For classification
+    zois_gmm_info["duration"] = newVisitPoint.endTime!.seconds(from: newVisitPoint.startTime!)
+    let weeks_on_zoi = [Int]()
+    zois_gmm_info["weeks_on_zoi"] = weeks_on_zoi
+    
+    let weekly_density = [Double](repeating: 0, count: 7*24)
+    zois_gmm_info["weekly_density"] = weekly_density
+    
+    let daily_presence_intervals = Dictionary<String, Any>()
+    zois_gmm_info["daily_presence_intervals"] = daily_presence_intervals
+    
+    let average_intervals = [Dictionary<String, Any>]()
+    zois_gmm_info["average_intervals"] = average_intervals
+    zois_gmm_info["period"] = "NO QUALIFIER"
     
     
     list_zois.append(zois_gmm_info);
 }
 
 //predict cluster for each data and return them as dict to optimized insertion
-func predict_as_dict(visitPoint: MyPoint) {
+func predict_as_dict(visitPoint: LoadedVisit) {
     typealias Scalar = Double
     var cov_determinants: [Double] = []
     var prior_probabilities: [Double] = []
@@ -171,9 +202,9 @@ func predict_as_dict(visitPoint: MyPoint) {
         let covariance_matrix_inverse: Matrix<Scalar> = zois_gmm_info["covariance_matrix_inverse"] as! Matrix<Scalar>
         let a = matrix_error * covariance_matrix_inverse
         let a2 = a * transpose(matrix_error)
-
+        
         let mahalanobis_distance = sqrt(a2[0][0])
-
+        
         sqr_mahalanobis_distances.append(pow(mahalanobis_distance,2))
         
     }
@@ -192,12 +223,15 @@ func predict_as_dict(visitPoint: MyPoint) {
     var idVisitsArray:[String] =  list_zois[indexMaxProbPrior!]["idVisits"] as! [String]
     idVisitsArray.append(visitPoint.getId())
     list_zois[indexMaxProbPrior!]["idVisits"] = idVisitsArray
-   
+    
+    var visitArray:[LoadedVisit] = list_zois[indexMaxProbPrior!]["visitPoint"] as! [LoadedVisit]
+    visitArray.append(visitPoint)
+    list_zois[indexMaxProbPrior!]["visitPoint"] = visitArray
     
 }
 
 
-func incrementZOI(point:MyPoint) -> Bool {
+func incrementZOI(point:LoadedVisit) -> Bool {
     typealias Scalar = Double
     var zois_have_been_updated = false
     var cov_determinants: [Double] = []
@@ -252,7 +286,7 @@ func incrementZOI(point:MyPoint) -> Bool {
     return zois_have_been_updated
 }
 
-func updateCluster(point: MyPoint, x_j_probability: Double, zoi_gmminfo: inout Dictionary<String, Any>, normalization_coefficient: Double) {
+func updateCluster(point: LoadedVisit, x_j_probability: Double, zoi_gmminfo: inout Dictionary<String, Any>, normalization_coefficient: Double) {
     let j_x_probability = x_j_probability * ((zoi_gmminfo["prior_probability"] as! Double) / normalization_coefficient )
     zoi_gmminfo["age"] = zoi_gmminfo["age"] as! Double + 1
     zoi_gmminfo["accumulator"] = zoi_gmminfo["accumulator"] as! Double + j_x_probability
@@ -396,14 +430,14 @@ func geometryFigmm(zois_gmm_info:inout Dictionary<String, Any>){
     zois_gmm_info["WktPolygon"] = wktPolygon
 }
 
-public class MyPoint {
+public class LoadedVisit {
     
     var x: Double
     var y: Double
     var accuracy: Double
     var id: String
-    var startTime: Date?
-    var endTime: Date?
+    public var startTime: Date?
+    public var endTime: Date?
     
     init(){
         self.x = 0
