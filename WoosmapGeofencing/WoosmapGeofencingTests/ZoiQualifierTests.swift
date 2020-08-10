@@ -10,10 +10,25 @@ import WoosmapGeofencing
 
 class ZoiQualifierTests: XCTestCase {
     
-    func test_when_update_weekly_density_with_basics_date_then_update_correctly_density(){
-        let formatter = DateFormatter()
+    let formatter = DateFormatter()
+    let weekly_density_test_interval = [
+      0.0, 1.0, 10.0, 10.0, 3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      1.0, 1.0, 12.0, 12.0, 12.0, 25.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0, 1.0, 12.0, 18.0, 21.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 10.0, 16.0, 1.0, 0.0
+   ]
+    
+    override func setUp() {
+        super.setUp()
         formatter.dateFormat = "yyyy/MM/dd HH:mm"
         formatter.timeZone = TimeZone(abbreviation: "UTC")
+    }
+
+    func test_when_update_weekly_density_with_basics_date_then_update_correctly_density(){
         // Monday 12:10am
         let start_date = formatter.date(from: "2019/3/25 12:10")
         // Thuesday 09:50am
@@ -37,9 +52,6 @@ class ZoiQualifierTests: XCTestCase {
     }
     
     func test_when_update_weekly_density_with_larges_date_then_update_correctly_density(){
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd HH:mm"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
         // Monday 12:10am
         let start_date = formatter.date(from: "2019/3/25 12:10")
         // Thuesday 09:50am
@@ -66,9 +78,6 @@ class ZoiQualifierTests: XCTestCase {
     }
     
     func test_when_extract_time_and_weeks_from_interval_then_return_time_and_weeks_spent_in_interval() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd HH:mm"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
         // Monday 12:10am
         let start_date = formatter.date(from: "2019/03/25 12:10")
         // Thuesday (three weeks after) 09:50am
@@ -199,18 +208,7 @@ class ZoiQualifierTests: XCTestCase {
     }
     
     func test_when_extract_daily_presence_intervals_from_weekly_density_then_return_daily_intervals(){
-        let weekly_density_test = [
-            0.0, 1.0, 10.0, 10.0, 3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            1.0, 1.0, 12.0, 12.0, 12.0, 25.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0, 1.0, 12.0, 18.0, 21.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 10.0, 16.0, 1.0, 0.0
-        ]
-        
-        let daily_presence_intervals = extract_daily_presence_intervals_from_weekly_density(weekly_density: weekly_density_test)
+        let daily_presence_intervals = extract_daily_presence_intervals_from_weekly_density(weekly_density: weekly_density_test_interval)
         
         let daily_presence_intervals_sorted = Array(daily_presence_intervals.keys.sorted(by: { $0 < $1 }))
         //verify day key
@@ -255,24 +253,13 @@ class ZoiQualifierTests: XCTestCase {
     }
     
     func test_when_get_average_presence_intervals_then_return_intervals(){
-        let weekly_density_test = [
-            0.0, 1.0, 10.0, 10.0, 3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            1.0, 1.0, 12.0, 12.0, 12.0, 25.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0, 1.0, 12.0, 18.0, 21.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 10.0, 16.0, 1.0, 0.0
-        ]
-        
         var zoiToTest = Dictionary<String, Any>()
         let daily_presence_intervals = Dictionary<String, Any>()
         zoiToTest["daily_presence_intervals"] = daily_presence_intervals
         let average_intervals = [Dictionary<String, Any>]()
         zoiToTest["average_intervals"] = average_intervals
         
-        get_average_presence_intervals(weekly_density: weekly_density_test, zois_gmm_info: &zoiToTest)
+        get_average_presence_intervals(weekly_density: weekly_density_test_interval, zois_gmm_info: &zoiToTest)
         
         let average_intervals_test = zoiToTest["average_intervals"] as! [Dictionary<String, Any>]
         XCTAssert(ENTRY_TYPE == (average_intervals_test[0]["type"] as! String))
