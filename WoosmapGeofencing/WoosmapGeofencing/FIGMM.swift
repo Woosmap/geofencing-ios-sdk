@@ -19,7 +19,7 @@ let acc_min = 3.0
 
 let chi_squared_value_for_update = chi_squared_value(probability: 0.95);
 
-func chi_squared_value(probability: Double) -> Double{
+public func chi_squared_value(probability: Double) -> Double{
     return -2 * log(1 - probability)
 }
 
@@ -100,7 +100,7 @@ func trace() {
     }
 }
 
-func update_zois_prior(){
+public func update_zois_prior(){
     var normalization_params = 0.0;
     for zois_gmm_info in list_zois {
         normalization_params += zois_gmm_info["accumulator"] as! Double
@@ -111,13 +111,13 @@ func update_zois_prior(){
     }
 }
 
-func clean_clusters() {
+/*func clean_clusters() {
     for zois_gmm_info in list_zois {
         if ((zois_gmm_info["age"] as! Double) > age_min && (zois_gmm_info["accumulator"] as! Double) < acc_min) {
             list_zois_to_delete.append(zois_gmm_info);
         }
     }
-}
+}*/
 
 func createInitialCluster(newVisitPoint:LoadedVisit) {
     // We use a multiplier because of true visit are not exactly on the position of the point.
@@ -439,7 +439,7 @@ public class LoadedVisit {
     public var startTime: Date?
     public var endTime: Date?
     
-    init(){
+    public init(){
         self.x = 0
         self.y = 0
         self.id = UUID().uuidString
@@ -470,15 +470,15 @@ public class LoadedVisit {
         return x
     }
     
-    func getY() -> Double {
+   public func getY() -> Double {
         return y
     }
     
-    func getAccuray() -> Double {
+    public func getAccuray() -> Double {
         return accuracy
     }
     
-    func getId() -> String {
+    public func getId() -> String {
         return id
     }
     

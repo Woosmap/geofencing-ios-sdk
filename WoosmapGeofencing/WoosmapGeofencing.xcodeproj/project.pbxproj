@@ -12,6 +12,7 @@
 		A238041523EC0DBA002F53F2 /* SearchAPiJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */; };
 		A238041723EC663E002F53F2 /* settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041623EC663E002F53F2 /* settings.swift */; };
 		A23975E724B5B6750088D007 /* ZOIQualifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23975E624B5B6750088D007 /* ZOIQualifiers.swift */; };
+		A26028A424E19EB100F34CF1 /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26028A324E19EB100F34CF1 /* FIGMMCreatorTests.swift */; };
 		A2AC852D240E6D9E00C65900 /* WoosmapGeofencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
 		A2C57C5424D9602500E5A080 /* ZoiQualifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C57C5324D9602500E5A080 /* ZoiQualifierTests.swift */; };
@@ -36,6 +37,7 @@
 		A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAPiJson.swift; sourceTree = "<group>"; };
 		A238041623EC663E002F53F2 /* settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settings.swift; sourceTree = "<group>"; };
 		A23975E624B5B6750088D007 /* ZOIQualifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZOIQualifiers.swift; sourceTree = "<group>"; };
+		A26028A324E19EB100F34CF1 /* FIGMMCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIGMMCreatorTests.swift; sourceTree = "<group>"; };
 		A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoosmapGeofencing.swift; sourceTree = "<group>"; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2C57C4C24D95F7A00E5A080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 		A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */ = {
 			isa = PBXGroup;
 			children = (
+				A26028A324E19EB100F34CF1 /* FIGMMCreatorTests.swift */,
 				A2C57C5324D9602500E5A080 /* ZoiQualifierTests.swift */,
 				A2C57C4C24D95F7A00E5A080 /* Info.plist */,
 			);
@@ -236,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2C57C5424D9602500E5A080 /* ZoiQualifierTests.swift in Sources */,
+				A26028A424E19EB100F34CF1 /* FIGMMCreatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
