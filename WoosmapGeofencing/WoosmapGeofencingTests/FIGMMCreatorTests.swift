@@ -1,9 +1,9 @@
 //
 //  FIGMMCreatorTests.swift
 //  
+//  Copyright © 2020 Web Geo Services. All rights reserved.
 //
-//  Created by Mac de Laurent on 06/08/2020.
-//
+
 
 import XCTest
 import WoosmapGeofencing
@@ -20,9 +20,13 @@ class FIGMMCreatorTests: XCTestCase {
     
     
     override func setUp() {
-         super.setUp()
-         formatter.dateFormat = "yyyy/MM/dd HH:mm"
-         formatter.timeZone = TimeZone(abbreviation: "UTC")
+        super.setUp()
+        
+        //clean zoi
+        list_zois = []
+        
+        formatter.dateFormat = "yyyy/MM/dd HH:mm"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         let start_date = formatter.date(from: "2018/1/1 12:00")
         let end_date = start_date?.addingTimeInterval(7*3600)
         let sMercator = SphericalMercator()
@@ -33,10 +37,9 @@ class FIGMMCreatorTests: XCTestCase {
         
         visit_on_home1 = LoadedVisit(x: sMercator.lon2x(aLong: 1), y: sMercator.lat2y(aLat:2), accuracy: 15.0, id: "visit_on_home1", startTime: start_date!, endTime: end_date!)
         visit_on_home2 = LoadedVisit(x: sMercator.lon2x(aLong: 1.0001), y: sMercator.lat2y(aLat:2), accuracy: 20.0, id: "visit_on_home2", startTime: (start_date?.addingTimeInterval(19*3600))!, endTime: (start_date?.addingTimeInterval(23*3600))!)
-              
-     }
-
-
+    }
+    
+    
     func test_when_get_chi_squared_value_then_return_chi_squared_value(){
         let chi_value1 = 0.95
         let chi_value2 = 0.80
@@ -52,9 +55,6 @@ class FIGMMCreatorTests: XCTestCase {
     }
     
     func test_when_update_zois_with_visits_without_zois_then_create_zois(){
-        //clean zoi
-        list_zois = []
-        
         var allZoi = figmmForVisit(newVisitPoint: visit1)
         var zoiToTest = allZoi.first
         
@@ -74,7 +74,6 @@ class FIGMMCreatorTests: XCTestCase {
         XCTAssert((zoiToTest!["WktPolygon"] as! String) == wktToTest )
         XCTAssert((zoiToTest!["startTime"] as! Date) == visit1.startTime)
         XCTAssert((zoiToTest!["endTime"] as! Date) == visit1.endTime)
-        
         
         allZoi = figmmForVisit(newVisitPoint: visit2)
         XCTAssert(allZoi.count == 2)
@@ -117,9 +116,6 @@ class FIGMMCreatorTests: XCTestCase {
     }
     
     func test_when_update_zois_prior_then_update_zois_prior_values() {
-        //clean zoi
-        list_zois = []
-        
         var listZoisToTest: [Dictionary<String, Any>] = []
         var zoiToTest1 = Dictionary<String, Any>()
         var zoiToTest2 = Dictionary<String, Any>()
@@ -132,7 +128,7 @@ class FIGMMCreatorTests: XCTestCase {
         zoiToTest1["accumulator"] = 2.0
         zoiToTest2["accumulator"] = 1.0
         zoiToTest3["accumulator"] = 3.0
-
+        
         listZoisToTest.append(zoiToTest1)
         listZoisToTest.append(zoiToTest2)
         listZoisToTest.append(zoiToTest3)
@@ -146,13 +142,9 @@ class FIGMMCreatorTests: XCTestCase {
         XCTAssert((listZoisToTest[0]["prior_probability"] as! Double) == 1/3)
         XCTAssert((listZoisToTest[1]["prior_probability"] as! Double) == 1/6)
         XCTAssert((listZoisToTest[2]["prior_probability"] as! Double) == 0.5)
-        
     }
     
     func test_when_update_zois_with_a_visit_near_an_existing_cluster_then_update_and_requalify_zois(){
-        //clean zoi
-        list_zois = []
-        
         var allZoi = figmmForVisit(newVisitPoint: visit_on_home1)
         allZoi = figmmForVisit(newVisitPoint: visit_on_home2)
         allZoi = figmmForVisit(newVisitPoint: visit3)
@@ -194,40 +186,6 @@ class FIGMMCreatorTests: XCTestCase {
         XCTAssert((zoi2_after_update["prior_probability"] as! Double) == 0.5)
         XCTAssert((zoi2_after_update["accumulator"] as! Double) == (zoi2_before_update["accumulator"] as! Double) + 1)
         XCTAssert((zoi2_after_update["age"] as! Double) == (zoi2_before_update["age"] as! Double) + 1)
-        
-        
-        
     }
-//        self.base_date = datetime(2018, 1, 1, tzinfo=timezone.utc)
-//        self.visit_on_home1 = Visit.objects.create(
-//            id=uuid4(),
-//            accuracy=15,
-//            point=GEOSGeometry('POINT(1 2)'),
-//            arrival_datetime=self.base_date,
-//            departure_datetime=self.base_date + timedelta(hours=7),
-//            timezone=timezone.utc,
-//            user=self.user1_1
-//        )
-//
-//        self.visit_on_home2 = Visit.objects.create(
-//            id=uuid4(),
-//            accuracy=20,
-//            point=GEOSGeometry('POINT(1.0001 2)'),
-//            arrival_datetime=self.base_date + timedelta(hours=19),
-//            departure_datetime=self.base_date + timedelta(hours=23),
-//            timezone=timezone.utc,
-//            user=self.user1_1
-//        )
-//
-//        self.visit3 = Visit.objects.create(
-//            id=uuid4(),
-//            accuracy=20,
-//            point=GEOSGeometry('POINT(2 6)'),
-//            arrival_datetime=self.base_date + timedelta(days=1),
-//            departure_datetime=self.base_date + timedelta(days=1, minutes=30),
-//            timezone=timezone.utc,
-//            user=self.user1_1
-//        )
-//    }
-
+    
 }

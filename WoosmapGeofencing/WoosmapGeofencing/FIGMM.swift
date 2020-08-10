@@ -33,9 +33,6 @@ public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>
         createInitialCluster(newVisitPoint: newVisitPoint);
     }
     
-    // Removing spurious components
-    //clean_clusters()
-    
     // Update prior
     update_zois_prior()
     
@@ -110,14 +107,6 @@ public func update_zois_prior(){
         list_zois[index]["prior_probability"] = (zois_gmm_info["accumulator"] as! Double) / normalization_params
     }
 }
-
-/*func clean_clusters() {
-    for zois_gmm_info in list_zois {
-        if ((zois_gmm_info["age"] as! Double) > age_min && (zois_gmm_info["accumulator"] as! Double) < acc_min) {
-            list_zois_to_delete.append(zois_gmm_info);
-        }
-    }
-}*/
 
 func createInitialCluster(newVisitPoint:LoadedVisit) {
     // We use a multiplier because of true visit are not exactly on the position of the point.
