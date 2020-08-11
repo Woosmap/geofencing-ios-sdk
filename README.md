@@ -77,6 +77,14 @@ A zoi is considered to be recurrent if the number of weeks spent in the zone is 
 * Open your Xcode project, then drag and drop source directory onto your project. Make sure to select Copy items when asked if you extracted the code archive outside of your project.
 * Compile and install the mobile app onto your mobile device.
 
+### Swift Package Manager
+
+To integrate Woosmap Geofencing SDK into your project using [Swift Package Manager](https://swift.org/package-manager/), you can add the library as a dependency in Xcode (11 and above) – see the [docs](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app). The package repository URL is:
+
+```bash
+https://github.com/woosmap/woosmap-geofencing-ios-sdk.git
+```
+
 ## Get Keys
 
 * If you don't use the Woosmap API with key, you can only get the location of the user.
