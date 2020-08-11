@@ -21,9 +21,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "WoosmapGeofencing",
-            dependencies: ["Surge"]),
+            dependencies: ["Surge"],
+            path: "WoosmapGeofencing/Sources/WoosmapGeofencing"),
         .testTarget(
             name: "WoosmapGeofencingTests",
-            dependencies: ["WoosmapGeofencing"]),
+            dependencies: ["WoosmapGeofencing"],
+            path: "WoosmapGeofencing/Tests/WoosmapGeofencingTests"),
     ]
 )

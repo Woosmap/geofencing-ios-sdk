@@ -2,7 +2,6 @@
 import Foundation
 import AdSupport
 import CoreLocation
-import UIKit
 
 /**
  WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
