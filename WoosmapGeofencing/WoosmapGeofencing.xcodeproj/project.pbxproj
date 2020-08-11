@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A2245472247D58B900A0B8B0 /* FIGMM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2245471247D58B900A0B8B0 /* FIGMM.swift */; };
 		A2245475247D591800A0B8B0 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2245474247D591800A0B8B0 /* Surge */; };
-		A238041523EC0DBA002F53F2 /* SearchAPiJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */; };
-		A238041723EC663E002F53F2 /* settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041623EC663E002F53F2 /* settings.swift */; };
-		A23975E724B5B6750088D007 /* ZOIQualifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23975E624B5B6750088D007 /* ZOIQualifiers.swift */; };
-		A26028A424E19EB100F34CF1 /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26028A324E19EB100F34CF1 /* FIGMMCreatorTests.swift */; };
-		A2AC852D240E6D9E00C65900 /* WoosmapGeofencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */; };
+		A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */; };
+		A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */; };
+		A262B9D424E29B0000EB621F /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CB24E29AFF00EB621F /* Monitor.swift */; };
+		A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CC24E29AFF00EB621F /* FIGMM.swift */; };
+		A262B9D624E29B0000EB621F /* WoosmapGeofencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CD24E29AFF00EB621F /* WoosmapGeofencing.swift */; };
+		A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CE24E29AFF00EB621F /* SearchAPiJson.swift */; };
+		A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CF24E29B0000EB621F /* RegionGenerator.swift */; };
+		A262B9DA24E29B0000EB621F /* settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9D124E29B0000EB621F /* settings.swift */; };
+		A262B9DB24E29B0000EB621F /* ZOIQualifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
-		A2C57C5424D9602500E5A080 /* ZoiQualifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C57C5324D9602500E5A080 /* ZoiQualifierTests.swift */; };
-		A2F0959D23E9D0C1007A5419 /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F0959C23E9D0C1007A5419 /* Monitor.swift */; };
-		A2F0959F23E9D5F9007A5419 /* RegionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F0959E23E9D5F9007A5419 /* RegionGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,18 +32,19 @@
 
 /* Begin PBXFileReference section */
 		A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WoosmapGeofencing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A216FBAD23E9CEA70003AAC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2245471247D58B900A0B8B0 /* FIGMM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIGMM.swift; sourceTree = "<group>"; };
-		A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAPiJson.swift; sourceTree = "<group>"; };
-		A238041623EC663E002F53F2 /* settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settings.swift; sourceTree = "<group>"; };
-		A23975E624B5B6750088D007 /* ZOIQualifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZOIQualifiers.swift; sourceTree = "<group>"; };
-		A26028A324E19EB100F34CF1 /* FIGMMCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIGMMCreatorTests.swift; sourceTree = "<group>"; };
-		A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoosmapGeofencing.swift; sourceTree = "<group>"; };
+		A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FIGMMCreatorTests.swift; path = Tests/WoosmapGeofencingTests/FIGMMCreatorTests.swift; sourceTree = SOURCE_ROOT; };
+		A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZoiQualifierTests.swift; path = Tests/WoosmapGeofencingTests/ZoiQualifierTests.swift; sourceTree = SOURCE_ROOT; };
+		A262B9C724E29ADF00EB621F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/WoosmapGeofencingTests/Info.plist; sourceTree = SOURCE_ROOT; };
+		A262B9CB24E29AFF00EB621F /* Monitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Monitor.swift; path = Sources/WoosmapGeofencing/Monitor.swift; sourceTree = SOURCE_ROOT; };
+		A262B9CC24E29AFF00EB621F /* FIGMM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FIGMM.swift; path = Sources/WoosmapGeofencing/FIGMM.swift; sourceTree = SOURCE_ROOT; };
+		A262B9CD24E29AFF00EB621F /* WoosmapGeofencing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WoosmapGeofencing.swift; path = Sources/WoosmapGeofencing/WoosmapGeofencing.swift; sourceTree = SOURCE_ROOT; };
+		A262B9CE24E29AFF00EB621F /* SearchAPiJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchAPiJson.swift; path = Sources/WoosmapGeofencing/SearchAPiJson.swift; sourceTree = SOURCE_ROOT; };
+		A262B9CF24E29B0000EB621F /* RegionGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegionGenerator.swift; path = Sources/WoosmapGeofencing/RegionGenerator.swift; sourceTree = SOURCE_ROOT; };
+		A262B9D024E29B0000EB621F /* WoosmapGeofencing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WoosmapGeofencing.h; path = Sources/WoosmapGeofencing/WoosmapGeofencing.h; sourceTree = SOURCE_ROOT; };
+		A262B9D124E29B0000EB621F /* settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = settings.swift; path = Sources/WoosmapGeofencing/settings.swift; sourceTree = SOURCE_ROOT; };
+		A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZOIQualifiers.swift; path = Sources/WoosmapGeofencing/ZOIQualifiers.swift; sourceTree = SOURCE_ROOT; };
+		A262B9D324E29B0000EB621F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Sources/WoosmapGeofencing/Info.plist; sourceTree = SOURCE_ROOT; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A2C57C4C24D95F7A00E5A080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2C57C5324D9602500E5A080 /* ZoiQualifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoiQualifierTests.swift; sourceTree = "<group>"; };
-		A2F0959C23E9D0C1007A5419 /* Monitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monitor.swift; sourceTree = "<group>"; };
-		A2F0959E23E9D5F9007A5419 /* RegionGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,14 +88,15 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
-				A2AC852C240E6D9E00C65900 /* WoosmapGeofencing.swift */,
-				A238041423EC0DBA002F53F2 /* SearchAPiJson.swift */,
-				A216FBAD23E9CEA70003AAC8 /* Info.plist */,
-				A2F0959C23E9D0C1007A5419 /* Monitor.swift */,
-				A2F0959E23E9D5F9007A5419 /* RegionGenerator.swift */,
-				A238041623EC663E002F53F2 /* settings.swift */,
-				A2245471247D58B900A0B8B0 /* FIGMM.swift */,
-				A23975E624B5B6750088D007 /* ZOIQualifiers.swift */,
+				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
+				A262B9D324E29B0000EB621F /* Info.plist */,
+				A262B9CB24E29AFF00EB621F /* Monitor.swift */,
+				A262B9CF24E29B0000EB621F /* RegionGenerator.swift */,
+				A262B9CE24E29AFF00EB621F /* SearchAPiJson.swift */,
+				A262B9D124E29B0000EB621F /* settings.swift */,
+				A262B9D024E29B0000EB621F /* WoosmapGeofencing.h */,
+				A262B9CD24E29AFF00EB621F /* WoosmapGeofencing.swift */,
+				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
 			);
 			path = WoosmapGeofencing;
 			sourceTree = "<group>";
@@ -102,9 +104,9 @@
 		A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */ = {
 			isa = PBXGroup;
 			children = (
-				A26028A324E19EB100F34CF1 /* FIGMMCreatorTests.swift */,
-				A2C57C5324D9602500E5A080 /* ZoiQualifierTests.swift */,
-				A2C57C4C24D95F7A00E5A080 /* Info.plist */,
+				A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */,
+				A262B9C724E29ADF00EB621F /* Info.plist */,
+				A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */,
 			);
 			path = WoosmapGeofencingTests;
 			sourceTree = "<group>";
@@ -177,6 +179,7 @@
 					};
 					A2C57C4724D95F7A00E5A080 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -224,13 +227,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2245472247D58B900A0B8B0 /* FIGMM.swift in Sources */,
-				A2AC852D240E6D9E00C65900 /* WoosmapGeofencing.swift in Sources */,
-				A238041523EC0DBA002F53F2 /* SearchAPiJson.swift in Sources */,
-				A2F0959D23E9D0C1007A5419 /* Monitor.swift in Sources */,
-				A2F0959F23E9D5F9007A5419 /* RegionGenerator.swift in Sources */,
-				A238041723EC663E002F53F2 /* settings.swift in Sources */,
-				A23975E724B5B6750088D007 /* ZOIQualifiers.swift in Sources */,
+				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
+				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
+				A262B9DA24E29B0000EB621F /* settings.swift in Sources */,
+				A262B9D624E29B0000EB621F /* WoosmapGeofencing.swift in Sources */,
+				A262B9D424E29B0000EB621F /* Monitor.swift in Sources */,
+				A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */,
+				A262B9DB24E29B0000EB621F /* ZOIQualifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,8 +241,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2C57C5424D9602500E5A080 /* ZoiQualifierTests.swift in Sources */,
-				A26028A424E19EB100F34CF1 /* FIGMMCreatorTests.swift in Sources */,
+				A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */,
+				A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,7 +387,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/WoosmapGeofencing/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/WoosmapGeofencing/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -410,7 +413,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/WoosmapGeofencing/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/WoosmapGeofencing/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -428,8 +431,10 @@
 		A2C57C5024D95F7A00E5A080 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = WoosmapGeofencingTests/Info.plist;
+				INFOPLIST_FILE = Tests/WoosmapGeofencingTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -438,6 +443,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.WoosmapGeofencingTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -446,8 +453,10 @@
 		A2C57C5124D95F7A00E5A080 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = WoosmapGeofencingTests/Info.plist;
+				INFOPLIST_FILE = Tests/WoosmapGeofencingTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -456,6 +465,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.WoosmapGeofencingTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
