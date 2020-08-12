@@ -21,4 +21,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: iOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "WoosmapGeofencing.xcodeproj" -scheme "WoosmapGeofencing" -destination "${{ matrix.destination }}" clean test | xcpretty
+        run: xcodebuild test -project WoosmapGeofencing/WoosmapGeofencing.xcodeproj -scheme WoosmapGeofencingTests -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 6,OS=12.2"
+
