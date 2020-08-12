@@ -2,36 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:WoosmapGeofencing/WoosmapGeofencingTests/ZoiQualifierTests.swift">
-   </FileRef>
-   <FileRef
-      location = "group:Sample/Data/ZOI+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:Sample/Data/ZOI+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
-      location = "group:Sample/Data/Visit+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:Sample/Data/Visit+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
-      location = "group:paris.gpx">
-   </FileRef>
-   <FileRef
-      location = "group:GeoSearch/Data/POI+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:GeoSearch/Data/POI+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
-      location = "group:GeoSearch/Data/Location+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:GeoSearch/Data/Location+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:Sample.xcodeproj">
    </FileRef>
 </Workspace>
