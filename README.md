@@ -5,6 +5,7 @@
 <a href="https://developer.apple.com/swift"><img alt="badge" src="https://img.shields.io/badge/language-swift5-f48041.svg?style=flat"></a>
 <a href="https://developer.apple.com/ios"><img alt="badge" src="https://img.shields.io/badge/platform-iOS%2010%2B-blue.svg?style=flat%22"></a>
 <a href="https://swift.org/package-manager/"><img alt="badge" src="https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat"></a>
+<a href="https://github.com/Carthage/Carthage"><img alt="badge" src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
 <a href="https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/LICENSE.md"><img alt="badge" src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat"></a>
 </p>
 
@@ -92,6 +93,14 @@ To integrate Woosmap Geofencing SDK into your project using [Swift Package Manag
 ```bash
 https://github.com/woosmap/woosmap-geofencing-ios-sdk.git
 ```
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate Woosmap Geofencing into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "woosmap/woosmap-geofencing-ios-sdk" ~> 1.0.0
+```
+
 
 ## Get Keys
 
