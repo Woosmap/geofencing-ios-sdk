@@ -1,11 +1,11 @@
 ## Woosmap Geofencing
 
 <p align="center">
-<a href="https://github.com/woosmap/woosmap-geofencing-ios-sdk/actions"><img src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/workflows/WoosmapGeofencing/badge.svg?branch=master"></a>
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/language-swift5-f48041.svg?style=flat"></a>
-<a href="https://developer.apple.com/ios"><img src="https://img.shields.io/badge/platform-iOS%2010%2B-blue.svg?style=flat%22"></a>
-<a href="https://swift.org/package-manager/"><img src="https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat"></a>
-<a href="https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/LICENSE.md"><img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat"></a>
+<a href="https://github.com/woosmap/woosmap-geofencing-ios-sdk/actions"><img alt="badge" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/workflows/WoosmapGeofencing/badge.svg?branch=master"></a>
+<a href="https://developer.apple.com/swift"><img alt="badge" src="https://img.shields.io/badge/language-swift5-f48041.svg?style=flat"></a>
+<a href="https://developer.apple.com/ios"><img alt="badge" src="https://img.shields.io/badge/platform-iOS%2010%2B-blue.svg?style=flat%22"></a>
+<a href="https://swift.org/package-manager/"><img alt="badge" src="https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat"></a>
+<a href="https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/LICENSE.md"><img alt="badge" src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat"></a>
 </p>
 
 Location intelligence is one of the next revolutions to improve and "smoothen" user experience on mobile. 
