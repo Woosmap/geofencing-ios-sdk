@@ -93,6 +93,7 @@ To integrate Woosmap Geofencing SDK into your project using [Swift Package Manag
 ```bash
 https://github.com/woosmap/woosmap-geofencing-ios-sdk.git
 ```
+
 ### Carthage
 
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate Woosmap Geofencing into your Xcode project using Carthage, specify it in your `Cartfile`:
@@ -101,6 +102,13 @@ https://github.com/woosmap/woosmap-geofencing-ios-sdk.git
 github "woosmap/woosmap-geofencing-ios-sdk" ~> 1.0.0
 ```
 
+### CocoaPods
+
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Woosmap Geofencing SDK into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+pod 'WoosmapGeofencing'
+```
 
 ## Get Keys
 
