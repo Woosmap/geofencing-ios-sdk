@@ -107,7 +107,9 @@ github "woosmap/woosmap-geofencing-ios-sdk" ~> 1.0.0
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate Woosmap Geofencing SDK into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'WoosmapGeofencing'
+target 'MyApp' do
+  pod 'WoosmapGeofencing', :git => 'https://github.com/woosmap/woosmap-geofencing-ios-sdk.git'
+end
 ```
 
 ## Get Keys
