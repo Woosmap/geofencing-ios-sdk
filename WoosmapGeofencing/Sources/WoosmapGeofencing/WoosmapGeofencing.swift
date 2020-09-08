@@ -75,6 +75,10 @@ import CoreLocation
         accuracyVisitFilter = accuracy
     }
     
+    public func setClassification(enable: Bool) {
+        classificationEnable = enable
+    }
+       
     public func startMonitoringInForeGround() {
         if self.locationService == nil  {
             return
