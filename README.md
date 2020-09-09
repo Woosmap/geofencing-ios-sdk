@@ -73,6 +73,12 @@ The classification of zones of interest (zois) aims to assign them types. For no
 Calculations for each zoi are performed to determine the number of different weeks that the user has spent there.
 A zoi is considered to be recurrent if the number of weeks spent in the zone is greater than or equal to the average of the number of weeks spent in all the zones.
 
+The classification of zois is enable by default. For disable that, in your `AppDelegate`, you can change the value in the settings of the SDK as follow:
+```swift
+// Set classification of zoi enable
+WoosmapGeofencing.shared.setClassification(enable: false)
+```
+
 ##  Pre-requisites
 
 - iOS 10 and above
