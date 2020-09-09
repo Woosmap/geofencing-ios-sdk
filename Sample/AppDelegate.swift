@@ -26,6 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
         //WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
         
+        // Set classification of zoi enable
+        WoosmapGeofencing.shared.setClassification(enable: true)
+        
         // Initialize the framework
         WoosmapGeofencing.shared.initServices()
         

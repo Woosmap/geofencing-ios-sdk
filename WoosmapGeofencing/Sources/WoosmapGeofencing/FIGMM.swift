@@ -30,7 +30,7 @@ public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>
     
     // Creating new components
     if (!zois_have_been_updated) {
-        createInitialCluster(newVisitPoint: newVisitPoint);
+        createInitialCluster(newVisitPoint: newVisitPoint)
     }
     
     // Update prior
@@ -41,7 +41,9 @@ public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>
     
     clean_clusters_without_visit()
     
-    list_zois = updateZoisQualifications(zois: list_zois)
+    if (classificationEnable) {
+        list_zois = updateZoisQualifications(zois: list_zois)
+    }
     
     trace()
     
