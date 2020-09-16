@@ -53,7 +53,8 @@ public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>
 func clean_clusters_without_visit() {
     for (index, zois_gmm_info) in list_zois.enumerated() {
         let listVisit:[LoadedVisit] = zois_gmm_info["visitPoint"] as! [LoadedVisit]
-        if(listVisit.isEmpty) {
+        let listidVisit:[String] = zois_gmm_info["idVisits"] as! [String]
+        if(listVisit.isEmpty || listidVisit.isEmpty) {
             list_zois.remove(at: index)
         }
     }
@@ -343,6 +344,25 @@ func getProbabilityOfXKnowingCluster(cov_determinants: [Double], sqr_mahalanobis
     return probability_of_x_knowing_cluster
 }
 
+public func deleteVisitOnZoi(visitToDelete:LoadedVisit) -> [Dictionary<String, Any>] {
+    for (index, zois_gmm_info) in list_zois.enumerated() {
+        let listVisit:[String] = zois_gmm_info["idVisits"] as! [String]
+        let listVisitToSave = listVisit.filter{ $0 != visitToDelete.getId() }
+        list_zois[index]["idVisits"] = listVisitToSave
+    }
+    
+    clean_clusters_without_visit()
+    
+    // Update prior
+    update_zois_prior()
+    
+    trace()
+    
+    prepareDataForDB()
+    
+    return list_zois
+}
+
 
 func geometryFigmm(zois_gmm_info:inout Dictionary<String, Any>){
     typealias Scalar = Double
@@ -419,7 +439,7 @@ func geometryFigmm(zois_gmm_info:inout Dictionary<String, Any>){
     zois_gmm_info["WktPolygon"] = wktPolygon
 }
 
-public class LoadedVisit {
+public class LoadedVisit : Equatable {
     
     var x: Double
     var y: Double
@@ -453,6 +473,17 @@ public class LoadedVisit {
         self.accuracy = accuracy
         self.startTime = startTime
         self.endTime = endTime
+    }
+    
+    public static func ==(lhs: LoadedVisit, rhs: LoadedVisit) -> Bool
+    {
+        return
+            lhs.x == rhs.x &&
+            lhs.y == rhs.y &&
+            lhs.id == rhs.id &&
+            lhs.accuracy == rhs.accuracy &&
+            lhs.startTime == rhs.startTime &&
+            lhs.endTime == rhs.endTime
     }
     
     public func getX() -> Double {

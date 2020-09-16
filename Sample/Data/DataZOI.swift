@@ -11,10 +11,10 @@ import UIKit
 import CoreData
 import WoosmapGeofencing
 
-class DataZOI {
-    init() {}
+public class DataZOI {
+    public init() {}
     
-    func readZOIs()-> [ZOI] {
+    public func readZOIs()-> [ZOI] {
         var zois: [ZOI] = []
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -43,9 +43,11 @@ class DataZOI {
         if(!(zoi["idVisits"] as! [String]).isEmpty){
             for id in zoi["idVisits"] as! [String] {
                 let visit = DataVisit().getVisitFromUUID(id: id)
-                visitArrivalDate.append(visit!.arrivalDate!)
-                visitDepartureDate.append(visit!.departureDate!)
-                duration += visit!.departureDate!.seconds(from: visit!.arrivalDate!)
+                if (visit != nil) {
+                    visitArrivalDate.append(visit!.arrivalDate!)
+                    visitDepartureDate.append(visit!.departureDate!)
+                    duration += visit!.departureDate!.seconds(from: visit!.arrivalDate!)
+                }
             }
             startTime = visitArrivalDate.reduce(visitArrivalDate[0], { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 ? $0 : $1 } )
             endTime = visitDepartureDate.reduce(visitDepartureDate[0], { $0.timeIntervalSince1970 > $1.timeIntervalSince1970 ? $0 : $1 } )
@@ -93,9 +95,11 @@ class DataZOI {
             if(!(zoi["idVisits"] as! [String]).isEmpty){
                 for id in zoi["idVisits"] as! [String] {
                     let visit = DataVisit().getVisitFromUUID(id: id)
-                    visitArrivalDate.append(visit!.arrivalDate!)
-                    visitDepartureDate.append(visit!.departureDate!)
-                    duration += visit!.departureDate!.seconds(from: visit!.arrivalDate!)
+                    if (visit != nil) {
+                        visitArrivalDate.append(visit!.arrivalDate!)
+                        visitDepartureDate.append(visit!.departureDate!)
+                        duration += visit!.departureDate!.seconds(from: visit!.arrivalDate!)
+                    }
                 }
                 startTime = visitArrivalDate.reduce(visitArrivalDate[0], { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 ? $0 : $1 } )
                 endTime = visitDepartureDate.reduce(visitDepartureDate[0], { $0.timeIntervalSince1970 > $1.timeIntervalSince1970 ? $0 : $1 } )
@@ -139,8 +143,10 @@ class DataZOI {
             var listVisit:[LoadedVisit] = []
             for id in zoiFromDB.idVisits! {
                 let visitFromId = DataVisit().getVisitFromUUID(id: id)
-                let point:LoadedVisit = LoadedVisit(x: visitFromId!.latitude, y: visitFromId!.longitude, accuracy: visitFromId!.accuracy, id: visitFromId!.visitId!, startTime: visitFromId!.arrivalDate!, endTime: visitFromId!.departureDate!)
-                listVisit.append(point)
+                if (visitFromId != nil) {
+                    let point:LoadedVisit = LoadedVisit(x: visitFromId!.latitude, y: visitFromId!.longitude, accuracy: visitFromId!.accuracy, id: visitFromId!.visitId!, startTime: visitFromId!.arrivalDate!, endTime: visitFromId!.departureDate!)
+                    listVisit.append(point)
+                }
             }
             zoiToAdd["visitPoint"] = listVisit
             zoiToAdd["startTime"] = zoiFromDB.startTime
@@ -180,8 +186,10 @@ class DataZOI {
             var listVisit:[LoadedVisit] = []
             for id in zoiFromDB.idVisits! {
                 let visit = DataVisit().getVisitFromUUID(id: id)
-                let point:LoadedVisit = LoadedVisit(x: visit!.latitude, y: visit!.longitude, accuracy: visit!.accuracy, id: visit!.visitId!, startTime: visit!.arrivalDate!, endTime: visit!.departureDate!)
-                listVisit.append(point)
+                if (visit != nil) {
+                    let point:LoadedVisit = LoadedVisit(x: visit!.latitude, y: visit!.longitude, accuracy: visit!.accuracy, id: visit!.visitId!, startTime: visit!.arrivalDate!, endTime: visit!.departureDate!)
+                    listVisit.append(point)
+                }
             }
             zoiToAdd["startTime"] = zoiFromDB.startTime
             zoiToAdd["endTime"] = zoiFromDB.endTime
@@ -210,7 +218,7 @@ class DataZOI {
         
     }
     
-    func eraseZOIs() {
+    public func eraseZOIs() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZOI")

@@ -142,6 +142,17 @@ class FIGMMCreatorTests: XCTestCase {
         XCTAssert((listZoisToTest[0]["prior_probability"] as! Double) == 1/3)
         XCTAssert((listZoisToTest[1]["prior_probability"] as! Double) == 1/6)
         XCTAssert((listZoisToTest[2]["prior_probability"] as! Double) == 0.5)
+        
+        listZoisToTest.remove(at: 0)
+        
+        list_zois = listZoisToTest
+        
+        update_zois_prior()
+        
+        listZoisToTest = list_zois
+        
+        XCTAssert((listZoisToTest[0]["prior_probability"] as! Double) == 0.25)
+        XCTAssert((listZoisToTest[1]["prior_probability"] as! Double) == 0.75)
     }
     
     func test_when_update_zois_with_a_visit_near_an_existing_cluster_then_update_and_requalify_zois(){

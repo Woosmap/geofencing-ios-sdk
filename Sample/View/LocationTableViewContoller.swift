@@ -116,6 +116,11 @@ class LocationTableViewContoller: UITableViewController {
             selector: #selector(newVisitAdded(_:)),
             name: .newVisitSaved,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadData(_:)),
+            name: .reloadData,
+            object: nil)
         
     }
     
@@ -197,6 +202,11 @@ class LocationTableViewContoller: UITableViewController {
     }
     
     @objc func newVisitAdded(_ notification: Notification) {
+        loadData()
+        tableView.reloadData()
+    }
+    
+    @objc func reloadData(_ notification: Notification) {
         loadData()
         tableView.reloadData()
     }
