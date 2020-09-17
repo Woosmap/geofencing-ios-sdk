@@ -10,10 +10,11 @@ import CoreData
 import CoreLocation
 import WoosmapGeofencing
 
-class DataVisit:VisitServiceDelegate  {
+public class DataVisit:VisitServiceDelegate  {
     
+    public init() {}
     
-    func processVisit(visit: CLVisit) {
+    public func processVisit(visit: CLVisit) {
         let calendar = Calendar.current
         let departureDate = calendar.component(.year, from: visit.departureDate) != 4001 ? visit.departureDate : nil
         let arrivalDate = calendar.component(.year, from: visit.arrivalDate) != 4001 ? visit.arrivalDate : nil
@@ -25,7 +26,7 @@ class DataVisit:VisitServiceDelegate  {
         
     }
     
-    func readVisits()-> Array<Visit> {
+    public func readVisits()-> Array<Visit> {
         var visits = [Visit]()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -40,7 +41,7 @@ class DataVisit:VisitServiceDelegate  {
     }
     
     
-    func createVisit(visit: VisitModel) {
+    public func createVisit(visit: VisitModel) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "Visit", in: context)!
@@ -62,7 +63,7 @@ class DataVisit:VisitServiceDelegate  {
         DataZOI().createZOIFromVisit(visit: newVisit)
     }
     
-    func eraseVisits() {
+    public func eraseVisits() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<Visit>(entityName: "Visit")

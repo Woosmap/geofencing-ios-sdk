@@ -24,4 +24,7 @@ let GoogleMapStaticAPITwoMark = GoogleMapStaticAPIBaseURL + "?markers=color:red|
 let searchWoosmapKey = ""
 let searchWoosmapAPI = "http://api.woosmap.com/stores/search/?private_key=\(searchWoosmapKey)&lat=%@&lng=%@&stores_by_page=1"
 
+//Delay of Duration data
+public var dataDurationDelay = 30// number of day
+
 

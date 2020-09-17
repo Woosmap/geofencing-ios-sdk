@@ -10,11 +10,13 @@ import CoreData
 import CoreLocation
 import WoosmapGeofencing
 
-class DataLocation:LocationServiceDelegate  {
+public class DataLocation:LocationServiceDelegate  {
     
     var lastLocation: CLLocation?
     
-    func tracingLocation(locations: [CLLocation], locationId: String) {
+    public init() {}
+    
+    public func tracingLocation(locations: [CLLocation], locationId: String) {
         let location = locations.last!
         
         let locationToSave = LocationModel(locationId: locationId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, dateCaptured: Date(), descriptionToSave: "description")
@@ -22,12 +24,12 @@ class DataLocation:LocationServiceDelegate  {
         self.lastLocation = location
     }
     
-    func tracingLocationDidFailWithError(error: Error) {
+    public func tracingLocationDidFailWithError(error: Error) {
         NSLog("\(error)")
     }
     
     
-    func readLocations()-> Array<Location> {
+    public func readLocations()-> Array<Location> {
         var locations = [Location]()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -41,7 +43,7 @@ class DataLocation:LocationServiceDelegate  {
         return locations
     }
     
-    func createLocation(location: LocationModel) {
+    public func createLocation(location: LocationModel) {
         DispatchQueue.main.async(execute: {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
@@ -63,7 +65,7 @@ class DataLocation:LocationServiceDelegate  {
         });
     }
     
-    func eraseLocations() {
+    public func eraseLocations() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<Location>(entityName: "Location")

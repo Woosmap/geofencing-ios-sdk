@@ -458,7 +458,7 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 * [Notification APIs request](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/APIsRequestInNotification.md): in use of a notification, Location of the mobile is one thing but knowing from what the mobile is close to is another thing. Find out here how to use Woosmap Search API to “geo contextualize” the location of your users.
 * [ZOI Algorithm](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/ZOIAlgorithm.md): Find out how ZOI are built from visits.
 * [ZOI Classification](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/Classification.md): Find out how Classification are built from duration of ZOI.
-
+* [Geographic Data Lifecycle and import data from a CSV](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/GeographicDataLifecycle.md): Find out how to manage the data lifecycle to be in compliance with GDPR and how to import data from a CSV.
 
 ## Contributing
 
