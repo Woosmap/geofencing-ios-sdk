@@ -218,6 +218,51 @@ public class DataZOI {
         
     }
     
+    public func updateZOI(visits : [Visit]) {
+        let sMercator = SphericalMercator()
+        var zoisFromDB: [Dictionary<String, Any>] = []
+        
+        for zoiFromDB in DataZOI().readZOIs() {
+            var zoiToAdd = Dictionary<String, Any>()
+            zoiToAdd["prior_probability"] = zoiFromDB.prior_probability
+            zoiToAdd["mean"] = [zoiFromDB.latMean, zoiFromDB.lngMean]
+            zoiToAdd["age"] = zoiFromDB.age
+            zoiToAdd["accumulator"] = zoiFromDB.accumulator
+            zoiToAdd["idVisits"] = zoiFromDB.idVisits
+            var listVisit:[LoadedVisit] = []
+            for id in zoiFromDB.idVisits! {
+                let visitFromId = DataVisit().getVisitFromUUID(id: id)
+                if (visitFromId != nil) {
+                    let point:LoadedVisit = LoadedVisit(x: visitFromId!.latitude, y: visitFromId!.longitude, accuracy: visitFromId!.accuracy, id: visitFromId!.visitId!, startTime: visitFromId!.arrivalDate!, endTime: visitFromId!.departureDate!)
+                    listVisit.append(point)
+                }
+            }
+            zoiToAdd["visitPoint"] = listVisit
+            zoiToAdd["startTime"] = zoiFromDB.startTime
+            zoiToAdd["endTime"] = zoiFromDB.endTime
+            zoiToAdd["duration"] = zoiFromDB.duration
+            zoiToAdd["weekly_density"] = zoiFromDB.weekly_density
+            zoiToAdd["weeks_on_zoi"] = []
+            zoiToAdd["period"] = zoiFromDB.period
+            zoiToAdd["covariance_det"] = zoiFromDB.covariance_det
+            zoiToAdd["x00Covariance_matrix_inverse"] = zoiFromDB.x00Covariance_matrix_inverse
+            zoiToAdd["x01Covariance_matrix_inverse"] = zoiFromDB.x01Covariance_matrix_inverse
+            zoiToAdd["x10Covariance_matrix_inverse"] = zoiFromDB.x10Covariance_matrix_inverse
+            zoiToAdd["x11Covariance_matrix_inverse"] = zoiFromDB.x11Covariance_matrix_inverse
+            zoisFromDB.append(zoiToAdd)
+        }
+        
+        setListZOIsFromDB(zoiFromDB: zoisFromDB)
+        
+        var list_zoi:[Dictionary<String, Any>] = []
+        for visit in visits{
+            list_zoi = deleteVisitOnZoi(visitsToDelete: LoadedVisit(x: sMercator.lon2x(aLong: visit.longitude), y: sMercator.lat2y(aLat:visit.latitude),accuracy: visit.accuracy, id:visit.visitId!, startTime: visit.arrivalDate!, endTime: visit.departureDate!))
+        }
+        
+        DataZOI().eraseZOIs()
+        DataZOI().saveZoisInDB(zois: list_zoi)
+    }
+    
     public func eraseZOIs() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.persistentContainer.viewContext

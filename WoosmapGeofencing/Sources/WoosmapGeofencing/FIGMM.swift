@@ -344,11 +344,11 @@ func getProbabilityOfXKnowingCluster(cov_determinants: [Double], sqr_mahalanobis
     return probability_of_x_knowing_cluster
 }
 
-public func deleteVisitOnZoi(visitToDelete:LoadedVisit) -> [Dictionary<String, Any>] {
+public func deleteVisitOnZoi(visitsToDelete:LoadedVisit) -> [Dictionary<String, Any>] {
     for (index, zois_gmm_info) in list_zois.enumerated() {
-        let listVisit:[String] = zois_gmm_info["idVisits"] as! [String]
-        let listVisitToSave = listVisit.filter{ $0 != visitToDelete.getId() }
-        list_zois[index]["idVisits"] = listVisitToSave
+        let listIdVisit:[String] = zois_gmm_info["idVisits"] as! [String]
+        let listIdVisitToSave = listIdVisit.filter{ $0 != visitsToDelete.getId() }
+        list_zois[index]["idVisits"] = listIdVisitToSave
     }
     
     clean_clusters_without_visit()
