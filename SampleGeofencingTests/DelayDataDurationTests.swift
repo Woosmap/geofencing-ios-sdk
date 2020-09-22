@@ -38,10 +38,14 @@ class DelayDataDurationTests: XCTestCase {
         
             let visitToSave = VisitModel.init(visitId: id, arrivalDate: dateCaptured, departureDate: Calendar.current.date(byAdding: .day, value: 1, to: dateCaptured!), latitude: lat, longitude:  lng, dateCaptured:dateCaptured, accuracy: accuracy)
             
+            let POIToSave = POIModel.init(locationId: id, city: "CityTest", zipCode: "CodeTest", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: dateCaptured)
+            
             let locationToSave = LocationModel.init(locationId: id, latitude: lat, longitude: lng, dateCaptured: dateCaptured, descriptionToSave: "mockLocation")
             
-            DataVisit().createVisit(visit: visitToSave)
             DataLocation().createLocation(location: locationToSave)
+            DataPOI().createPOI(POImodel: POIToSave)
+            DataVisit().createVisit(visit: visitToSave)
+            
         }
         
         waitForMainQueue()
@@ -51,6 +55,7 @@ class DelayDataDurationTests: XCTestCase {
         userDataCleaner.cleanOldGeographicData()
         
         XCTAssert(DataLocation().readLocations().count == 30)
+        XCTAssert(DataPOI().readPOI().count == 30)
         XCTAssert(DataVisit().readVisits().count == 30)
     }
     
@@ -66,7 +71,7 @@ class DelayDataDurationTests: XCTestCase {
         DataLocation().eraseLocations()
         DataVisit().eraseVisits()
         DataZOI().eraseZOIs()
+        DataPOI().erasePOI()
     }
-    
     
 }

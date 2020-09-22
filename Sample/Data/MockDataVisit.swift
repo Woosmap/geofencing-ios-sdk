@@ -52,8 +52,6 @@ public class MockDataVisit {
                 
                 let visitToSave = VisitModel(visitId: id, arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:departureDate, accuracy: accuracy)
                 
-                let locationToSave = LocationModel(locationId: id, latitude: lat, longitude: lng, dateCaptured: departureDate, descriptionToSave: "mockVisits")
-                
                 DataVisit().createVisit(visit: visitToSave)
             }
         }

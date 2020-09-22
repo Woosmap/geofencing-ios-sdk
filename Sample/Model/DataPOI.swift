@@ -10,8 +10,11 @@ import CoreData
 import CoreLocation
 import WoosmapGeofencing
 
-class DataPOI:SearchAPIDelegate  {
-    func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
+public class DataPOI:SearchAPIDelegate  {
+    
+    public init() {}
+    
+    public func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
         for feature in (searchAPIData.features)! {
             let city = feature.properties!.address!.city!
             let zipCode = feature.properties!.address!.zipcode!
@@ -23,11 +26,12 @@ class DataPOI:SearchAPIDelegate  {
             createPOI(POImodel: POIToSave)
         }
     }
-    func serachAPIError(error: String) {
+    
+    public func serachAPIError(error: String) {
         
     }
     
-    func readPOI()-> Array<POI> {
+    public func readPOI()-> Array<POI> {
         var searchAPIData = [POI]()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -60,7 +64,7 @@ class DataPOI:SearchAPIDelegate  {
 
     }
     
-    func createPOI(POImodel: POIModel) {
+    public func createPOI(POImodel: POIModel) {
         DispatchQueue.main.async(execute: {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let managedContext = appDelegate.persistentContainer.viewContext
@@ -86,7 +90,7 @@ class DataPOI:SearchAPIDelegate  {
     
     }
     
-    func erasePOI() {
+    public func erasePOI() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<POI>(entityName: "POI")
