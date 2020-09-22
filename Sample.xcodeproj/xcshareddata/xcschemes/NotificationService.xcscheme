@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1170"
+   LastUpgradeVersion = "1200"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -47,7 +47,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A27778FA250F6E7100068AEA"
+               BlueprintIdentifier = "A277790F250FA3B900068AEA"
                BuildableName = "SampleGeofencingTests.xctest"
                BlueprintName = "SampleGeofencingTests"
                ReferencedContainer = "container:Sample.xcodeproj">
