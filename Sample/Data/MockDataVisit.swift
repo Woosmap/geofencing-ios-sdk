@@ -87,8 +87,11 @@ public class MockDataVisit {
                 
                 let locationToSave = LocationModel(locationId: id, latitude: lat, longitude: lng, dateCaptured: departureDate, descriptionToSave: "mockLocation")
                 
+                let POIToSave = POIModel(locationId: id, city: "test", zipCode: "75020", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: departureDate)
+                
                 DataVisit().createVisit(visit: visitToSave)
                 DataLocation().createLocation(location: locationToSave)
+                DataPOI().createPOI(POImodel: POIToSave)
             }
         }
     }

@@ -226,6 +226,7 @@ class LocationTableViewContoller: UITableViewController {
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: {
             MockDataVisit().mockVisitData()
+            //MockDataVisit().mockLocationsData()
         })
         dismiss(animated: false, completion: nil)
     }
