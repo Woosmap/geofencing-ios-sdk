@@ -96,4 +96,51 @@ public class MockDataVisit {
         }
     }
     
+    public func mockDataFromSample() {
+        DataLocation().eraseLocations()
+        DataVisit().eraseVisits()
+        DataZOI().eraseZOIs()
+        let path = Bundle.main.path(forResource: "SampleGeofencing.csv", ofType: nil)!
+        let dataCSV = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
+        let extractedDatas = csv(data: dataCSV)
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+        dateFormatter.dateFormat = "yyyy-MM-dd' 'HH:mm:ssZ"
+        var id = 0
+        var nbrLoc = 0
+        for linePoint in extractedDatas {
+            if linePoint == extractedDatas.first {
+                continue
+            }
+            id+=1
+            let point = linePoint[0].components(separatedBy: ",")
+            let creationDate = point[0].replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            let lat = Double(point[1])
+            let lng = Double(point[2])
+            let description = point[3].replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            let city = point[4].replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            let distance = Double(point[5])
+            let zipcode = point[6].replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            let type = point[7]
+            let accuracy = Double(point[8])
+            let arrivalDate = point[9].replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            let departureDate = point[10].replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            
+            if (type == "location"){
+                nbrLoc+=1
+                print("location " + String(nbrLoc))
+                let locationToSave = LocationModel(locationId: String(id), latitude: lat, longitude: lng, dateCaptured:  dateFormatter.date(from: creationDate), descriptionToSave: description)
+                DataLocation().createLocation(location: locationToSave)
+            } else if (type == "POI") {
+                let POIToSave = POIModel(locationId: String(id), city: city, zipCode: zipcode, distance: distance, latitude: lat, longitude: lng, dateCaptured: dateFormatter.date(from: creationDate))
+                DataPOI().createPOI(POImodel: POIToSave)
+            } else if (type == "visit") {
+                let visitToSave = VisitModel(visitId: String(id), arrivalDate: dateFormatter.date(from: arrivalDate), departureDate: dateFormatter.date(from: departureDate), latitude: lat!, longitude: lng!, dateCaptured: dateFormatter.date(from: creationDate), accuracy: accuracy!)
+                DataVisit().createVisit(visit: visitToSave)
+            }
+        
+           
+        }
+    }
+    
 }

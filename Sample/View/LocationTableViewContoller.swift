@@ -155,6 +155,7 @@ class LocationTableViewContoller: UITableViewController {
             placeData.date = visit.date
             placeData.latitude = visit.latitude
             placeData.longitude = visit.longitude
+            placeData.accuracy = visit.accuracy
             if(visit.arrivalDate == nil || visit.departureDate == nil) {
                 placeData.duration = 0
             } else {
@@ -227,6 +228,7 @@ class LocationTableViewContoller: UITableViewController {
         present(alert, animated: true, completion: {
             MockDataVisit().mockVisitData()
             //MockDataVisit().mockLocationsData()
+            //MockDataVisit().mockDataFromSample()
         })
         dismiss(animated: false, completion: nil)
     }
@@ -283,6 +285,9 @@ class LocationTableViewContoller: UITableViewController {
     
     func createExportString() -> [String] {
         var CSVString: [String] = []
+        
+        let lastDateUpdate = UserDefaults.standard.object(forKey: "lastDateUpdate") as? Date
+        CSVString.append("Last date for update clean data = " + (lastDateUpdate?.stringFromDate())!)
         
         var exportPlace = placeToShow
         
