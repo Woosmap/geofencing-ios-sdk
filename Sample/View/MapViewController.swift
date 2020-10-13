@@ -167,6 +167,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         }
         if annotationView == nil {
             if let annotationWGS = annotation as? MyPointAnnotation {
+                var resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                 if (annotationWGS.type == AnnotationType.visit) {
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "VisitAnnotation")
                     let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
@@ -188,11 +189,10 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                     }else {
                         pinImage = UIImage(named: "ic_visit_other")!
                     }
-            
                     let size = CGSize(width: 20, height: 30)
                     UIGraphicsBeginImageContext(size)
                     pinImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     annotationView!.image = resizedImage
                 } else if (annotationWGS.type == AnnotationType.POI){
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "POIAnnotation")
@@ -200,7 +200,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                     let size = CGSize(width: 30, height: 30)
                     UIGraphicsBeginImageContext(size)
                     pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     annotationView!.image = resizedImage
                 } else if (annotationWGS.type == AnnotationType.location){
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "LocationAnnotation")
@@ -208,7 +208,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                     let size = CGSize(width: 30, height: 30)
                     UIGraphicsBeginImageContext(size)
                     pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     annotationView!.image = resizedImage
                 }
             } else {
@@ -372,54 +372,51 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     
     @objc func disableEnableVisits(){
         if switchVisits.isOn {
-            for visit:Visit in DataVisit().readVisits() {
-                mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
-            }
+            disableEnableAnnotion(enable: true, annotationType: AnnotationType.visit)
         }else {
-            let annontations = mapView.annotations
-            for annotation in annontations {
-                if let annotationVisit = annotation as? MyPointAnnotation {
-                    if annotationVisit.type == AnnotationType.visit {
-                        mapView.removeAnnotation(annotation)
-                    }
-                }
-               
-            }
+            disableEnableAnnotion(enable: false, annotationType: AnnotationType.visit)
         }
     }
     
     @objc func disableEnablePOI(){
         if switchPOI.isOn {
-            for poi:POI in DataPOI().readPOI() {
-                mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
-            }
+            disableEnableAnnotion(enable: true, annotationType: AnnotationType.POI)
         }else {
-            let annontations = mapView.annotations
-            for annotation in annontations {
-                if let annotationPOI = annotation as? MyPointAnnotation {
-                    if annotationPOI.type == AnnotationType.POI {
-                        mapView.removeAnnotation(annotation)
-                    }
-                }
-               
-            }
+            disableEnableAnnotion(enable: false, annotationType: AnnotationType.POI)
         }
     }
     
     @objc func disableEnableLocation() {
         if switchLocation.isOn {
-            for location:Location in DataLocation().readLocations() {
-                mapView.addAnnotation(annotationForLocation(location.convertToModel()))
-            }
+            disableEnableAnnotion(enable: true, annotationType: AnnotationType.location)
         }else {
+            disableEnableAnnotion(enable: false, annotationType: AnnotationType.location)
+        }
+    }
+    
+    func disableEnableAnnotion(enable:Bool, annotationType:AnnotationType) {
+        if (enable) {
+            if(annotationType == AnnotationType.location) {
+                for location:Location in DataLocation().readLocations() {
+                    mapView.addAnnotation(annotationForLocation(location.convertToModel()))
+                }
+            } else if(annotationType == AnnotationType.POI) {
+                for poi:POI in DataPOI().readPOI() {
+                    mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+                }
+            } else if(annotationType == AnnotationType.visit) {
+                for visit:Visit in DataVisit().readVisits() {
+                    mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+                }
+            }
+        } else {
             let annontations = mapView.annotations
             for annotation in annontations {
-                if let annotationLocation = annotation as? MyPointAnnotation {
-                    if annotationLocation.type == AnnotationType.location {
+                if let annotat = annotation as? MyPointAnnotation {
+                    if annotat.type == annotationType {
                         mapView.removeAnnotation(annotation)
                     }
                 }
-               
             }
         }
     }
