@@ -61,7 +61,7 @@ public class DataLocation:LocationServiceDelegate  {
             catch let error as NSError {
                 print("Could not insert. \(error), \(error.userInfo)")
             }
-            NotificationCenter.default.post(name: .newLocationSaved, object: self)
+            NotificationCenter.default.post(name: .newLocationSaved, object: self,userInfo: ["Location": location])
         });
     }
     

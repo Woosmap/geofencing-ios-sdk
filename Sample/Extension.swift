@@ -19,6 +19,12 @@ public extension Visit {
     }
 }
 
+public extension Location {
+    internal func convertToModel()-> LocationModel {
+        return LocationModel(locationId: self.locationId, latitude: self.latitude, longitude: self.longitude, dateCaptured: self.date, descriptionToSave: self.description)
+    }
+}
+
 
 public extension Date {
     func stringFromDate()-> String {

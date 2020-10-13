@@ -10,7 +10,14 @@ import WoosmapGeofencing
 
 class MyPointAnnotation : MKPointAnnotation {
     var pinTintColor: UIColor?
-    var visitId : String?
+    var visitId: String?
+    var type: AnnotationType?
+}
+
+enum AnnotationType {
+    case visit
+    case POI
+    case location
 }
 
 class CustomPolygon : MKPolygon {
@@ -23,6 +30,10 @@ class CustomPolygon : MKPolygon {
 class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var switchZOI: UISwitch!
+    @IBOutlet weak var switchVisits: UISwitch!
+    @IBOutlet weak var switchPOI: UISwitch!
+    @IBOutlet weak var switchLocation: UISwitch!
     var circles: [MKCircle] = []
     var zoiPolygon: [CustomPolygon] = []
     
@@ -36,11 +47,21 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         super.viewDidLoad()
         mapView.userTrackingMode = .follow
         mapView.delegate = self as MKMapViewDelegate
+        switchZOI.addTarget(self,action: #selector(disableEnableZOI), for: .touchUpInside)
+        switchVisits.addTarget(self,action: #selector(disableEnableVisits), for: .touchUpInside)
+        switchPOI.addTarget(self,action: #selector(disableEnablePOI), for: .touchUpInside)
+        switchLocation.addTarget(self,action: #selector(disableEnableLocation), for: .touchUpInside)
         
         let buttonItem = MKUserTrackingBarButtonItem(mapView: mapView)
         self.navigationItem.rightBarButtonItem = buttonItem
         
         WoosmapGeofencing.shared.getLocationService().regionDelegate = self
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(newLocationAdded(_:)),
+            name: .newLocationSaved,
+            object: nil)
         
         NotificationCenter.default.addObserver(
             self,
@@ -78,6 +99,10 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         
         for visit:Visit in DataVisit().readVisits() {
             mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+        }
+        
+        for location:Location in DataLocation().readLocations() {
+            mapView.addAnnotation(annotationForLocation(location.convertToModel()))
         }
         
         addZois()
@@ -141,45 +166,54 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             return nil
         }
         if annotationView == nil {
-            let text = annotation.subtitle!
-            if (text != nil) {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "VisitAnnotation")
-                let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-                label1.text = annotation.subtitle!
-                label1.numberOfLines = 0
-                annotationView!.detailCalloutAccessoryView = label1;
+            if let annotationWGS = annotation as? MyPointAnnotation {
+                var resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                if (annotationWGS.type == AnnotationType.visit) {
+                    annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "VisitAnnotation")
+                    let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+                    label1.text = annotationWGS.subtitle!
+                    label1.numberOfLines = 0
+                    annotationView!.detailCalloutAccessoryView = label1;
+                    
+                    let width = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 300)
+                    label1.addConstraint(width)
+                    let height = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 120)
+                    label1.addConstraint(height)
                 
-                let width = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 300)
-                label1.addConstraint(width)
-                let height = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 120)
-                label1.addConstraint(height)
-            
-                let period = getPeriodOfVisit(annotation: annotation)
-                var pinImage:UIImage = UIImage()
-                if(period == "HOME_PERIOD") {
-                    pinImage = UIImage(named: "ic_visit_home")!
-                }else if (period == "WORK_PERIOD"){
-                    pinImage = UIImage(named: "ic_visit_work")!
-                }else {
-                    pinImage = UIImage(named: "ic_visit_other")!
+                    let period = getPeriodOfVisit(annotation: annotationWGS)
+                    var pinImage:UIImage = UIImage()
+                    if(period == "HOME_PERIOD") {
+                        pinImage = UIImage(named: "ic_visit_home")!
+                    }else if (period == "WORK_PERIOD"){
+                        pinImage = UIImage(named: "ic_visit_work")!
+                    }else {
+                        pinImage = UIImage(named: "ic_visit_other")!
+                    }
+                    let size = CGSize(width: 20, height: 30)
+                    UIGraphicsBeginImageContext(size)
+                    pinImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    annotationView!.image = resizedImage
+                } else if (annotationWGS.type == AnnotationType.POI){
+                    annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "POIAnnotation")
+                    let pinImage = UIImage(named: "ic_poi")
+                    let size = CGSize(width: 30, height: 30)
+                    UIGraphicsBeginImageContext(size)
+                    pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    annotationView!.image = resizedImage
+                } else if (annotationWGS.type == AnnotationType.location){
+                    annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "LocationAnnotation")
+                    let pinImage = UIImage(named: "ic_place_48pt")
+                    let size = CGSize(width: 30, height: 30)
+                    UIGraphicsBeginImageContext(size)
+                    pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    annotationView!.image = resizedImage
                 }
-        
-                let size = CGSize(width: 20, height: 30)
-                UIGraphicsBeginImageContext(size)
-                pinImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-                annotationView!.image = resizedImage
             } else {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "POIAnnotation")
-                let pinImage = UIImage(named: "ic_poi")
-                let size = CGSize(width: 30, height: 30)
-                UIGraphicsBeginImageContext(size)
-                pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-                annotationView!.image = resizedImage
+                annotationView?.annotation = annotation
             }
-        } else {
-            annotationView?.annotation = annotation
         }
         annotationView?.canShowCallout = true
         
@@ -242,11 +276,27 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         addZois()
     }
     
+    func annotationForLocation(_ location: LocationModel) -> MKAnnotation {
+        let annotation = MyPointAnnotation()
+        annotation.type = AnnotationType.location
+        annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+        return annotation
+    }
+    
+    @objc func newLocationAdded(_ notification: Notification) {
+        guard let location = notification.userInfo?["Location"] as? LocationModel else {
+            return
+        }
+        
+        let annotation = annotationForLocation(location)
+        mapView.addAnnotation(annotation)
+    }
+    
     
     func annotationForPOI(_ POI: POIModel) -> MKAnnotation {
         let annotation = MyPointAnnotation()
+        annotation.type = AnnotationType.POI
         annotation.title = POI.city
-        annotation.pinTintColor = .red
         annotation.coordinate = CLLocationCoordinate2D(latitude: POI.latitude, longitude: POI.longitude)
         return annotation
     }
@@ -262,6 +312,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     
     func annotationForVisit(_ visit: VisitModel) -> MKAnnotation {
         let annotation = MyPointAnnotation()
+        annotation.type = AnnotationType.visit
         annotation.title = "Visit " + visit.dateCaptured.stringFromDate()
         
         var duration = "Ongoing"
@@ -310,4 +361,63 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
+    @objc func disableEnableZOI(){
+        if switchZOI.isOn {
+           addZois()
+        }else {
+            let overlays = mapView.overlays
+            mapView.removeOverlays(overlays)
+        }
+    }
+    
+    @objc func disableEnableVisits(){
+        if switchVisits.isOn {
+            disableEnableAnnotion(enable: true, annotationType: AnnotationType.visit)
+        }else {
+            disableEnableAnnotion(enable: false, annotationType: AnnotationType.visit)
+        }
+    }
+    
+    @objc func disableEnablePOI(){
+        if switchPOI.isOn {
+            disableEnableAnnotion(enable: true, annotationType: AnnotationType.POI)
+        }else {
+            disableEnableAnnotion(enable: false, annotationType: AnnotationType.POI)
+        }
+    }
+    
+    @objc func disableEnableLocation() {
+        if switchLocation.isOn {
+            disableEnableAnnotion(enable: true, annotationType: AnnotationType.location)
+        }else {
+            disableEnableAnnotion(enable: false, annotationType: AnnotationType.location)
+        }
+    }
+    
+    func disableEnableAnnotion(enable:Bool, annotationType:AnnotationType) {
+        if (enable) {
+            if(annotationType == AnnotationType.location) {
+                for location:Location in DataLocation().readLocations() {
+                    mapView.addAnnotation(annotationForLocation(location.convertToModel()))
+                }
+            } else if(annotationType == AnnotationType.POI) {
+                for poi:POI in DataPOI().readPOI() {
+                    mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+                }
+            } else if(annotationType == AnnotationType.visit) {
+                for visit:Visit in DataVisit().readVisits() {
+                    mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+                }
+            }
+        } else {
+            let annontations = mapView.annotations
+            for annotation in annontations {
+                if let annotat = annotation as? MyPointAnnotation {
+                    if annotat.type == annotationType {
+                        mapView.removeAnnotation(annotation)
+                    }
+                }
+            }
+        }
+    }
 }
