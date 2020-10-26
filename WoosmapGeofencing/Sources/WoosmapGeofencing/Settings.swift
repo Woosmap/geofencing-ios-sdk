@@ -22,6 +22,9 @@ public var searchAPITimeFilter = 0
 public var visitEnable = true
 public var accuracyVisitFilter = 50.0
 
+// Distance detection threshold for visits
+public var distanceDetectionThresholdVisits = 50.0
+
 //Active Classification
 public var classificationEnable = true
 

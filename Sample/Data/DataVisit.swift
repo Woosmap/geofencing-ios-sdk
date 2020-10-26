@@ -14,15 +14,12 @@ public class DataVisit:VisitServiceDelegate  {
     
     public init() {}
     
-    public func processVisit(visit: CLVisit) {
-        let calendar = Calendar.current
-        let departureDate = calendar.component(.year, from: visit.departureDate) != 4001 ? visit.departureDate : nil
-        let arrivalDate = calendar.component(.year, from: visit.arrivalDate) != 4001 ? visit.arrivalDate : nil
+    public func processVisit(visit: WGSVisit) {
+        let departureDate = visit.endTime
+        let arrivalDate = visit.startTime
         
-        if(arrivalDate != nil && departureDate != nil) {
-            let visitToSave = VisitModel(visitId: UUID().uuidString, arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude, dateCaptured:Date() , accuracy: visit.horizontalAccuracy)
-            createVisit(visit: visitToSave)
-        }
+        let visitToSave = VisitModel(visitId: visit.uuid!, arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.currentLocation!.coordinate.latitude, longitude: visit.currentLocation!.coordinate.longitude, dateCaptured:Date() , accuracy: visit.currentLocation!.horizontalAccuracy)
+        createVisit(visit: visitToSave)
         
     }
     

@@ -23,11 +23,11 @@ class RegionsGenerator: NSObject {
     
     
     var radiuses : [Double] = [
-        200.0,
+        25.0,
+        75.0,
+        150.0,
         300.0,
-        500.0,
-        1000.0,
-        2000.0
+        600.0
         ]
     
     func getNewLatLon(offsetLat: Double, offsetLng: Double, lat: Double, lon: Double) -> (latitude: Double, longitude: Double) {
