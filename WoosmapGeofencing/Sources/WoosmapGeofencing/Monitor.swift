@@ -57,7 +57,8 @@ extension CLLocationManager: LocationManagerProtocol {}
 public class LocationService: NSObject, CLLocationManagerDelegate {
     
     public var locationManager: LocationManagerProtocol?
-    public var currentLocation: CLLocation?
+    public var beforeLastLocation: CLLocation?
+    public var lastLocation: CLLocation?
     var currentVisit: WGSVisit?
     var lastSearchLocation: CLLocation?
     var lastRegionUpdate: Date?
@@ -133,10 +134,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     public func updateRegionMonitoring () {
-        if (self.currentLocation != nil ) {
+        if (self.lastLocation != nil ) {
             self.stopUpdatingLocation()
             self.stopMonitoringCurrentRegions()
-            self.startMonitoringCurrentRegions(regions: RegionsGenerator().generateRegionsFrom(location: self.currentLocation!))
+            self.startMonitoringCurrentRegions(regions: RegionsGenerator().generateRegionsFrom(location: self.lastLocation!))
         }
     }
     
@@ -161,10 +162,14 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("=>>>>> exit ")
+        print(region.description)
         self.handleRegionChange()
     }
     
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("=>>>>> enter ")
+        print(region.description)
         self.handleRegionChange()
     }
     
@@ -193,9 +198,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let location = locations.last!
         
         
-        if (self.currentLocation != nil ) {
+        if (self.lastLocation != nil ) {
             
-            let theLastLocation = self.currentLocation!
+            let theLastLocation = self.lastLocation!
             
             let timeEllapsed = abs(locations.last!.timestamp.seconds(from: theLastLocation.timestamp))
             
@@ -210,77 +215,71 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         
         if (visitEnable) {
-            if (currentVisit != nil) {
-                visitsDetectionAlgo(location: location)
-            } else {
-                currentVisit = WGSVisit()
-                currentVisit?.uuid = UUID().uuidString
-                currentVisit?.currentLocation = location
-                currentVisit?.startTime = location.timestamp
-                currentVisit?.endTime = nil
-                currentVisit?.nbPoint = 0
-            }
+            visitsDetectionAlgo(newLocation: location)
         }
         
         //create Location ID
         let locationId = UUID().uuidString
         delegate.tracingLocation(locations: locations, locationId: locationId)
-        self.currentLocation = location
+        self.beforeLastLocation = lastLocation
+        self.lastLocation = location
         searchAPIRequest(locationId:locationId)
     }
     
-    func visitsDetectionAlgo(location: CLLocation) {
+    func visitsDetectionAlgo(newLocation: CLLocation) {
         
-        if (location.timestamp < currentVisit!.startTime!) {
+        if(currentVisit != nil) {
+            // Visit is active
+            if (currentVisit!.endTime == nil) {
+                let distance = currentVisit!.currentLocation?.distance(from: newLocation)
+                let accuracy = newLocation.horizontalAccuracy
+                // Test if we are still in visit
+                if (distance! <= accuracy * 2) {
+                    //if new position accuracy is better than the visit, we do an Update
+                    if (currentVisit!.currentLocation!.horizontalAccuracy >= newLocation.horizontalAccuracy) {
+                        currentVisit!.currentLocation = lastLocation
+                    }
+                    currentVisit!.nbPoint! += 1
+                    print("if we are still in visit")
+                    print("Distance " + String(distance!))
+                    return
+                }
+                //Visit out
+                else {
+                    //Close the current visit
+                    currentVisit!.endTime = lastLocation?.timestamp
+                    print("visit out")
+                    //print(currentVisit!.endTime)
+                    updateVisit(visit: currentVisit!)
+                }
+            }
+        }
+        
+        if(lastLocation == nil || beforeLastLocation == nil){
             return
         }
         
-        // Visit is active
-        if (currentVisit!.endTime == nil) {
-            let distance = currentVisit!.currentLocation?.distance(from: location)
-            let accuracy = location.horizontalAccuracy
-            // Test if we are still in visit
-            if (distance! <= accuracy * 2) {
-                //if new position accuracy is better than the visit, we do an Update
-                if (currentVisit!.currentLocation!.horizontalAccuracy >= location.horizontalAccuracy) {
-                    currentVisit!.currentLocation = currentLocation
-                }
-                currentVisit!.nbPoint! += 1
-                //print("if we are still in visit")
-                //print("Distance " + String(distance!))
-                //print("nbPoint " + String(currentVisit!.nbPoint!))
-            }
-            //Visit out
-            else {
-                //Close the current visit
-                currentVisit!.endTime = location.timestamp
-                //print("visit out")
-                //print(currentVisit!.endTime)
-                updateVisit(visit: currentVisit!)
+        let distance = lastLocation!.distance(from: newLocation)
+        print("distance " + String(distance))
+        NSLog("=>>>Distance last position and current position : \(distance)")
+        if (distance >= distanceDetectionThresholdVisits) {
+            print("We're Moving")
+            currentVisit = nil
+        } else { //Create a new visit
+            let distanceVisit = beforeLastLocation?.distance(from: newLocation)
+            print("distanceVisit " + String(distanceVisit!))
+            if (distanceVisit! <= distanceDetectionThresholdVisits) {
+                // less than distance of dectection visit of before last position, they are a visit
+                currentVisit = WGSVisit()
+                currentVisit!.uuid = UUID().uuidString
+                currentVisit!.currentLocation = beforeLastLocation
+                currentVisit!.startTime = beforeLastLocation!.timestamp
+                currentVisit!.endTime = nil
+                currentVisit!.nbPoint = 3
+                print("Create new Visit")
             }
         }
-        //not visit in progress
-        else {
-            let previousMovingPosition = currentLocation != nil ? currentLocation : location
-            let distance = previousMovingPosition?.distance(from: location)
-            //print("distance " + String(distance!))
-            if (distance! >= distanceDetectionThresholdVisits) {
-                //print("We're Moving")
-            } else { //Create a new visit
-                if (currentLocation != nil) {
-                    let distanceVisit = currentLocation?.distance(from: location)
-                    if (distanceVisit! <= distanceDetectionThresholdVisits) {
-                        // less than distance of dectection visit of before last position, they are a visit
-                        currentVisit!.uuid = UUID().uuidString
-                        currentVisit!.currentLocation = currentLocation
-                        currentVisit!.startTime = currentLocation!.timestamp
-                        currentVisit!.endTime = nil
-                        currentVisit!.nbPoint = 1
-                        //print("Create new Visit")
-                    }
-                }
-            }
-        }
+        
     }
     
     func searchAPIRequest(locationId: String){
@@ -293,9 +292,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             
             let theLastSearchLocation = self.lastSearchLocation!
             
-            let timeEllapsed = abs(currentLocation!.timestamp.seconds(from: theLastSearchLocation.timestamp))
+            let timeEllapsed = abs(lastLocation!.timestamp.seconds(from: theLastSearchLocation.timestamp))
             
-            if (lastSearchLocation!.distance(from: currentLocation!) < searchAPIDistanceFilter ) {
+            if (lastSearchLocation!.distance(from: lastLocation!) < searchAPIDistanceFilter ) {
                 return
             }
             
@@ -311,8 +310,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         // Get POI nearest
         // Get the current coordiante
-        let userLatitude: String = String(format: "%f", currentLocation!.coordinate.latitude)
-        let userLongitude: String = String(format:"%f", currentLocation!.coordinate.longitude)
+        let userLatitude: String = String(format: "%f", lastLocation!.coordinate.latitude)
+        let userLongitude: String = String(format:"%f", lastLocation!.coordinate.longitude)
         let storeAPIUrl: String = String(format: searchWoosmapAPI,userLatitude,userLongitude)
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         
@@ -329,7 +328,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 } else {
                     let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: data!)
                     delegate.searchAPIResponseData(searchAPIData: responseJSON!, locationId: locationId)
-                    self.lastSearchLocation = self.currentLocation
+                    self.lastSearchLocation = self.lastLocation
                 }
             }
         }

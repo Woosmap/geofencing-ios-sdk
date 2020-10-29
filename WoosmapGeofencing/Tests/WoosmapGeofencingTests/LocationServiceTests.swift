@@ -124,7 +124,7 @@ class LocationServiceTests: XCTestCase {
     }
     
     func testUpdateRegionMonitoringWithLocation() {
-        locationService.currentLocation = CLLocation(latitude: 1, longitude: 1)
+        locationService.lastLocation = CLLocation(latitude: 1, longitude: 1)
  
         locationManager.monitoredRegions.insert(CLCircularRegion(center: CLLocationCoordinate2D(latitude: 1, longitude: 1), radius: 1, identifier: "1"))
         
@@ -135,7 +135,7 @@ class LocationServiceTests: XCTestCase {
     }
     
     func testUpdateRegionMonitoringWithoutLocation() {
-        locationService.currentLocation = nil
+        locationService.lastLocation = nil
         locationManager.monitoringLocation = true
         locationManager.monitoredRegions.insert(CLCircularRegion(center: CLLocationCoordinate2D(latitude: 1, longitude: 1), radius: 1, identifier: "1"))
         
@@ -168,38 +168,34 @@ class LocationServiceTests: XCTestCase {
         let vsd = locationService.visitDelegate as! FakeVisitDelegate
         XCTAssertNil(lsd.locations, "Delegate locations should be nil")
         
-        let fakeLocations = [CLLocation(latitude: 1, longitude: 1)]
-        locationService.updateLocation(locations: fakeLocations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 1, longitude: 1)])
         Thread.sleep(forTimeInterval: 2)
         
-        let fake2Locations = [CLLocation(latitude: 1, longitude: 1)]
-        locationService.updateLocation(locations: fake2Locations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 1, longitude: 1)])
         Thread.sleep(forTimeInterval: 2)
         
-        let fake3Locations = [CLLocation(latitude: 1, longitude: 1)]
-        locationService.updateLocation(locations: fake3Locations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 1, longitude: 1)])
         Thread.sleep(forTimeInterval: 2)
         
-        let fake4Locations = [CLLocation(latitude: 2, longitude: 2)]
-        locationService.updateLocation(locations: fake4Locations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 2, longitude: 2)])
+        Thread.sleep(forTimeInterval: 2)
+        
+        XCTAssert(vsd.visit?.nbPoint! == 3)
+        
+        locationService.updateLocation(locations: [CLLocation(latitude: 2, longitude: 2)])
         Thread.sleep(forTimeInterval: 2)
 
-        XCTAssert(vsd.visit?.nbPoint! == 2)
-        
-        locationService.updateLocation(locations: fakeLocations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 2, longitude: 2)])
         Thread.sleep(forTimeInterval: 2)
         
-        locationService.updateLocation(locations: fake2Locations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 2, longitude: 2)])
         Thread.sleep(forTimeInterval: 2)
         
-        locationService.updateLocation(locations: fake3Locations)
+        locationService.updateLocation(locations: [CLLocation(latitude: 1, longitude: 1)])
         Thread.sleep(forTimeInterval: 2)
         
-        locationService.updateLocation(locations: fake4Locations)
-        Thread.sleep(forTimeInterval: 2)
+        XCTAssert(vsd.visit?.nbPoint! == 4)
         
-        XCTAssert(vsd.visit?.nbPoint! == 2)
-
     }
     
     func csv(data: String) -> [[String]] {
@@ -235,12 +231,12 @@ class LocationServiceTests: XCTestCase {
             let currentLocation = [CLLocation(coordinate: CLLocationCoordinate2D(latitude: lat!, longitude: lng!), altitude: -1, horizontalAccuracy: accuracy!, verticalAccuracy: 0, timestamp: Date())]
             locationService.updateLocation(locations: currentLocation)
             Thread.sleep(forTimeInterval: 2)
-
+            
             if(vsd.visit?.endTime != nil) {
                 if(index == 12) {
-                    XCTAssert(vsd.visit?.nbPoint! == 10)
+                    XCTAssert(vsd.visit?.nbPoint! == 11)
                 } else if (index == 35){
-                    XCTAssert(vsd.visit?.nbPoint! == 15)
+                    XCTAssert(vsd.visit?.nbPoint! == 16)
                 }
             }
             
