@@ -284,6 +284,9 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     }
     
     @objc func newLocationAdded(_ notification: Notification) {
+        if !switchLocation.isOn {
+            return
+        }
         guard let location = notification.userInfo?["Location"] as? LocationModel else {
             return
         }
@@ -302,6 +305,9 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     }
     
     @objc func newPOIAdded(_ notification: Notification) {
+        if !switchPOI.isOn {
+            return
+        }
         guard let POI = notification.userInfo?["POI"] as? POIModel else {
             return
         }
@@ -331,6 +337,9 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
     }
     
     @objc func newVisitAdded(_ notification: Notification) {
+        if !switchVisits.isOn {
+            return
+        }
         guard let visit = notification.userInfo?["Visit"] as? VisitModel else {
             return
         }
