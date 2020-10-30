@@ -95,7 +95,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func startUpdatingLocation() {
         self.requestAuthorization()
         self.locationManager?.startUpdatingLocation()
-        self.locationManager?.startMonitoringVisits()
+        if visitEnable {
+            self.locationManager?.startMonitoringVisits()
+        }
     }
     
     func stopUpdatingLocation() {
@@ -212,7 +214,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let locationId = UUID().uuidString
         delegate.tracingLocation(locations: locations, locationId: locationId)
         self.currentLocation = location
-        searchAPIRequest(locationId:locationId)
+        
+        if (searchAPIRequestEnable) {
+            searchAPIRequest(locationId:locationId)
+        }
     }
     
     func searchAPIRequest(locationId: String){

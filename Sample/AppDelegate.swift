@@ -15,6 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        UserDefaults.standard.register(defaults:["TrackingEnable":true,
+                                                 "SearchAPIEnable":true])
+        
         // Set private key Search API
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: searchWoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
@@ -28,9 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Set classification of zoi enable
         WoosmapGeofencing.shared.setClassification(enable: true)
-        
-        // Initialize the framework
-        WoosmapGeofencing.shared.initServices()
+
         
         // Set delegate of protocol Location and POI
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
@@ -39,6 +41,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
         WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
+        
+        // Set Tracking state
+        WoosmapGeofencing.shared.setTrackingEnable(enable: UserDefaults.standard.bool(forKey: "TrackingEnable"))
+        
+        // Set Tracking state
+        WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "SearchAPIEnable"))
         
         //MockData Visit
         //MockDataVisit().mockVisitData()
