@@ -28,6 +28,7 @@ class PlaceData : PropertyPlace  {
     public var arrivalDate: Date?
     public var departureDate: Date?
     public var duration: Int
+    public var locationId: String = ""
     
     
     public init() {
@@ -177,6 +178,7 @@ class LocationTableViewContoller: UITableViewController {
             placeData.longitude = location.longitude
             placeData.locationDescription = location.locationDescription
             placeData.type = dataType.location
+            placeData.locationId = location.locationId!
             let poi = DataPOI().getPOIbyLocationID(locationId: location.locationId!)
             if (poi != nil) {
                 placeData.zipCode = poi!.zipCode
@@ -374,6 +376,17 @@ class LocationTableViewContoller: UITableViewController {
             return 60
         } else {
             return 110
+        }
+    }
+    
+    override  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        let placeData = placeToShow[indexPath.item]
+        let latitude = placeData.latitude
+        let longitude = placeData.longitude
+        
+        if (placeData.type == dataType.location) {
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location, locationId: placeData.locationId)
         }
     }
     

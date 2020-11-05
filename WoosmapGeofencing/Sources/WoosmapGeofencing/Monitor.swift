@@ -221,17 +221,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.currentLocation = location
         
         if (searchAPIRequestEnable) {
-            searchAPIRequest(locationId:locationId)
+            searchAPIRequest(location: currentLocation!, locationId:locationId)
         }
     }
     
-    func searchAPIRequest(locationId: String){
+    public func searchAPIRequest(location: CLLocation, locationId: String = ""){
         guard let delegate = self.searchAPIDataDelegate else {
             return
         }
         
         
-        if (self.lastSearchLocation != nil ) {
+        if (self.lastSearchLocation != nil && locationId.isEmpty ) {
             
             let theLastSearchLocation = self.lastSearchLocation!
             
@@ -253,8 +253,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         // Get POI nearest
         // Get the current coordiante
-        let userLatitude: String = String(format: "%f", currentLocation!.coordinate.latitude)
-        let userLongitude: String = String(format:"%f", currentLocation!.coordinate.longitude)
+        let userLatitude: String = String(format: "%f", location.coordinate.latitude)
+        let userLongitude: String = String(format:"%f", location.coordinate.longitude)
         let storeAPIUrl: String = String(format: searchWoosmapAPI,userLatitude,userLongitude)
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         
