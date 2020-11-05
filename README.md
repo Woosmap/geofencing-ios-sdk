@@ -152,11 +152,8 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
         WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
 	
-	// Set classification of zoi enable 
+		// Set classification of zoi enable 
         WoosmapGeofencing.shared.setClassification(enable: true)
-        
-        // Initialize the framework
-        WoosmapGeofencing.shared.initServices()
         
         // Set delegate of protocol Location and POI
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
@@ -191,6 +188,11 @@ func applicationDidBecomeActive(_ application: UIApplication) {
 }
 ```
 
+The position tracking is enable all time by default. For disable that, when you don't want anymore position, you can change the value in the settings of the SDK as follow:
+```swift
+WoosmapGeofencing.shared.setTrackingEnable(enable: false)
+```
+
 In your class delegate, retrieve location data and POI date:
 ```swift
 func tracingLocation(locations: [CLLocation], locationId: UUID) {
@@ -222,6 +224,11 @@ func serachAPIError(error: String) {
        // Catch Error
        NSLog("\(error)")
 }
+```
+
+The SearchAPI request is enable on all position by default. For disable that, when you don't want anymore POI, you can change the value in the settings of the SDK as follow:
+```swift
+WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: false)
 ```
 
 For the visits, in the app delegate, you can retrieve the visit like this: 

@@ -11,8 +11,7 @@ import CoreLocation
 import WoosmapGeofencing
 
 public class DataLocation:LocationServiceDelegate  {
-    
-    var lastLocation: CLLocation?
+
     
     public init() {}
     
@@ -21,7 +20,6 @@ public class DataLocation:LocationServiceDelegate  {
         
         let locationToSave = LocationModel(locationId: locationId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, dateCaptured: Date(), descriptionToSave: "description")
         createLocation(location: locationToSave)
-        self.lastLocation = location
     }
     
     public func tracingLocationDidFailWithError(error: Error) {

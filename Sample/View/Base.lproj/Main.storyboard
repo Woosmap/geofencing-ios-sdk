@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -362,22 +362,50 @@
                                     <outlet property="delegate" destination="1uf-Yt-5bA" id="5Bc-Ad-0mf"/>
                                 </connections>
                             </textField>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEX-Xy-smo">
+                                <rect key="frame" x="20" y="325" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XT1-ev-ZVu">
+                                <rect key="frame" x="79" y="330" width="65.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xVB-20-h2R">
+                                <rect key="frame" x="20" y="376" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search API" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zCT-8o-N5e">
+                                <rect key="frame" x="79" y="381" width="83" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wjg-3b-2Rh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
+                            <constraint firstItem="zCT-8o-N5e" firstAttribute="leading" secondItem="xVB-20-h2R" secondAttribute="trailing" constant="10" id="806-16-NwW"/>
+                            <constraint firstItem="XT1-ev-ZVu" firstAttribute="centerY" secondItem="JEX-Xy-smo" secondAttribute="centerY" id="Bee-LX-nxc"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="JPW-sq-X3G"/>
+                            <constraint firstItem="JEX-Xy-smo" firstAttribute="top" secondItem="IXV-Xt-5ex" secondAttribute="bottom" constant="20" id="Kbg-72-aju"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="NE3-nb-7W0"/>
+                            <constraint firstItem="xVB-20-h2R" firstAttribute="top" secondItem="JEX-Xy-smo" secondAttribute="bottom" constant="20" id="Rug-cg-mk5"/>
+                            <constraint firstItem="zCT-8o-N5e" firstAttribute="centerY" secondItem="xVB-20-h2R" secondAttribute="centerY" id="VF1-7d-C5r"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="IXV-Xt-5ex" secondAttribute="trailing" constant="10" id="VVA-VI-Xt9"/>
                             <constraint firstItem="IXV-Xt-5ex" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="10" id="VsI-ER-Tg8"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="top" secondItem="QNH-61-sa7" secondAttribute="bottom" constant="120" id="ZWi-dT-aZL"/>
+                            <constraint firstItem="XT1-ev-ZVu" firstAttribute="leading" secondItem="JEX-Xy-smo" secondAttribute="trailing" constant="10" id="aAl-7E-7yn"/>
                             <constraint firstItem="IXV-Xt-5ex" firstAttribute="top" secondItem="8EX-ic-mne" secondAttribute="bottom" constant="30" id="bMw-23-EeJ"/>
+                            <constraint firstItem="xVB-20-h2R" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="bx8-pK-mMZ"/>
+                            <constraint firstItem="JEX-Xy-smo" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="c5a-Fw-pss"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Token Id" image="envelope.open" catalog="system" id="CqW-FZ-KHE"/>
                     <connections>
                         <outlet property="TokenLabel" destination="IXV-Xt-5ex" id="vd8-mP-ab1"/>
+                        <outlet property="searchAPISwitch" destination="xVB-20-h2R" id="CH3-iw-99e"/>
+                        <outlet property="trackingSwitch" destination="JEX-Xy-smo" id="A4J-Sx-rzu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnK-sz-o0u" sceneMemberID="firstResponder"/>

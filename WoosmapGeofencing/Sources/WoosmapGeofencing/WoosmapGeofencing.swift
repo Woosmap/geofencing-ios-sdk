@@ -13,6 +13,7 @@ import CoreLocation
     public var visitPoint : LoadedVisit!
     var locationManager: CLLocationManager? = CLLocationManager()
     
+    
     /**
      Access singleton of Now object
      */
@@ -45,6 +46,17 @@ import CoreLocation
         }
     }
     
+    public func setTrackingEnable(enable: Bool) {
+        if (enable != getTrackingState()) {
+            trackingEnable = enable
+            trackingChanged(tracking: trackingEnable)
+        }
+    }
+    
+    public func getTrackingState() -> Bool {
+        return trackingEnable
+    }
+    
     public func setWoosmapAPIKey(key: String) {
         searchWoosmapKey = key
     }
@@ -60,6 +72,16 @@ import CoreLocation
     public func setCurrentPositionFilter(distance: Double, time: Int) {
         currentLocationDistanceFilter = distance
         currentLocationTimeFilter = time
+    }
+    
+    public func setSearchAPIRequestEnable(enable: Bool) {
+        if (enable != getSearchAPIRequestEnable()) {
+            searchAPIRequestEnable = enable
+        }
+    }
+    
+    public func getSearchAPIRequestEnable() -> Bool {
+        return searchAPIRequestEnable
     }
     
     public func setSearchAPIFilter(distance: Double, time: Int) {
@@ -109,17 +131,23 @@ import CoreLocation
         self.startMonitoringInBackground()
     }
     
-    func trackingChanged(tracking: Bool) {
+    public func trackingChanged(tracking: Bool) {
         if !tracking {
             self._stopAllMonitoring()
         } else {
-            self.startMonitoringInBackground()
+            self.locationService?.locationManager = CLLocationManager()
+            self.locationService?.initLocationManager()
+            self.locationService?.startUpdatingLocation()
+            self.locationService?.startMonitoringSignificantLocationChanges()
         }
     }
     
     func _stopAllMonitoring() {
         self.locationService.stopUpdatingLocation()
+        self.locationService.stopMonitoringCurrentRegions()
         self.locationService.stopMonitoringSignificantLocationChanges()
+        self.locationService.locationManager = nil
+        self.locationService.locationManager?.delegate = nil
     }
     
     func _logDenied() {
