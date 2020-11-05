@@ -63,6 +63,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         super.init()
         
         self.locationManager = locationManger
+        initLocationManager()
+        
+    }
+    
+    func initLocationManager() {
+        
         guard var myLocationManager = self.locationManager else {
             return
         }
@@ -75,7 +81,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if visitEnable {
             myLocationManager.startMonitoringVisits()
         }
-        
     }
     
     func requestAuthorization () {

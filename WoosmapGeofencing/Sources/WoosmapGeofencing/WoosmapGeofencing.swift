@@ -136,11 +136,7 @@ import CoreLocation
             self._stopAllMonitoring()
         } else {
             self.locationService?.locationManager = CLLocationManager()
-            self.locationService?.locationManager?.allowsBackgroundLocationUpdates = true
-            self.locationService?.locationManager?.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            self.locationService?.locationManager?.distanceFilter = 10
-            self.locationService?.locationManager?.pausesLocationUpdatesAutomatically = true
-
+            self.locationService?.initLocationManager()
             self.locationService?.startUpdatingLocation()
             self.locationService?.startMonitoringSignificantLocationChanges()
         }
