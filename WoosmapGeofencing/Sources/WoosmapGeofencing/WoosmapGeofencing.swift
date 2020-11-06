@@ -57,8 +57,12 @@ import CoreLocation
         return trackingEnable
     }
     
-    public func setWoosmapAPIKey(key: String) {
+    public func setSearchWoosmapAPIKey(key: String) {
         searchWoosmapKey = key
+    }
+    
+    public func setDistanceWoosmapAPIKey(key: String) {
+        distanceWoosmapKey = key
     }
     
     public func setGMPAPIKey(key: String) {
@@ -67,6 +71,14 @@ import CoreLocation
     
     public func setSearchWoosmapAPI(api: String) {
         searchWoosmapAPI = api
+    }
+    
+    public func setDistanceWoosmapAPI(api: String) {
+        distanceWoosmapAPI = api
+    }
+    
+    public func setDistanceAPIMode(mode: String) {
+        modeDistance = mode
     }
     
     public func setCurrentPositionFilter(distance: Double, time: Int) {
@@ -83,6 +95,17 @@ import CoreLocation
     public func getSearchAPIRequestEnable() -> Bool {
         return searchAPIRequestEnable
     }
+    
+    public func setDistanceAPIRequestEnable(enable: Bool) {
+        if (enable != getDistanceAPIRequestEnable()) {
+            distanceAPIRequestEnable = enable
+        }
+    }
+    
+    public func getDistanceAPIRequestEnable() -> Bool {
+        return distanceAPIRequestEnable
+    }
+    
     
     public func setSearchAPIFilter(distance: Double, time: Int) {
         searchAPIDistanceFilter = distance

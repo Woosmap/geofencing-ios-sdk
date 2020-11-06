@@ -13,14 +13,22 @@ public var trackingEnable = true
 public var searchWoosmapKey = ""
 public var searchWoosmapAPI = "http://api.woosmap.com/stores/search/?private_key=\(searchWoosmapKey)&lat=%@&lng=%@&stores_by_page=1"
 
+//Woosmap DistanceAPI
+public var distanceWoosmapKey = ""
+public var modeDistance = "driving" //cycling,walking
+public var distanceWoosmapAPI = "https://develop-api.woosmap.com/distance/distancematrix/json?mode=\(modeDistance)&units=metric&origins=%@,%@&destinations=%@&private_key=\(searchWoosmapKey)&elements=duration_distance"
+
 //Location filters
 public var currentLocationDistanceFilter = 0.0
 public var currentLocationTimeFilter = 0
 
-//API filters
+//Search API filters
 public var searchAPIRequestEnable = true
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
+
+//Distance API filters
+public var distanceAPIRequestEnable = true
 
 //Active visit
 public var visitEnable = true

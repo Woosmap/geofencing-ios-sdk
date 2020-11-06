@@ -12,6 +12,11 @@ public protocol SearchAPIDelegate {
     func serachAPIError(error: String)
 }
 
+public protocol DistanceAPIDelegate {
+    func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String)
+    func distanceAPIError(error: String)
+}
+
 public protocol RegionsServiceDelegate {
     func updateRegions(regions: Set<CLRegion>)
 }
@@ -55,6 +60,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     public var locationServiceDelegate: LocationServiceDelegate?
     public var searchAPIDataDelegate: SearchAPIDelegate?
+    public var distanceAPIDataDelegate: DistanceAPIDelegate?
     public var regionDelegate: RegionsServiceDelegate?
     public var visitDelegate: VisitServiceDelegate?
     
@@ -272,6 +278,55 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: data!)
                     delegate.searchAPIResponseData(searchAPIData: responseJSON!, locationId: locationId)
                     self.lastSearchLocation = self.currentLocation
+                    if (distanceAPIRequestEnable) {
+                        for feature in (responseJSON?.features)! {
+                            let latitude = (feature.geometry?.coordinates![1])!
+                            let longitude = (feature.geometry?.coordinates![0])!
+                            self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(latitude,longitude)],locationId: locationId)
+                        }
+                    }
+                    
+                }
+            }
+        }
+        task.resume()
+        
+    }
+    
+    public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double,Double)], locationId: String = "") {
+        
+        guard let delegate = self.distanceAPIDataDelegate else {
+            return
+        }
+        
+        let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
+        let userLongitude: String = String(format:"%f", locationOrigin.coordinate.longitude)
+        var coordinateDest = ""
+        for coordinate in coordinatesDest {
+            let destLatitude: String = String(format:"%f", Double(coordinate.0))
+            let destLongitude: String = String(format:"%f",  Double(coordinate.1))
+            coordinateDest += destLatitude + "," + destLongitude
+            if(coordinatesDest.last! != coordinate){
+                coordinateDest += "|"
+            }
+        }
+        
+        let storeAPIUrl: String = String(format: distanceWoosmapAPI,userLatitude,userLongitude,coordinateDest)
+        let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+    
+        // Call API search
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let response = response as? HTTPURLResponse {
+                if (response.statusCode != 200) {
+                    NSLog("statusCode: \(response.statusCode)")
+                    delegate.distanceAPIError(error:"Error Distance API " + String(response.statusCode))
+                    return
+                }
+                if let error = error {
+                    NSLog("error: \(error)")
+                } else {
+                    let responseJSON = try? JSONDecoder().decode(DistanceAPIData.self, from: data!)
+                    delegate.distanceAPIResponseData(distanceAPIData: responseJSON!, locationId: locationId)
                 }
             }
         }

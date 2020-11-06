@@ -142,11 +142,20 @@ end
 
 ## Usage 
 Be sure your Private Key for the Woosmap Search API is set every time your app is launched (in Foreground AND Background). This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
-Set the `locationServiceDelegate`, `searchAPIDataDelegate` and  `visitDelegate` to retrieve data of location, POI when the data is ready and visit data if the the visit is enabled. 
+Set the `locationServiceDelegate`, `searchAPIDataDelegate`, `visitDelegate` and  `distanceAPIDataDelegate` to retrieve data of location, POI and distance when the data is ready and visit data if the the visit is enabled. 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Set private key Search API
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: "YOUR_WOOSMAP_KEY")
+        WoosmapGeofencing.shared.setSearchWoosmapAPIKey(key: searchWoosmapKey)
+        WoosmapGeofencing.shared.setDistanceWoosmapAPIKey(key: distanceWoosmapKey)
+        WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
+        
+        // Set the search url Woosmap API
+        WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
+        
+        // Set the distance url Woosmap API
+        WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
+        WoosmapGeofencing.shared.setDistanceAPIMode(mode: modeDistance)
         
         // Set your filter on position location and search
         WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
@@ -155,9 +164,10 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 		// Set classification of zoi enable 
         WoosmapGeofencing.shared.setClassification(enable: true)
         
-        // Set delegate of protocol Location and POI
+        // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
+        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
         
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
@@ -193,44 +203,83 @@ The position tracking is enable all time by default. For disable that, when you 
 WoosmapGeofencing.shared.setTrackingEnable(enable: false)
 ```
 
-In your class delegate, retrieve location data and POI date:
+### Retrieve Location 
+In your class delegate, retrieve location data :
 ```swift
-func tracingLocation(locations: [CLLocation], locationId: UUID) {
+public class DataLocation:LocationServiceDelegate  {
+
+    public init() {}
+    
+    public func tracingLocation(locations: [CLLocation], locationId: String) {
         let location = locations.last!
-  
+        
         let locationToSave = LocationModel(locationId: locationId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, dateCaptured: Date(), descriptionToSave: "description")
-        print("location to save = " + locationToSave.dateCaptured.stringFromDate())
         createLocation(location: locationToSave)
-        self.lastLocation = location
     }
     
-    func tracingLocationDidFailWithError(error: Error) {
+    public func tracingLocationDidFailWithError(error: Error) {
         NSLog("\(error)")
     }
-
-func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: UUID) {
-    for feature in (searchAPIData.features)! {        
-    	let city = feature.properties!.address!.city!
-        let zipCode = feature.properties!.address!.zipcode!
-        let distance = feature.properties!.distance!
-        let latitude = (feature.geometry?.coordinates![1])!
-        let longitude = (feature.geometry?.coordinates![0])!
-        let dateCaptured = Date()
-        let POIToSave = POIModel(locationId: locationId,city: city,zipCode: zipCode,distance: distance,latitude: latitude, longitude: longitude,dateCaptured: dateCaptured)
-        createPOI(POImodel: POIToSave)
-    }
-}
-func serachAPIError(error: String) {
-       // Catch Error
-       NSLog("\(error)")
-}
+    ...
+    
 ```
 
+### Retrieve POI 
+In your class delegate, retrieve POI data :
+```swift
+public class DataPOI:SearchAPIDelegate  {
+    
+    public init() {}
+    
+    public func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
+        for feature in (searchAPIData.features)! {
+            let city = feature.properties!.address!.city!
+            let zipCode = feature.properties!.address!.zipcode!
+            let distance = feature.properties!.distance!
+            let latitude = (feature.geometry?.coordinates![1])!
+            let longitude = (feature.geometry?.coordinates![0])!
+            let dateCaptured = Date()
+            let POIToSave = POIModel(locationId: locationId,city: city,zipCode: zipCode,distance: distance,latitude: latitude, longitude: longitude,dateCaptured: dateCaptured)
+            createPOI(POImodel: POIToSave)
+        }
+    }
+    
+    public func serachAPIError(error: String) {
+        
+    }
+    ...
+    
+```
 The SearchAPI request is enable on all position by default. For disable that, when you don't want anymore POI, you can change the value in the settings of the SDK as follow:
 ```swift
 WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: false)
 ```
 
+### Retrieve Distance API 
+In your class delegate, retrieve Distance data :
+```swift
+public class DataDistance:DistanceAPIDelegate  {
+    public func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String) {
+        if (distanceAPIData.status == "OK") {
+            let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
+            let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
+            updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
+        }
+    }
+    
+    
+    public func distanceAPIError(error: String) {
+        print(error)
+    }
+    ...
+    
+```
+The DistanceAPI request is enable on all position by default. For disable that, when you don't want anymore update POI result with the distance, you can change the value in the settings of the SDK as follow:
+```swift
+WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
+```
+
+### Retrieve Visits 
 For the visits, in the app delegate, you can retrieve the visit like this: 
 ```swift
 func processVisit(visit: CLVisit) {
@@ -243,7 +292,7 @@ func processVisit(visit: CLVisit) {
 }
 ```
 
-Retrieve Zone of Interest
+### Retrieve Zone of Interest
 ZOIs are built from visits, grouped by proximity. We use the Fast Incremental Gaussian Mixture Model of classification Algorithm  [FIGMM](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0139931) to build and update our ZOI according to visits recurrency along time.
 
 Create the ZOI when a visit is created :

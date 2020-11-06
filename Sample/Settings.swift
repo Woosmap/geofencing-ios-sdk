@@ -24,6 +24,12 @@ let GoogleMapStaticAPITwoMark = GoogleMapStaticAPIBaseURL + "?markers=color:red|
 let searchWoosmapKey = ""
 let searchWoosmapAPI = "http://api.woosmap.com/stores/search/?private_key=\(searchWoosmapKey)&lat=%@&lng=%@&stores_by_page=1"
 
+//Woosmap DistanceAPI
+let distanceWoosmapKey = ""
+let modeDistance = "driving" //cycling,walking
+let distanceWoosmapAPI = "https://api.woosmap.com/distance/distancematrix/json?mode=\(modeDistance)&units=metric&origins=%@,%@&destinations=%@&private_key=\(searchWoosmapKey)&elements=duration_distance"
+
+
 //Delay of Duration data
 public var dataDurationDelay = 30// number of day
 

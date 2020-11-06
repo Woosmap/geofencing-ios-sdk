@@ -28,6 +28,7 @@ class PlaceData : PropertyPlace  {
     public var arrivalDate: Date?
     public var departureDate: Date?
     public var duration: Int
+    public var movingDuration: String = ""
     public var locationId: String = ""
     
     
@@ -185,6 +186,7 @@ class LocationTableViewContoller: UITableViewController {
                 placeData.city = poi!.city
                 placeData.distance = poi!.distance
                 placeData.type = dataType.POI
+                placeData.movingDuration = poi!.duration ?? ""
             }
             placeToShow.append(placeData)
         }
@@ -352,8 +354,13 @@ class LocationTableViewContoller: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "POICell", for: indexPath) as! POITableCellView
             cell.location.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
             cell.time.text = placeData.date!.stringFromDate()
-            cell.info.numberOfLines = 3
-            cell.info.text = "City = " + placeData.city! + "\nZipcode = " + placeData.zipCode!  + "\nDistance = " + String(format:"%f",placeData.distance)
+            if (placeData.movingDuration != "") {
+                cell.info.numberOfLines = 4
+                cell.info.text = "City = " + placeData.city! + "\nZipcode = " + placeData.zipCode!  + "\nDistance = " + String(format:"%f",placeData.distance) + "\nDuration = " + placeData.movingDuration
+            } else {
+                cell.info.numberOfLines = 3
+                cell.info.text = "City = " + placeData.city! + "\nZipcode = " + placeData.zipCode!  + "\nDistance = " + String(format:"%f",placeData.distance)
+            }
             return cell
         } else  { // visit
             let cell = tableView.dequeueReusableCell(withIdentifier: "VisitCell", for: indexPath) as! VisitTableCellView
@@ -375,7 +382,7 @@ class LocationTableViewContoller: UITableViewController {
         if (placeToShow[indexPath.item].type == dataType.location) {
             return 60
         } else {
-            return 110
+            return 120
         }
     }
     
@@ -387,6 +394,13 @@ class LocationTableViewContoller: UITableViewController {
         if (placeData.type == dataType.location) {
             let location = CLLocation(latitude: latitude, longitude: longitude)
             WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location, locationId: placeData.locationId)
+        } else if (placeData.type == dataType.POI) {
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            let poi = DataPOI().getPOIbyLocationID(locationId: placeData.locationId)
+            let latDest = poi!.latitude
+            let lngDest = poi!.longitude
+            WoosmapGeofencing.shared.getLocationService().distanceAPIRequest(locationOrigin: location,coordinatesDest: [(latDest, lngDest)], locationId: placeData.locationId)
+            //(locationOrigin: location, latDest: poi?.latitude, lngDest: poi?.longitude, locationId: placeData.locationId)
         }
     }
     
