@@ -145,9 +145,9 @@ If you plan to perform searches or distance calculations thanks to the Woosmap A
 As soon as data is available, set the `locationServiceDelegate`, `searchAPIDataDelegate`, `visitDelegate` and  `distanceAPIDataDelegate` to retrieve location data, POIs from a Woosmap datasource, distance by road to those POIs and visit data if the Visit parameter is enabled. 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Set Woosmap API Private key
-        WoosmapGeofencing.shared.setSearchWoosmapAPIKey(key: searchWoosmapKey)
-        WoosmapGeofencing.shared.setDistanceWoosmapAPIKey(key: distanceWoosmapKey)
+	
+	// Set private Woosmap key API
+        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
         // Set the Woosmap Search API url
@@ -155,13 +155,13 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         
         // Set the Woosmap Distance API url
         WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: modeDistance)
+        WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
         
         // Set your filter on position location and search
         WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
         WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
 	
-		// Set classification of zoi enable 
+	// Set classification of zoi enable 
         WoosmapGeofencing.shared.setClassification(enable: true)
         
         // Set delegate of protocol Location, POI and Distance
