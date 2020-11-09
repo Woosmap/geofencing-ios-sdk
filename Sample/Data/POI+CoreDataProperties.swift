@@ -2,7 +2,7 @@
 //  POI+CoreDataProperties.swift
 //  
 //
-//  Created by Mac de Laurent on 18/06/2020.
+//  Created by Mac de Laurent on 06/11/2020.
 //
 //
 
@@ -23,5 +23,6 @@ extension POI {
     @NSManaged public var locationId: String?
     @NSManaged public var longitude: Double
     @NSManaged public var zipCode: String?
+    @NSManaged public var duration: String?
 
 }

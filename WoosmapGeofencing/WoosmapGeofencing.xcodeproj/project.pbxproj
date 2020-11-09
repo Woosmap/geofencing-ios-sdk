@@ -17,6 +17,7 @@
 		A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CF24E29B0000EB621F /* RegionGenerator.swift */; };
 		A262B9DA24E29B0000EB621F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9D124E29B0000EB621F /* Settings.swift */; };
 		A262B9DB24E29B0000EB621F /* ZOIQualifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */; };
+		A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		A262B9D124E29B0000EB621F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Sources/WoosmapGeofencing/Settings.swift; sourceTree = SOURCE_ROOT; };
 		A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZOIQualifiers.swift; path = Sources/WoosmapGeofencing/ZOIQualifiers.swift; sourceTree = SOURCE_ROOT; };
 		A262B9D324E29B0000EB621F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Sources/WoosmapGeofencing/Info.plist; sourceTree = SOURCE_ROOT; };
+		A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DistanceAPIJsonswift.swift; path = Sources/WoosmapGeofencing/DistanceAPIJsonswift.swift; sourceTree = SOURCE_ROOT; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -97,6 +99,7 @@
 				A262B9D024E29B0000EB621F /* WoosmapGeofencing.h */,
 				A262B9CD24E29AFF00EB621F /* WoosmapGeofencing.swift */,
 				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
+				A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */,
 			);
 			path = WoosmapGeofencing;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
+				A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A262B9DA24E29B0000EB621F /* Settings.swift in Sources */,
 				A262B9D624E29B0000EB621F /* WoosmapGeofencing.swift in Sources */,

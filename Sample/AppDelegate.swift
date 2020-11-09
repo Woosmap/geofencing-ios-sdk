@@ -17,14 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         UserDefaults.standard.register(defaults:["TrackingEnable":true,
-                                                 "SearchAPIEnable":true])
+                                                 "SearchAPIEnable":true,
+                                                 "DistanceAPIEnable":true])
         
-        // Set private key Search API
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: searchWoosmapKey)
+        // Set private Woosmap key API
+        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
-        // Set the search Woosmap API
+        // Set the search url Woosmap API
         WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
+        
+        // Set the distance url Woosmap API
+        WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
+        WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
         
         // Set your filter on position location and search
         //WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
@@ -34,9 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WoosmapGeofencing.shared.setClassification(enable: true)
 
         
-        // Set delegate of protocol Location and POI
+        // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
+        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
         
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
@@ -45,8 +51,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Set Tracking state
         WoosmapGeofencing.shared.setTrackingEnable(enable: UserDefaults.standard.bool(forKey: "TrackingEnable"))
         
-        // Set Tracking state
+        // Set SearchAPI automatic on each location
         WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "SearchAPIEnable"))
+        
+        // Set DistanceAPI automatic on each POI
+        WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "DistanceAPIEnable"))
+        WoosmapGeofencing.shared.setDistanceAPIMode(mode: "driving") // walking,cycling
         
         //MockData Visit
         //MockDataVisit().mockVisitData()

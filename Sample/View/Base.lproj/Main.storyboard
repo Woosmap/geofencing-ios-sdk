@@ -374,8 +374,17 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xVB-20-h2R">
                                 <rect key="frame" x="20" y="376" width="51" height="31"/>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W24-9x-aBv">
+                                <rect key="frame" x="20" y="427" width="51" height="31"/>
+                            </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search API" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zCT-8o-N5e">
                                 <rect key="frame" x="79" y="381" width="83" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance API" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kg9-t8-iO2">
+                                <rect key="frame" x="79" y="432" width="97" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -385,11 +394,15 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
+                            <constraint firstItem="Kg9-t8-iO2" firstAttribute="centerY" secondItem="W24-9x-aBv" secondAttribute="centerY" id="5vy-Ng-vnR"/>
+                            <constraint firstItem="W24-9x-aBv" firstAttribute="top" secondItem="xVB-20-h2R" secondAttribute="bottom" constant="20" id="5zd-om-4c3"/>
                             <constraint firstItem="zCT-8o-N5e" firstAttribute="leading" secondItem="xVB-20-h2R" secondAttribute="trailing" constant="10" id="806-16-NwW"/>
+                            <constraint firstItem="W24-9x-aBv" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="Amd-uU-dzq"/>
                             <constraint firstItem="XT1-ev-ZVu" firstAttribute="centerY" secondItem="JEX-Xy-smo" secondAttribute="centerY" id="Bee-LX-nxc"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="JPW-sq-X3G"/>
                             <constraint firstItem="JEX-Xy-smo" firstAttribute="top" secondItem="IXV-Xt-5ex" secondAttribute="bottom" constant="20" id="Kbg-72-aju"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="NE3-nb-7W0"/>
+                            <constraint firstItem="Kg9-t8-iO2" firstAttribute="leading" secondItem="zCT-8o-N5e" secondAttribute="leading" id="QTK-Qk-g4O"/>
                             <constraint firstItem="xVB-20-h2R" firstAttribute="top" secondItem="JEX-Xy-smo" secondAttribute="bottom" constant="20" id="Rug-cg-mk5"/>
                             <constraint firstItem="zCT-8o-N5e" firstAttribute="centerY" secondItem="xVB-20-h2R" secondAttribute="centerY" id="VF1-7d-C5r"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="IXV-Xt-5ex" secondAttribute="trailing" constant="10" id="VVA-VI-Xt9"/>
@@ -399,11 +412,13 @@
                             <constraint firstItem="IXV-Xt-5ex" firstAttribute="top" secondItem="8EX-ic-mne" secondAttribute="bottom" constant="30" id="bMw-23-EeJ"/>
                             <constraint firstItem="xVB-20-h2R" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="bx8-pK-mMZ"/>
                             <constraint firstItem="JEX-Xy-smo" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="c5a-Fw-pss"/>
+                            <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zCT-8o-N5e" secondAttribute="trailing" symbolic="YES" id="zVJ-Am-jzm"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Token Id" image="envelope.open" catalog="system" id="CqW-FZ-KHE"/>
                     <connections>
                         <outlet property="TokenLabel" destination="IXV-Xt-5ex" id="vd8-mP-ab1"/>
+                        <outlet property="distanceAPISwitch" destination="W24-9x-aBv" id="WhM-Bz-GFC"/>
                         <outlet property="searchAPISwitch" destination="xVB-20-h2R" id="CH3-iw-99e"/>
                         <outlet property="trackingSwitch" destination="JEX-Xy-smo" id="A4J-Sx-rzu"/>
                     </connections>

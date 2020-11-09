@@ -12,6 +12,7 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
     @IBOutlet weak var TokenLabel: UITextField!
     @IBOutlet weak var trackingSwitch: UISwitch!
     @IBOutlet weak var searchAPISwitch: UISwitch!
+    @IBOutlet weak var distanceAPISwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +21,8 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
         trackingSwitch.addTarget(self,action: #selector(disableEnableTracking), for: .touchUpInside)
         searchAPISwitch.setOn(WoosmapGeofencing.shared.getSearchAPIRequestEnable(), animated: false)
         searchAPISwitch.addTarget(self,action: #selector(disableEnableSearchAPI), for: .touchUpInside)
+        distanceAPISwitch.setOn(WoosmapGeofencing.shared.getDistanceAPIRequestEnable(), animated: false)
+        distanceAPISwitch.addTarget(self,action: #selector(disableEnableDistanceAPI), for: .touchUpInside)
     }
     
     /**
@@ -55,6 +58,16 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
         }else {
             UserDefaults.standard.setValue(false, forKey: "SearchAPIEnable")
             WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: false)
+        }
+    }
+    
+    @objc func disableEnableDistanceAPI(){
+        if distanceAPISwitch.isOn {
+            UserDefaults.standard.setValue(true, forKey: "DistanceAPIEnable")
+            WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: true)
+        }else {
+            UserDefaults.standard.setValue(false, forKey: "DistanceAPIEnable")
+            WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
         }
     }
 
