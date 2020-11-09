@@ -20,9 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                  "SearchAPIEnable":true,
                                                  "DistanceAPIEnable":true])
         
-        // Set private key Search API
-        WoosmapGeofencing.shared.setSearchWoosmapAPIKey(key: searchWoosmapKey)
-        WoosmapGeofencing.shared.setDistanceWoosmapAPIKey(key: distanceWoosmapKey)
+        // Set private Woosmap key API
+        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
         // Set the search url Woosmap API
@@ -30,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Set the distance url Woosmap API
         WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: modeDistance)
+        WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
         
         // Set your filter on position location and search
         //WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)

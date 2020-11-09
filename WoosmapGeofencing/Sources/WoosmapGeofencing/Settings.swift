@@ -10,13 +10,12 @@ import Foundation
 public var trackingEnable = true
 
 //Woosmap SearchAPI Key
-public var searchWoosmapKey = ""
-public var searchWoosmapAPI = "http://api.woosmap.com/stores/search/?private_key=\(searchWoosmapKey)&lat=%@&lng=%@&stores_by_page=1"
+public var WoosmapAPIKey = ""
+public var searchWoosmapAPI = "http://api.woosmap.com/stores/search/?private_key=\(WoosmapAPIKey)&lat=%@&lng=%@&stores_by_page=1"
 
 //Woosmap DistanceAPI
-public var distanceWoosmapKey = ""
 public var modeDistance = "driving" //cycling,walking
-public var distanceWoosmapAPI = "https://develop-api.woosmap.com/distance/distancematrix/json?mode=\(modeDistance)&units=metric&origins=%@,%@&destinations=%@&private_key=\(searchWoosmapKey)&elements=duration_distance"
+public var distanceWoosmapAPI = "https://api.woosmap.com/distance/distancematrix/json?mode=\(modeDistance)&units=metric&origins=%@,%@&destinations=%@&private_key=\(WoosmapAPIKey)&elements=duration_distance"
 
 //Location filters
 public var currentLocationDistanceFilter = 0.0

@@ -63,10 +63,10 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
     
     @objc func disableEnableDistanceAPI(){
         if distanceAPISwitch.isOn {
-            UserDefaults.standard.setValue(true, forKey: "SearchAPIEnable")
+            UserDefaults.standard.setValue(true, forKey: "DistanceAPIEnable")
             WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: true)
         }else {
-            UserDefaults.standard.setValue(false, forKey: "SearchAPIEnable")
+            UserDefaults.standard.setValue(false, forKey: "DistanceAPIEnable")
             WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
         }
     }

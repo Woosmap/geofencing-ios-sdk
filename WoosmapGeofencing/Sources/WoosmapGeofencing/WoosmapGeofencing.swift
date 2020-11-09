@@ -57,12 +57,8 @@ import CoreLocation
         return trackingEnable
     }
     
-    public func setSearchWoosmapAPIKey(key: String) {
-        searchWoosmapKey = key
-    }
-    
-    public func setDistanceWoosmapAPIKey(key: String) {
-        distanceWoosmapKey = key
+    public func setWoosmapAPIKey(key: String) {
+        WoosmapAPIKey = key
     }
     
     public func setGMPAPIKey(key: String) {

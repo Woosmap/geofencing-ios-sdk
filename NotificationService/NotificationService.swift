@@ -84,16 +84,16 @@ open class NotificationService: UNNotificationServiceExtension,CLLocationManager
             let userLatitude: String = String(format: "%f", currentLocation!.coordinate.latitude)
             let userLongitude: String = String(format:"%f", currentLocation!.coordinate.longitude)
 
-            if(!searchWoosmapKey.isEmpty && !GoogleStaticMapKey.isEmpty) {
+            if(!WoosmapAPIKey.isEmpty && !GoogleStaticMapKey.isEmpty) {
                 // Show Notifcation with the nearest POI and static map
                 showNotificationWithPOIAndGMP(myLatitude: userLatitude, myLongitude: userLongitude)
-            } else if (!searchWoosmapKey.isEmpty && GoogleStaticMapKey.isEmpty) {
+            } else if (!WoosmapAPIKey.isEmpty && GoogleStaticMapKey.isEmpty) {
                 // Show Notifcation with the user location with the nearest POI
                 showNotificationWithPOI(myLatitude: userLatitude, myLongitude: userLongitude)
-            } else if (searchWoosmapKey.isEmpty && !GoogleStaticMapKey.isEmpty) {
+            } else if (WoosmapAPIKey.isEmpty && !GoogleStaticMapKey.isEmpty) {
                 // Show Notifcation with the user location on a static map
                 showNotificationWithGMP(myLatitude: userLatitude, myLongitude: userLongitude)
-            } else if (searchWoosmapKey.isEmpty && GoogleStaticMapKey.isEmpty) {
+            } else if (WoosmapAPIKey.isEmpty && GoogleStaticMapKey.isEmpty) {
                 // Show Notifcation with the user location
                 showNotificationWithUserLocation(myLatitude: userLatitude, myLongitude: userLongitude)
             }
