@@ -146,7 +146,7 @@ As soon as data is available, set the `locationServiceDelegate`, `searchAPIDataD
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-	// Set private Woosmap key API
+	// Set Woosmap API Private key
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
