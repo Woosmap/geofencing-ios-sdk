@@ -141,19 +141,19 @@ end
 
 
 ## Usage 
-Be sure your Private Key for the Woosmap Search API is set every time your app is launched (in Foreground AND Background). This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
-Set the `locationServiceDelegate`, `searchAPIDataDelegate`, `visitDelegate` and  `distanceAPIDataDelegate` to retrieve data of location, POI and distance when the data is ready and visit data if the the visit is enabled. 
+If you plan to perform searches or distance calculations thanks to the Woosmap APIs, please be sure your Woosmap Private Key is set every time your app is launched (in Foreground AND Background). This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
+As soon as data is available, set the `locationServiceDelegate`, `searchAPIDataDelegate`, `visitDelegate` and  `distanceAPIDataDelegate` to retrieve location data, POIs from a Woosmap datasource, distance by road to those POIs and visit data if the Visit parameter is enabled. 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Set private key Search API
+        // Set Woosmap API Private key
         WoosmapGeofencing.shared.setSearchWoosmapAPIKey(key: searchWoosmapKey)
         WoosmapGeofencing.shared.setDistanceWoosmapAPIKey(key: distanceWoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
-        // Set the search url Woosmap API
+        // Set the Woosmap Search API url
         WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
         
-        // Set the distance url Woosmap API
+        // Set the Woosmap Distance API url
         WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
         WoosmapGeofencing.shared.setDistanceAPIMode(mode: modeDistance)
         
@@ -173,7 +173,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
         WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
  
-         // Check if the authorization Status of location Manager
+         // Check the authorization Status of location Manager
          if (CLLocationManager.authorizationStatus() != .notDetermined) {
              WoosmapGeofencing.shared.startMonitoringInBackground()
          }
@@ -274,7 +274,7 @@ public class DataDistance:DistanceAPIDelegate  {
     ...
     
 ```
-The DistanceAPI request is enable on all position by default. For disable that, when you don't want anymore update POI result with the distance, you can change the value in the settings of the SDK as follow:
+The Distance API request is enabled on all search results by default. If distance by road between the mobile and the retrieved Woosmap POIs is not necessary, settings of the SDK can be modified as follow:
 ```swift
 WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
 ```
