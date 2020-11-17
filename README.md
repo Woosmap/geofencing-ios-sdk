@@ -198,7 +198,7 @@ func applicationDidBecomeActive(_ application: UIApplication) {
 }
 ```
 
-The position tracking is enable all time by default. For disable that, when you don't want anymore position, you can change the value in the settings of the SDK as follow:
+The position tracking is enabled by default. To disable location collection, just change the value in the settings of the SDK as follow:
 ```swift
 WoosmapGeofencing.shared.setTrackingEnable(enable: false)
 ```
@@ -250,7 +250,7 @@ public class DataPOI:SearchAPIDelegate  {
     ...
     
 ```
-The SearchAPI request is enable on all position by default. For disable that, when you don't want anymore POI, you can change the value in the settings of the SDK as follow:
+The Search API request is enabled on all positions by default. To disable Search request, just change the value in the settings of the SDK as follow:
 ```swift
 WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: false)
 ```
