@@ -1,116 +1,7 @@
-## How to use SearchAPI 
-
-To obtain on demand the closest POI from a location, you must create a class delegate to retrieve a POI when the method `searchAPIRequest`was called.
-
-In your `AppDelegate`, set keys, and set a delegate to monitor result of the SearchAPI request :
-```swift
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        // Set Woosmap API Private key
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
-
-         // Set delegate of protocol POI 
-        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
-
-         // Check the authorization Status of location Manager
-         if (CLLocationManager.authorizationStatus() != .notDetermined) {
-             WoosmapGeofencing.shared.startMonitoringInBackground()
-         }
-        return true
-}
-```
-
-On a refresh location event or ever you want :
-
-```swift
-let location = CLLocation(latitude: latitude, longitude: longitude)
-WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location)
-```
-
-Get the result of the request Search API in your class delagate `DataPOI` :
-```swift
-public class DataPOI:SearchAPIDelegate  {
-    
-    public init() {}
-    
-    public func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
-        for feature in (searchAPIData.features)! {
-            let city = feature.properties!.address!.city!
-            let zipCode = feature.properties!.address!.zipcode!
-            let distance = feature.properties!.distance!
-            let latitude = (feature.geometry?.coordinates![1])!
-            let longitude = (feature.geometry?.coordinates![0])!
-            let dateCaptured = Date()
-            ...
-        }
-    }
-    
-    public func serachAPIError(error: String) {
-        
-    }
-}
-```
-
-Informations about the search API : https://developers.woosmap.com/products/search-api/get-started/
-
-
-## How to use DistanceAPI 
-
-To obtain on demand a distance and duration between an origin and destinations, you must create a class delegate to retrieve the data of distance and duration when the method `distanceAPIRequest`was called.
-
-In your `AppDelegate`, set keys, and set a delegate to monitor result of the DistanceAPI request :
-```swift
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        // Set Woosmap API Private key
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
-
-         // Set delegate of protocol Distance
-        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
-        
-        //Specifies the mode of transport to use when calculating distance. Valid values are "driving", "cycling", "walking". (if not specified default is driving)
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
-
-         // Check the authorization Status of location Manager
-         if (CLLocationManager.authorizationStatus() != .notDetermined) {
-             WoosmapGeofencing.shared.startMonitoringInBackground()
-         }
-        return true
-}
-```
-
-Launch request DistanceAPI :
-
-```swift
-let location = CLLocation(latitude: latitude, longitude: longitude)
-let latDest = poi!.latitude
-let lngDest = poi!.longitude
-WoosmapGeofencing.shared.getLocationService().distanceAPIRequest(locationOrigin: location,coordinatesDest: [(latDest, lngDest)])
-```
-
-Get the result of the request Distance API in your class delagate `DataDistance` :
-```swift
-public class DataDistance:DistanceAPIDelegate  {
-    public func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String) {
-        if (distanceAPIData.status == "OK") {
-            let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
-            let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
-        }
-    }
-    
-    
-    public func distanceAPIError(error: String) {
-        print(error)
-    }
-}
-```
-
-Informations about the Distance API :https://developers.woosmap.com/products/distance-api/get-started/
-
 
 ## Find the Nearest POIs
 
-After receiving the user location, the SDK makes a request to the searchAPI to get the nearest POI. We can modify the request and add other filters to improve your results in the method `searchAPIRequest`: 
+After receiving the user location, the SDK automatically triggers a request to the searchAPI to get the nearest POIs (to disable this automatic trigger see: https://github.com/woosmap/woosmap-geofencing-ios-sdk/tree/doc/api_on_demand#retrieve-poi). Thanks to the flexibility of the Search API, several parameters can added and tuned to improve your results in the method `searchAPIRequest`: 
 ```swift
 func searchAPIRequest(locationId: UUID){
         guard let delegate = self.searchAPIDataDelegate else {
@@ -166,5 +57,119 @@ func searchAPIRequest(locationId: UUID){
     }
 ```
 
+Informations about the Search API : https://developers.woosmap.com/products/search-api/get-started/
+
 To send the POI, call the method `delegate.searchAPIResponseData` with the data result. 
+
+
+## How to use Search API 
+
+If you need to trigger search requests (to retrieve POIs) by your own, (e.g. if you've chosen to disable the automatic search request associated to each location collection), you can perform on demand requests to the Search API. To do so you must create a class delegate to retrieve a POI when the method `searchAPIRequest`is called.
+
+In your `AppDelegate`, set keys, and set a delegate to monitor result of the Search API request :
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        // Set Woosmap API Private key
+        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
+
+         // Set delegate of protocol POI 
+        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
+
+         // Check the authorization Status of location Manager
+         if (CLLocationManager.authorizationStatus() != .notDetermined) {
+             WoosmapGeofencing.shared.startMonitoringInBackground()
+         }
+        return true
+}
+```
+
+On a refresh location event or whenever you want :
+
+```swift
+let location = CLLocation(latitude: latitude, longitude: longitude)
+WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location)
+```
+
+Get the result of the Search API request in your class delagate `DataPOI` :
+```swift
+public class DataPOI:SearchAPIDelegate  {
+    
+    public init() {}
+    
+    public func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
+        for feature in (searchAPIData.features)! {
+            let city = feature.properties!.address!.city!
+            let zipCode = feature.properties!.address!.zipcode!
+            let distance = feature.properties!.distance!
+            let latitude = (feature.geometry?.coordinates![1])!
+            let longitude = (feature.geometry?.coordinates![0])!
+            let dateCaptured = Date()
+            ...
+        }
+    }
+    
+    public func serachAPIError(error: String) {
+        
+    }
+}
+```
+
+Informations about the Search API : https://developers.woosmap.com/products/search-api/get-started/
+
+
+## How to use Distance API 
+
+As for the Search API, request to the Distance API can be done on demand (e.g. if not enabled with each location collection or if needed on dedicated process of your own). To retrieve distance and duration values between origin(s) and destination(s), you must create a class delegate to retrieve the those data when the method `distanceAPIRequest`is called.
+
+In your `AppDelegate`, set keys, and set a delegate to monitor result of the Distance API request :
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        // Set Woosmap API Private key
+        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
+
+         // Set delegate of protocol Distance
+        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
+        
+        //Specifies the mode of transport to use when calculating distance. Valid values are "driving", "cycling", "walking". (if not specified default is driving)
+        WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
+
+         // Check the authorization Status of location Manager
+         if (CLLocationManager.authorizationStatus() != .notDetermined) {
+             WoosmapGeofencing.shared.startMonitoringInBackground()
+         }
+        return true
+}
+```
+
+Launch Distance API request:
+
+```swift
+let location = CLLocation(latitude: latitude, longitude: longitude)
+let latDest = poi!.latitude
+let lngDest = poi!.longitude
+WoosmapGeofencing.shared.getLocationService().distanceAPIRequest(locationOrigin: location,coordinatesDest: [(latDest, lngDest)])
+```
+
+Get the result of the Distance API request in your class delagate `DataDistance` :
+```swift
+public class DataDistance:DistanceAPIDelegate  {
+    public func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String) {
+        if (distanceAPIData.status == "OK") {
+            let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
+            let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
+        }
+    }
+    
+    
+    public func distanceAPIError(error: String) {
+        print(error)
+    }
+}
+```
+
+Informations about the Distance API :https://developers.woosmap.com/products/distance-api/get-started/
+
+
 
