@@ -25,6 +25,8 @@
 		A235A0B3242A570C00B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
 		A238041923EC6A14002F53F2 /* POIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041823EC6A14002F53F2 /* POIModel.swift */; };
 		A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041B23EC6A95002F53F2 /* DataPOI.swift */; };
+		A239056025791D87001B3754 /* DataRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A239055F25791D87001B3754 /* DataRegion.swift */; };
+		A2390573257A7A49001B3754 /* RegionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2390572257A7A49001B3754 /* RegionModel.swift */; };
 		A23CCD3E250FA97900D49193 /* DelayDataDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23CCD3D250FA97900D49193 /* DelayDataDurationTests.swift */; };
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
 		A274FDA02507D1310008CE25 /* UserDataCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A274FD9F2507D1310008CE25 /* UserDataCleaner.swift */; };
@@ -127,6 +129,8 @@
 		A235A0B1242A570300B51E1F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A238041823EC6A14002F53F2 /* POIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIModel.swift; sourceTree = "<group>"; };
 		A238041B23EC6A95002F53F2 /* DataPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataPOI.swift; path = ../Model/DataPOI.swift; sourceTree = "<group>"; };
+		A239055F25791D87001B3754 /* DataRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRegion.swift; sourceTree = "<group>"; };
+		A2390572257A7A49001B3754 /* RegionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionModel.swift; sourceTree = "<group>"; };
 		A23CCD3C250FA97900D49193 /* SampleGeofencingTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleGeofencingTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A23CCD3D250FA97900D49193 /* DelayDataDurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayDataDurationTests.swift; sourceTree = "<group>"; };
 		A262B9DE24E29FB100EB621F /* POI+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "POI+CoreDataClass.swift"; path = "../../GeoSearch/Data/POI+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				A20DDE7923EAFBCF00124E56 /* LocationModel.swift */,
 				A238041823EC6A14002F53F2 /* POIModel.swift */,
 				A2B6E7E02419231A006C4F19 /* VisitModel.swift */,
+				A2390572257A7A49001B3754 /* RegionModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -275,6 +280,7 @@
 				A2B6E7E324192536006C4F19 /* DataVisit.swift */,
 				A224546F247D578600A0B8B0 /* DataZOI.swift */,
 				A2B5187D2554655C003B7C19 /* DataDistance.swift */,
+				A239055F25791D87001B3754 /* DataRegion.swift */,
 				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
 				A274FD9F2507D1310008CE25 /* UserDataCleaner.swift */,
 			);
@@ -488,9 +494,11 @@
 				A20DDE7023EAD6D300124E56 /* LocationTableViewContoller.swift in Sources */,
 				A2B5187E2554655C003B7C19 /* DataDistance.swift in Sources */,
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
+				A239056025791D87001B3754 /* DataRegion.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
 				A2B6E7E12419231A006C4F19 /* VisitModel.swift in Sources */,
 				A274FDA02507D1310008CE25 /* UserDataCleaner.swift in Sources */,
+				A2390573257A7A49001B3754 /* RegionModel.swift in Sources */,
 				A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */,
 				A20DDE7A23EAFBCF00124E56 /* LocationModel.swift in Sources */,
 				A20DDE7D23EAFC1900124E56 /* Location.xcdatamodeld in Sources */,
