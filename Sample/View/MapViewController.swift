@@ -269,7 +269,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             let circleRenderer = MKCircleRenderer(circle: overlay)
             circleRenderer.fillColor = (circleRenderer.circle.title == "POI") ? UIColor.green : UIColor.blue
             circleRenderer.alpha = 0.2
-            if(circleRenderer.circle.title != "POI" && !((circleRenderer.circle.title?.contains("refresh"))!)) {
+            if(circleRenderer.circle.title!.contains("ENTER")) {
                 circleRenderer.fillColor = UIColor.red
                 circleRenderer.alpha = 0.2
             }
@@ -308,15 +308,13 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             return
         }
         
-        //circlesPOI = []
-        
         if(region.didEnter) {
             let circlePOI = MKCircle(center: CLLocationCoordinate2D(latitude: region.latitude, longitude: region.longitude), radius: region.radius)
-            circlePOI.title = region.identifier
+            circlePOI.title = region.identifier! + "ENTER"
             self.circlesPOI.append(circlePOI)
             mapView.addOverlays(circlesPOI)
         } else {
-            circlesPOI.removeAll(where: {$0.title == region.identifier})
+            circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
             mapView.addOverlays(circlesPOI)
         }
         
@@ -331,7 +329,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         for region in regions {
             if let region = region as? CLCircularRegion {
                 let circle = MKCircle(center: region.center, radius: region.radius)
-                if (region.identifier.contains("WGS_REGION_")) {
+                if ((WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.regionType.POSITION_REGION)) {
                     circle.title = "refresh"
                 } else {
                     circle.title = "POI"

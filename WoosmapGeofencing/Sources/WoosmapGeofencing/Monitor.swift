@@ -54,6 +54,12 @@ public protocol LocationManagerProtocol {
 extension CLLocationManager: LocationManagerProtocol {}
 
 public class LocationService: NSObject, CLLocationManagerDelegate {
+    public enum regionType {
+        case POSITION_REGION
+        case CUSTOM_REGION
+        case POI_REGION
+        case NONE
+    }
     
     public var locationManager: LocationManagerProtocol?
     var currentLocation: CLLocation?
@@ -130,7 +136,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func stopMonitoringCurrentRegions() {
         if (self.locationManager?.monitoredRegions != nil) {
             for region in (self.locationManager?.monitoredRegions)! {
-                if(region.identifier.contains("WGS_REGION_") || !searchAPICreationRegionEnable) {
+                if(getRegionType(identifier: region.identifier) == regionType.POSITION_REGION) {
                     self.locationManager?.stopMonitoring(for: region)
                 }
             }
@@ -179,14 +185,14 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if(!region.identifier.contains("WGS_REGION_")) {
+        if( (getRegionType(identifier: region.identifier) == regionType.CUSTOM_REGION) || (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
             self.regionDelegate?.didExitPOIRegion(POIregion: region)
         }
         self.handleRegionChange()
     }
     
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if(!region.identifier.contains("WGS_REGION_")) {
+        if( (getRegionType(identifier: region.identifier) == regionType.CUSTOM_REGION) || (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
             self.regionDelegate?.didEnterPOIRegion(POIregion: region)
         }
         self.handleRegionChange()
@@ -195,7 +201,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public func addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance) -> Bool {
         if (self.locationManager?.monitoredRegions != nil) {
             if ((self.locationManager?.monitoredRegions.count)! < 20) {
-                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: UUID().uuidString))
+                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: "CUSTOM_REGION_" + UUID().uuidString))
                 return true
             } else {
                 return false
@@ -345,12 +351,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if(!POIRegionExist){
             if (self.locationManager?.monitoredRegions != nil) {
                 for region in (self.locationManager?.monitoredRegions)! {
-                    if(!region.identifier.contains("WGS_REGION_")) {
+                    if( (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
                         self.locationManager?.stopMonitoring(for: region)
                     }
                 }
             }
-            let identifier = name
+            let identifier = "POI_REGION_" + name
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 100, identifier: identifier + " - 100 m"))
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 200, identifier: identifier + " - 200 m"))
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 300, identifier: identifier + " - 300 m"))
@@ -416,6 +422,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.stopMonitoringCurrentRegions()
         self.startUpdatingLocation()
         self.startMonitoringSignificantLocationChanges()
+    }
+    
+    public func getRegionType(identifier: String) -> regionType {
+        if (identifier.contains("POSITION_REGION")) {
+            return regionType.POSITION_REGION
+        } else if (identifier.contains("CUSTOM_REGION")) {
+            return regionType.CUSTOM_REGION
+        } else if (identifier.contains("POI_REGION")) {
+            return regionType.POI_REGION
+        }
+        return regionType.NONE
     }
     
 }

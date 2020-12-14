@@ -18,21 +18,11 @@ public class DataRegion:RegionsServiceDelegate  {
     }
     
     public func didEnterPOIRegion(POIregion: CLRegion) {
-        let latRegion = (POIregion as! CLCircularRegion).center.latitude
-        let lngRegion = (POIregion as! CLCircularRegion).center.longitude
-        let radius = (POIregion as! CLCircularRegion).radius
-        let regionToSave = RegionModel(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: POIregion.identifier, didEnter: true)
-        
-        createRegion(region: regionToSave)
+        createRegion(POIregion: POIregion, didEnter: true)
     }
     
     public func didExitPOIRegion(POIregion: CLRegion) {
-        let latRegion = (POIregion as! CLCircularRegion).center.latitude
-        let lngRegion = (POIregion as! CLCircularRegion).center.longitude
-        let radius = (POIregion as! CLCircularRegion).radius
-        let regionToSave = RegionModel(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: POIregion.identifier, didEnter: false)
-        
-        createRegion(region: regionToSave)
+        createRegion(POIregion: POIregion, didEnter: false)
     }
     
     public func readRegions()-> Array<Region> {
@@ -49,18 +39,24 @@ public class DataRegion:RegionsServiceDelegate  {
         return regions
     }
     
-    public func createRegion(region: RegionModel) {
+    public func createRegion(POIregion: CLRegion, didEnter: Bool) {
+        let latRegion = (POIregion as! CLCircularRegion).center.latitude
+        let lngRegion = (POIregion as! CLCircularRegion).center.longitude
+        let radius = (POIregion as! CLCircularRegion).radius
+        let regionToSave = RegionModel(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: POIregion.identifier, didEnter: didEnter)
+        
+        
         DispatchQueue.main.async(execute: {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             let entity = NSEntityDescription.entity(forEntityName: "Region", in: context)!
             let newRegion = Region(entity: entity, insertInto: context)
-            newRegion.setValue(region.identifier, forKey: "identifier")
-            newRegion.setValue(region.latitude, forKey: "latitude")
-            newRegion.setValue(region.longitude, forKey: "longitude")
-            newRegion.setValue(region.dateCaptured, forKey: "date")
-            newRegion.setValue(region.didEnter, forKey: "didEnter")
-            newRegion.setValue(region.radius, forKey: "radius")
+            newRegion.setValue(regionToSave.identifier, forKey: "identifier")
+            newRegion.setValue(regionToSave.latitude, forKey: "latitude")
+            newRegion.setValue(regionToSave.longitude, forKey: "longitude")
+            newRegion.setValue(regionToSave.dateCaptured, forKey: "date")
+            newRegion.setValue(regionToSave.didEnter, forKey: "didEnter")
+            newRegion.setValue(regionToSave.radius, forKey: "radius")
             do {
                 try context.save()
                 
@@ -68,7 +64,7 @@ public class DataRegion:RegionsServiceDelegate  {
             catch let error as NSError {
                 print("Could not insert. \(error), \(error.userInfo)")
             }
-            NotificationCenter.default.post(name: .didEventPOIRegion, object: self,userInfo: ["Region": region])
+            NotificationCenter.default.post(name: .didEventPOIRegion, object: self,userInfo: ["Region": regionToSave])
         });
     }
     
