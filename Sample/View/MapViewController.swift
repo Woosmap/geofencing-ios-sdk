@@ -30,7 +30,7 @@ class CustomPolygon : MKPolygon {
 class MapViewController: UIViewController,MKMapViewDelegate{
    
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var switchZOI: UISwitch!
+    @IBOutlet weak var switchRegions: UISwitch!
     @IBOutlet weak var switchVisits: UISwitch!
     @IBOutlet weak var switchPOI: UISwitch!
     @IBOutlet weak var switchLocation: UISwitch!
@@ -48,7 +48,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         super.viewDidLoad()
         mapView.userTrackingMode = .follow
         mapView.delegate = self as MKMapViewDelegate
-        switchZOI.addTarget(self,action: #selector(disableEnableZOI), for: .touchUpInside)
+        switchRegions.addTarget(self,action: #selector(disableEnableZOI), for: .touchUpInside)
         switchVisits.addTarget(self,action: #selector(disableEnableVisits), for: .touchUpInside)
         switchPOI.addTarget(self,action: #selector(disableEnablePOI), for: .touchUpInside)
         switchLocation.addTarget(self,action: #selector(disableEnableLocation), for: .touchUpInside)
@@ -104,19 +104,27 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         let annontations = mapView.annotations
         mapView.removeAnnotations(annontations)
         
-        for poi:POI in DataPOI().readPOI() {
-            mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+        if(switchPOI.isOn) {
+            for poi:POI in DataPOI().readPOI() {
+                mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+            }
         }
         
-        for visit:Visit in DataVisit().readVisits() {
-            mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+        if(switchVisits.isOn) {
+            for visit:Visit in DataVisit().readVisits() {
+                mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+            }
         }
         
-        for location:Location in DataLocation().readLocations() {
-            mapView.addAnnotation(annotationForLocation(location.convertToModel()))
+        if(switchLocation.isOn) {
+            for location:Location in DataLocation().readLocations() {
+                mapView.addAnnotation(annotationForLocation(location.convertToModel()))
+            }
         }
         
-        overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager!.monitoredRegions)
+        if switchRegions.isOn {
+            overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager!.monitoredRegions)
+        }
         
     }
     
@@ -300,7 +308,9 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         guard let regions = notification.userInfo?["Regions"] as? Set<CLRegion> else {
             return
         }
-        overlaysForRegions(regions: regions)
+        if switchRegions.isOn {
+            overlaysForRegions(regions: regions)
+        }
     }
     
     @objc func didEventPOIRegion(_ notification: Notification) {
@@ -354,9 +364,10 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         guard let location = notification.userInfo?["Location"] as? LocationModel else {
             return
         }
-        
-        let annotation = annotationForLocation(location)
-        mapView.addAnnotation(annotation)
+        if(switchLocation.isOn) {
+            let annotation = annotationForLocation(location)
+            mapView.addAnnotation(annotation)
+        }
     }
     
     
@@ -373,8 +384,10 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             return
         }
         
-        let annotation = annotationForPOI(POI)
-        mapView.addAnnotation(annotation)
+        if(switchPOI.isOn) {
+            let annotation = annotationForPOI(POI)
+            mapView.addAnnotation(annotation)
+        }
     }
     
     func annotationForVisit(_ visit: VisitModel) -> MKAnnotation {
@@ -402,8 +415,10 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             return
         }
         
-        let annotation = annotationForVisit(visit)
-        mapView.addAnnotation(annotation)
+        if(switchVisits.isOn) {
+            let annotation = annotationForVisit(visit)
+            mapView.addAnnotation(annotation)
+        }
         
     }
     
@@ -429,7 +444,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     }
     
     @objc func disableEnableZOI(){
-        if switchZOI.isOn {
+        if switchRegions.isOn {
            addZois()
         }else {
             let overlays = mapView.overlays
