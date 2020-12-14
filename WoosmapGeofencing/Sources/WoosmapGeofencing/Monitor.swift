@@ -54,7 +54,7 @@ public protocol LocationManagerProtocol {
 extension CLLocationManager: LocationManagerProtocol {}
 
 public class LocationService: NSObject, CLLocationManagerDelegate {
-    public enum regionType {
+    public enum regionType : String {
         case POSITION_REGION
         case CUSTOM_REGION
         case POI_REGION
@@ -201,7 +201,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public func addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance) -> Bool {
         if (self.locationManager?.monitoredRegions != nil) {
             if ((self.locationManager?.monitoredRegions.count)! < 20) {
-                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: "CUSTOM_REGION_" + UUID().uuidString))
+                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString))
                 return true
             } else {
                 return false
@@ -356,7 +356,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     }
                 }
             }
-            let identifier = "POI_REGION_" + name
+            let identifier = regionType.POI_REGION.rawValue + "_" + name
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 100, identifier: identifier + " - 100 m"))
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 200, identifier: identifier + " - 200 m"))
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 300, identifier: identifier + " - 300 m"))
@@ -425,11 +425,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     public func getRegionType(identifier: String) -> regionType {
-        if (identifier.contains("POSITION_REGION")) {
+        if (identifier.contains(regionType.POSITION_REGION.rawValue)) {
             return regionType.POSITION_REGION
-        } else if (identifier.contains("CUSTOM_REGION")) {
+        } else if (identifier.contains(regionType.CUSTOM_REGION.rawValue)) {
             return regionType.CUSTOM_REGION
-        } else if (identifier.contains("POI_REGION")) {
+        } else if (identifier.contains(regionType.POI_REGION.rawValue)) {
             return regionType.POI_REGION
         }
         return regionType.NONE
