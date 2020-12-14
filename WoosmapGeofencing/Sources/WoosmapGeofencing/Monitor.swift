@@ -19,6 +19,8 @@ public protocol DistanceAPIDelegate {
 
 public protocol RegionsServiceDelegate {
     func updateRegions(regions: Set<CLRegion>)
+    func didEnterPOIRegion(POIregion: CLRegion )
+    func didExitPOIRegion(POIregion: CLRegion )
 }
 
 public protocol VisitServiceDelegate {
@@ -52,6 +54,12 @@ public protocol LocationManagerProtocol {
 extension CLLocationManager: LocationManagerProtocol {}
 
 public class LocationService: NSObject, CLLocationManagerDelegate {
+    public enum regionType : String {
+        case POSITION_REGION
+        case CUSTOM_REGION
+        case POI_REGION
+        case NONE
+    }
     
     public var locationManager: LocationManagerProtocol?
     var currentLocation: CLLocation?
@@ -128,7 +136,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func stopMonitoringCurrentRegions() {
         if (self.locationManager?.monitoredRegions != nil) {
             for region in (self.locationManager?.monitoredRegions)! {
-                self.locationManager?.stopMonitoring(for: region)
+                if(getRegionType(identifier: region.identifier) == regionType.POSITION_REGION) {
+                    self.locationManager?.stopMonitoring(for: region)
+                }
             }
         }
     }
@@ -175,11 +185,42 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if( (getRegionType(identifier: region.identifier) == regionType.CUSTOM_REGION) || (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
+            self.regionDelegate?.didExitPOIRegion(POIregion: region)
+        }
         self.handleRegionChange()
     }
     
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if( (getRegionType(identifier: region.identifier) == regionType.CUSTOM_REGION) || (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
+            self.regionDelegate?.didEnterPOIRegion(POIregion: region)
+        }
         self.handleRegionChange()
+    }
+    
+    public func addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance) -> Bool {
+        if (self.locationManager?.monitoredRegions != nil) {
+            if ((self.locationManager?.monitoredRegions.count)! < 20) {
+                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString))
+                return true
+            } else {
+                return false
+            }
+        }
+        return false
+    }
+    
+    public func removeRegion(center: CLLocationCoordinate2D) {
+        if (self.locationManager?.monitoredRegions != nil) {
+            for region in (self.locationManager?.monitoredRegions)! {
+                let latRegion = (region as! CLCircularRegion).center.latitude
+                let lngRegion = (region as! CLCircularRegion).center.longitude
+                if (center.latitude == latRegion && center.longitude == lngRegion){
+                    self.locationManager?.stopMonitoring(for: region)
+                    self.handleRegionChange()
+                }
+            }
+        }
     }
     
     public func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
@@ -229,6 +270,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if (searchAPIRequestEnable) {
             searchAPIRequest(location: currentLocation!, locationId:locationId)
         }
+        
     }
     
     public func searchAPIRequest(location: CLLocation, locationId: String = ""){
@@ -283,14 +325,42 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             let latitude = (feature.geometry?.coordinates![1])!
                             let longitude = (feature.geometry?.coordinates![0])!
                             self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(latitude,longitude)],locationId: locationId)
+                            if(searchAPICreationRegionEnable){
+                                self.createRegionPOI(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), name: (feature.properties?.name)!)
+                            }
                         }
                     }
-                    
                 }
             }
         }
         task.resume()
         
+    }
+    
+    public func createRegionPOI(center: CLLocationCoordinate2D, name: String){
+        var POIRegionExist = false
+        if (self.locationManager?.monitoredRegions != nil) {
+            for region in (self.locationManager?.monitoredRegions)! {
+                let latRegion = (region as! CLCircularRegion).center.latitude
+                let lngRegion = (region as! CLCircularRegion).center.longitude
+                if (center.latitude == latRegion && center.longitude == lngRegion){
+                    POIRegionExist = true
+                }
+            }
+        }
+        if(!POIRegionExist){
+            if (self.locationManager?.monitoredRegions != nil) {
+                for region in (self.locationManager?.monitoredRegions)! {
+                    if( (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
+                        self.locationManager?.stopMonitoring(for: region)
+                    }
+                }
+            }
+            let identifier = regionType.POI_REGION.rawValue + "_" + name
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 100, identifier: identifier + " - 100 m"))
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 200, identifier: identifier + " - 200 m"))
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 300, identifier: identifier + " - 300 m"))
+        }
     }
     
     public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double,Double)], locationId: String = "") {
@@ -352,6 +422,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.stopMonitoringCurrentRegions()
         self.startUpdatingLocation()
         self.startMonitoringSignificantLocationChanges()
+    }
+    
+    public func getRegionType(identifier: String) -> regionType {
+        if (identifier.contains(regionType.POSITION_REGION.rawValue)) {
+            return regionType.POSITION_REGION
+        } else if (identifier.contains(regionType.CUSTOM_REGION.rawValue)) {
+            return regionType.CUSTOM_REGION
+        } else if (identifier.contains(regionType.POI_REGION.rawValue)) {
+            return regionType.POI_REGION
+        }
+        return regionType.NONE
     }
     
 }

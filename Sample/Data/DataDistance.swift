@@ -15,7 +15,9 @@ public class DataDistance:DistanceAPIDelegate  {
         if (distanceAPIData.status == "OK") {
             let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
             let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
-            updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
+            if(distance != nil && duration != nil) {
+                updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
+            }
         }
     }
     

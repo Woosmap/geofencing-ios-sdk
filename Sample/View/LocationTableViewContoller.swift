@@ -13,6 +13,7 @@ enum dataType {
     case location
     case visit
     case ZOI
+    case region
 }
 
 class PlaceData : PropertyPlace  {
@@ -30,6 +31,10 @@ class PlaceData : PropertyPlace  {
     public var duration: Int
     public var movingDuration: String = ""
     public var locationId: String = ""
+    public var poiLatitude: Double = 0.0
+    public var poiLongitude: Double = 0.0
+    public var didEnterRegion: Bool = false
+    public var identifier: String?
     
     
     public init() {
@@ -42,6 +47,10 @@ class PlaceData : PropertyPlace  {
         self.accuracy = 0.0
         self.duration = 0
         self.type = dataType.location
+        self.poiLatitude = 0.0
+        self.poiLongitude = 0.0
+        self.didEnterRegion = false
+        self.identifier = ""
     }
     
     func listPropertiesWithValues(reflect: Mirror? = nil) -> String{
@@ -70,7 +79,6 @@ extension PropertyPlace
         return Mirror(reflecting: self).children.compactMap { $0.label }
     }
 }
-
 
 class POITableCellView: UITableViewCell {
     @IBOutlet weak var location: UILabel!
@@ -123,11 +131,16 @@ class LocationTableViewContoller: UITableViewController {
             selector: #selector(reloadData(_:)),
             name: .reloadData,
             object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didEventPOIRegion(_:)),
+            name: .didEventPOIRegion,
+            object: nil)
         
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let  off = scrollView.contentOffset.y
+        let off = scrollView.contentOffset.y
         btn.frame = CGRect(x: self.view.bounds.width - btn.frame.size.width, y: off + 550, width: btn.frame.size.width, height: btn.frame.size.height)
     }
     
@@ -182,12 +195,27 @@ class LocationTableViewContoller: UITableViewController {
             placeData.locationId = location.locationId!
             let poi = DataPOI().getPOIbyLocationID(locationId: location.locationId!)
             if (poi != nil) {
+                placeData.poiLatitude = poi!.latitude
+                placeData.poiLongitude = poi!.longitude
                 placeData.zipCode = poi!.zipCode
                 placeData.city = poi!.city
                 placeData.distance = poi!.distance
                 placeData.type = dataType.POI
                 placeData.movingDuration = poi!.duration ?? ""
             }
+            placeToShow.append(placeData)
+        }
+        
+        let regions = DataRegion().readRegions()
+        
+        for region in regions {
+            let placeData = PlaceData()
+            placeData.date = region.date
+            placeData.latitude = region.latitude
+            placeData.longitude = region.longitude
+            placeData.identifier = region.identifier
+            placeData.didEnterRegion = region.didEnter
+            placeData.type = dataType.region
             placeToShow.append(placeData)
         }
         
@@ -212,6 +240,11 @@ class LocationTableViewContoller: UITableViewController {
     }
     
     @objc func reloadData(_ notification: Notification) {
+        loadData()
+        tableView.reloadData()
+    }
+    
+    @objc func didEventPOIRegion(_ notification: Notification)  {
         loadData()
         tableView.reloadData()
     }
@@ -243,6 +276,7 @@ class LocationTableViewContoller: UITableViewController {
         DataPOI().erasePOI()
         DataVisit().eraseVisits()
         DataZOI().eraseZOIs()
+        DataRegion().eraseRegions()
         placeToShow.removeAll()
         tableView.reloadData()
     }
@@ -362,7 +396,7 @@ class LocationTableViewContoller: UITableViewController {
                 cell.info.text = "City = " + placeData.city! + "\nZipcode = " + placeData.zipCode!  + "\nDistance = " + String(format:"%f",placeData.distance)
             }
             return cell
-        } else  { // visit
+        } else if (placeData.type == dataType.visit) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "VisitCell", for: indexPath) as! VisitTableCellView
             cell.location.text = String(format:"%f",latitude) + "," + String(format:"%f",longitude)
             cell.time.text = placeData.date!.stringFromDate()
@@ -373,6 +407,14 @@ class LocationTableViewContoller: UITableViewController {
                 cell.info.numberOfLines = 3
                 cell.info.text = "Duration = " + String(format: "%d", placeData.duration) + "\nDeparture Date =  " + placeData.departureDate!.stringFromDate() + "\nArrival Date =  " + placeData.arrivalDate!.stringFromDate()
             }
+            return cell
+        } else { // Region
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell", for: indexPath) as! POITableCellView
+            let symbolEnterExit = placeData.didEnterRegion ? "\u{2B07}" : "\u{2B06}"
+            cell.location.text = symbolEnterExit +  String(format:"%f",latitude) + "," + String(format:"%f",longitude)
+            cell.time.text = placeData.date!.stringFromDate()
+            cell.info.numberOfLines = 3
+            cell.info.text =  placeData.identifier!
             return cell
         }
         

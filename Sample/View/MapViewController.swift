@@ -27,14 +27,15 @@ class CustomPolygon : MKPolygon {
 }
 
 
-class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelegate {
-    
+class MapViewController: UIViewController,MKMapViewDelegate{
+   
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var switchZOI: UISwitch!
     @IBOutlet weak var switchVisits: UISwitch!
     @IBOutlet weak var switchPOI: UISwitch!
     @IBOutlet weak var switchLocation: UISwitch!
     var circles: [MKCircle] = []
+    var circlesPOI: [MKCircle] = []
     var zoiPolygon: [CustomPolygon] = []
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,8 +56,6 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         let buttonItem = MKUserTrackingBarButtonItem(mapView: mapView)
         self.navigationItem.rightBarButtonItem = buttonItem
         
-        WoosmapGeofencing.shared.getLocationService().regionDelegate = self
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(newLocationAdded(_:)),
@@ -73,6 +72,18 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             self,
             selector: #selector(newVisitAdded),
             name: .newVisitSaved,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateRegions(_:)),
+            name: .updateRegions,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didEventPOIRegion),
+            name: .didEventPOIRegion,
             object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
@@ -105,7 +116,8 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
             mapView.addAnnotation(annotationForLocation(location.convertToModel()))
         }
         
-        addZois()
+        overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager!.monitoredRegions)
+        
     }
     
     func addZois() {
@@ -156,7 +168,27 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
                 }
                 continue
             }
+             
+            if let region = overlay as? MKCircle {
+                guard let renderer = self.mapView.renderer(for: region) as? MKCircleRenderer else { continue }
+                let tapPoint = renderer.point(for: mappoint)
+                if renderer.path.contains(tapPoint) {
+                    let circleRenderer = MKCircleRenderer(circle: region)
+                    if(circleRenderer.circle.title == "POI" ) {
+                        WoosmapGeofencing.shared.locationService.removeRegion(center: region.coordinate)
+                        return
+                    }
+                }
+            }
         }
+        
+        let regionIsCreated = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
+        if(!regionIsCreated){
+            let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -235,8 +267,12 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         if let overlay = overlay as? MKCircle {
             
             let circleRenderer = MKCircleRenderer(circle: overlay)
-            circleRenderer.fillColor = UIColor.blue
+            circleRenderer.fillColor = (circleRenderer.circle.title == "POI") ? UIColor.green : UIColor.blue
             circleRenderer.alpha = 0.2
+            if(circleRenderer.circle.title!.contains("ENTER")) {
+                circleRenderer.fillColor = UIColor.red
+                circleRenderer.alpha = 0.2
+            }
             return circleRenderer
             
         } else if overlay is MKPolyline {
@@ -260,18 +296,49 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         return MKOverlayRenderer()
     }
     
-    func updateRegions(regions: Set<CLRegion>) {
+    @objc func updateRegions(_ notification: Notification) {
+        guard let regions = notification.userInfo?["Regions"] as? Set<CLRegion> else {
+            return
+        }
+        overlaysForRegions(regions: regions)
+    }
+    
+    @objc func didEventPOIRegion(_ notification: Notification) {
+        guard let region = notification.userInfo?["Region"] as? RegionModel else {
+            return
+        }
+        
+        if(region.didEnter) {
+            let circlePOI = MKCircle(center: CLLocationCoordinate2D(latitude: region.latitude, longitude: region.longitude), radius: region.radius)
+            circlePOI.title = region.identifier! + "ENTER"
+            self.circlesPOI.append(circlePOI)
+            mapView.addOverlays(circlesPOI)
+        } else {
+            circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
+            mapView.addOverlays(circlesPOI)
+        }
+        
+
+    }
+    
+    func overlaysForRegions(regions: Set<CLRegion>){
         let overlays = mapView.overlays
         mapView.removeOverlays(overlays)
         
         circles = []
         for region in regions {
             if let region = region as? CLCircularRegion {
-                self.circles.append(MKCircle(center: region.center, radius: region.radius))
+                let circle = MKCircle(center: region.center, radius: region.radius)
+                if ((WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.regionType.POSITION_REGION)) {
+                    circle.title = "refresh"
+                } else {
+                    circle.title = "POI"
+                }
+                self.circles.append(circle)
             }
         }
         mapView.addOverlays(circles)
-        
+        mapView.addOverlays(circlesPOI)
         zoiPolygon = []
         addZois()
     }
@@ -421,3 +488,4 @@ class MapViewController: UIViewController,MKMapViewDelegate,RegionsServiceDelega
         }
     }
 }
+

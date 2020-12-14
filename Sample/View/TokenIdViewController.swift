@@ -13,6 +13,7 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
     @IBOutlet weak var trackingSwitch: UISwitch!
     @IBOutlet weak var searchAPISwitch: UISwitch!
     @IBOutlet weak var distanceAPISwitch: UISwitch!
+    @IBOutlet weak var POIRegionSwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,8 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
         searchAPISwitch.addTarget(self,action: #selector(disableEnableSearchAPI), for: .touchUpInside)
         distanceAPISwitch.setOn(WoosmapGeofencing.shared.getDistanceAPIRequestEnable(), animated: false)
         distanceAPISwitch.addTarget(self,action: #selector(disableEnableDistanceAPI), for: .touchUpInside)
+        POIRegionSwitch.setOn(WoosmapGeofencing.shared.getSearchAPICreationRegionEnable(), animated: false)
+        POIRegionSwitch.addTarget(self,action: #selector(searchAPICreationRegionEnable), for: .touchUpInside)
     }
     
     /**
@@ -68,6 +71,16 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
         }else {
             UserDefaults.standard.setValue(false, forKey: "DistanceAPIEnable")
             WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
+        }
+    }
+    
+    @objc func searchAPICreationRegionEnable(){
+        if POIRegionSwitch.isOn {
+            UserDefaults.standard.setValue(true, forKey: "searchAPICreationRegionEnable")
+            WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: true)
+        }else {
+            UserDefaults.standard.setValue(false, forKey: "searchAPICreationRegionEnable")
+            WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: false)
         }
     }
 

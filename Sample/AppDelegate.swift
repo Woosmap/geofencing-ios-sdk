@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UserDefaults.standard.register(defaults:["TrackingEnable":true,
                                                  "SearchAPIEnable":true,
-                                                 "DistanceAPIEnable":true])
+                                                 "DistanceAPIEnable":true,
+                                                 "searchAPICreationRegionEnable":true])
         
         // Set private Woosmap key API
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
@@ -43,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
         WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
+        WoosmapGeofencing.shared.getLocationService().regionDelegate = DataRegion()
         
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
@@ -54,9 +56,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Set SearchAPI automatic on each location
         WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "SearchAPIEnable"))
         
+        // Set 3 Creations Regions POI from Search API result
+        WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: UserDefaults.standard.bool(forKey: "searchAPICreationRegionEnable"))
+        
         // Set DistanceAPI automatic on each POI
         WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "DistanceAPIEnable"))
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: "driving") // walking,cycling
         
         //MockData Visit
         //MockDataVisit().mockVisitData()

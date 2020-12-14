@@ -55,14 +55,14 @@ class RegionsGenerator: NSObject {
         s_radius = max(speed * 20, 140)
         
         let translations = [
-            Translations(offsetLat: s_fullOffset, offsetLng: 0, identifier: "translation n"),
-            Translations(offsetLat: s_halfOffset, offsetLng: -s_halfOffset, identifier: " translation nw"),
-            Translations(offsetLat: s_halfOffset, offsetLng: s_halfOffset, identifier: "translation ne"),
-            Translations(offsetLat: -s_fullOffset, offsetLng: 0, identifier: "translation s"),
-            Translations(offsetLat: -s_halfOffset, offsetLng: -s_halfOffset, identifier: "translation sw"),
-            Translations(offsetLat: -s_halfOffset, offsetLng: s_halfOffset, identifier: "translation se"),
-            Translations(offsetLat: 0, offsetLng: s_fullOffset, identifier: "translation e"),
-            Translations(offsetLat: 0, offsetLng: -s_fullOffset, identifier: "translation w"),
+            Translations(offsetLat: s_fullOffset, offsetLng: 0, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation n"),
+            Translations(offsetLat: s_halfOffset, offsetLng: -s_halfOffset, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation nw"),
+            Translations(offsetLat: s_halfOffset, offsetLng: s_halfOffset, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation ne"),
+            Translations(offsetLat: -s_fullOffset, offsetLng: 0, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation s"),
+            Translations(offsetLat: -s_halfOffset, offsetLng: -s_halfOffset, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation sw"),
+            Translations(offsetLat: -s_halfOffset, offsetLng: s_halfOffset, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation se"),
+            Translations(offsetLat: 0, offsetLng: s_fullOffset, identifier: LocationService.regionType.POSITION_REGION.rawValue + "translation e"),
+            Translations(offsetLat: 0, offsetLng: -s_fullOffset, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_translation w"),
         ]
         
         var regions: Set<CLRegion> = []
@@ -78,7 +78,7 @@ class RegionsGenerator: NSObject {
             if radius <= 500 && location.speed > 10 {
                 continue
             }
-            regions.insert(CLCircularRegion(center: coordinate, radius: radius, identifier: "radius \(radius)"))
+            regions.insert(CLCircularRegion(center: coordinate, radius: radius, identifier: LocationService.regionType.POSITION_REGION.rawValue + "_radius \(radius)"))
             
         }
     

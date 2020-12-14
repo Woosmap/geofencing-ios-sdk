@@ -92,6 +92,16 @@ import CoreLocation
         return searchAPIRequestEnable
     }
     
+    public func setSearchAPICreationRegionEnable(enable: Bool) {
+        if (enable != getSearchAPICreationRegionEnable()) {
+            searchAPICreationRegionEnable = enable
+        }
+    }
+    
+    public func getSearchAPICreationRegionEnable() -> Bool {
+        return searchAPICreationRegionEnable
+    }
+    
     public func setDistanceAPIRequestEnable(enable: Bool) {
         if (enable != getDistanceAPIRequestEnable()) {
             distanceAPIRequestEnable = enable

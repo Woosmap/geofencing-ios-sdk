@@ -25,6 +25,7 @@ public var currentLocationTimeFilter = 0
 public var searchAPIRequestEnable = true
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
+public var searchAPICreationRegionEnable = true
 
 //Distance API filters
 public var distanceAPIRequestEnable = true
