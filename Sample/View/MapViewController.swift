@@ -190,7 +190,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             }
         }
         
-        let regionIsCreated = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
+        let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
         if(!regionIsCreated){
             let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))

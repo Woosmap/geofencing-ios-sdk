@@ -198,16 +198,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.handleRegionChange()
     }
     
-    public func addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance) -> Bool {
+    public func addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate : Bool, identifier: String) {
         if (self.locationManager?.monitoredRegions != nil) {
             if ((self.locationManager?.monitoredRegions.count)! < 20) {
-                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString))
-                return true
+                let id = regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString
+                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
+                return (true,regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString)
             } else {
-                return false
+                return (false,"")
             }
         }
-        return false
+        return (false,"")
     }
     
     public func removeRegion(center: CLLocationCoordinate2D) {
@@ -218,6 +219,30 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if (center.latitude == latRegion && center.longitude == lngRegion){
                     self.locationManager?.stopMonitoring(for: region)
                     self.handleRegionChange()
+                }
+            }
+        }
+    }
+    
+    public func removeRegions(type: regionType) {
+        if (self.locationManager?.monitoredRegions != nil) {
+            if(regionType.NONE == type) {
+                for region in (self.locationManager?.monitoredRegions)! {
+                    if(!region.identifier.contains(regionType.POSITION_REGION.rawValue)){
+                        self.locationManager?.stopMonitoring(for: region)
+                    }
+                }
+            } else if (regionType.CUSTOM_REGION == type) {
+                for region in (self.locationManager?.monitoredRegions)! {
+                    if(region.identifier.contains(regionType.CUSTOM_REGION.rawValue)){
+                        self.locationManager?.stopMonitoring(for: region)
+                    }
+                }
+            } else if (regionType.POI_REGION == type) {
+                for region in (self.locationManager?.monitoredRegions)! {
+                    if(region.identifier.contains(regionType.POI_REGION.rawValue)){
+                        self.locationManager?.stopMonitoring(for: region)
+                    }
                 }
             }
         }
