@@ -18,7 +18,7 @@ The first step in requesting geofence monitoring is to set `regionDelegate`, thi
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-		// Set Woosmap API Private key
+	// Set Woosmap API Private key
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
         
@@ -28,14 +28,15 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         // Set the Woosmap Distance API url
         WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
         WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
-		// Set classification of zoi enable 
+	
+	// Set classification of zoi enable 
         WoosmapGeofencing.shared.setClassification(enable: true)
         
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
         WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
-		WoosmapGeofencing.shared.getLocationService().regionDelegate  =  DataRegion()
+	WoosmapGeofencing.shared.getLocationService().regionDelegate  =  DataRegion()
 ``` 
 
 
@@ -77,7 +78,7 @@ WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: false)
 A region is a circular area centered on a geographic coordinate, and you define one using a `CLLocationCoordinate2D` object. The radius of the region object defines its boundary. You define the regions you want to monitor and register them with the system by calling the `addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance)` method of `WoosmapGeofencing.shared.locationService`. The system monitors your regions until you explicitly ask it to stop or until the device reboots.
 
 ```swift
-	let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
+let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
 ```
 
 This method returns the state of creation (true or false) and the identifier of the region created by the SDK. If this method return false that the limit of numbers of regions monitored is exceed. Indeed, regions are shared resources that rely on specific hardware capabilities. To ensure that all apps can participate in region monitoring, Core Location prevents any single app from monitoring more than 20 regions simultaneously. The SDK create 13 regions to monitor the user location, so you have only 7 slot regions available.
