@@ -7,6 +7,8 @@ Region monitoring (also known as geofencing) combines awareness of the user's cu
 
 In iOS, regions are monitored by the system, which wakes up your app as needed when the user crosses a defined region boundary. 
 
+Region monitoring is a natural complement to Search requests performed on collected locations. Indeed, Search requests help monitoring the approach to some assets you want to monitor. On every collected location you are aware of the surronding assets (distance to them and even time if using Distance API request). You can then decide to monitor some of those surrounding assets (e.g. the closest ones). Region monitoring is designed to do so.
+
 <p align="center">
   <img alt="POI Region" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/POIPenetration.png" width="50%">
 </p>
@@ -68,20 +70,20 @@ When determining whether a boundary crossing happened, the system waits to be su
 
 Regions have an associated identifier, which this method uses to look up information related to the region and perform the associated action.
 
-Regions creation is enabled on the nearest result of the SearchAPI request . On each POI result, 3 regions is created (100 m, 200m, and 300 m). If the creation regions between the mobile and the retrieved Woosmap POIs is not necessary, settings of the SDK can be modified as follow:
+Regions creation is enabled on the nearest result of the Search API request . The closest POI is so used to create 3 regions around it (100 m, 200m, and 300 m). If the automatic region monitoring is not necessary for your use cases, settings of the SDK can be modified as follow:
 ```swift
 WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: false)
 ```
 
 ### Create a custom region
 
-A region is a circular area centered on a geographic coordinate, and you define one using a `CLLocationCoordinate2D` object. The radius of the region object defines its boundary. You define the regions you want to monitor and register them with the system by calling the `addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance)` method of `WoosmapGeofencing.shared.locationService`. The system monitors your regions until you explicitly ask it to stop or until the device reboots.
+A region is a circular area centered on a geographic coordinate. You can define one using a `CLLocationCoordinate2D` object. The radius of the region object defines its boundary. You define the regions you want to monitor and register them with the system by calling the `addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance)` method of `WoosmapGeofencing.shared.locationService`. The system monitors your regions until you explicitly ask it to stop or until the device reboots.
 
 ```swift
 let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
 ```
 
-This method returns the state of creation (true or false) and the identifier of the region created by the SDK. If this method return false that the limit of numbers of regions monitored is exceed. Indeed, regions are shared resources that rely on specific hardware capabilities. To ensure that all apps can participate in region monitoring, Core Location prevents any single app from monitoring more than 20 regions simultaneously. The SDK create 13 regions to monitor the user location, so you have only 7 slot regions available.
+This method returns the state of creation (true or false) and the identifier of the region created by the SDK. If this method returns false, the limit of numbers of regions monitored has been exceed. Indeed, regions are shared resources that rely on specific hardware capabilities. To ensure that all apps can participate in region monitoring, Core Location prevents any single app from monitoring more than 20 regions simultaneously. The SDK creates 13 regions to monitor the user location, so you have only 7 slot regions available.
 
  To work around this limitation, monitor only regions that are close to the user’s current location. As the user moves, update the list based on the user’s new location.
 
@@ -92,7 +94,7 @@ To remove all regions created, you can use this method  :
 WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.regionType.NONE)
 ```
 
-To remove only POI regions created by the result of the searchAPI, you can use this method  :  
+To remove only POI regions created by the result of the search API, you can use this method  :  
 ```swift
 WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.regionType.POI_REGION)
 ```
