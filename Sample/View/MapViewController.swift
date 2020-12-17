@@ -184,6 +184,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                     let circleRenderer = MKCircleRenderer(circle: region)
                     if(circleRenderer.circle.title == "POI" ) {
                         WoosmapGeofencing.shared.locationService.removeRegion(center: region.coordinate)
+                        initMap()
                         return
                     }
                 }
@@ -326,6 +327,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         } else {
             circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
             mapView.addOverlays(circlesPOI)
+            initMap()
         }
         
 

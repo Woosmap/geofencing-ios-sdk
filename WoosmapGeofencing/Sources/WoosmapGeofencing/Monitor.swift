@@ -232,15 +232,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         self.locationManager?.stopMonitoring(for: region)
                     }
                 }
-            } else if (regionType.CUSTOM_REGION == type) {
+            } else {
                 for region in (self.locationManager?.monitoredRegions)! {
-                    if(region.identifier.contains(regionType.CUSTOM_REGION.rawValue)){
-                        self.locationManager?.stopMonitoring(for: region)
-                    }
-                }
-            } else if (regionType.POI_REGION == type) {
-                for region in (self.locationManager?.monitoredRegions)! {
-                    if(region.identifier.contains(regionType.POI_REGION.rawValue)){
+                    if(region.identifier.contains(type.rawValue)){
                         self.locationManager?.stopMonitoring(for: region)
                     }
                 }

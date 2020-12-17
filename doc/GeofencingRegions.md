@@ -1,3 +1,4 @@
+
   
 ##  Create and monitor geofences
   
@@ -67,6 +68,12 @@ Whenever the user crosses the boundary of one of your app's registered regions, 
 Boundary crossing notifications are delivered to your region delegate object. Specifically, `(_:didEnterRegion:)` or `(_:didExitRegion:)` methods.
 
 When determining whether a boundary crossing happened, the system waits to be sure before sending the notification. Specifically, the user must travel a minimum distance over the boundary and remain on the same side of the boundary for at least 20 seconds. These conditions help eliminate spurious calls to your delegate object’s methods.
+
+<p align="center">
+  <img alt="Exit region event" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/exitregion.png" width="50%">
+</p>
+
+The region exit event is not as accurate as the region entry event. it is therefore advisable to rely on the input event to trigger actions
 
 Regions have an associated identifier, which this method uses to look up information related to the region and perform the associated action.
 
