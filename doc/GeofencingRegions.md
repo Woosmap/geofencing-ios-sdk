@@ -73,7 +73,7 @@ When determining whether a boundary crossing happened, the system waits to be su
   <img alt="Exit region event" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/exitregion.png" width="50%">
 </p>
 
-The region exit event is not as accurate as the region entry event. it is therefore advisable to rely on the input event to trigger actions
+By experience, the region exit event from iOS seems not to be as accurate as the region entry event (exit event can tiggered from a position not in the immediate proximity of the region boundary). It is therefore advisable to rely on the input event to trigger actions is accuracy matters for you.
 
 Regions have an associated identifier, which this method uses to look up information related to the region and perform the associated action.
 
