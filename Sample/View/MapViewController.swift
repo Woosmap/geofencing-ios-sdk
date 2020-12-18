@@ -184,13 +184,14 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                     let circleRenderer = MKCircleRenderer(circle: region)
                     if(circleRenderer.circle.title == "POI" ) {
                         WoosmapGeofencing.shared.locationService.removeRegion(center: region.coordinate)
+                        initMap()
                         return
                     }
                 }
             }
         }
         
-        let regionIsCreated = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
+        let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
         if(!regionIsCreated){
             let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -326,6 +327,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         } else {
             circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
             mapView.addOverlays(circlesPOI)
+            initMap()
         }
         
 

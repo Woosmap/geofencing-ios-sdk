@@ -14,6 +14,9 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
     @IBOutlet weak var searchAPISwitch: UISwitch!
     @IBOutlet weak var distanceAPISwitch: UISwitch!
     @IBOutlet weak var POIRegionSwitch: UISwitch!
+    @IBOutlet weak var removeAllRegionsButton: UIButton!
+    @IBOutlet weak var removeAllPOIRegionsButton: UIButton!
+    @IBOutlet weak var removeAllCustomRegionsButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,10 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
         distanceAPISwitch.addTarget(self,action: #selector(disableEnableDistanceAPI), for: .touchUpInside)
         POIRegionSwitch.setOn(WoosmapGeofencing.shared.getSearchAPICreationRegionEnable(), animated: false)
         POIRegionSwitch.addTarget(self,action: #selector(searchAPICreationRegionEnable), for: .touchUpInside)
+        
+        removeAllRegionsButton.addTarget(self,action: #selector(removeAllRegions), for: .touchUpInside)
+        removeAllPOIRegionsButton.addTarget(self,action: #selector(removeAllPOIRegions), for: .touchUpInside)
+        removeAllCustomRegionsButton.addTarget(self,action: #selector(removeAllCustomRegions), for: .touchUpInside)
     }
     
     /**
@@ -82,6 +89,18 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
             UserDefaults.standard.setValue(false, forKey: "searchAPICreationRegionEnable")
             WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: false)
         }
+    }
+    
+    @objc func removeAllRegions(){
+        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.regionType.NONE)
+    }
+    
+    @objc func removeAllPOIRegions(){
+        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.regionType.POI_REGION)
+    }
+    
+    @objc func removeAllCustomRegions(){
+        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.regionType.CUSTOM_REGION)
     }
 
 
