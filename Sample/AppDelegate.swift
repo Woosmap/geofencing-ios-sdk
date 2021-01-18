@@ -38,6 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Set classification of zoi enable
         WoosmapGeofencing.shared.setClassification(enable: true)
+        
+        WoosmapGeofencing.shared.setFirstSearchAPIRegionRadius(radius: 150.0)
+        WoosmapGeofencing.shared.setSecondSearchAPIRegionRadius(radius: 350.0)
+        WoosmapGeofencing.shared.setThirdSearchAPIRegionRadius(radius: 550.0)
 
         
         // Set delegate of protocol Location, POI and Distance

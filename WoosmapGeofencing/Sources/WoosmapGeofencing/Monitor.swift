@@ -198,12 +198,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.handleRegionChange()
     }
     
-    public func addRegion(center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate : Bool, identifier: String) {
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate : Bool, identifier: String) {
         if (self.locationManager?.monitoredRegions != nil) {
             if ((self.locationManager?.monitoredRegions.count)! < 20) {
-                let id = regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString
+                let id = regionType.CUSTOM_REGION.rawValue + "_" + identifier
                 self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
-                return (true,regionType.CUSTOM_REGION.rawValue + "_" + UUID().uuidString)
+                return (true,regionType.CUSTOM_REGION.rawValue + "_" + identifier)
             } else {
                 return (false,"")
             }
@@ -339,14 +339,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: data!)
                     delegate.searchAPIResponseData(searchAPIData: responseJSON!, locationId: locationId)
                     self.lastSearchLocation = self.currentLocation
-                    if (distanceAPIRequestEnable) {
-                        for feature in (responseJSON?.features)! {
-                            let latitude = (feature.geometry?.coordinates![1])!
-                            let longitude = (feature.geometry?.coordinates![0])!
+                    
+                    for feature in (responseJSON?.features)! {
+                        let latitude = (feature.geometry?.coordinates![1])!
+                        let longitude = (feature.geometry?.coordinates![0])!
+                        if (distanceAPIRequestEnable) {
                             self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(latitude,longitude)],locationId: locationId)
-                            if(searchAPICreationRegionEnable){
-                                self.createRegionPOI(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), name: (feature.properties?.name)!)
-                            }
+                        }
+                        if(searchAPICreationRegionEnable){
+                            let POIname = (feature.properties?.store_id)! + "_" + (feature.properties?.name)!
+                            self.createRegionPOI(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), name: POIname)
                         }
                     }
                 }
@@ -376,9 +378,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 }
             }
             let identifier = regionType.POI_REGION.rawValue + "_" + name
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 100, identifier: identifier + " - 100 m"))
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 200, identifier: identifier + " - 200 m"))
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: 300, identifier: identifier + " - 300 m"))
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(secondSearchAPIRegionRadius), identifier: identifier + " - " + String(secondSearchAPIRegionRadius) + " m"))
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(thirdSearchAPIRegionRadius), identifier: identifier + " - " + String(thirdSearchAPIRegionRadius) + " m"))
         }
     }
     

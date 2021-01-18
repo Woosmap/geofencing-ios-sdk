@@ -101,7 +101,8 @@
 				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
 				A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */,
 			);
-			path = WoosmapGeofencing;
+			name = WoosmapGeofencing;
+			path = Sources/WoosmapGeofencing;
 			sourceTree = "<group>";
 		};
 		A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */ = {
@@ -111,7 +112,8 @@
 				A262B9C724E29ADF00EB621F /* Info.plist */,
 				A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */,
 			);
-			path = WoosmapGeofencingTests;
+			name = WoosmapGeofencingTests;
+			path = Tests/WoosmapGeofencingTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -89,6 +89,9 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
         self.mapView.addGestureRecognizer(tap)
         
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(mapLongTapped(_:)))
+        self.mapView.addGestureRecognizer(longTap)
+        
         //Add object on the map
         initMap()
         
@@ -190,14 +193,20 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                 }
             }
         }
-        
-        let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
-        if(!regionIsCreated){
-            let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func mapLongTapped(_ gesture: UILongPressGestureRecognizer){
+        if (gesture.state == UIGestureRecognizer.State.ended) {
+            let point = gesture.location(in: self.mapView)
+            let coordinate = self.mapView.convert(point, toCoordinateFrom: nil)
+            let region_identifer = UUID().uuidString
+            let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: 100)
+            if(!regionIsCreated){
+                let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
-        
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
