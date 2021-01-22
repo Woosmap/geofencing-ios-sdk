@@ -26,6 +26,9 @@ public var searchAPIRequestEnable = true
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
 public var searchAPICreationRegionEnable = true
+public var firstSearchAPIRegionRadius = 100.0
+public var secondSearchAPIRegionRadius = 200.0
+public var thirdSearchAPIRegionRadius = 300.0
 
 //Distance API filters
 public var distanceAPIRequestEnable = true
@@ -34,8 +37,14 @@ public var distanceAPIRequestEnable = true
 public var visitEnable = true
 public var accuracyVisitFilter = 50.0
 
+//Active creation of ZOI
+public var creationOfZOIEnable = true
+
 //Active Classification
 public var classificationEnable = true
+
+//Delay of Duration data
+public var dataDurationDelay = 30// number of day
 
 // delay for obsolote notification
 public var outOfTimeDelay = 300

@@ -73,6 +73,12 @@ The classification of zones of interest (zois) aims to assign them types. For no
 Calculations for each zoi are performed to determine the number of different weeks that the user has spent there.
 A zoi is considered to be recurrent if the number of weeks spent in the zone is greater than or equal to the average of the number of weeks spent in all the zones.
 
+The creation of zois is enable by default. For disable that, in your `AppDelegate`, you can change the value in the settings of the SDK as follow:
+```swift
+// Set creation of zoi enable
+WoosmapGeofencing.shared.creationOfZOIEnable(enable: false)
+```
+
 The classification of zois is enable by default. For disable that, in your `AppDelegate`, you can change the value in the settings of the SDK as follow:
 ```swift
 // Set classification of zoi enable
@@ -85,7 +91,7 @@ WoosmapGeofencing.shared.setClassification(enable: false)
 - Xcode 11 and above
 - APNS Credentials
 - Surge dependency [https://github.com/Jounce/Surge](https://github.com/Jounce/Surge) : A Swift library that uses the Accelerate framework to provide high-performance functions for matrix math, digital signal processing, and image manipulation. 
-
+- Realm dependency [https://github.com/realm/realm-cocoa](https://github.com/realm/realm-cocoa) : Realm is a mobile database that runs directly inside phones, tablets or wearables.
 
 ## Installation
 * Download the latest code version or add the repository as a git submodule to your git-tracked project.
@@ -207,48 +213,56 @@ WoosmapGeofencing.shared.setTrackingEnable(enable: false)
 In your class delegate, retrieve location data :
 ```swift
 public class DataLocation:LocationServiceDelegate  {
-
+    
     public init() {}
     
-    public func tracingLocation(locations: [CLLocation], locationId: String) {
-        let location = locations.last!
-        
-        let locationToSave = LocationModel(locationId: locationId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, dateCaptured: Date(), descriptionToSave: "description")
-        createLocation(location: locationToSave)
+    public func tracingLocation(location: Location) {
+        NotificationCenter.default.post(name: .newLocationSaved, object: self,userInfo: ["Location": location])
     }
     
     public func tracingLocationDidFailWithError(error: Error) {
         NSLog("\(error)")
     }
-    ...
     
+    public func readLocations()-> [Location] {
+        return Locations.getAll()
+    }
+    
+    public func eraseLocations() {
+        Locations.deleteAll()
+    }
+    
+}
 ```
 
 ### Retrieve POI 
 In your class delegate, retrieve POI data :
 ```swift
 public class DataPOI:SearchAPIDelegate  {
-    
     public init() {}
     
-    public func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
-        for feature in (searchAPIData.features)! {
-            let city = feature.properties!.address!.city!
-            let zipCode = feature.properties!.address!.zipcode!
-            let distance = feature.properties!.distance!
-            let latitude = (feature.geometry?.coordinates![1])!
-            let longitude = (feature.geometry?.coordinates![0])!
-            let dateCaptured = Date()
-            let POIToSave = POIModel(locationId: locationId,city: city,zipCode: zipCode,distance: distance,latitude: latitude, longitude: longitude,dateCaptured: dateCaptured)
-            createPOI(POImodel: POIToSave)
-        }
+    public func searchAPIResponse(poi: POI) {
+        NotificationCenter.default.post(name: .newPOISaved, object: self, userInfo: ["POI": poi])
     }
     
     public func serachAPIError(error: String) {
         
     }
-    ...
     
+    public func readPOI()-> [POI] {
+        return POIs.getAll()
+    }
+    
+    func getPOIbyLocationID(locationId: String)-> POI? {
+        return POIs.getPOIbyLocationID(locationId: locationId)
+    }
+    
+    public func erasePOI() {
+        POIs.deleteAll()
+    }
+    
+}
+
 ```
 The Search API request is enabled on all positions by default. To disable Search request, just change the value in the settings of the SDK as follow:
 ```swift
@@ -259,20 +273,26 @@ WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: false)
 In your class delegate, retrieve Distance data :
 ```swift
 public class DataDistance:DistanceAPIDelegate  {
+    public init() {}
+    
     public func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String) {
         if (distanceAPIData.status == "OK") {
-            let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
-            let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
-            updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
+            if (distanceAPIData.rows?.first?.elements?.first?.status == "OK") {
+                let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
+                let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
+                if(distance != nil && duration != nil) {
+                    print(distance ?? 0)
+                    print(duration ?? 0)
+                }
+            }
         }
     }
-    
     
     public func distanceAPIError(error: String) {
         print(error)
     }
-    ...
     
+}
 ```
 The Distance API request is enabled on all search results by default. If distance by road between the mobile and the retrieved Woosmap POIs is not necessary, settings of the SDK can be modified as follow:
 ```swift
@@ -282,114 +302,44 @@ WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
 ### Retrieve Visits 
 For the visits, in the app delegate, you can retrieve the visit like this: 
 ```swift
-func processVisit(visit: CLVisit) {
-    let calendar = Calendar.current
-    let departureDate = calendar.component(.year, from: visit.departureDate) != 4001 ? visit.departureDate : nil
-    let arrivalDate = calendar.component(.year, from: visit.arrivalDate) != 4001 ? visit.arrivalDate : nil
-    let visitToSave = VisitModel(arrivalDate: arrivalDate, departureDate: departureDate, latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude, dateCaptured:Date() , accuracy: visit.horizontalAccuracy)
+public class DataVisit:VisitServiceDelegate  {
     
-    createVisit(visit: visitToSave)
+    public init() {}
+    
+    public func processVisit(visit: Visit) {
+        NotificationCenter.default.post(name: .newVisitSaved, object: self,userInfo: ["Visit": visit])
+    }
+    
+    public func readVisits()-> Array<Visit> {
+        return Visits.getAll()
+    }
+    
+    public func eraseVisits() {
+        Visits.deleteAll()
+    }
 }
+
 ```
 
 ### Retrieve Zone of Interest
 ZOIs are built from visits, grouped by proximity. We use the Fast Incremental Gaussian Mixture Model of classification Algorithm  [FIGMM](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0139931) to build and update our ZOI according to visits recurrency along time.
 
-Create the ZOI when a visit is created :
+For the ZOIs, in the app delegate, you can retrieve zoi data like this: 
 ```swift
-func createVisit(visit: VisitModel) {
-	...
-    DataZOI().createZOIFromVisit(visit: newVisit)
+public class DataZOI {
+    public init() {}
+    
+    public func readZOIs()-> [ZOI] {
+        return ZOIs.getAll()
+    }
+    
+    
+    public func eraseZOIs() {
+        ZOIs.deleteAll()
+    }
 }
 ```
 
-To create ZOI, you must retrieve all the ZOI in database, calculate the new ZOIs, erase the old ZOIs in database, save the new ZOIs:
-```swift
-func createZOIFromVisit(visit : Visit) {
-   	//Retrieve the zois in database
-    let sMercator = SphericalMercator()
-    var zoisFromDB: [Dictionary<String, Any>] = []
-    for zoiFromDB in readZOIs(){
-        var zoiToAdd = Dictionary<String, Any>()
-        zoiToAdd["prior_probability"] = zoiFromDB.prior_probability
-        zoiToAdd["mean"] = [zoiFromDB.latMean, zoiFromDB.lngMean]
-        zoiToAdd["age"] = zoiFromDB.age
-        zoiToAdd["accumulator"] = zoiFromDB.accumulator
-        zoiToAdd["idVisits"] = zoiFromDB.idVisits
-        zoiToAdd["startTime"] = zoiFromDB.startTime
-        zoiToAdd["endTime"] = zoiFromDB.endTime
-        zoiToAdd["covariance_det"] = zoiFromDB.covariance_det
-        zoiToAdd["x00Covariance_matrix_inverse"] = zoiFromDB.x00Covariance_matrix_inverse
-        zoiToAdd["x01Covariance_matrix_inverse"] = zoiFromDB.x01Covariance_matrix_inverse
-        zoiToAdd["x10Covariance_matrix_inverse"] = zoiFromDB.x10Covariance_matrix_inverse
-        zoiToAdd["x11Covariance_matrix_inverse"] = zoiFromDB.x11Covariance_matrix_inverse
-        zoisFromDB.append(zoiToAdd)
-        
-    }
-    
-    // Set the data zois for calculation
-    setListZOIsFromDB(zoiFromDB: zoisFromDB)
-
-	// Calculation
-    let list_zoi = figmmForVisit(newVisitPoint: MyPoint(x: sMercator.lon2x(aLong: visit.longitude), y: sMercator.lat2y(aLat:visit.latitude),accuracy: visit.accuracy, id:visit.visitId!, startTime: visit.arrivalDate!, endTime: visit.departureDate!))
-    
-    // Erase the old data
-    eraseZOIs()
-    
-    // Store zoi in database
-    for zoi in list_zoi{
-        createZOIFrom(zoi: zoi)
-    }
-    
-}
-```
-
-When you store a ZOI in database, you must define the duration the ZOI, the departure and arrival date time like that: 
-```swift
-func createZOIFrom(zoi: Dictionary<String, Any>) {
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let context = appDelegate.persistentContainer.viewContext
-    let entity = NSEntityDescription.entity(forEntityName: "ZOI", in: context)!
-    let newZOi = ZOI(entity: entity, insertInto: context)
-    newZOi.setValue(UUID(), forKey: "zoiId")
-    newZOi.setValue(zoi["idVisits"], forKey: "idVisits")
-    
-    var visitArrivalDate = [Date]()
-    var visitDepartureDate = [Date]()
-    var duration = 0
-    for id in zoi["idVisits"] as! [UUID] {
-        let visit = DataVisit().getVisitFromUUID(id: id)
-        visitArrivalDate.append(visit!.arrivalDate!)
-        visitDepartureDate.append(visit!.departureDate!)
-        duration += visit!.departureDate!.seconds(from: visit!.arrivalDate!)
-    }
-    let startTime = visitArrivalDate.reduce(visitArrivalDate[0], { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 ? $0 : $1 } )
-    let endTime = visitDepartureDate.reduce(visitDepartureDate[0], { $0.timeIntervalSince1970 > $1.timeIntervalSince1970 ? $0 : $1 } )
-    
-    newZOi.setValue(startTime , forKey: "startTime")
-    newZOi.setValue(endTime, forKey: "endTime")
-    newZOi.setValue(duration, forKey: "duration")
-    newZOi.setValue((zoi["mean"] as! Array<Any>)[0] as! Double, forKey: "latMean")
-    newZOi.setValue((zoi["mean"] as! Array<Any>)[1] as! Double, forKey: "lngMean")
-    newZOi.setValue(zoi["age"] , forKey: "age")
-    newZOi.setValue(zoi["accumulator"] , forKey: "accumulator")
-    newZOi.setValue(zoi["covariance_det"] , forKey: "covariance_det")
-    newZOi.setValue(zoi["prior_probability"] , forKey: "prior_probability")
-    newZOi.setValue(zoi["x00Covariance_matrix_inverse"], forKey: "x00Covariance_matrix_inverse")
-    newZOi.setValue(zoi["x01Covariance_matrix_inverse"], forKey: "x01Covariance_matrix_inverse")
-    newZOi.setValue(zoi["x10Covariance_matrix_inverse"], forKey: "x10Covariance_matrix_inverse")
-    newZOi.setValue(zoi["x11Covariance_matrix_inverse"], forKey: "x11Covariance_matrix_inverse")
-    newZOi.setValue(zoi["WktPolygon"], forKey: "wktPolygon")
-    
-    do {
-        try context.save()
-    }
-    catch let error as NSError {
-        print("Could not insert. \(error), \(error.userInfo)")
-    }
-
-}
-```
 
 Each ZOI includes the following informations:
 

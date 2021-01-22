@@ -37,6 +37,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     var circles: [MKCircle] = []
     var circlesPOI: [MKCircle] = []
     var zoiPolygon: [CustomPolygon] = []
+    var stateSwitchPOI = true
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -89,6 +90,9 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
         self.mapView.addGestureRecognizer(tap)
         
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(mapLongTapped(_:)))
+        self.mapView.addGestureRecognizer(longTap)
+        
         //Add object on the map
         initMap()
         
@@ -106,24 +110,24 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         
         if(switchPOI.isOn) {
             for poi:POI in DataPOI().readPOI() {
-                mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+                mapView.addAnnotation(annotationForPOI(poi))
             }
         }
         
         if(switchVisits.isOn) {
             for visit:Visit in DataVisit().readVisits() {
-                mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+                mapView.addAnnotation(annotationForVisit(visit))
             }
         }
         
         if(switchLocation.isOn) {
             for location:Location in DataLocation().readLocations() {
-                mapView.addAnnotation(annotationForLocation(location.convertToModel()))
+                mapView.addAnnotation(annotationForLocation(location))
             }
         }
         
         if switchRegions.isOn {
-            overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager!.monitoredRegions)
+            overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions ?? [])
         }
         
     }
@@ -135,7 +139,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             let arrivalDate = zoi.startTime
             let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(zoi.duration))
             let duration = "\(h) hrs \(m) mins \(s) secs"
-            let nbVisits = String(zoi.idVisits!.count)
+            let nbVisits = String(zoi.idVisits.count)
             var title = "Departure Date : " + departureDate!.stringFromDate()
             title += "\nArrival Date : " + arrivalDate!.stringFromDate()
             title += "\nNb Visits : " + nbVisits
@@ -154,7 +158,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             }
             
             polygon.title = title
-            polygon.visitsId = zoi.idVisits!
+            polygon.visitsId = Array(zoi.idVisits)
             zoiPolygon.append(polygon)
             mapView.addOverlay(polygon)
         }
@@ -190,14 +194,20 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                 }
             }
         }
-        
-        let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(center: coordinate, radius: 100)
-        if(!regionIsCreated){
-            let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func mapLongTapped(_ gesture: UILongPressGestureRecognizer){
+        if (gesture.state == UIGestureRecognizer.State.ended) {
+            let point = gesture.location(in: self.mapView)
+            let coordinate = self.mapView.convert(point, toCoordinateFrom: nil)
+            let region_identifer = UUID().uuidString
+            let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: 100)
+            if(!regionIsCreated){
+                let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
-        
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -315,7 +325,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     }
     
     @objc func didEventPOIRegion(_ notification: Notification) {
-        guard let region = notification.userInfo?["Region"] as? RegionModel else {
+        guard let region = notification.userInfo?["Region"] as? Region else {
             return
         }
         
@@ -355,7 +365,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         addZois()
     }
     
-    func annotationForLocation(_ location: LocationModel) -> MKAnnotation {
+    func annotationForLocation(_ location: Location) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.location
         annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
@@ -363,7 +373,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     }
     
     @objc func newLocationAdded(_ notification: Notification) {
-        guard let location = notification.userInfo?["Location"] as? LocationModel else {
+        guard let location = notification.userInfo?["Location"] as? Location else {
             return
         }
         if(switchLocation.isOn) {
@@ -373,7 +383,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     }
     
     
-    func annotationForPOI(_ POI: POIModel) -> MKAnnotation {
+    func annotationForPOI(_ POI: POI) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.POI
         annotation.title = POI.city
@@ -382,20 +392,20 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     }
     
     @objc func newPOIAdded(_ notification: Notification) {
-        guard let POI = notification.userInfo?["POI"] as? POIModel else {
+        guard let POI = notification.userInfo?["POI"] as? POI else {
             return
         }
         
-        if(switchPOI.isOn) {
+        if(stateSwitchPOI) {
             let annotation = annotationForPOI(POI)
             mapView.addAnnotation(annotation)
         }
     }
     
-    func annotationForVisit(_ visit: VisitModel) -> MKAnnotation {
+    func annotationForVisit(_ visit: Visit) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.visit
-        annotation.title = "Visit " + visit.dateCaptured.stringFromDate()
+        annotation.title = "Visit " + visit.date!.stringFromDate()
         
         var duration = "Ongoing"
         if (visit.arrivalDate == nil || visit.departureDate == nil) {
@@ -413,7 +423,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     }
     
     @objc func newVisitAdded(_ notification: Notification) {
-        guard let visit = notification.userInfo?["Visit"] as? VisitModel else {
+        guard let visit = notification.userInfo?["Visit"] as? Visit else {
             return
         }
         
@@ -464,8 +474,10 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     
     @objc func disableEnablePOI(){
         if switchPOI.isOn {
+            stateSwitchPOI = true
             disableEnableAnnotion(enable: true, annotationType: AnnotationType.POI)
         }else {
+            stateSwitchPOI = false
             disableEnableAnnotion(enable: false, annotationType: AnnotationType.POI)
         }
     }
@@ -482,15 +494,15 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         if (enable) {
             if(annotationType == AnnotationType.location) {
                 for location:Location in DataLocation().readLocations() {
-                    mapView.addAnnotation(annotationForLocation(location.convertToModel()))
+                    mapView.addAnnotation(annotationForLocation(location))
                 }
             } else if(annotationType == AnnotationType.POI) {
                 for poi:POI in DataPOI().readPOI() {
-                    mapView.addAnnotation(annotationForPOI(poi.convertToModel()))
+                    mapView.addAnnotation(annotationForPOI(poi))
                 }
             } else if(annotationType == AnnotationType.visit) {
                 for visit:Visit in DataVisit().readVisits() {
-                    mapView.addAnnotation(annotationForVisit(visit.convertToModel()))
+                    mapView.addAnnotation(annotationForVisit(visit))
                 }
             }
         } else {

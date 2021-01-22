@@ -5,7 +5,7 @@
 //
 
 import UIKit
-import CoreData
+import CoreLocation
 import WoosmapGeofencing
 
 enum dataType {
@@ -99,16 +99,6 @@ class LocationTableViewContoller: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        btn.frame = CGRect(x: 230, y: 500, width: 100, height: 100)
-        btn.setTitle("Test Data", for: .normal)
-        btn.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
-        btn.clipsToBounds = true
-        btn.layer.cornerRadius = 50
-        btn.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        btn.layer.borderWidth = 3.0
-        btn.addTarget(self,action: #selector(mockDataAction), for: .touchUpInside)
-        view.addSubview(btn)
-        
         loadData()
         
         NotificationCenter.default.addObserver(
@@ -137,6 +127,7 @@ class LocationTableViewContoller: UITableViewController {
             name: .didEventPOIRegion,
             object: nil)
         
+        
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -146,23 +137,6 @@ class LocationTableViewContoller: UITableViewController {
     
     func loadData() {
         placeToShow.removeAll()
-        
-        //Mock data
-        /*for POI in DataPOI().readPOI() {
-         let placeData = PlaceData()
-         placeData.date = POI.date
-         placeData.latitude = POI.latitude
-         placeData.longitude = POI.longitude
-         placeData.departureDate = POI.date?.addingTimeInterval(3600)
-         placeData.arrivalDate = POI.date
-         if (placeData.arrivalDate == nil || placeData.departureDate == nil) {
-         placeData.duration = 0
-         } else {
-         placeData.duration = placeData.departureDate!.seconds(from: placeData.arrivalDate!)
-         }
-         placeData.type = dataType.visit
-         placeToShow.append(placeData)
-         }*/
         
         let visits = DataVisit().readVisits()
         for visit in visits {
@@ -221,55 +195,46 @@ class LocationTableViewContoller: UITableViewController {
         
         //POI and Location sorted
         placeToShow = placeToShow.sorted(by: { $0.date!.compare($1.date!) == .orderedDescending })
-        
     }
     
     @objc func newLocationAdded(_ notification: Notification) {
-        loadData()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.loadData()
+            self.tableView.reloadData()
+        }
     }
     
     @objc func newPOIAdded(_ notification: Notification) {
-        loadData()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.loadData()
+            self.tableView.reloadData()
+        }
     }
     
     @objc func newVisitAdded(_ notification: Notification) {
-        loadData()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.loadData()
+            self.tableView.reloadData()
+        }
     }
     
     @objc func reloadData(_ notification: Notification) {
-        loadData()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.loadData()
+            self.tableView.reloadData()
+        }
     }
     
     @objc func didEventPOIRegion(_ notification: Notification)  {
-        loadData()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.loadData()
+            self.tableView.reloadData()
+        }
     }
     
     @IBAction func exportDB(_ sender: Any) {
         exportDatabase()
     }
-    
-    @objc func mockDataAction(){
-        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
-
-        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
-        loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.style = UIActivityIndicatorView.Style.gray
-        loadingIndicator.startAnimating();
-
-        alert.view.addSubview(loadingIndicator)
-        present(alert, animated: true, completion: {
-            MockDataVisit().mockVisitData()
-            //MockDataVisit().mockLocationsData()
-            //MockDataVisit().mockDataFromSample()
-        })
-        dismiss(animated: false, completion: nil)
-    }
-    
     
     @IBAction func purgePressed(_ sender: Any) {
         DataLocation().eraseLocations()
@@ -442,7 +407,6 @@ class LocationTableViewContoller: UITableViewController {
             let latDest = poi!.latitude
             let lngDest = poi!.longitude
             WoosmapGeofencing.shared.getLocationService().distanceAPIRequest(locationOrigin: location,coordinatesDest: [(latDest, lngDest)], locationId: placeData.locationId)
-            //(locationOrigin: location, latDest: poi?.latitude, lngDest: poi?.longitude, locationId: placeData.locationId)
         }
     }
     

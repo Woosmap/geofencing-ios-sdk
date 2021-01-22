@@ -17,6 +17,7 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
     @IBOutlet weak var removeAllRegionsButton: UIButton!
     @IBOutlet weak var removeAllPOIRegionsButton: UIButton!
     @IBOutlet weak var removeAllCustomRegionsButton: UIButton!
+    @IBOutlet weak var testDataButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,8 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
         removeAllRegionsButton.addTarget(self,action: #selector(removeAllRegions), for: .touchUpInside)
         removeAllPOIRegionsButton.addTarget(self,action: #selector(removeAllPOIRegions), for: .touchUpInside)
         removeAllCustomRegionsButton.addTarget(self,action: #selector(removeAllCustomRegions), for: .touchUpInside)
+        
+        testDataButton.addTarget(self,action: #selector(testData), for: .touchUpInside)
     }
     
     /**
@@ -101,6 +104,23 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate  {
     
     @objc func removeAllCustomRegions(){
         WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.regionType.CUSTOM_REGION)
+    }
+    
+    @objc func testData(){
+        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.gray
+        loadingIndicator.startAnimating();
+
+        alert.view.addSubview(loadingIndicator)
+        present(alert, animated: true, completion: {
+            MockDataVisit().mockVisitData()
+            //MockDataVisit().mockLocationsData()
+            //MockDataVisit().mockDataFromSample()
+        })
+        dismiss(animated: false, completion: nil)
     }
 
 

@@ -50,11 +50,11 @@ public class MockDataVisit {
                 let arrivalDate = dateFormatter.date(from:visit[3])!
                 let departureDate = dateFormatter.date(from:visit[4])!
                 
-                let visitToSave = VisitModel(visitId: id, arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:departureDate, accuracy: accuracy)
-                
-                DataVisit().createVisit(visit: visitToSave)
+                let visitToSave = Visit(visitId: id, arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:departureDate, accuracy: accuracy)
+                Visits.addTest(visit: visitToSave)
             }
         }
+        NotificationCenter.default.post(name: .reloadData, object: self)
     }
     
     
@@ -83,17 +83,18 @@ public class MockDataVisit {
                 let arrivalDate = dateFormatter.date(from:visit[3])!
                 let departureDate = dateFormatter.date(from:visit[4])!
                 
-                let visitToSave = VisitModel(visitId: id, arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:departureDate, accuracy: accuracy)
+                let visitToSave = Visit(visitId: id, arrivalDate: arrivalDate, departureDate: departureDate, latitude: lat, longitude:  lng, dateCaptured:departureDate, accuracy: accuracy)
                 
-                let locationToSave = LocationModel(locationId: id, latitude: lat, longitude: lng, dateCaptured: departureDate, descriptionToSave: "mockLocation")
+                let locationToSave = Location(locationId: id, latitude: lat, longitude: lng, dateCaptured: departureDate, descriptionToSave: "mockLocation")
                 
-                let POIToSave = POIModel(locationId: id, city: "test", zipCode: "75020", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: departureDate)
+                let POIToSave = POI(locationId: id, city: "test", zipCode: "75020", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: departureDate)
                 
-                DataVisit().createVisit(visit: visitToSave)
-                DataLocation().createLocation(location: locationToSave)
-                DataPOI().createPOI(POImodel: POIToSave)
+                Visits.addTest(visit: visitToSave)
+                Locations.addTest(location: locationToSave)
+                POIs.addTest(poi: POIToSave)
             }
         }
+        NotificationCenter.default.post(name: .reloadData, object: self)
     }
     
     public func mockDataFromSample() {
@@ -129,18 +130,22 @@ public class MockDataVisit {
             if (type == "location"){
                 nbrLoc+=1
                 print("location " + String(nbrLoc))
-                let locationToSave = LocationModel(locationId: String(id), latitude: lat, longitude: lng, dateCaptured:  dateFormatter.date(from: creationDate), descriptionToSave: description)
-                DataLocation().createLocation(location: locationToSave)
+                let locationToSave = Location(locationId: String(id), latitude: lat!, longitude: lng!, dateCaptured:  dateFormatter.date(from: creationDate)!, descriptionToSave: description)
+                Locations.addTest(location: locationToSave)
             } else if (type == "POI") {
-                let POIToSave = POIModel(locationId: String(id), city: city, zipCode: zipcode, distance: distance, latitude: lat, longitude: lng, dateCaptured: dateFormatter.date(from: creationDate))
-                DataPOI().createPOI(POImodel: POIToSave)
+                let POIToSave = POI(locationId: String(id), city: city, zipCode: zipcode, distance: distance, latitude: lat, longitude: lng, dateCaptured: dateFormatter.date(from: creationDate))
+                POIs.addTest(poi: POIToSave)
             } else if (type == "visit") {
-                let visitToSave = VisitModel(visitId: String(id), arrivalDate: dateFormatter.date(from: arrivalDate), departureDate: dateFormatter.date(from: departureDate), latitude: lat!, longitude: lng!, dateCaptured: dateFormatter.date(from: creationDate), accuracy: accuracy!)
-                DataVisit().createVisit(visit: visitToSave)
+                let visitToSave = Visit(visitId: String(id), arrivalDate: dateFormatter.date(from: arrivalDate), departureDate: dateFormatter.date(from: departureDate), latitude: lat!, longitude: lng!, dateCaptured: dateFormatter.date(from: creationDate), accuracy: accuracy!)
+                Visits.addTest(visit: visitToSave)
             }
-        
-           
         }
+        NotificationCenter.default.post(name: .reloadData, object: self)
     }
     
 }
+
+extension Notification.Name {
+    static let reloadData = Notification.Name("reloadData")
+}
+

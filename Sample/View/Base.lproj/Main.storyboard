@@ -460,10 +460,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Remove All Custom Regions"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUJ-f8-JXN">
+                                <rect key="frame" x="162" y="686" width="90" height="35"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Test Datas"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wjg-3b-2Rh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="RUJ-f8-JXN" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="162" id="09u-wb-Es9"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
                             <constraint firstItem="Kg9-t8-iO2" firstAttribute="centerY" secondItem="W24-9x-aBv" secondAttribute="centerY" id="5vy-Ng-vnR"/>
                             <constraint firstItem="W24-9x-aBv" firstAttribute="top" secondItem="xVB-20-h2R" secondAttribute="bottom" constant="20" id="5zd-om-4c3"/>
@@ -471,10 +477,12 @@
                             <constraint firstItem="W24-9x-aBv" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="Amd-uU-dzq"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="centerY" secondItem="39W-Ks-HvI" secondAttribute="centerY" id="BQa-GF-Q1i"/>
                             <constraint firstItem="XT1-ev-ZVu" firstAttribute="centerY" secondItem="JEX-Xy-smo" secondAttribute="centerY" id="Bee-LX-nxc"/>
+                            <constraint firstItem="RUJ-f8-JXN" firstAttribute="top" secondItem="FCt-va-tsY" secondAttribute="bottom" constant="8" id="Bp0-rj-7jr"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="0aN-Rb-Hqj" secondAttribute="trailing" constant="92" id="BqY-jO-SZv"/>
                             <constraint firstItem="1c0-gl-iWl" firstAttribute="top" secondItem="0aN-Rb-Hqj" secondAttribute="bottom" id="Def-sB-aCf"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="trailing" secondItem="Kg9-t8-iO2" secondAttribute="trailing" id="G9b-6u-OFD"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="JPW-sq-X3G"/>
+                            <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RUJ-f8-JXN" secondAttribute="trailing" symbolic="YES" id="JhU-6u-0ak"/>
                             <constraint firstItem="JEX-Xy-smo" firstAttribute="top" secondItem="IXV-Xt-5ex" secondAttribute="bottom" constant="20" id="Kbg-72-aju"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="centerX" secondItem="1c0-gl-iWl" secondAttribute="centerX" id="LtD-iG-95l"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="NE3-nb-7W0"/>
@@ -510,6 +518,7 @@
                         <outlet property="removeAllPOIRegionsButton" destination="1c0-gl-iWl" id="alx-RX-xAS"/>
                         <outlet property="removeAllRegionsButton" destination="0aN-Rb-Hqj" id="RjC-NR-hiK"/>
                         <outlet property="searchAPISwitch" destination="xVB-20-h2R" id="CH3-iw-99e"/>
+                        <outlet property="testDataButton" destination="RUJ-f8-JXN" id="seI-PE-3HO"/>
                         <outlet property="trackingSwitch" destination="JEX-Xy-smo" id="A4J-Sx-rzu"/>
                     </connections>
                 </viewController>
