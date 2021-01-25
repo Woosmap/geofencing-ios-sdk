@@ -133,15 +133,7 @@
 		A2390572257A7A49001B3754 /* RegionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionModel.swift; sourceTree = "<group>"; };
 		A23CCD3C250FA97900D49193 /* SampleGeofencingTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleGeofencingTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A23CCD3D250FA97900D49193 /* DelayDataDurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayDataDurationTests.swift; sourceTree = "<group>"; };
-		A262B9DE24E29FB100EB621F /* POI+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "POI+CoreDataClass.swift"; path = "../../GeoSearch/Data/POI+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A262B9E224E29FB100EB621F /* paris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = paris.gpx; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/paris.gpx"; sourceTree = "<absolute>"; };
-		A262B9E324E29FB200EB621F /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataClass.swift"; path = "../../GeoSearch/Data/Location+CoreDataClass.swift"; sourceTree = "<group>"; };
-		A262B9E424E29FB200EB621F /* ZOI+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ZOI+CoreDataClass.swift"; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/ZOI+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		A262B9E524E29FB200EB621F /* POI+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "POI+CoreDataProperties.swift"; path = "../../GeoSearch/Data/POI+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		A262B9E624E29FB200EB621F /* Visit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Visit+CoreDataProperties.swift"; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/Visit+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		A262B9E724E29FB200EB621F /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "../../GeoSearch/Data/Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		A262B9E824E29FB200EB621F /* ZOI+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ZOI+CoreDataProperties.swift"; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/ZOI+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
-		A262B9E924E29FB200EB621F /* Visit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Visit+CoreDataClass.swift"; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/Visit+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		A273027D23EB0BB00042FC5A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A274FD9F2507D1310008CE25 /* UserDataCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataCleaner.swift; sourceTree = "<group>"; };
 		A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,14 +259,6 @@
 			isa = PBXGroup;
 			children = (
 				A23CCD3F2510E87700D49193 /* csvImport */,
-				A262B9E424E29FB200EB621F /* ZOI+CoreDataClass.swift */,
-				A262B9E824E29FB200EB621F /* ZOI+CoreDataProperties.swift */,
-				A262B9E924E29FB200EB621F /* Visit+CoreDataClass.swift */,
-				A262B9E624E29FB200EB621F /* Visit+CoreDataProperties.swift */,
-				A262B9DE24E29FB100EB621F /* POI+CoreDataClass.swift */,
-				A262B9E524E29FB200EB621F /* POI+CoreDataProperties.swift */,
-				A262B9E324E29FB200EB621F /* Location+CoreDataClass.swift */,
-				A262B9E724E29FB200EB621F /* Location+CoreDataProperties.swift */,
 				A20DDE7723EAFB9E00124E56 /* DataLocation.swift */,
 				A238041B23EC6A95002F53F2 /* DataPOI.swift */,
 				A2B6E7E324192536006C4F19 /* DataVisit.swift */,

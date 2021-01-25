@@ -2,15 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/maclaurent/work/ios_geofencing_updateRegionPOI/woosmap-geofencing-ios-sdk/Sample/Data/Region+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/maclaurent/work/ios_geofencing_updateRegionPOI/woosmap-geofencing-ios-sdk/Sample/Data/Region+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/maclaurent/work/ios_geofencing_option/woosmap-geofencing-ios-sdk/Sample/Data/POI+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:Sample.xcodeproj">
    </FileRef>
 </Workspace>
