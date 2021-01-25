@@ -52,7 +52,7 @@ public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>
 }
 
 func clean_clusters_without_visit() {
-    for (index, zois_gmm_info) in list_zois.enumerated() {
+    for (index, zois_gmm_info) in list_zois.enumerated().reversed() {
         let listVisit:[LoadedVisit] = zois_gmm_info["visitPoint"] as! [LoadedVisit]
         var listidVisit:[String] = [String]()
         if let list = zois_gmm_info["idVisits"] as? [String] {
