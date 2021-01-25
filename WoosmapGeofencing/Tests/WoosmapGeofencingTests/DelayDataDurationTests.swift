@@ -7,12 +7,14 @@
 
 import XCTest
 import WoosmapGeofencing
+import RealmSwift
 
 class DelayDataDurationTests: XCTestCase {
     let dateFormatter = DateFormatter()
 
     override func setUp() {
         super.setUp()
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
         cleanDatabase()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
         dateFormatter.dateFormat = "yyyy-MM-dd' 'HH:mm:ssZ"
