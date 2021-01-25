@@ -16,5 +16,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: iOS - ${{ matrix.destination }}
-        run: xcodebuild test -project WoosmapGeofencing/WoosmapGeofencing.xcodeproj -scheme WoosmapGeofencingTests -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11"
+        run: sudo xcodebuild test -project WoosmapGeofencing/WoosmapGeofencing.xcodeproj -scheme WoosmapGeofencingTests -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11"
 
