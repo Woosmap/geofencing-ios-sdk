@@ -13,8 +13,6 @@ jobs:
   iOS:
     name: Test iOS 
     runs-on: macOS-latest
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
     steps:
       - uses: actions/checkout@v2
       - name: iOS - ${{ matrix.destination }}
