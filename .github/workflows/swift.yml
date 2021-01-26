@@ -22,7 +22,6 @@ jobs:
         run: echo $(ls -l /Users/runner/Library/Developer/CoreSimulator/Devices/)
       - name: iOS - ${{ matrix.destination }}
         run: xcodebuild -project WoosmapGeofencing/WoosmapGeofencing.xcodeproj -scheme WoosmapGeofencingTests -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11"
-      - if: ${{ always() }}
       - name: chmod
         run : sudo chmod -R o+w /Users/runner/Library/Developer/CoreSimulator/Devices/
       - name: iOS - ${{ matrix.destination }}
