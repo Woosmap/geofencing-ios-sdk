@@ -12,7 +12,13 @@ jobs:
   iOS:
     name: Test_iOS 
     runs-on: macOS-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+      - uses: actions/checkout@v2
+      - name: chmod
+        run : sudo chmod -R o+w /Users/runner/Library/Developer/CoreSimulator/Devices/
+      - name: Run  echo tests
+        run: echo $(ls -l /Users/runner/Library/Developer/CoreSimulator/Devices/)
+      - name: iOS - ${{ matrix.destination }}
+        run: xcodebuild test -project WoosmapGeofencing/WoosmapGeofencing.xcodeproj -scheme WoosmapGeofencingTests -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11"
