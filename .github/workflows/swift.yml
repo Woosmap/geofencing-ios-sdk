@@ -16,5 +16,5 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
     steps:
       - uses: actions/checkout@v2
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - name: iOS - ${{ matrix.destination }}
+        run: xcodebuild test -project WoosmapGeofencing/WoosmapGeofencing.xcodeproj -scheme WoosmapGeofencingTests -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11"
