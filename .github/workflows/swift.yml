@@ -10,7 +10,7 @@ on:
 
 jobs:
   iOS:
-    name: Test iOS 
+    name: Test_iOS 
     runs-on: macOS-latest
     env: 
       DEVELOPER_DIR: /Applications/Xcode_11.5.app/Contents/Developer
