@@ -8,6 +8,7 @@
 
 import Foundation
 import Surge
+import RealmSwift
 
 public var list_zois_qualifiers: [Dictionary<String, Any>] = []
 
@@ -345,7 +346,13 @@ public func update_weekly_density(visitPoint:LoadedVisit, zoi_gmminfo: inout Dic
     // *** define calendar components to use as well Timezone to UTC ***
     myCalendar.timeZone = TimeZone(identifier: "UTC")!
     
-    var weekly_density:[Double] = zoi_gmminfo["weekly_density"] as! [Double]
+    
+    var weekly_density:[Double] = [Double]()
+    if let array:[Double] = (zoi_gmminfo["weekly_density"] as? [Any]) as? [Double] {
+        weekly_density = array
+    } else {
+        weekly_density = Array((zoi_gmminfo["weekly_density"] as? List<Double>)!.elements)
+    }
     
     while(start_time < visitPoint.endTime!) {
         let hour = myCalendar.component(.hour, from: start_time)

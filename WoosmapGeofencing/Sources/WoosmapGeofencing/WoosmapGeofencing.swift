@@ -126,6 +126,10 @@ import CoreLocation
         accuracyVisitFilter = accuracy
     }
     
+    public func setCreationOfZOIEnable(enable: Bool) {
+        creationOfZOIEnable = enable
+    }
+    
     public func setClassification(enable: Bool) {
         classificationEnable = enable
     }
@@ -169,6 +173,8 @@ import CoreLocation
             NSLog("WoosmapGeofencing is not initiated")
             return
         }
+        let userDataCleaner = DataCleaner()
+        userDataCleaner.cleanOldGeographicData()
         self.startMonitoringInBackground()
     }
     

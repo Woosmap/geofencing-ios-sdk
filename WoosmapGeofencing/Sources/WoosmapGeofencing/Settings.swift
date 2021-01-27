@@ -37,8 +37,14 @@ public var distanceAPIRequestEnable = true
 public var visitEnable = true
 public var accuracyVisitFilter = 50.0
 
+//Active creation of ZOI
+public var creationOfZOIEnable = true
+
 //Active Classification
 public var classificationEnable = true
+
+//Delay of Duration data
+public var dataDurationDelay = 30// number of day
 
 // delay for obsolote notification
 public var outOfTimeDelay = 300

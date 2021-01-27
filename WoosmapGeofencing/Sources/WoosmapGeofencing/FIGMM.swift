@@ -8,8 +8,7 @@
 
 import Foundation
 import Surge
-import CoreData
-
+import RealmSwift
 
 typealias Scalar = Double
 public var list_zois: [Dictionary<String, Any>] = []
@@ -53,9 +52,14 @@ public func figmmForVisit(newVisitPoint:LoadedVisit) -> [Dictionary<String, Any>
 }
 
 func clean_clusters_without_visit() {
-    for (index, zois_gmm_info) in list_zois.enumerated() {
+    for (index, zois_gmm_info) in list_zois.enumerated().reversed() {
         let listVisit:[LoadedVisit] = zois_gmm_info["visitPoint"] as! [LoadedVisit]
-        let listidVisit:[String] = zois_gmm_info["idVisits"] as! [String]
+        var listidVisit:[String] = [String]()
+        if let list = zois_gmm_info["idVisits"] as? [String] {
+            listidVisit = list
+        } else {
+            listidVisit = Array((zois_gmm_info["idVisits"] as! List<String>).elements)
+        }
         if(listVisit.isEmpty || listidVisit.isEmpty) {
             list_zois.remove(at: index)
         }
@@ -212,7 +216,10 @@ func predict_as_dict(visitPoint: LoadedVisit) {
     
     let indexMaxProbPrior = result_x_j_prob_prior_prob_Array.firstIndex(of: max(result_x_j_prob_prior_prob_Array))
     
-    var idVisitsArray:[String] =  list_zois[indexMaxProbPrior!]["idVisits"] as! [String]
+    var idVisitsArray = [String]()
+    if let list = list_zois[indexMaxProbPrior!]["idVisits"] as? List<String> {
+        idVisitsArray = Array(list.elements)
+    }
     idVisitsArray.append(visitPoint.getId())
     list_zois[indexMaxProbPrior!]["idVisits"] = idVisitsArray
     
@@ -348,7 +355,10 @@ func getProbabilityOfXKnowingCluster(cov_determinants: [Double], sqr_mahalanobis
 
 public func deleteVisitOnZoi(visitsToDelete:LoadedVisit) -> [Dictionary<String, Any>] {
     for (index, zois_gmm_info) in list_zois.enumerated() {
-        let listIdVisit:[String] = zois_gmm_info["idVisits"] as! [String]
+        var listIdVisit:[String] = [String]()
+        if let list = zois_gmm_info["idVisits"] as? List<String> {
+            listIdVisit = Array(list.elements)
+        }
         let listIdVisitToSave = listIdVisit.filter{ $0 != visitsToDelete.getId() }
         list_zois[index]["idVisits"] = listIdVisitToSave
     }

@@ -10,8 +10,6 @@
 		A20DDE7023EAD6D300124E56 /* LocationTableViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE6F23EAD6D300124E56 /* LocationTableViewContoller.swift */; };
 		A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7223EAF66D00124E56 /* MapViewController.swift */; };
 		A20DDE7823EAFB9E00124E56 /* DataLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7723EAFB9E00124E56 /* DataLocation.swift */; };
-		A20DDE7A23EAFBCF00124E56 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7923EAFBCF00124E56 /* LocationModel.swift */; };
-		A20DDE7D23EAFC1900124E56 /* Location.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7B23EAFC1900124E56 /* Location.xcdatamodeld */; };
 		A2140412241955A900537968 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; };
 		A2140413241955A900537968 /* WoosmapGeofencing.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A216FB8B23E9CE720003AAC8 /* AppDelegate.swift */; };
@@ -23,19 +21,15 @@
 		A2245470247D578600A0B8B0 /* DataZOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224546F247D578600A0B8B0 /* DataZOI.swift */; };
 		A235A0B2242A570300B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
 		A235A0B3242A570C00B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
-		A238041923EC6A14002F53F2 /* POIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041823EC6A14002F53F2 /* POIModel.swift */; };
 		A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041B23EC6A95002F53F2 /* DataPOI.swift */; };
 		A239056025791D87001B3754 /* DataRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A239055F25791D87001B3754 /* DataRegion.swift */; };
-		A2390573257A7A49001B3754 /* RegionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2390572257A7A49001B3754 /* RegionModel.swift */; };
-		A23CCD3E250FA97900D49193 /* DelayDataDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23CCD3D250FA97900D49193 /* DelayDataDurationTests.swift */; };
+		A2710F0B25B5CF2F00AF62F5 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; };
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
-		A274FDA02507D1310008CE25 /* UserDataCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A274FD9F2507D1310008CE25 /* UserDataCleaner.swift */; };
 		A27D4422250A28770043B676 /* Locations.csv in Resources */ = {isa = PBXBuildFile; fileRef = A27D4421250A28770043B676 /* Locations.csv */; };
 		A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A32229242911F900C98018 /* TokenIdViewController.swift */; };
 		A2AC8537240E743800C65900 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC8536240E743800C65900 /* NotificationService.swift */; };
 		A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2AC8534240E743800C65900 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A2B5187E2554655C003B7C19 /* DataDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187D2554655C003B7C19 /* DataDistance.swift */; };
-		A2B6E7E12419231A006C4F19 /* VisitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E02419231A006C4F19 /* VisitModel.swift */; };
 		A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E324192536006C4F19 /* DataVisit.swift */; };
 		A2F095A223EAD36B007A5419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F095A023EAD36B007A5419 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -113,9 +107,7 @@
 /* Begin PBXFileReference section */
 		A20DDE6F23EAD6D300124E56 /* LocationTableViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewContoller.swift; sourceTree = "<group>"; };
 		A20DDE7223EAF66D00124E56 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		A20DDE7723EAFB9E00124E56 /* DataLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataLocation.swift; path = ../Model/DataLocation.swift; sourceTree = "<group>"; };
-		A20DDE7923EAFBCF00124E56 /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
-		A20DDE7C23EAFC1900124E56 /* Location.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Location.xcdatamodel; sourceTree = "<group>"; };
+		A20DDE7723EAFB9E00124E56 /* DataLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLocation.swift; sourceTree = "<group>"; };
 		A216FB8823E9CE720003AAC8 /* SampleGeofencing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleGeofencing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A216FB8B23E9CE720003AAC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A216FB9123E9CE760003AAC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -127,17 +119,11 @@
 		A21DC0C3248FF50000E45471 /* MockDataVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataVisit.swift; sourceTree = "<group>"; };
 		A224546F247D578600A0B8B0 /* DataZOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataZOI.swift; sourceTree = "<group>"; };
 		A235A0B1242A570300B51E1F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		A238041823EC6A14002F53F2 /* POIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIModel.swift; sourceTree = "<group>"; };
-		A238041B23EC6A95002F53F2 /* DataPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataPOI.swift; path = ../Model/DataPOI.swift; sourceTree = "<group>"; };
+		A238041B23EC6A95002F53F2 /* DataPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPOI.swift; sourceTree = "<group>"; };
 		A239055F25791D87001B3754 /* DataRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRegion.swift; sourceTree = "<group>"; };
-		A2390572257A7A49001B3754 /* RegionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionModel.swift; sourceTree = "<group>"; };
-		A23CCD3C250FA97900D49193 /* SampleGeofencingTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleGeofencingTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		A23CCD3D250FA97900D49193 /* DelayDataDurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayDataDurationTests.swift; sourceTree = "<group>"; };
 		A262B9E224E29FB100EB621F /* paris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = paris.gpx; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/paris.gpx"; sourceTree = "<absolute>"; };
 		A273027D23EB0BB00042FC5A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		A274FD9F2507D1310008CE25 /* UserDataCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataCleaner.swift; sourceTree = "<group>"; };
 		A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A2777914250FA3B900068AEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A27D4421250A28770043B676 /* Locations.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Locations.csv; sourceTree = "<group>"; };
 		A2A32229242911F900C98018 /* TokenIdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenIdViewController.swift; sourceTree = "<group>"; };
 		A2AC852F240E73FB00C65900 /* SampleGeofencing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleGeofencing.entitlements; sourceTree = "<group>"; };
@@ -145,7 +131,6 @@
 		A2AC8536240E743800C65900 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A2AC8538240E743800C65900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2B5187D2554655C003B7C19 /* DataDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDistance.swift; sourceTree = "<group>"; };
-		A2B6E7E02419231A006C4F19 /* VisitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitModel.swift; sourceTree = "<group>"; };
 		A2B6E7E324192536006C4F19 /* DataVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVisit.swift; sourceTree = "<group>"; };
 		A2F095A123EAD36B007A5419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,23 +155,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2710F0B25B5CF2F00AF62F5 /* WoosmapGeofencing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A20DDE7423EAFB4C00124E56 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				A20DDE7923EAFBCF00124E56 /* LocationModel.swift */,
-				A238041823EC6A14002F53F2 /* POIModel.swift */,
-				A2B6E7E02419231A006C4F19 /* VisitModel.swift */,
-				A2390572257A7A49001B3754 /* RegionModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		A20DDE7623EAFB5C00124E56 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,7 +186,6 @@
 			children = (
 				A216FB8A23E9CE720003AAC8 /* Sample */,
 				A2AC8535240E743800C65900 /* NotificationService */,
-				A2777911250FA3B900068AEA /* SampleGeofencingTests */,
 				A216FB8923E9CE720003AAC8 /* Products */,
 				A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */,
 				A2140410241955A900537968 /* Frameworks */,
@@ -234,14 +208,12 @@
 				A2AC852F240E73FB00C65900 /* SampleGeofencing.entitlements */,
 				A22D021E23F6F5BF00B0D068 /* Data */,
 				A20DDE7623EAFB5C00124E56 /* View */,
-				A20DDE7423EAFB4C00124E56 /* Model */,
 				A216FB8B23E9CE720003AAC8 /* AppDelegate.swift */,
 				A235A0B1242A570300B51E1F /* Settings.swift */,
 				A262B9E224E29FB100EB621F /* paris.gpx */,
 				A216FB9123E9CE760003AAC8 /* Assets.xcassets */,
 				A216FB9923E9CE760003AAC8 /* Info.plist */,
 				A216FB9323E9CE760003AAC8 /* Preview Content */,
-				A20DDE7B23EAFC1900124E56 /* Location.xcdatamodeld */,
 				A273027D23EB0BB00042FC5A /* Extension.swift */,
 			);
 			path = Sample;
@@ -266,7 +238,6 @@
 				A2B5187D2554655C003B7C19 /* DataDistance.swift */,
 				A239055F25791D87001B3754 /* DataRegion.swift */,
 				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
-				A274FD9F2507D1310008CE25 /* UserDataCleaner.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -278,16 +249,6 @@
 				A218C85E24B716E5006086B5 /* Visit_qualif.csv */,
 			);
 			path = csvImport;
-			sourceTree = "<group>";
-		};
-		A2777911250FA3B900068AEA /* SampleGeofencingTests */ = {
-			isa = PBXGroup;
-			children = (
-				A23CCD3D250FA97900D49193 /* DelayDataDurationTests.swift */,
-				A2777914250FA3B900068AEA /* Info.plist */,
-				A23CCD3C250FA97900D49193 /* SampleGeofencingTests-Bridging-Header.h */,
-			);
-			path = SampleGeofencingTests;
 			sourceTree = "<group>";
 		};
 		A2AC8522240E6C9B00C65900 /* Products */ = {
@@ -470,7 +431,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2245470247D578600A0B8B0 /* DataZOI.swift in Sources */,
-				A238041923EC6A14002F53F2 /* POIModel.swift in Sources */,
 				A20DDE7823EAFB9E00124E56 /* DataLocation.swift in Sources */,
 				A235A0B2242A570300B51E1F /* Settings.swift in Sources */,
 				A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */,
@@ -480,12 +440,7 @@
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
 				A239056025791D87001B3754 /* DataRegion.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
-				A2B6E7E12419231A006C4F19 /* VisitModel.swift in Sources */,
-				A274FDA02507D1310008CE25 /* UserDataCleaner.swift in Sources */,
-				A2390573257A7A49001B3754 /* RegionModel.swift in Sources */,
 				A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */,
-				A20DDE7A23EAFBCF00124E56 /* LocationModel.swift in Sources */,
-				A20DDE7D23EAFC1900124E56 /* Location.xcdatamodeld in Sources */,
 				A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */,
 				A21DC0C4248FF50000E45471 /* MockDataVisit.swift in Sources */,
 			);
@@ -495,7 +450,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A23CCD3E250FA97900D49193 /* DelayDataDurationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,7 +630,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sample/SampleGeofencing.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				ENABLE_PREVIEWS = YES;
@@ -701,7 +655,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sample/SampleGeofencing.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				ENABLE_PREVIEWS = YES;
@@ -724,6 +678,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SampleGeofencingTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -747,6 +702,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SampleGeofencingTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -767,8 +723,9 @@
 		A2AC853D240E743800C65900 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				INFOPLIST_FILE = NotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -789,8 +746,9 @@
 		A2AC853E240E743800C65900 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				INFOPLIST_FILE = NotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -848,19 +806,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		A20DDE7B23EAFC1900124E56 /* Location.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				A20DDE7C23EAFC1900124E56 /* Location.xcdatamodel */,
-			);
-			currentVersion = A20DDE7C23EAFC1900124E56 /* Location.xcdatamodel */;
-			path = Location.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = A216FB8023E9CE720003AAC8 /* Project object */;
 }

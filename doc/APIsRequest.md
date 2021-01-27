@@ -94,25 +94,30 @@ WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: locatio
 Get the result of the Search API request in your class delagate `DataPOI` :
 ```swift
 public class DataPOI:SearchAPIDelegate  {
-    
     public init() {}
     
-    public func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String) {
-        for feature in (searchAPIData.features)! {
-            let city = feature.properties!.address!.city!
-            let zipCode = feature.properties!.address!.zipcode!
-            let distance = feature.properties!.distance!
-            let latitude = (feature.geometry?.coordinates![1])!
-            let longitude = (feature.geometry?.coordinates![0])!
-            let dateCaptured = Date()
-            ...
-        }
+    public func searchAPIResponse(poi: POI) {
+        NotificationCenter.default.post(name: .newPOISaved, object: self, userInfo: ["POI": poi])
     }
     
     public func serachAPIError(error: String) {
         
     }
+    
+    public func readPOI()-> [POI] {
+        return POIs.getAll()
+    }
+    
+    func getPOIbyLocationID(locationId: String)-> POI? {
+        return POIs.getPOIbyLocationID(locationId: locationId)
+    }
+    
+    public func erasePOI() {
+        POIs.deleteAll()
+    }
+    
 }
+
 ```
 
 Informations about the Search API : https://developers.woosmap.com/products/search-api/get-started/
@@ -155,17 +160,25 @@ WoosmapGeofencing.shared.getLocationService().distanceAPIRequest(locationOrigin:
 Get the result of the Distance API request in your class delagate `DataDistance` :
 ```swift
 public class DataDistance:DistanceAPIDelegate  {
+    public init() {}
+    
     public func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String) {
         if (distanceAPIData.status == "OK") {
-            let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
-            let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
+            if (distanceAPIData.rows?.first?.elements?.first?.status == "OK") {
+                let distance = distanceAPIData.rows?.first?.elements?.first?.distance?.value!
+                let duration = distanceAPIData.rows?.first?.elements?.first?.duration?.text!
+                if(distance != nil && duration != nil) {
+                    print(distance ?? 0)
+                    print(duration ?? 0)
+                }
+            }
         }
     }
-    
     
     public func distanceAPIError(error: String) {
         print(error)
     }
+    
 }
 ```
 

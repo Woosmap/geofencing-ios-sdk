@@ -48,18 +48,29 @@ In your class delegate, retrieve Region data :
 ```swift
 public class DataRegion:RegionsServiceDelegate  {
     
+    public init() {}
+    
     public func updateRegions(regions: Set<CLRegion>) {
         NotificationCenter.default.post(name: .updateRegions, object: self,userInfo: ["Regions": regions])
     }
     
-    public func didEnterPOIRegion(POIregion: CLRegion) {
-        createRegion(POIregion: POIregion, didEnter: true)
+    public func didEnterPOIRegion(POIregion: Region) {
+        NotificationCenter.default.post(name: .didEventPOIRegion, object: self,userInfo: ["Region": POIregion])
     }
     
-    public func didExitPOIRegion(POIregion: CLRegion) {
-        createRegion(POIregion: POIregion, didEnter: false)
+    public func didExitPOIRegion(POIregion: Region) {
+        NotificationCenter.default.post(name: .didEventPOIRegion, object: self,userInfo: ["Region": POIregion])
     }
-    ...
+    
+    public func readRegions()-> [Region] {
+        return Regions.getAll()
+    }
+    
+    public func eraseRegions() {
+        Regions.deleteAll()
+    }
+}
+
 
 ```
 

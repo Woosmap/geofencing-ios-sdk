@@ -3,12 +3,12 @@ import CoreLocation
 import UserNotifications
 
 public protocol LocationServiceDelegate {
-    func tracingLocation(locations: [CLLocation], locationId: String)
+    func tracingLocation(location: Location)
     func tracingLocationDidFailWithError(error: Error)
 }
 
 public protocol SearchAPIDelegate {
-    func searchAPIResponseData(searchAPIData: SearchAPIData, locationId: String)
+    func searchAPIResponse(poi: POI)
     func serachAPIError(error: String)
 }
 
@@ -19,12 +19,12 @@ public protocol DistanceAPIDelegate {
 
 public protocol RegionsServiceDelegate {
     func updateRegions(regions: Set<CLRegion>)
-    func didEnterPOIRegion(POIregion: CLRegion )
-    func didExitPOIRegion(POIregion: CLRegion )
+    func didEnterPOIRegion(POIregion: Region )
+    func didExitPOIRegion(POIregion: Region )
 }
 
 public protocol VisitServiceDelegate {
-    func processVisit(visit: CLVisit)
+    func processVisit(visit: Visit)
 }
 
 public extension Date {
@@ -186,14 +186,20 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if( (getRegionType(identifier: region.identifier) == regionType.CUSTOM_REGION) || (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
-            self.regionDelegate?.didExitPOIRegion(POIregion: region)
+            let regionExit = Regions.add(POIregion: region, didEnter: false)
+            if(regionExit.identifier != nil) {
+                self.regionDelegate?.didExitPOIRegion(POIregion: regionExit)
+            }
         }
         self.handleRegionChange()
     }
     
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if( (getRegionType(identifier: region.identifier) == regionType.CUSTOM_REGION) || (getRegionType(identifier: region.identifier) == regionType.POI_REGION))  {
-            self.regionDelegate?.didEnterPOIRegion(POIregion: region)
+            let regionEnter = Regions.add(POIregion: region, didEnter: true)
+            if(regionEnter.identifier != nil) {
+                self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
+            }
         }
         self.handleRegionChange()
     }
@@ -255,7 +261,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         if(visit.horizontalAccuracy < accuracyVisitFilter ) {
-            delegate.processVisit(visit: visit)
+            let visitRecorded = Visits.add(visit: visit)
+            if(visitRecorded.visitId != nil) {
+                delegate.processVisit(visit: visitRecorded)
+            }
         }
     }
     
@@ -281,13 +290,20 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 return
             }
         }
-        //create Location ID
-        let locationId = UUID().uuidString
-        delegate.tracingLocation(locations: locations, locationId: locationId)
+        //Save in database
+        let locationSaved = Locations.add(locations: locations)
+        
+        if (locationSaved.locationId == nil){
+            return
+        }
+        
+        //Retrieve location
+        delegate.tracingLocation(location: locationSaved)
+        
         self.currentLocation = location
         
         if (searchAPIRequestEnable) {
-            searchAPIRequest(location: currentLocation!, locationId:locationId)
+            searchAPIRequest(location: currentLocation!, locationId:locationSaved.locationId!)
         }
         
     }
@@ -336,20 +352,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: data!)
-                    delegate.searchAPIResponseData(searchAPIData: responseJSON!, locationId: locationId)
+                    let poi = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
+                    delegate.searchAPIResponse(poi: poi)
                     self.lastSearchLocation = self.currentLocation
                     
-                    for feature in (responseJSON?.features)! {
-                        let latitude = (feature.geometry?.coordinates![1])!
-                        let longitude = (feature.geometry?.coordinates![0])!
-                        if (distanceAPIRequestEnable) {
-                            self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(latitude,longitude)],locationId: locationId)
-                        }
-                        if(searchAPICreationRegionEnable){
-                            let POIname = (feature.properties?.store_id)! + "_" + (feature.properties?.name)!
-                            self.createRegionPOI(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), name: POIname)
-                        }
+                    if (distanceAPIRequestEnable) {
+                        self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(poi.latitude,poi.longitude)],locationId: locationId)
+                    }
+                    if(searchAPICreationRegionEnable){
+                        let POIname = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
+                        self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname)
                     }
                 }
             }
@@ -386,7 +398,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double,Double)], locationId: String = "") {
         
-        guard let delegate = self.distanceAPIDataDelegate else {
+        guard let delegateDistance = self.distanceAPIDataDelegate else {
+            return
+        }
+        
+        guard let delegateSearch = self.searchAPIDataDelegate else {
             return
         }
         
@@ -410,14 +426,27 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             if let response = response as? HTTPURLResponse {
                 if (response.statusCode != 200) {
                     NSLog("statusCode: \(response.statusCode)")
-                    delegate.distanceAPIError(error:"Error Distance API " + String(response.statusCode))
+                    delegateDistance.distanceAPIError(error:"Error Distance API " + String(response.statusCode))
                     return
                 }
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
                     let responseJSON = try? JSONDecoder().decode(DistanceAPIData.self, from: data!)
-                    delegate.distanceAPIResponseData(distanceAPIData: responseJSON!, locationId: locationId)
+                    delegateDistance.distanceAPIResponseData(distanceAPIData: responseJSON!, locationId: locationId)
+                    //update POI
+                    if (responseJSON!.status == "OK") {
+                        if (responseJSON?.rows?.first?.elements?.first?.status == "OK") {
+                            let distance = responseJSON?.rows?.first?.elements?.first?.distance?.value!
+                            let duration = responseJSON?.rows?.first?.elements?.first?.duration?.text!
+                            if(distance != nil && duration != nil) {
+                                let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
+                                if (poiUpdated.locationId != nil) {
+                                    delegateSearch.searchAPIResponse(poi: poiUpdated)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

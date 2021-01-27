@@ -17,6 +17,15 @@
 		A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CF24E29B0000EB621F /* RegionGenerator.swift */; };
 		A262B9DA24E29B0000EB621F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9D124E29B0000EB621F /* Settings.swift */; };
 		A262B9DB24E29B0000EB621F /* ZOIQualifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */; };
+		A26E645D25B9865800EDBA72 /* DataCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26E645C25B9865800EDBA72 /* DataCleaner.swift */; };
+		A26E646125B98BDD00EDBA72 /* DelayDataDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26E646025B98BDD00EDBA72 /* DelayDataDurationTests.swift */; };
+		A2710EE025B5C87700AF62F5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = A2710EDF25B5C87700AF62F5 /* Realm */; };
+		A2710EE225B5C87700AF62F5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A2710EE125B5C87700AF62F5 /* RealmSwift */; };
+		A2710EEB25B5C8C400AF62F5 /* POI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EEA25B5C8C400AF62F5 /* POI.swift */; };
+		A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EEE25B5C9D100AF62F5 /* ZOI.swift */; };
+		A2710EF325B5CA7C00AF62F5 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF225B5CA7C00AF62F5 /* Visit.swift */; };
+		A2710EF725B5CADE00AF62F5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF625B5CADE00AF62F5 /* Location.swift */; };
+		A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EFA25B5CB3500AF62F5 /* Region.swift */; };
 		A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
 /* End PBXBuildFile section */
@@ -45,6 +54,13 @@
 		A262B9D124E29B0000EB621F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Sources/WoosmapGeofencing/Settings.swift; sourceTree = SOURCE_ROOT; };
 		A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZOIQualifiers.swift; path = Sources/WoosmapGeofencing/ZOIQualifiers.swift; sourceTree = SOURCE_ROOT; };
 		A262B9D324E29B0000EB621F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Sources/WoosmapGeofencing/Info.plist; sourceTree = SOURCE_ROOT; };
+		A26E645C25B9865800EDBA72 /* DataCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCleaner.swift; sourceTree = "<group>"; };
+		A26E646025B98BDD00EDBA72 /* DelayDataDurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayDataDurationTests.swift; sourceTree = "<group>"; };
+		A2710EEA25B5C8C400AF62F5 /* POI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POI.swift; sourceTree = "<group>"; };
+		A2710EEE25B5C9D100AF62F5 /* ZOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZOI.swift; sourceTree = "<group>"; };
+		A2710EF225B5CA7C00AF62F5 /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
+		A2710EF625B5CADE00AF62F5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		A2710EFA25B5CB3500AF62F5 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DistanceAPIJsonswift.swift; path = Sources/WoosmapGeofencing/DistanceAPIJsonswift.swift; sourceTree = SOURCE_ROOT; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -54,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2710EE225B5C87700AF62F5 /* RealmSwift in Frameworks */,
+				A2710EE025B5C87700AF62F5 /* Realm in Frameworks */,
 				A2245475247D591800A0B8B0 /* Surge in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,6 +108,7 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
+				A2710EE525B5C88100AF62F5 /* Business Logic */,
 				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
 				A262B9D324E29B0000EB621F /* Info.plist */,
 				A262B9CB24E29AFF00EB621F /* Monitor.swift */,
@@ -105,9 +124,23 @@
 			path = Sources/WoosmapGeofencing;
 			sourceTree = "<group>";
 		};
+		A2710EE525B5C88100AF62F5 /* Business Logic */ = {
+			isa = PBXGroup;
+			children = (
+				A2710EEA25B5C8C400AF62F5 /* POI.swift */,
+				A2710EEE25B5C9D100AF62F5 /* ZOI.swift */,
+				A2710EF225B5CA7C00AF62F5 /* Visit.swift */,
+				A2710EF625B5CADE00AF62F5 /* Location.swift */,
+				A2710EFA25B5CB3500AF62F5 /* Region.swift */,
+				A26E645C25B9865800EDBA72 /* DataCleaner.swift */,
+			);
+			path = "Business Logic";
+			sourceTree = "<group>";
+		};
 		A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */ = {
 			isa = PBXGroup;
 			children = (
+				A26E646025B98BDD00EDBA72 /* DelayDataDurationTests.swift */,
 				A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */,
 				A262B9C724E29ADF00EB621F /* Info.plist */,
 				A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */,
@@ -145,6 +178,8 @@
 			name = WoosmapGeofencing;
 			packageProductDependencies = (
 				A2245474247D591800A0B8B0 /* Surge */,
+				A2710EDF25B5C87700AF62F5 /* Realm */,
+				A2710EE125B5C87700AF62F5 /* RealmSwift */,
 			);
 			productName = GeoSearchSDK;
 			productReference = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */;
@@ -199,6 +234,7 @@
 			mainGroup = A216FB9F23E9CEA70003AAC8;
 			packageReferences = (
 				A2245473247D591800A0B8B0 /* XCRemoteSwiftPackageReference "Surge" */,
+				A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = A216FBAA23E9CEA70003AAC8 /* Products */;
 			projectDirPath = "";
@@ -233,12 +269,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
+				A2710EEB25B5C8C400AF62F5 /* POI.swift in Sources */,
 				A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
+				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
+				A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */,
+				A26E645D25B9865800EDBA72 /* DataCleaner.swift in Sources */,
 				A262B9DA24E29B0000EB621F /* Settings.swift in Sources */,
 				A262B9D624E29B0000EB621F /* WoosmapGeofencing.swift in Sources */,
 				A262B9D424E29B0000EB621F /* Monitor.swift in Sources */,
 				A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */,
+				A2710EF325B5CA7C00AF62F5 /* Visit.swift in Sources */,
+				A2710EF725B5CADE00AF62F5 /* Location.swift in Sources */,
 				A262B9DB24E29B0000EB621F /* ZOIQualifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A26E646125B98BDD00EDBA72 /* DelayDataDurationTests.swift in Sources */,
 				A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */,
 				A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */,
 			);
@@ -520,6 +563,14 @@
 				version = 2.3.0;
 			};
 		};
+		A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.5.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -527,6 +578,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A2245473247D591800A0B8B0 /* XCRemoteSwiftPackageReference "Surge" */;
 			productName = Surge;
+		};
+		A2710EDF25B5C87700AF62F5 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		A2710EE125B5C87700AF62F5 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

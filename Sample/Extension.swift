@@ -7,25 +7,6 @@
 import Foundation
 
 
-public extension POI {
-    internal func convertToModel()-> POIModel {
-        return POIModel(city: self.city, zipCode: self.zipCode, distance: self.distance, latitude: self.latitude, longitude: self.longitude, dateCaptured: self.date)
-    }
-}
-
-public extension Visit {
-    internal func convertToModel()-> VisitModel {
-        return VisitModel(visitId: self.visitId!, arrivalDate: self.arrivalDate, departureDate: self.departureDate, latitude: self.latitude, longitude: self.longitude, dateCaptured:self.arrivalDate , accuracy: self.accuracy)
-    }
-}
-
-public extension Location {
-    internal func convertToModel()-> LocationModel {
-        return LocationModel(locationId: self.locationId, latitude: self.latitude, longitude: self.longitude, dateCaptured: self.date, descriptionToSave: self.description)
-    }
-}
-
-
 public extension Date {
     func stringFromDate()-> String {
         let formatter = DateFormatter()
