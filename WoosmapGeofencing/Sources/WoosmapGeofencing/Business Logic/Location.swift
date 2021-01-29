@@ -13,7 +13,7 @@ public class Location: Object {
     @objc public dynamic var locationDescription: String?
     @objc public dynamic var locationId: String?
     @objc public dynamic var longitude: Double = 0.0
-    
+
     convenience public init(locationId: String, latitude: Double, longitude: Double, dateCaptured: Date, descriptionToSave: String) {
         self.init()
         self.locationId = locationId
@@ -22,7 +22,7 @@ public class Location: Object {
         self.date = dateCaptured
         self.locationDescription = descriptionToSave
     }
-    
+
 }
 
 public class Locations {
@@ -30,7 +30,7 @@ public class Locations {
         do {
             let realm = try Realm()
             let location = locations.last!
-            //create Location ID
+            // create Location ID
             let locationId = UUID().uuidString
             let entry = Location(locationId: locationId, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, dateCaptured: Date(), descriptionToSave: "description")
             realm.beginWrite()
@@ -41,7 +41,7 @@ public class Locations {
         }
         return Location()
     }
-    
+
     public class func addTest(location: Location) {
         do {
             let realm = try Realm()
@@ -51,7 +51,7 @@ public class Locations {
         } catch {
         }
     }
-    
+
     public class func getAll() -> [Location] {
         do {
             let realm = try Realm()
@@ -63,9 +63,13 @@ public class Locations {
     }
 
     public class func deleteAll() {
-        let realm = try! Realm()
-        try! realm.write {
-            realm.delete(realm.objects(Location.self))
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.delete(realm.objects(Visit.self))
+            }
+        } catch let error as NSError {
+          print(error)
         }
     }
 }

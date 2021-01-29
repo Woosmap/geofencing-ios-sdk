@@ -8,7 +8,6 @@ import Foundation
 import RealmSwift
 import CoreLocation
 
-
 public class Region: Object {
     @objc public dynamic var date: Date?
     @objc public dynamic var didEnter: Bool = false
@@ -16,7 +15,7 @@ public class Region: Object {
     @objc public dynamic var latitude: Double = 0.0
     @objc public dynamic var longitude: Double = 0.0
     @objc public dynamic var radius: Double = 0.0
-    
+
     convenience init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool) {
         self.init()
         self.latitude = latitude
@@ -44,7 +43,7 @@ public class Regions {
         }
         return Region()
     }
-    
+
     public class func getAll() -> [Region] {
         do {
             let realm = try Realm()
@@ -56,9 +55,13 @@ public class Regions {
     }
 
     public class func deleteAll() {
-        let realm = try! Realm()
-        try! realm.write {
-            realm.delete(realm.objects(Region.self))
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.delete(realm.objects(Visit.self))
+            }
+        } catch let error as NSError {
+          print(error)
         }
     }
 }

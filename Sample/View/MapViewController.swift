@@ -8,7 +8,7 @@ import UIKit
 import MapKit
 import WoosmapGeofencing
 
-class MyPointAnnotation : MKPointAnnotation {
+class MyPointAnnotation: MKPointAnnotation {
     var pinTintColor: UIColor?
     var visitId: String?
     var type: AnnotationType?
@@ -20,15 +20,14 @@ enum AnnotationType {
     case location
 }
 
-class CustomPolygon : MKPolygon {
+class CustomPolygon: MKPolygon {
     var color: UIColor?
     var period: String?
     var visitsId: [String] = []
 }
 
+class MapViewController: UIViewController, MKMapViewDelegate {
 
-class MapViewController: UIViewController,MKMapViewDelegate{
-   
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var switchRegions: UISwitch!
     @IBOutlet weak var switchVisits: UISwitch!
@@ -38,106 +37,106 @@ class MapViewController: UIViewController,MKMapViewDelegate{
     var circlesPOI: [MKCircle] = []
     var zoiPolygon: [CustomPolygon] = []
     var stateSwitchPOI = true
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //Add object on the map
         initMap()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.userTrackingMode = .follow
         mapView.delegate = self as MKMapViewDelegate
-        switchRegions.addTarget(self,action: #selector(disableEnableZOI), for: .touchUpInside)
-        switchVisits.addTarget(self,action: #selector(disableEnableVisits), for: .touchUpInside)
-        switchPOI.addTarget(self,action: #selector(disableEnablePOI), for: .touchUpInside)
-        switchLocation.addTarget(self,action: #selector(disableEnableLocation), for: .touchUpInside)
-        
+        switchRegions.addTarget(self, action: #selector(disableEnableZOI), for: .touchUpInside)
+        switchVisits.addTarget(self, action: #selector(disableEnableVisits), for: .touchUpInside)
+        switchPOI.addTarget(self, action: #selector(disableEnablePOI), for: .touchUpInside)
+        switchLocation.addTarget(self, action: #selector(disableEnableLocation), for: .touchUpInside)
+
         let buttonItem = MKUserTrackingBarButtonItem(mapView: mapView)
         self.navigationItem.rightBarButtonItem = buttonItem
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(newLocationAdded(_:)),
             name: .newLocationSaved,
             object: nil)
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(newPOIAdded),
             name: .newPOISaved,
             object: nil)
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(newVisitAdded),
             name: .newVisitSaved,
             object: nil)
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateRegions(_:)),
             name: .updateRegions,
             object: nil)
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didEventPOIRegion),
             name: .didEventPOIRegion,
             object: nil)
-        
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
         self.mapView.addGestureRecognizer(tap)
-        
+
         let longTap = UILongPressGestureRecognizer(target: self, action: #selector(mapLongTapped(_:)))
         self.mapView.addGestureRecognizer(longTap)
-        
+
         //Add object on the map
         initMap()
-        
+
     }
-    
+
     func initMap() {
         self.circles = []
         self.zoiPolygon = []
-        
+
         let overlays = mapView.overlays
         mapView.removeOverlays(overlays)
-        
+
         let annontations = mapView.annotations
         mapView.removeAnnotations(annontations)
-        
-        if(switchPOI.isOn) {
-            for poi:POI in DataPOI().readPOI() {
+
+        if switchPOI.isOn {
+            for poi: POI in DataPOI().readPOI() {
                 mapView.addAnnotation(annotationForPOI(poi))
             }
         }
-        
-        if(switchVisits.isOn) {
-            for visit:Visit in DataVisit().readVisits() {
+
+        if switchVisits.isOn {
+            for visit: Visit in DataVisit().readVisits() {
                 mapView.addAnnotation(annotationForVisit(visit))
             }
         }
-        
-        if(switchLocation.isOn) {
-            for location:Location in DataLocation().readLocations() {
+
+        if switchLocation.isOn {
+            for location: Location in DataLocation().readLocations() {
                 mapView.addAnnotation(annotationForLocation(location))
             }
         }
-        
+
         if switchRegions.isOn {
             overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions ?? [])
         }
-        
+
     }
-    
+
     func addZois() {
-        for zoi:ZOI in DataZOI().readZOIs() {
+        for zoi: ZOI in DataZOI().readZOIs() {
             let polygon = wktToMkPolygon(wkt: zoi.wktPolygon!)
             let departureDate = zoi.endTime
             let arrivalDate = zoi.startTime
-            let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(zoi.duration))
+            let (h, m, s) = secondsToHoursMinutesSeconds(seconds: Int(zoi.duration))
             let duration = "\(h) hrs \(m) mins \(s) secs"
             let nbVisits = String(zoi.idVisits.count)
             var title = "Departure Date : " + departureDate!.stringFromDate()
@@ -145,26 +144,26 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             title += "\nNb Visits : " + nbVisits
             title += "\nDuration : " + duration
             title += "\nPeriod : " + zoi.period!
-            
-            if((zoi.period!) == "HOME_PERIOD") {
+
+            if (zoi.period!) == "HOME_PERIOD" {
                 polygon.color = .green
                 polygon.period = "HOME_PERIOD"
-            } else if ((zoi.period!) == "WORK_PERIOD") {
+            } else if (zoi.period!) == "WORK_PERIOD" {
                 polygon.color = .brown
                 polygon.period = "WORK_PERIOD"
             } else {
                 polygon.color = .cyan
                 polygon.period = "OTHER"
             }
-            
+
             polygon.title = title
             polygon.visitsId = Array(zoi.idVisits)
             zoiPolygon.append(polygon)
             mapView.addOverlay(polygon)
         }
     }
-    
-    @objc func mapTapped(_ gesture: UITapGestureRecognizer){
+
+    @objc func mapTapped(_ gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: self.mapView)
         let coordinate = self.mapView.convert(point, toCoordinateFrom: nil)
         let mappoint = MKMapPoint(coordinate)
@@ -180,13 +179,13 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                 }
                 continue
             }
-             
+
             if let region = overlay as? MKCircle {
                 guard let renderer = self.mapView.renderer(for: region) as? MKCircleRenderer else { continue }
                 let tapPoint = renderer.point(for: mappoint)
                 if renderer.path.contains(tapPoint) {
                     let circleRenderer = MKCircleRenderer(circle: region)
-                    if(circleRenderer.circle.title == "POI" ) {
+                    if circleRenderer.circle.title == "POI" {
                         WoosmapGeofencing.shared.locationService.removeRegion(center: region.coordinate)
                         initMap()
                         return
@@ -195,49 +194,49 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             }
         }
     }
-    
-    @objc func mapLongTapped(_ gesture: UILongPressGestureRecognizer){
-        if (gesture.state == UIGestureRecognizer.State.ended) {
+
+    @objc func mapLongTapped(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == UIGestureRecognizer.State.ended {
             let point = gesture.location(in: self.mapView)
             let coordinate = self.mapView.convert(point, toCoordinateFrom: nil)
             let region_identifer = UUID().uuidString
             let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: 100)
-            if(!regionIsCreated){
+            if !regionIsCreated {
                 let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }
     }
-    
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "myAnnotation") //as? MKPinAnnotationView
-        
+
         if annotation is MKUserLocation {
             return nil
         }
         if annotationView == nil {
             if let annotationWGS = annotation as? MyPointAnnotation {
                 var resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-                if (annotationWGS.type == AnnotationType.visit) {
+                if annotationWGS.type == AnnotationType.visit {
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "VisitAnnotation")
                     let label1 = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
                     label1.text = annotationWGS.subtitle!
                     label1.numberOfLines = 0
-                    annotationView!.detailCalloutAccessoryView = label1;
-                    
+                    annotationView!.detailCalloutAccessoryView = label1
+
                     let width = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 300)
                     label1.addConstraint(width)
                     let height = NSLayoutConstraint(item: label1, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 120)
                     label1.addConstraint(height)
-                
+
                     let period = getPeriodOfVisit(annotation: annotationWGS)
-                    var pinImage:UIImage = UIImage()
-                    if(period == "HOME_PERIOD") {
+                    var pinImage: UIImage = UIImage()
+                    if period == "HOME_PERIOD" {
                         pinImage = UIImage(named: "ic_visit_home")!
-                    }else if (period == "WORK_PERIOD"){
+                    } else if period == "WORK_PERIOD" {
                         pinImage = UIImage(named: "ic_visit_work")!
-                    }else {
+                    } else {
                         pinImage = UIImage(named: "ic_visit_other")!
                     }
                     let size = CGSize(width: 20, height: 30)
@@ -245,7 +244,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                     pinImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                     resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     annotationView!.image = resizedImage
-                } else if (annotationWGS.type == AnnotationType.POI){
+                } else if annotationWGS.type == AnnotationType.POI {
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "POIAnnotation")
                     let pinImage = UIImage(named: "ic_poi")
                     let size = CGSize(width: 30, height: 30)
@@ -253,7 +252,7 @@ class MapViewController: UIViewController,MKMapViewDelegate{
                     pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                     resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     annotationView!.image = resizedImage
-                } else if (annotationWGS.type == AnnotationType.location){
+                } else if annotationWGS.type == AnnotationType.location {
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "LocationAnnotation")
                     let pinImage = UIImage(named: "ic_place_48pt")
                     let size = CGSize(width: 30, height: 30)
@@ -267,54 +266,54 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             }
         }
         annotationView?.canShowCallout = true
-        
+
         return annotationView
     }
-    
-    func getPeriodOfVisit(annotation:MKAnnotation) -> String {
+
+    func getPeriodOfVisit(annotation: MKAnnotation) -> String {
         let visitId = (annotation as! MyPointAnnotation).visitId
-        for polygon in zoiPolygon{
-            if (((polygon.visitsId.contains(visitId!)))) {
+        for polygon in zoiPolygon {
+            if (polygon.visitsId.contains(visitId!)) {
                 return polygon.period!
             }
         }
-        
+
         return "OTHER"
     }
-    
+
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let overlay = overlay as? MKCircle {
-            
+
             let circleRenderer = MKCircleRenderer(circle: overlay)
             circleRenderer.fillColor = (circleRenderer.circle.title == "POI") ? UIColor.green : UIColor.blue
             circleRenderer.alpha = 0.2
-            if(circleRenderer.circle.title!.contains("ENTER")) {
+            if circleRenderer.circle.title!.contains("ENTER") {
                 circleRenderer.fillColor = UIColor.red
                 circleRenderer.alpha = 0.2
             }
             return circleRenderer
-            
+
         } else if overlay is MKPolyline {
-            
+
             let renderer = MKPolylineRenderer(overlay: overlay)
             renderer.strokeColor = UIColor.orange
             renderer.lineWidth = 3
             return renderer
-            
+
         } else if overlay is CustomPolygon {
             let polygonView = MKPolygonRenderer(overlay: overlay)
             polygonView.strokeColor = .blue
             polygonView.fillColor = (overlay as! CustomPolygon).color!
-            if ((overlay as! CustomPolygon).color! == .cyan) {
+            if (overlay as! CustomPolygon).color! == .cyan {
                 polygonView.alpha = 0.2
             }
             polygonView.lineWidth = 1
-            
+
             return polygonView
         }
         return MKOverlayRenderer()
     }
-    
+
     @objc func updateRegions(_ notification: Notification) {
         guard let regions = notification.userInfo?["Regions"] as? Set<CLRegion> else {
             return
@@ -323,13 +322,13 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             overlaysForRegions(regions: regions)
         }
     }
-    
+
     @objc func didEventPOIRegion(_ notification: Notification) {
         guard let region = notification.userInfo?["Region"] as? Region else {
             return
         }
-        
-        if(region.didEnter) {
+
+        if region.didEnter {
             let circlePOI = MKCircle(center: CLLocationCoordinate2D(latitude: region.latitude, longitude: region.longitude), radius: region.radius)
             circlePOI.title = region.identifier! + "ENTER"
             self.circlesPOI.append(circlePOI)
@@ -339,19 +338,18 @@ class MapViewController: UIViewController,MKMapViewDelegate{
             mapView.addOverlays(circlesPOI)
             initMap()
         }
-        
 
     }
-    
-    func overlaysForRegions(regions: Set<CLRegion>){
+
+    func overlaysForRegions(regions: Set<CLRegion>) {
         let overlays = mapView.overlays
         mapView.removeOverlays(overlays)
-        
+
         circles = []
         for region in regions {
             if let region = region as? CLCircularRegion {
                 let circle = MKCircle(center: region.center, radius: region.radius)
-                if ((WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.regionType.POSITION_REGION)) {
+                if WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.RegionType.position {
                     circle.title = "refresh"
                 } else {
                     circle.title = "POI"
@@ -364,25 +362,24 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         zoiPolygon = []
         addZois()
     }
-    
+
     func annotationForLocation(_ location: Location) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.location
         annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
         return annotation
     }
-    
+
     @objc func newLocationAdded(_ notification: Notification) {
         guard let location = notification.userInfo?["Location"] as? Location else {
             return
         }
-        if(switchLocation.isOn) {
+        if switchLocation.isOn {
             let annotation = annotationForLocation(location)
             mapView.addAnnotation(annotation)
         }
     }
-    
-    
+
     func annotationForPOI(_ POI: POI) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.POI
@@ -390,51 +387,51 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         annotation.coordinate = CLLocationCoordinate2D(latitude: POI.latitude, longitude: POI.longitude)
         return annotation
     }
-    
+
     @objc func newPOIAdded(_ notification: Notification) {
         guard let POI = notification.userInfo?["POI"] as? POI else {
             return
         }
-        
-        if(stateSwitchPOI) {
+
+        if stateSwitchPOI {
             let annotation = annotationForPOI(POI)
             mapView.addAnnotation(annotation)
         }
     }
-    
+
     func annotationForVisit(_ visit: Visit) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.visit
         annotation.title = "Visit " + visit.date!.stringFromDate()
-        
+
         var duration = "Ongoing"
-        if (visit.arrivalDate == nil || visit.departureDate == nil) {
+        if visit.arrivalDate == nil || visit.departureDate == nil {
             duration = "Ongoing"
         } else {
-            let (h, m, s) = secondsToHoursMinutesSeconds (seconds: Int(visit.departureDate!.seconds(from: visit.arrivalDate!)))
+            let (h, m, s) = secondsToHoursMinutesSeconds(seconds: Int(visit.departureDate!.seconds(from: visit.arrivalDate!)))
             duration = "\(h) hrs \(m) mins \(s) secs"
             annotation.subtitle = "Departure Date : " + visit.departureDate!.stringFromDate() + "\nArrival Date : " + visit.arrivalDate!.stringFromDate() + "\nDuration : " + duration
         }
-        
+
         annotation.coordinate = CLLocationCoordinate2D(latitude: visit.latitude, longitude: visit.longitude)
         annotation.pinTintColor = .red
         annotation.visitId = visit.visitId
         return annotation
     }
-    
+
     @objc func newVisitAdded(_ notification: Notification) {
         guard let visit = notification.userInfo?["Visit"] as? Visit else {
             return
         }
-        
-        if(switchVisits.isOn) {
+
+        if switchVisits.isOn {
             let annotation = annotationForVisit(visit)
             mapView.addAnnotation(annotation)
         }
-        
+
     }
-    
-    func wktToMkPolygon(wkt:String) -> CustomPolygon {
+
+    func wktToMkPolygon(wkt: String) -> CustomPolygon {
         let str1 = wkt.replacingOccurrences(of: "POLYGON", with: "")
         let str2 = str1.replacingOccurrences(of: "(", with: "")
         let str3 = str2.replacingOccurrences(of: ")", with: "")
@@ -447,61 +444,61 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         }
         var coordinates = locations.map({(location: CLLocation) -> CLLocationCoordinate2D in return location.coordinate})
         let polygon = CustomPolygon(coordinates: &coordinates, count: locations.count)
-        
+
         return polygon
     }
-    
-    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+
+    func secondsToHoursMinutesSeconds (seconds: Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
-    
-    @objc func disableEnableZOI(){
+
+    @objc func disableEnableZOI() {
         if switchRegions.isOn {
            addZois()
-        }else {
+        } else {
             let overlays = mapView.overlays
             mapView.removeOverlays(overlays)
         }
     }
-    
-    @objc func disableEnableVisits(){
+
+    @objc func disableEnableVisits() {
         if switchVisits.isOn {
             disableEnableAnnotion(enable: true, annotationType: AnnotationType.visit)
-        }else {
+        } else {
             disableEnableAnnotion(enable: false, annotationType: AnnotationType.visit)
         }
     }
-    
-    @objc func disableEnablePOI(){
+
+    @objc func disableEnablePOI() {
         if switchPOI.isOn {
             stateSwitchPOI = true
             disableEnableAnnotion(enable: true, annotationType: AnnotationType.POI)
-        }else {
+        } else {
             stateSwitchPOI = false
             disableEnableAnnotion(enable: false, annotationType: AnnotationType.POI)
         }
     }
-    
+
     @objc func disableEnableLocation() {
         if switchLocation.isOn {
             disableEnableAnnotion(enable: true, annotationType: AnnotationType.location)
-        }else {
+        } else {
             disableEnableAnnotion(enable: false, annotationType: AnnotationType.location)
         }
     }
-    
-    func disableEnableAnnotion(enable:Bool, annotationType:AnnotationType) {
-        if (enable) {
-            if(annotationType == AnnotationType.location) {
-                for location:Location in DataLocation().readLocations() {
+
+    func disableEnableAnnotion(enable: Bool, annotationType: AnnotationType) {
+        if enable {
+            if annotationType == AnnotationType.location {
+                for location: Location in DataLocation().readLocations() {
                     mapView.addAnnotation(annotationForLocation(location))
                 }
-            } else if(annotationType == AnnotationType.POI) {
-                for poi:POI in DataPOI().readPOI() {
+            } else if annotationType == AnnotationType.POI {
+                for poi: POI in DataPOI().readPOI() {
                     mapView.addAnnotation(annotationForPOI(poi))
                 }
-            } else if(annotationType == AnnotationType.visit) {
-                for visit:Visit in DataVisit().readVisits() {
+            } else if annotationType == AnnotationType.visit {
+                for visit: Visit in DataVisit().readVisits() {
                     mapView.addAnnotation(annotationForVisit(visit))
                 }
             }
@@ -517,4 +514,3 @@ class MapViewController: UIViewController,MKMapViewDelegate{
         }
     }
 }
-
