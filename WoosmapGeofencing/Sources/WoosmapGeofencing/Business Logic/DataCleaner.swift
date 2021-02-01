@@ -8,17 +8,17 @@ import Foundation
 import RealmSwift
 
 public class DataCleaner {
-    
+
     public init() {}
-    
+
     public func cleanOldGeographicData() {
         let lastDateUpdate = UserDefaults.standard.object(forKey: "lastDateUpdate") as? Date
-        
-        if (lastDateUpdate != nil) {
+
+        if lastDateUpdate != nil {
             let dateComponents = Calendar.current.dateComponents([.day], from: lastDateUpdate!, to: Date())
-            //update date if no updating since 1 day
-            if (dateComponents.day! >= 1) {
-                //Cleanning database
+            // update date if no updating since 1 day
+            if dateComponents.day! >= 1 {
+                // Cleanning database
                 do {
                     let realm = try Realm()
                     let limitDate = Calendar.current.date(byAdding: .day, value: -dataDurationDelay, to: Date())
@@ -26,7 +26,7 @@ public class DataCleaner {
                     let locationFetchedResults = realm.objects(Location.self).filter(predicate)
                     let poiFetchedResults = realm.objects(POI.self).filter(predicate)
                     let visitFetchedResults = realm.objects(Visit.self).filter(predicate)
-                    if(!visitFetchedResults.isEmpty) {
+                    if !visitFetchedResults.isEmpty {
                         ZOIs.updateZOI(visits: Array(visitFetchedResults))
                     }
                     realm.beginWrite()
@@ -38,17 +38,17 @@ public class DataCleaner {
                 }
             }
         }
-        //Update date
-        UserDefaults.standard.set(Date(), forKey:"lastDateUpdate")
+        // Update date
+        UserDefaults.standard.set(Date(), forKey: "lastDateUpdate")
     }
-    
+
     func removeLocationOlderThan(days: Int) {
         do {
             let realm = try Realm()
             let limitDate = Calendar.current.date(byAdding: .day, value: -days, to: Date())
             let predicate = NSPredicate(format: "(date <= %@)", limitDate! as CVarArg)
             let fetchedResults = realm.objects(Location.self).filter(predicate)
-            try! realm.write {
+            try realm.write {
                 realm.delete(fetchedResults)
             }
         } catch {
@@ -61,7 +61,7 @@ public class DataCleaner {
             let limitDate = Calendar.current.date(byAdding: .day, value: -days, to: Date())
             let predicate = NSPredicate(format: "(date <= %@)", limitDate! as CVarArg)
             let fetchedResults = realm.objects(POI.self).filter(predicate)
-            try! realm.write {
+            try realm.write {
                 realm.delete(fetchedResults)
             }
         } catch {
@@ -74,8 +74,8 @@ public class DataCleaner {
             let limitDate = Calendar.current.date(byAdding: .day, value: -days, to: Date())
             let predicate = NSPredicate(format: "(date <= %@)", limitDate! as CVarArg)
             let fetchedResults = realm.objects(Visit.self).filter(predicate)
-            try! realm.write {
-                if(!fetchedResults.isEmpty) {
+            try realm.write {
+                if !fetchedResults.isEmpty {
                     ZOIs.updateZOI(visits: Array(fetchedResults))
                 }
                 realm.delete(fetchedResults)
@@ -84,5 +84,3 @@ public class DataCleaner {
         }
     }
 }
-
-

@@ -10,11 +10,11 @@ let package = Package(
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "WoosmapGeofencing",
-            targets: ["WoosmapGeofencing"]),
+            targets: ["WoosmapGeofencing"])
     ],
     dependencies: [
         // Surge Package
-        .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0"),
+        .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -26,6 +26,6 @@ let package = Package(
         .testTarget(
             name: "WoosmapGeofencingTests",
             dependencies: ["WoosmapGeofencing"],
-            path: "WoosmapGeofencing/Tests/WoosmapGeofencingTests"),
+            path: "WoosmapGeofencing/Tests/WoosmapGeofencingTests")
     ]
 )

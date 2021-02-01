@@ -150,41 +150,51 @@ end
 If you plan to perform searches or distance calculations thanks to the Woosmap APIs, please be sure your Woosmap Private Key is set every time your app is launched (in Foreground AND Background). This should be done as early as possible in your didFinishLaunchingWithOptions App Delegate. Depending on your integration, you should call startMonitoringInBackground too. This method must also be called everytime your app is launched.
 As soon as data is available, set the `locationServiceDelegate`, `searchAPIDataDelegate`, `visitDelegate` and  `distanceAPIDataDelegate` to retrieve location data, POIs from a Woosmap datasource, distance by road to those POIs and visit data if the Visit parameter is enabled. 
 ```swift
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+    let dataLocation = DataLocation()
+    let dataPOI = DataPOI()
+    let dataDistance = DataDistance()
+    let dataRegion = DataRegion()
+    let dataVisit = DataVisit()
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
-	// Set Woosmap API Private key
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
-        WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
+        // Set Woosmap API Private key
+            WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
+            WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
+            
+            // Set the Woosmap Search API url
+            WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
+            
+            // Set the Woosmap Distance API url
+            WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
+            WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
+            
+            // Set your filter on position location and search
+            WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
+            WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
         
-        // Set the Woosmap Search API url
-        WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
-        
-        // Set the Woosmap Distance API url
-        WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: drivingModeDistance)
-        
-        // Set your filter on position location and search
-        WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
-        WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
-	
-	// Set classification of zoi enable 
-        WoosmapGeofencing.shared.setClassification(enable: true)
-        
-        // Set delegate of protocol Location, POI and Distance
-        WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
-        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
-        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
-        
-        // Enable Visit and set delegate of protocol Visit
-        WoosmapGeofencing.shared.setVisitEnable(enable: true)
-        WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
- 
-         // Check the authorization Status of location Manager
-         if (CLLocationManager.authorizationStatus() != .notDetermined) {
-             WoosmapGeofencing.shared.startMonitoringInBackground()
-         }
-    return true
-}
+            // Set classification of zoi enable 
+            WoosmapGeofencing.shared.setClassification(enable: true)
+            
+            // Set delegate of protocol Location, POI and Distance
+            WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
+            WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI
+            WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = dataDistance
+            WoosmapGeofencing.shared.getLocationService().regionDelegate = dataRegion
+
+            // Enable Visit and set delegate of protocol Visit
+            WoosmapGeofencing.shared.setVisitEnable(enable: true)
+            WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
+     
+             // Check the authorization Status of location Manager
+             if (CLLocationManager.authorizationStatus() != .notDetermined) {
+                 WoosmapGeofencing.shared.startMonitoringInBackground()
+             }
+        return true
+    }
 ```
 
 In order to avoid loosing data, you also need to call `startMonitoringInBackground` in the proper AppDelegate method : 

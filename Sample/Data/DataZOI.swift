@@ -11,12 +11,11 @@ import WoosmapGeofencing
 
 public class DataZOI {
     public init() {}
-    
-    public func readZOIs()-> [ZOI] {
+
+    public func readZOIs() -> [ZOI] {
         return ZOIs.getAll()
     }
-    
-    
+
     public func eraseZOIs() {
         ZOIs.deleteAll()
     }

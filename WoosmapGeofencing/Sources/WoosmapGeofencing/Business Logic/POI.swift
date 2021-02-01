@@ -19,7 +19,7 @@ public class POI: Object {
     @objc public dynamic var locationId: String?
     @objc public dynamic var longitude: Double = 0.0
     @objc public dynamic var zipCode: String?
-    
+
     convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil) {
         self.init()
         self.locationId = locationId
@@ -33,7 +33,7 @@ public class POI: Object {
 }
 
 public class POIs {
-    public class func addFromResponseJson(searchAPIResponse:Data, locationId: String) -> POI{
+    public class func addFromResponseJson(searchAPIResponse: Data, locationId: String) -> POI {
         do {
             let realm = try Realm()
             let poi = POI()
@@ -58,7 +58,7 @@ public class POIs {
         }
         return POI()
     }
-    
+
     public class func addTest(poi: POI) {
         do {
             let realm = try Realm()
@@ -68,7 +68,7 @@ public class POIs {
         } catch {
         }
     }
-    
+
     public class func getAll() -> [POI] {
         do {
             let realm = try Realm()
@@ -78,7 +78,7 @@ public class POIs {
         }
         return []
     }
-    
+
     public class func getPOIbyLocationID(locationId: String) -> POI? {
         do {
             let realm = try Realm()
@@ -91,11 +91,11 @@ public class POIs {
         }
         return nil
     }
-    
+
     public class func updatePOIWithDistance(distance: Double, duration: String, locationId: String) -> POI {
         do {
             let poiToUpdate = POIs.getPOIbyLocationID(locationId: locationId)
-            if (poiToUpdate != nil) {
+            if poiToUpdate != nil {
                 let realm = try Realm()
                 realm.beginWrite()
                 poiToUpdate?.distance = distance
@@ -108,12 +108,15 @@ public class POIs {
         }
         return POI()
     }
-    
+
     public class func deleteAll() {
-        let realm = try! Realm()
-        try! realm.write {
-            realm.delete(realm.objects(POI.self))
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.delete(realm.objects(Visit.self))
+            }
+        } catch let error as NSError {
+          print(error)
         }
     }
 }
-
