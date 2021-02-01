@@ -12,6 +12,11 @@ import WoosmapGeofencing
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let dataLocation = DataLocation()
+    let dataPOI = DataPOI()
+    let dataDistance = DataDistance()
+    let dataRegion = DataRegion()
+    let dataVisit = DataVisit()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -43,14 +48,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WoosmapGeofencing.shared.setThirdSearchAPIRegionRadius(radius: 300.0)
 
         // Set delegate of protocol Location, POI and Distance
-        WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
-        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
-        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
-        WoosmapGeofencing.shared.getLocationService().regionDelegate = DataRegion()
+        WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
+        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI
+        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = dataDistance
+        WoosmapGeofencing.shared.getLocationService().regionDelegate = dataRegion
 
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.setVisitEnable(enable: true)
-        WoosmapGeofencing.shared.getLocationService().visitDelegate = DataVisit()
+        WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
 
         // Set Tracking state
         WoosmapGeofencing.shared.setTrackingEnable(enable: UserDefaults.standard.bool(forKey: "TrackingEnable"))

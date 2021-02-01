@@ -66,11 +66,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     var lastSearchLocation: CLLocation?
     var lastRegionUpdate: Date?
 
-    public var locationServiceDelegate: LocationServiceDelegate?
-    public var searchAPIDataDelegate: SearchAPIDelegate?
-    public var distanceAPIDataDelegate: DistanceAPIDelegate?
-    public var regionDelegate: RegionsServiceDelegate?
-    public var visitDelegate: VisitServiceDelegate?
+    public weak var locationServiceDelegate: LocationServiceDelegate?
+    public weak var searchAPIDataDelegate: SearchAPIDelegate?
+    public weak var distanceAPIDataDelegate: DistanceAPIDelegate?
+    public weak var regionDelegate: RegionsServiceDelegate?
+    public weak var visitDelegate: VisitServiceDelegate?
 
     init(locationManger: LocationManagerProtocol?) {
 

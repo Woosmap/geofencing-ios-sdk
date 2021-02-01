@@ -19,6 +19,12 @@ Region monitoring is a natural complement to Search requests performed on collec
 The first step in requesting geofence monitoring is to set `regionDelegate`, this should be done as early as possible in your didFinishLaunchingWithOptions App Delegate.
 
 ```swift
+let dataLocation = DataLocation()
+let dataPOI = DataPOI()
+let dataDistance = DataDistance()
+let dataRegion = DataRegion()
+let dataVisit = DataVisit()
+
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	
 	// Set Woosmap API Private key
@@ -36,10 +42,11 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         WoosmapGeofencing.shared.setClassification(enable: true)
         
         // Set delegate of protocol Location, POI and Distance
-        WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = DataLocation()
-        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = DataPOI()
-        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = DataDistance()
-        WoosmapGeofencing.shared.getLocationService().regionDelegate  =  DataRegion()
+        WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
+        WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI
+        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = dataDistance
+        WoosmapGeofencing.shared.getLocationService().regionDelegate = dataRegion
+
 ``` 
 
 
