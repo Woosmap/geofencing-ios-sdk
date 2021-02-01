@@ -113,7 +113,7 @@ public class POIs {
         do {
             let realm = try Realm()
             try realm.write {
-                realm.delete(realm.objects(Visit.self))
+                realm.delete(realm.objects(POI.self))
             }
         } catch let error as NSError {
           print(error)

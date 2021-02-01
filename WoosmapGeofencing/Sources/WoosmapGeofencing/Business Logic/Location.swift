@@ -66,7 +66,7 @@ public class Locations {
         do {
             let realm = try Realm()
             try realm.write {
-                realm.delete(realm.objects(Visit.self))
+                realm.delete(realm.objects(Location.self))
             }
         } catch let error as NSError {
           print(error)
