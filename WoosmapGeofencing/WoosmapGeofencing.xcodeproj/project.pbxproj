@@ -28,6 +28,7 @@
 		A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EFA25B5CB3500AF62F5 /* Region.swift */; };
 		A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
+		A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		A2710EFA25B5CB3500AF62F5 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DistanceAPIJsonswift.swift; path = Sources/WoosmapGeofencing/DistanceAPIJsonswift.swift; sourceTree = SOURCE_ROOT; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 		A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */ = {
 			isa = PBXGroup;
 			children = (
+				A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */,
 				A26E646025B98BDD00EDBA72 /* DelayDataDurationTests.swift */,
 				A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */,
 				A262B9C724E29ADF00EB621F /* Info.plist */,
@@ -291,6 +294,7 @@
 			files = (
 				A26E646125B98BDD00EDBA72 /* DelayDataDurationTests.swift in Sources */,
 				A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */,
+				A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */,
 				A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
