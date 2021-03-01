@@ -465,6 +465,12 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Test Datas"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i2I-Qa-8tz">
+                                <rect key="frame" x="178.5" y="761" width="57" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wjg-3b-2Rh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -473,6 +479,7 @@
                             <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
                             <constraint firstItem="Kg9-t8-iO2" firstAttribute="centerY" secondItem="W24-9x-aBv" secondAttribute="centerY" id="5vy-Ng-vnR"/>
                             <constraint firstItem="W24-9x-aBv" firstAttribute="top" secondItem="xVB-20-h2R" secondAttribute="bottom" constant="20" id="5zd-om-4c3"/>
+                            <constraint firstItem="i2I-Qa-8tz" firstAttribute="centerX" secondItem="RUJ-f8-JXN" secondAttribute="centerX" id="7PE-As-HHq"/>
                             <constraint firstItem="zCT-8o-N5e" firstAttribute="leading" secondItem="xVB-20-h2R" secondAttribute="trailing" constant="10" id="806-16-NwW"/>
                             <constraint firstItem="W24-9x-aBv" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="Amd-uU-dzq"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="centerY" secondItem="39W-Ks-HvI" secondAttribute="centerY" id="BQa-GF-Q1i"/>
@@ -505,6 +512,7 @@
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="84" id="tJ3-TD-BzZ"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XT1-ev-ZVu" secondAttribute="trailing" symbolic="YES" id="v3g-WC-jQc"/>
                             <constraint firstItem="1c0-gl-iWl" firstAttribute="leading" secondItem="FCt-va-tsY" secondAttribute="leading" id="wVK-To-Uga"/>
+                            <constraint firstItem="i2I-Qa-8tz" firstAttribute="top" secondItem="RUJ-f8-JXN" secondAttribute="bottom" constant="40" id="xiP-V5-SlD"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="top" secondItem="39W-Ks-HvI" secondAttribute="bottom" constant="25" id="ygP-vw-kpl"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zCT-8o-N5e" secondAttribute="trailing" symbolic="YES" id="zVJ-Am-jzm"/>
                         </constraints>
@@ -520,6 +528,7 @@
                         <outlet property="searchAPISwitch" destination="xVB-20-h2R" id="CH3-iw-99e"/>
                         <outlet property="testDataButton" destination="RUJ-f8-JXN" id="seI-PE-3HO"/>
                         <outlet property="trackingSwitch" destination="JEX-Xy-smo" id="A4J-Sx-rzu"/>
+                        <outlet property="versionLabel" destination="i2I-Qa-8tz" id="Uve-vg-faa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnK-sz-o0u" sceneMemberID="firstResponder"/>

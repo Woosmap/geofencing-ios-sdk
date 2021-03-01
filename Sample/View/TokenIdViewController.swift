@@ -18,6 +18,7 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var removeAllPOIRegionsButton: UIButton!
     @IBOutlet weak var removeAllCustomRegionsButton: UIButton!
     @IBOutlet weak var testDataButton: UIButton!
+    @IBOutlet weak var versionLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,12 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
         removeAllCustomRegionsButton.addTarget(self, action: #selector(removeAllCustomRegions), for: .touchUpInside)
 
         testDataButton.addTarget(self, action: #selector(testData), for: .touchUpInside)
+        
+        let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+        let buildString = "Version: \(appVersion ?? "").\(build ?? "")"
+        
+        versionLabel.text = buildString
     }
 
     /**

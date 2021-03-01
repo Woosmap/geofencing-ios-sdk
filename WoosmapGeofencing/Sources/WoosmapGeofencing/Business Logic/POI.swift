@@ -41,14 +41,14 @@ public class POIs {
             poi.locationId = locationId
             let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: searchAPIResponse)
             for feature in (responseJSON?.features)! {
-                poi.city = feature.properties!.address!.city!
-                poi.zipCode = feature.properties!.address!.zipcode!
-                poi.distance = feature.properties!.distance!
-                poi.latitude = (feature.geometry?.coordinates![1])!
-                poi.longitude = (feature.geometry?.coordinates![0])!
+                poi.city = feature.properties?.address?.city ?? ""
+                poi.zipCode = feature.properties?.address?.zipcode ?? ""
+                poi.distance = feature.properties?.distance ?? 0.0
+                poi.latitude = (feature.geometry?.coordinates![1]) ?? 0.0
+                poi.longitude = (feature.geometry?.coordinates![0]) ?? 0.0
                 poi.date = Date()
-                poi.idstore = (feature.properties?.store_id)!
-                poi.name = (feature.properties?.name)!
+                poi.idstore = (feature.properties?.store_id) ?? ""
+                poi.name = (feature.properties?.name) ?? ""
             }
             realm.beginWrite()
             realm.add(poi)
