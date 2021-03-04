@@ -15,13 +15,15 @@ let package = Package(
     dependencies: [
         // Surge Package
         .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0")
+        // Realm
+        .package(url: "https://github.com/realm/realm-cocoa", from: "10.5.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "WoosmapGeofencing",
-            dependencies: ["Surge"],
+            dependencies: ["Surge"],["Realm"],
             path: "WoosmapGeofencing/Sources/WoosmapGeofencing"),
         .testTarget(
             name: "WoosmapGeofencingTests",
