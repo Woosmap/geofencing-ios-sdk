@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
   s.swift_versions = ['5.1', '5.2']
   s.source_files = 'WoosmapGeofencing/Sources/WoosmapGeofencing/*.swift'
   s.dependency 'Surge', '~> 2.3.0'
-  s.dependency 'RealmSwift
+  s.dependency 'RealmSwift'
 end
