@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         // Surge Package
-        .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0")
+        .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0"),
         // Realm
         .package(url: "https://github.com/realm/realm-cocoa", from: "10.5.1")
     ],
