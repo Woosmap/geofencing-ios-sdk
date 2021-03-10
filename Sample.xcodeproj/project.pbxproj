@@ -26,6 +26,7 @@
 		A2710F0B25B5CF2F00AF62F5 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; };
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
 		A27D4422250A28770043B676 /* Locations.csv in Resources */ = {isa = PBXBuildFile; fileRef = A27D4421250A28770043B676 /* Locations.csv */; };
+		A29D6F9D25EFF88600F95790 /* AirshipEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */; };
 		A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A32229242911F900C98018 /* TokenIdViewController.swift */; };
 		A2AC8537240E743800C65900 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC8536240E743800C65900 /* NotificationService.swift */; };
 		A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2AC8534240E743800C65900 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -125,6 +126,7 @@
 		A273027D23EB0BB00042FC5A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27D4421250A28770043B676 /* Locations.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Locations.csv; sourceTree = "<group>"; };
+		A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirshipEvents.swift; sourceTree = "<group>"; };
 		A2A32229242911F900C98018 /* TokenIdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenIdViewController.swift; sourceTree = "<group>"; };
 		A2AC852F240E73FB00C65900 /* SampleGeofencing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleGeofencing.entitlements; sourceTree = "<group>"; };
 		A2AC8534240E743800C65900 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,6 +240,7 @@
 				A2B5187D2554655C003B7C19 /* DataDistance.swift */,
 				A239055F25791D87001B3754 /* DataRegion.swift */,
 				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
+				A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -289,6 +292,8 @@
 				A2AC853A240E743800C65900 /* PBXTargetDependency */,
 			);
 			name = Sample;
+			packageProductDependencies = (
+			);
 			productName = GeoSearch;
 			productReference = A216FB8823E9CE720003AAC8 /* SampleGeofencing.app */;
 			productType = "com.apple.product-type.application";
@@ -361,6 +366,8 @@
 				Base,
 			);
 			mainGroup = A216FB7F23E9CE720003AAC8;
+			packageReferences = (
+			);
 			productRefGroup = A216FB8923E9CE720003AAC8 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -440,6 +447,7 @@
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
 				A239056025791D87001B3754 /* DataRegion.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
+				A29D6F9D25EFF88600F95790 /* AirshipEvents.swift in Sources */,
 				A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */,
 				A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */,
 				A21DC0C4248FF50000E45471 /* MockDataVisit.swift in Sources */,

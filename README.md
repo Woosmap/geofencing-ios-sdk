@@ -476,6 +476,7 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 * [ZOI Algorithm](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/ZOIAlgorithm.md): Find out how ZOI are built from visits.
 * [ZOI Classification](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/Classification.md): Find out how Classification are built from duration of ZOI.
 * [Geographic Data Lifecycle and import data from a CSV](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/GeographicDataLifecycle.md): Find out how to manage the data lifecycle to be in compliance with GDPR and how to import data from a CSV.
+* [Airship Integration](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/airship.md): Track location data and generate contextual events using custom event types.
 
 ## Contributing
 

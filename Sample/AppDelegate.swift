@@ -7,6 +7,9 @@
 import UIKit
 import CoreLocation
 import WoosmapGeofencing
+#if canImport(AirshipCore)
+  import AirshipCore
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let dataDistance = DataDistance()
     let dataRegion = DataRegion()
     let dataVisit = DataVisit()
+    let airshipEvents = AirshipEvents()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -25,6 +29,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                  "DistanceAPIEnable": true,
                                                  "searchAPICreationRegionEnable": true])
 
+        #if canImport(AirshipCore)
+            // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
+            // or set runtime properties here.
+            let config = UAConfig.default()
+
+            if (config.validate() != true) {
+                showInvalidConfigAlert()
+                return true
+            }
+
+            // Set log level for debugging config loading (optional)
+            // It will be set to the value in the loaded config upon takeOff
+            UAirship.setLogLevel(UALogLevel.trace)
+
+            config.messageCenterStyleConfig = "UAMessageCenterDefaultStyle"
+
+            // You can then programmatically override the plist values:
+            // config.developmentAppKey = "YourKey"
+            // etc.
+            // Call takeOff (which creates the UAirship singleton)
+            UAirship.takeOff(config)
+            UAirship.push()?.userPushNotificationsEnabled = true
+            UAirship.push()?.defaultPresentationOptions = [.alert,.badge,.sound]
+            UAirship.push()?.isAutobadgeEnabled = true
+
+
+            // Print out the application configuration for debugging (optional)
+            print("Config:\n \(config)")
+            WoosmapGeofencing.shared.getLocationService().airshipEventsDelegate = airshipEvents
+        #endif
+    
+        
         // Set private Woosmap key API
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
@@ -114,4 +150,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
+    func showInvalidConfigAlert() {
+            let alertController = UIAlertController.init(title: "Invalid AirshipConfig.plist", message: "The AirshipConfig.plist must be a part of the app bundle and include a valid appkey and secret for the selected production level.", preferredStyle:.actionSheet)
+            alertController.addAction(UIAlertAction.init(title: "Exit Application", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
+                exit(1)
+            }))
+
+            DispatchQueue.main.async {
+                alertController.popoverPresentationController?.sourceView = self.window?.rootViewController?.view
+
+                self.window?.rootViewController?.present(alertController, animated:true, completion: nil)
+            }
+        }
 }
