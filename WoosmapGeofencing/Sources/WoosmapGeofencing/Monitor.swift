@@ -27,6 +27,14 @@ public protocol VisitServiceDelegate: class {
     func processVisit(visit: Visit)
 }
 
+public protocol AirshipEventsDelegate: class {
+    func poiEvent(POIEvent: Dictionary <String, Any>)
+    func regionEnterEvent(regionEvent: Dictionary <String, Any>)
+    func regionExitEvent(regionEvent: Dictionary <String, Any>)
+    func visitEvent(visitEvent: Dictionary <String, Any>)
+}
+
+
 public extension Date {
     /// Returns the amount of seconds from another date
     func seconds(from date: Date) -> Int {
@@ -71,6 +79,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public weak var distanceAPIDataDelegate: DistanceAPIDelegate?
     public weak var regionDelegate: RegionsServiceDelegate?
     public weak var visitDelegate: VisitServiceDelegate?
+    public weak var airshipEventsDelegate: AirshipEventsDelegate?
 
     init(locationManger: LocationManagerProtocol?) {
 
@@ -185,6 +194,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if  (getRegionType(identifier: region.identifier) == RegionType.custom) || (getRegionType(identifier: region.identifier) == RegionType.poi) {
             let regionExit = Regions.add(POIregion: region, didEnter: false)
+            sendASRegionEvents(region: regionExit)
             if regionExit.identifier != nil {
                 self.regionDelegate?.didExitPOIRegion(POIregion: regionExit)
             }
@@ -195,6 +205,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if  (getRegionType(identifier: region.identifier) == RegionType.custom) || (getRegionType(identifier: region.identifier) == RegionType.poi) {
             let regionEnter = Regions.add(POIregion: region, didEnter: true)
+            sendASRegionEvents(region: regionEnter)
             if regionEnter.identifier != nil {
                 self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
             }
@@ -262,6 +273,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             let visitRecorded = Visits.add(visit: visit)
             if visitRecorded.visitId != nil {
                 delegate.processVisit(visit: visitRecorded)
+                sendASVisitEvents(visit: visitRecorded)
             }
         }
     }
@@ -348,6 +360,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     NSLog("error: \(error)")
                 } else {
                     let poi = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
+                    self.sendASPOIEvents(poi: poi)
                     delegate.searchAPIResponse(poi: poi)
                     self.lastSearchLocation = self.currentLocation
 
@@ -479,5 +492,66 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         return RegionType.none
     }
+    
+    func sendASVisitEvents(visit: Visit) {
+        guard let delegate = self.airshipEventsDelegate else {
+            return
+        }
+        var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["Date"] = visit.date?.stringFromDate()
+        propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
+        propertyDictionary["departureDate"] = visit.departureDate?.stringFromDate()
+        propertyDictionary["Id"] = visit.visitId
+        propertyDictionary["lattitude"] = visit.latitude
+        propertyDictionary["longitude"] = visit.longitude
+        
+        delegate.visitEvent(visitEvent: propertyDictionary)
+    }
+    
+    func sendASPOIEvents(poi: POI) {
+        guard let delegate = self.airshipEventsDelegate else {
+            return
+        }
+        var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["Date"] = poi.date?.stringFromDate()
+        propertyDictionary["Name"] = poi.name
+        propertyDictionary["IdStore"] = poi.idstore
+        propertyDictionary["City"] = poi.city
+        propertyDictionary["Distance"] = poi.distance
+        let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: poi.jsonData ?? Data.init())
+        for feature in (responseJSON?.features)! {
+            propertyDictionary["Tag"] = feature.properties?.tags
+            propertyDictionary["type"] = feature.properties?.types
+        }
+        delegate.poiEvent(POIEvent: propertyDictionary)
+    }
+    
+    func sendASRegionEvents(region: Region) {
+        guard let delegate = self.airshipEventsDelegate else {
+            return
+        }
+        var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["Date"] = region.date?.stringFromDate()
+        propertyDictionary["id"] = region.identifier
+        propertyDictionary["lattitude"] = region.latitude
+        propertyDictionary["longitude"] = region.longitude
+        propertyDictionary["radius"] = region.radius
+        
+        if(region.didEnter) {
+            delegate.regionEnterEvent(regionEvent: propertyDictionary)
+        } else {
+            delegate.regionExitEvent(regionEvent: propertyDictionary)
+        }
+    }
 
 }
+
+public extension Date {
+    func stringFromDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yy HH:mm:ss"
+        let stringDate = formatter.string(from: self) // string purpose I add here
+        return stringDate
+    }
+}
+
