@@ -112,7 +112,7 @@ public class AirshipEvents: AirshipEventsDelegate {
 
 date: String  
 id: String  
-lattitude: Double  
+latitude: Double  
 longitude: Double
 radius: Double
 
@@ -120,7 +120,7 @@ radius: Double
 
 date: String  
 id: String  
-lattitude: Double  
+latitude: Double  
 longitude: Double
 radius: Double
 
@@ -143,5 +143,5 @@ date: String
 arrivalDate: String  
 departureDate: String  
 id: String  
-lattitude: Double  
+latitude: Double  
 longitude: Double

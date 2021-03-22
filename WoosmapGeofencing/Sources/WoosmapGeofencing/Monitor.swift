@@ -502,7 +502,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
         propertyDictionary["departureDate"] = visit.departureDate?.stringFromDate()
         propertyDictionary["id"] = visit.visitId
-        propertyDictionary["lattitude"] = visit.latitude
+        propertyDictionary["latitude"] = visit.latitude
         propertyDictionary["longitude"] = visit.longitude
         
         delegate.visitEvent(visitEvent: propertyDictionary)
@@ -533,7 +533,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["date"] = region.date?.stringFromDate()
         propertyDictionary["id"] = region.identifier
-        propertyDictionary["lattitude"] = region.latitude
+        propertyDictionary["latitude"] = region.latitude
         propertyDictionary["longitude"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
