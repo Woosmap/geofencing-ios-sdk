@@ -498,10 +498,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["Date"] = visit.date?.stringFromDate()
+        propertyDictionary["date"] = visit.date?.stringFromDate()
         propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
         propertyDictionary["departureDate"] = visit.departureDate?.stringFromDate()
-        propertyDictionary["Id"] = visit.visitId
+        propertyDictionary["id"] = visit.visitId
         propertyDictionary["lattitude"] = visit.latitude
         propertyDictionary["longitude"] = visit.longitude
         
@@ -513,14 +513,14 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["Date"] = poi.date?.stringFromDate()
-        propertyDictionary["Name"] = poi.name
-        propertyDictionary["IdStore"] = poi.idstore
-        propertyDictionary["City"] = poi.city
-        propertyDictionary["Distance"] = poi.distance
+        propertyDictionary["date"] = poi.date?.stringFromDate()
+        propertyDictionary["name"] = poi.name
+        propertyDictionary["idStore"] = poi.idstore
+        propertyDictionary["city"] = poi.city
+        propertyDictionary["distance"] = poi.distance
         let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: poi.jsonData ?? Data.init())
         for feature in (responseJSON?.features)! {
-            propertyDictionary["Tag"] = feature.properties?.tags
+            propertyDictionary["tag"] = feature.properties?.tags
             propertyDictionary["type"] = feature.properties?.types
         }
         delegate.poiEvent(POIEvent: propertyDictionary)
@@ -531,7 +531,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["Date"] = region.date?.stringFromDate()
+        propertyDictionary["date"] = region.date?.stringFromDate()
         propertyDictionary["id"] = region.identifier
         propertyDictionary["lattitude"] = region.latitude
         propertyDictionary["longitude"] = region.longitude
