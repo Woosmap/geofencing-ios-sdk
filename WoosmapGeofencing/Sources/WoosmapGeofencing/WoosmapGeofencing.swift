@@ -130,6 +130,10 @@ import CoreLocation
     public func setClassification(enable: Bool) {
         classificationEnable = enable
     }
+    
+    public func setRadiusDetectionClassifiedZOI(radius: Double) {
+        radiusDetectionClassifiedZOI = radius
+    }
 
     public func setFirstSearchAPIRegionRadius(radius: Double) {
         firstSearchAPIRegionRadius = radius

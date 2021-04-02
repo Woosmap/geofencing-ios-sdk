@@ -288,4 +288,15 @@ public class ZOIs {
         } catch {
         }
     }
+    
+    public class func getWorkHomeZOI() -> [ZOI] {
+        do {
+            let realm = try Realm()
+            let predicate = NSPredicate(format: "period == %@ OR period == %@", "WORK_PERIOD", "HOME_PERIOD")
+            let fetchedResults = realm.objects(ZOI.self).filter(predicate)
+            return Array(fetchedResults)
+        } catch {
+        }
+        return []
+    }
 }

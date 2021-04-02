@@ -47,6 +47,7 @@ public var creationOfZOIEnable = true
 
 // Active Classification
 public var classificationEnable = true
+public var radiusDetectionClassifiedZOI = 100.0
 
 // Delay of Duration data
 public var dataDurationDelay = 30// number of day

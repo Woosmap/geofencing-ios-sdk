@@ -43,6 +43,16 @@ public class Regions {
         }
         return Region()
     }
+    
+    public class func add(classifiedRegion: Region) {
+        do {
+            let realm = try Realm()
+            realm.beginWrite()
+            realm.add(classifiedRegion)
+            try realm.commitWrite()
+        } catch {
+        }
+    }
 
     public class func getAll() -> [Region] {
         do {

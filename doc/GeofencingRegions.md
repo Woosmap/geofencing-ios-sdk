@@ -69,6 +69,14 @@ public class DataRegion:RegionsServiceDelegate  {
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self,userInfo: ["Region": POIregion])
     }
     
+    public func workZOIEnter(classifiedRegion: Region) {
+        NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": classifiedRegion])
+    }
+    
+    public func homeZOIEnter(classifiedRegion: Region) {
+        NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": classifiedRegion])
+    }
+    
     public func readRegions()-> [Region] {
         return Regions.getAll()
     }
@@ -107,6 +115,14 @@ WoosmapGeofencing.shared.setSecondSearchAPIRegionRadius(radius: 350.0)
 WoosmapGeofencing.shared.setThirdSearchAPIRegionRadius(radius: 550.0)
 ```
 
+#### Monitoring ZOI Classified
+
+When a ZOI is classified HOME or WORK, you can get events enter or exit status in the Region table of the database.
+To launch a Region event from a ZOI classified, you must define a distance detection threshold (meters) in the settings of the SDK like this :
+
+```swift
+WoosmapGeofencing.shared.setRadiusDetectionClassifiedZOI = 50;
+```
 
 ### Create a custom region
 
