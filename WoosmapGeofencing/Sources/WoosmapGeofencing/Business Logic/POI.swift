@@ -35,11 +35,14 @@ public class POI: Object {
 public class POIs {
     public class func addFromResponseJson(searchAPIResponse: Data, locationId: String) -> POI {
         do {
+            let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: searchAPIResponse)
+            if((responseJSON?.features)!.isEmpty) {
+                return POI()
+            }
             let realm = try Realm()
             let poi = POI()
             poi.jsonData = searchAPIResponse
             poi.locationId = locationId
-            let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: searchAPIResponse)
             for feature in (responseJSON?.features)! {
                 poi.city = feature.properties?.address?.city ?? ""
                 poi.zipCode = feature.properties?.address?.zipcode ?? ""
