@@ -218,6 +218,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             if (self.locationManager?.monitoredRegions.count)! < 20 {
                 let id = RegionType.custom.rawValue + "_" + identifier
                 self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
+                checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
                 return (true, RegionType.custom.rawValue + "_" + identifier)
             } else {
                 return (false, "")
@@ -254,6 +255,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     }
                 }
             }
+            self.handleRegionChange()
+        }
+    }
+    
+    public func checkIfUserIsInRegion(region: CLCircularRegion) {
+        if(region.contains(currentLocation!.coordinate)) {
+            let regionEnter = Regions.add(POIregion: region, didEnter: true)
+            sendASRegionEvents(region: regionEnter)
+            self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
         }
     }
 
@@ -399,8 +409,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
             let identifier = RegionType.poi.rawValue + "_" + name
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
+            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
+            
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(secondSearchAPIRegionRadius), identifier: identifier + " - " + String(secondSearchAPIRegionRadius) + " m"))
+            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(secondSearchAPIRegionRadius), identifier: identifier + " - " + String(secondSearchAPIRegionRadius) + " m"))
+            
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(thirdSearchAPIRegionRadius), identifier: identifier + " - " + String(thirdSearchAPIRegionRadius) + " m"))
+            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(thirdSearchAPIRegionRadius), identifier: identifier + " - " + String(thirdSearchAPIRegionRadius) + " m"))
         }
     }
 
