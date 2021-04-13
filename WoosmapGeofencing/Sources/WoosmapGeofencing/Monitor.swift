@@ -528,38 +528,38 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
 
     }
-    
-    func detectLocationInZOIClassified(location: CLLocation, enter: Bool) {
-        let classifiedZOIs = ZOIs.getWorkHomeZOI()
-        for classifiedZOI in classifiedZOIs {
-            let sMercator = SphericalMercator()
-            let latitude = sMercator.y2lat(aY: classifiedZOI.lngMean)
-            let longitude = sMercator.x2lon(aX: classifiedZOI.latMean)
-            print(latitude)
-            print(longitude)
-            print(classifiedZOI.period!)
-            print("distance = ")
-            
-            let distance = location.distance(from: CLLocation(latitude: latitude, longitude: longitude))
-            print(distance)
-            if(distance < radiusDetectionClassifiedZOI) {
-                let classifiedRegion = Region()
-                classifiedRegion.date = Date()
-                if(enter) {
-                    classifiedRegion.didEnter = true
-                } else {
-                    classifiedRegion.didEnter = false
-                }
-                classifiedRegion.radius = radiusDetectionClassifiedZOI
-                classifiedRegion.latitude = latitude
-                classifiedRegion.longitude = longitude
-                classifiedRegion.identifier = classifiedZOI.period
-                Regions.add(classifiedRegion: classifiedRegion)
-                self.regionDelegate?.homeZOIEnter(classifiedRegion: classifiedRegion)
-            }
-        }
-
-    }
+    // For test only
+//    func detectLocationInZOIClassified(location: CLLocation, enter: Bool) {
+//        let classifiedZOIs = ZOIs.getWorkHomeZOI()
+//        for classifiedZOI in classifiedZOIs {
+//            let sMercator = SphericalMercator()
+//            let latitude = sMercator.y2lat(aY: classifiedZOI.lngMean)
+//            let longitude = sMercator.x2lon(aX: classifiedZOI.latMean)
+//            print(latitude)
+//            print(longitude)
+//            print(classifiedZOI.period!)
+//            print("distance = ")
+//
+//            let distance = location.distance(from: CLLocation(latitude: latitude, longitude: longitude))
+//            print(distance)
+//            if(distance < radiusDetectionClassifiedZOI) {
+//                let classifiedRegion = Region()
+//                classifiedRegion.date = Date()
+//                if(enter) {
+//                    classifiedRegion.didEnter = true
+//                } else {
+//                    classifiedRegion.didEnter = false
+//                }
+//                classifiedRegion.radius = radiusDetectionClassifiedZOI
+//                classifiedRegion.latitude = latitude
+//                classifiedRegion.longitude = longitude
+//                classifiedRegion.identifier = classifiedZOI.period
+//                Regions.add(classifiedRegion: classifiedRegion)
+//                self.regionDelegate?.homeZOIEnter(classifiedRegion: classifiedRegion)
+//            }
+//        }
+//
+//    }
     
     func sendASVisitEvents(visit: Visit) {
         guard let delegate = self.airshipEventsDelegate else {
