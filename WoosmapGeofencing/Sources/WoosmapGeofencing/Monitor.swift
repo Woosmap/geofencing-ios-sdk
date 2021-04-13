@@ -370,6 +370,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     NSLog("error: \(error)")
                 } else {
                     let poi = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
+                    if(poi.locationId == nil) {
+                        return
+                    }
                     self.sendASPOIEvents(poi: poi)
                     delegate.searchAPIResponse(poi: poi)
                     self.lastSearchLocation = self.currentLocation
