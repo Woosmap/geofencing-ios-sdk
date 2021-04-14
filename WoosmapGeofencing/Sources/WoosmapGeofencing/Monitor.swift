@@ -19,8 +19,12 @@ public protocol DistanceAPIDelegate: class {
 
 public protocol RegionsServiceDelegate: class {
     func updateRegions(regions: Set<CLRegion>)
-    func didEnterPOIRegion(POIregion: Region )
-    func didExitPOIRegion(POIregion: Region )
+    func didEnterPOIRegion(POIregion: Region)
+    func didExitPOIRegion(POIregion: Region)
+    func workZOIEnter(classifiedRegion: Region)
+    func homeZOIEnter(classifiedRegion: Region)
+    
+    
 }
 
 public protocol VisitServiceDelegate: class {
@@ -32,6 +36,8 @@ public protocol AirshipEventsDelegate: class {
     func regionEnterEvent(regionEvent: Dictionary <String, Any>)
     func regionExitEvent(regionEvent: Dictionary <String, Any>)
     func visitEvent(visitEvent: Dictionary <String, Any>)
+    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>)
+    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>)
 }
 
 
@@ -280,6 +286,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         if visit.horizontalAccuracy < accuracyVisitFilter {
+            detectVisitInZOIClassified(visit: visit)
             let visitRecorded = Visits.add(visit: visit)
             if visitRecorded.visitId != nil {
                 delegate.processVisit(visit: visitRecorded)
@@ -511,6 +518,67 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         return RegionType.none
     }
     
+    func detectVisitInZOIClassified(visit: CLVisit) {
+        let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        let classifiedZOIs = ZOIs.getWorkHomeZOI()
+        let calendar = Calendar.current
+        for classifiedZOI in classifiedZOIs {
+            let sMercator = SphericalMercator()
+            let latitude = sMercator.y2lat(aY: classifiedZOI.lngMean)
+            let longitude = sMercator.x2lon(aX: classifiedZOI.latMean)
+            let distance = visitLocation.distance(from: CLLocation(latitude: latitude, longitude: longitude))
+            if(distance < radiusDetectionClassifiedZOI) {
+                let classifiedRegion = Region()
+                classifiedRegion.date = Date()
+                if(calendar.component(.year, from: visit.departureDate) != 4001) {
+                    classifiedRegion.didEnter = false
+                } else {
+                    classifiedRegion.didEnter = true
+                }
+                classifiedRegion.radius = radiusDetectionClassifiedZOI
+                classifiedRegion.latitude = latitude
+                classifiedRegion.longitude = longitude
+                classifiedRegion.identifier = classifiedZOI.period
+                Regions.add(classifiedRegion: classifiedRegion)
+                self.regionDelegate?.homeZOIEnter(classifiedRegion: classifiedRegion)
+                sendASZOIClassifiedEvents(region: classifiedRegion)
+            }
+        }
+
+    }
+    // For test only
+//    func detectLocationInZOIClassified(location: CLLocation, enter: Bool) {
+//        let classifiedZOIs = ZOIs.getWorkHomeZOI()
+//        for classifiedZOI in classifiedZOIs {
+//            let sMercator = SphericalMercator()
+//            let latitude = sMercator.y2lat(aY: classifiedZOI.lngMean)
+//            let longitude = sMercator.x2lon(aX: classifiedZOI.latMean)
+//            print(latitude)
+//            print(longitude)
+//            print(classifiedZOI.period!)
+//            print("distance = ")
+//
+//            let distance = location.distance(from: CLLocation(latitude: latitude, longitude: longitude))
+//            print(distance)
+//            if(distance < radiusDetectionClassifiedZOI) {
+//                let classifiedRegion = Region()
+//                classifiedRegion.date = Date()
+//                if(enter) {
+//                    classifiedRegion.didEnter = true
+//                } else {
+//                    classifiedRegion.didEnter = false
+//                }
+//                classifiedRegion.radius = radiusDetectionClassifiedZOI
+//                classifiedRegion.latitude = latitude
+//                classifiedRegion.longitude = longitude
+//                classifiedRegion.identifier = classifiedZOI.period
+//                Regions.add(classifiedRegion: classifiedRegion)
+//                self.regionDelegate?.homeZOIEnter(classifiedRegion: classifiedRegion)
+//            }
+//        }
+//
+//    }
+    
     func sendASVisitEvents(visit: Visit) {
         guard let delegate = self.airshipEventsDelegate else {
             return
@@ -559,6 +627,24 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             delegate.regionEnterEvent(regionEvent: propertyDictionary)
         } else {
             delegate.regionExitEvent(regionEvent: propertyDictionary)
+        }
+    }
+    
+    func sendASZOIClassifiedEvents(region: Region) {
+        guard let delegate = self.airshipEventsDelegate else {
+            return
+        }
+        var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["date"] = region.date?.stringFromDate()
+        propertyDictionary["id"] = region.identifier
+        propertyDictionary["latitude"] = region.latitude
+        propertyDictionary["longitude"] = region.longitude
+        propertyDictionary["radius"] = region.radius
+        
+        if(region.didEnter) {
+            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary)
+        } else {
+            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary)
         }
     }
 

@@ -378,8 +378,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Location Notification" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QNH-61-sa7">
-                                <rect key="frame" x="56" y="64" width="302" height="41"/>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Settings" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QNH-61-sa7">
+                                <rect key="frame" x="146.5" y="64" width="121" height="41"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
                                 </accessibility>
@@ -451,35 +451,35 @@
                                 <state key="normal" title="Remove All Regions"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1c0-gl-iWl">
-                                <rect key="frame" x="84" y="608" width="238" height="35"/>
+                                <rect key="frame" x="102" y="608" width="202" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Remove All POI Regions"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCt-va-tsY">
-                                <rect key="frame" x="84" y="643" width="238" height="35"/>
+                                <rect key="frame" x="84.5" y="643" width="237" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Remove All Custom Regions"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUJ-f8-JXN">
-                                <rect key="frame" x="162" y="686" width="90" height="35"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <state key="normal" title="Test Datas"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i2I-Qa-8tz">
-                                <rect key="frame" x="178.5" y="761" width="57" height="21"/>
+                                <rect key="frame" x="174.5" y="122" width="57" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUJ-f8-JXN">
+                                <rect key="frame" x="0.0" y="686" width="414" height="35"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Test Datas"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wjg-3b-2Rh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="RUJ-f8-JXN" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="162" id="09u-wb-Es9"/>
+                            <constraint firstItem="RUJ-f8-JXN" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" id="2Zv-ho-xon"/>
+                            <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="RUJ-f8-JXN" secondAttribute="trailing" id="2w5-ts-WnK"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
                             <constraint firstItem="Kg9-t8-iO2" firstAttribute="centerY" secondItem="W24-9x-aBv" secondAttribute="centerY" id="5vy-Ng-vnR"/>
                             <constraint firstItem="W24-9x-aBv" firstAttribute="top" secondItem="xVB-20-h2R" secondAttribute="bottom" constant="20" id="5zd-om-4c3"/>
-                            <constraint firstItem="i2I-Qa-8tz" firstAttribute="centerX" secondItem="RUJ-f8-JXN" secondAttribute="centerX" id="7PE-As-HHq"/>
                             <constraint firstItem="zCT-8o-N5e" firstAttribute="leading" secondItem="xVB-20-h2R" secondAttribute="trailing" constant="10" id="806-16-NwW"/>
                             <constraint firstItem="W24-9x-aBv" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="Amd-uU-dzq"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="centerY" secondItem="39W-Ks-HvI" secondAttribute="centerY" id="BQa-GF-Q1i"/>
@@ -488,8 +488,9 @@
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="0aN-Rb-Hqj" secondAttribute="trailing" constant="92" id="BqY-jO-SZv"/>
                             <constraint firstItem="1c0-gl-iWl" firstAttribute="top" secondItem="0aN-Rb-Hqj" secondAttribute="bottom" id="Def-sB-aCf"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="trailing" secondItem="Kg9-t8-iO2" secondAttribute="trailing" id="G9b-6u-OFD"/>
+                            <constraint firstItem="i2I-Qa-8tz" firstAttribute="centerX" secondItem="0aN-Rb-Hqj" secondAttribute="centerX" id="Gyx-Zi-FBF"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="JPW-sq-X3G"/>
-                            <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RUJ-f8-JXN" secondAttribute="trailing" symbolic="YES" id="JhU-6u-0ak"/>
+                            <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RUJ-f8-JXN" secondAttribute="trailing" id="JhU-6u-0ak"/>
                             <constraint firstItem="JEX-Xy-smo" firstAttribute="top" secondItem="IXV-Xt-5ex" secondAttribute="bottom" constant="20" id="Kbg-72-aju"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="centerX" secondItem="1c0-gl-iWl" secondAttribute="centerX" id="LtD-iG-95l"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="NE3-nb-7W0"/>
@@ -503,16 +504,14 @@
                             <constraint firstItem="39W-Ks-HvI" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="WSw-pS-ybr"/>
                             <constraint firstItem="FCt-va-tsY" firstAttribute="centerX" secondItem="1c0-gl-iWl" secondAttribute="centerX" id="Y6y-m6-KMu"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="top" secondItem="QNH-61-sa7" secondAttribute="bottom" constant="120" id="ZWi-dT-aZL"/>
+                            <constraint firstItem="i2I-Qa-8tz" firstAttribute="top" secondItem="QNH-61-sa7" secondAttribute="bottom" constant="17" id="a5d-Cc-xAv"/>
                             <constraint firstItem="XT1-ev-ZVu" firstAttribute="leading" secondItem="JEX-Xy-smo" secondAttribute="trailing" constant="10" id="aAl-7E-7yn"/>
-                            <constraint firstItem="0aN-Rb-Hqj" firstAttribute="leading" secondItem="1c0-gl-iWl" secondAttribute="leading" id="afv-jt-vW6"/>
                             <constraint firstItem="IXV-Xt-5ex" firstAttribute="top" secondItem="8EX-ic-mne" secondAttribute="bottom" constant="30" id="bMw-23-EeJ"/>
                             <constraint firstItem="xVB-20-h2R" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="bx8-pK-mMZ"/>
                             <constraint firstItem="JEX-Xy-smo" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="c5a-Fw-pss"/>
                             <constraint firstItem="39W-Ks-HvI" firstAttribute="top" secondItem="W24-9x-aBv" secondAttribute="bottom" constant="20" id="nwj-i4-bu1"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="84" id="tJ3-TD-BzZ"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XT1-ev-ZVu" secondAttribute="trailing" symbolic="YES" id="v3g-WC-jQc"/>
-                            <constraint firstItem="1c0-gl-iWl" firstAttribute="leading" secondItem="FCt-va-tsY" secondAttribute="leading" id="wVK-To-Uga"/>
-                            <constraint firstItem="i2I-Qa-8tz" firstAttribute="top" secondItem="RUJ-f8-JXN" secondAttribute="bottom" constant="40" id="xiP-V5-SlD"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="top" secondItem="39W-Ks-HvI" secondAttribute="bottom" constant="25" id="ygP-vw-kpl"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zCT-8o-N5e" secondAttribute="trailing" symbolic="YES" id="zVJ-Am-jzm"/>
                         </constraints>

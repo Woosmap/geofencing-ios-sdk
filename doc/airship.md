@@ -1,4 +1,4 @@
-﻿
+
 
   
 ## Airship Integration
@@ -101,6 +101,22 @@ public class AirshipEvents: AirshipEventsDelegate {
             event.track()
         #endif
     }
+    
+    public func ZOIclassifiedEnter(regionEvent: Dictionary<String, Any>) {
+        #if canImport(AirshipCore)
+            let event = UACustomEvent(name: "zoi_classified_entered_event", value: 1)
+            event.properties = regionEvent
+            event.track()
+        #endif
+    }
+    
+    public func ZOIclassifiedExit(regionEvent: Dictionary<String, Any>) {
+        #if canImport(AirshipCore)
+            let event = UACustomEvent(name: "zoi_classified_exited_event", value: 1)
+            event.properties = regionEvent
+            event.track()
+        #endif
+    }
 }
 ```
 
@@ -123,6 +139,22 @@ id: String
 latitude: Double  
 longitude: Double  
 radius: Double
+
+**zoi_classified_entered_event**
+
+date: String \
+id: String\
+latitude: Double\
+longitude: Double\
+radius: Double 
+
+**zoi_classified_exited_event**
+
+date: String \
+id: String\
+latitude: Double\
+longitude: Double\
+radius: Double 
 
 ### POI
 

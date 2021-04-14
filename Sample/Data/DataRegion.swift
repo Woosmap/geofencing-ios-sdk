@@ -25,6 +25,15 @@ public class DataRegion: RegionsServiceDelegate {
     public func didExitPOIRegion(POIregion: Region) {
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": POIregion])
     }
+    
+    public func workZOIEnter(classifiedRegion: Region) {
+        NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": classifiedRegion])
+    }
+    
+    public func homeZOIEnter(classifiedRegion: Region) {
+        NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": classifiedRegion])
+    }
+    
 
     public func readRegions() -> [Region] {
         return Regions.getAll()

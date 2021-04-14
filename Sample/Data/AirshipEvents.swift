@@ -46,6 +46,22 @@ public class AirshipEvents: AirshipEventsDelegate {
             event.track()
         #endif
     }
+    
+    public func ZOIclassifiedEnter(regionEvent: Dictionary<String, Any>) {
+        #if canImport(AirshipCore)
+            let event = UACustomEvent(name: "zoi_classified_entered_event", value: 1)
+            event.properties = regionEvent
+            event.track()
+        #endif
+    }
+    
+    public func ZOIclassifiedExit(regionEvent: Dictionary<String, Any>) {
+        #if canImport(AirshipCore)
+            let event = UACustomEvent(name: "zoi_classified_exited_event", value: 1)
+            event.properties = regionEvent
+            event.track()
+        #endif
+    }
 }
     
     
