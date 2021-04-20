@@ -16,3 +16,13 @@ As a user moves, we create geofencing zones around them. When the user leaves or
 <p align="center">
   <img alt="GeoSearch with Regions detections" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/WoosmapGeofencing3.png" width="30%">
 </p>
+
+## Request Quick Location Updates
+If your app just needs a quick fix on the user’s location, it’s best to call the 
+```swift
+WoosmapGeofencing.shared.refreshLocation()
+```
+Doing so automatically stops location services once the request has been fulfilled, letting location hardware power down if not being used elsewhere. Location updates requested in this manner are delivered by a callback to the LocationServiceDelegate:tracingLocation: delegate method, which you must implement in your app.
+
+
+
