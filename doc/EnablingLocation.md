@@ -1,6 +1,38 @@
 
 ## Setting Up Core Location
 
+### Location Permissions
+The sdk needs some permissions to work.
+To be able to take background position readings you will need the **whenInUse** permission.
+If you want to take readings permanently the **always** permissions will be required.
+
+In these two cases you will also need to activate background mode in Xcode.
+
+<p align="center">
+  <img alt="Background Mode" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/BackgroundMode.png" width="50%">
+</p>
+ 
+ Since iOS 10 it's mandatory to provide a usage description in the `info.plist` if trying to access privacy-sensitive data. When the system prompts the user to allow access, this usage description string will be displayed as part of the permission dialog box, but if you didn't provide the usage description, the app will crash before showing the dialog. Also, Apple will reject apps that access private data but don't provide a usage description.
+
+ This SDK require the following usage description:
+
+ * `NSLocationWhenInUseUsageDescription` describes the reason that the app accesses the user's location, this is used while the app is running in the foreground.
+ * `NSLocationAlwaysAndWhenInUseUsageDescription` describes the reason that the app is requesting access to the user’s location information at all times. Use this key if your iOS app accesses location information while running in the background and foreground. 
+ * `NSLocationAlwaysUsageDescription` describes the reason that the app is requesting access to the user's location at all times. Use this key if your app accesses location information in the background and you deploy to a target earlier than iOS 11. For iOS 11 and later, add both `NSLocationAlwaysUsageDescription` and `NSLocationAlwaysAndWhenInUseUsageDescription` to your app’s `Info.plist` file with the same message.
+
+ These descriptions can be configured in the **info.plist** file, by adding the following keys:
+
+* The three keys for the location permission
+
+```xml
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>This text is shown when permission to use the location of the device is requested. Note that for the app to be accepted in the App Store, the description why the app needs location services must be clear to the end user.</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This text is shown when permission to use the location of the device is requested. Note that for the app to be accepted in the App Store, the description why the app needs location services must be clear to the end user.</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>This text is shown when permission to use the location of the device is requested. Note that for the app to be accepted in the App Store, the description why the app needs location services must be clear to the end user.</string>
+```
+
 Here’s the code to get you started with Core Location in your iOS application:
 ```swift
 var locationManager = CLLocationManager()  
