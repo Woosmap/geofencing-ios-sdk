@@ -513,4 +513,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
+    
+    @IBAction func refreshLocation(_ sender: Any) {
+        WoosmapGeofencing.shared.refreshLocation()
+    }
 }

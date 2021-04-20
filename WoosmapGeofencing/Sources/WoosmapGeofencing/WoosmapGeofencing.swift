@@ -202,5 +202,9 @@ import CoreLocation
         self._stopAllMonitoring()
         NSLog("User has activated DNT")
     }
+    
+    public func refreshLocation() {
+        self.locationService?.startUpdatingLocation()
+    }
 
 }

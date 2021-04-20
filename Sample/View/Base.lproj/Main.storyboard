@@ -96,7 +96,13 @@
                             <constraint firstItem="uCP-2P-t5t" firstAttribute="centerX" secondItem="wlt-1f-8vd" secondAttribute="centerX" id="zbN-lf-BN5"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="782-Zl-f3R"/>
+                    <navigationItem key="navigationItem" id="782-Zl-f3R">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="arrow.clockwise" catalog="system" id="OZI-UQ-h4z">
+                            <connections>
+                                <action selector="refreshLocation:" destination="Yuc-vP-sKp" id="dqN-JY-5hc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="rqj-62-hnE" id="Qsc-xF-mZf"/>
                         <outlet property="switchLocation" destination="uCP-2P-t5t" id="wC7-fu-yTo"/>
@@ -536,6 +542,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
         <image name="envelope.open" catalog="system" width="128" height="122"/>
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="mappin.and.ellipse" catalog="system" width="118" height="128"/>
