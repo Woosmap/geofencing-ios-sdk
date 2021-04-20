@@ -12,9 +12,9 @@ In these two cases you will also need to activate background mode in Xcode.
   <img alt="Background Mode" src="https://github.com/woosmap/woosmap-geofencing-ios-sdk/raw/master/assets/BackgroundMode.png" width="50%">
 </p>
  
- Since iOS 10 it's mandatory to provide an usage description in the `info.plist` if trying to access privacy-sensitive data. When the system prompts the user to allow access, this usage description string will displayed as part of the permission dialog box, but if you didn't provide the usage description, the app will crash before showing the dialog. Also, Apple will reject apps that access private data but don't provide an usage description.
+ Since iOS 10 it's mandatory to provide a usage description in the `info.plist` if trying to access privacy-sensitive data. When the system prompts the user to allow access, this usage description string will be displayed as part of the permission dialog box, but if you didn't provide the usage description, the app will crash before showing the dialog. Also, Apple will reject apps that access private data but don't provide a usage description.
 
- This plugins requires the following usage description:
+ This SDK require the following usage description:
 
  * `NSLocationWhenInUseUsageDescription` describes the reason that the app accesses the user's location, this is used while the app is running in the foreground.
  * `NSLocationAlwaysAndWhenInUseUsageDescription` describes the reason that the app is requesting access to the user’s location information at all times. Use this key if your iOS app accesses location information while running in the background and foreground. 
