@@ -203,8 +203,26 @@ import CoreLocation
         NSLog("User has activated DNT")
     }
     
-    public func refreshLocation() {
+    public func setRefreshLocationAllTime(allTime: Bool) {
+        refreshLocationAllTime = allTime
+        
+        if (refreshLocationAllTime == true) {
+            self.locationService?.startUpdatingLocation()
+        } else {
+            self.locationService?.stopUpdatingLocation()
+        }
+    }
+    
+    public func getRefreshLocationAllTimeState() -> Bool {
+        return refreshLocationAllTime
+    }
+    
+    public func refreshLocation(allTime: Bool) {
         self.locationService?.startUpdatingLocation()
+        if(allTime){
+            refreshLocationAllTime = true
+        }
+        
     }
 
 }

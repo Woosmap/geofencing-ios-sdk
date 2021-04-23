@@ -11,6 +11,7 @@ import WoosmapGeofencing
 class TokenIdViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var TokenLabel: UITextField!
     @IBOutlet weak var trackingSwitch: UISwitch!
+    @IBOutlet weak var refreshAllTimeSwitch: UISwitch!
     @IBOutlet weak var searchAPISwitch: UISwitch!
     @IBOutlet weak var distanceAPISwitch: UISwitch!
     @IBOutlet weak var POIRegionSwitch: UISwitch!
@@ -25,6 +26,8 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
         TokenLabel.text = UserDefaults.standard.object(forKey: "TokenID") as? String
         trackingSwitch.setOn(WoosmapGeofencing.shared.getTrackingState(), animated: false)
         trackingSwitch.addTarget(self, action: #selector(disableEnableTracking), for: .touchUpInside)
+        refreshAllTimeSwitch.setOn(WoosmapGeofencing.shared.getRefreshLocationAllTimeState(), animated: false)
+        refreshAllTimeSwitch.addTarget(self, action: #selector(disableEnableRefresh), for: .touchUpInside)
         searchAPISwitch.setOn(WoosmapGeofencing.shared.getSearchAPIRequestEnable(), animated: false)
         searchAPISwitch.addTarget(self, action: #selector(disableEnableSearchAPI), for: .touchUpInside)
         distanceAPISwitch.setOn(WoosmapGeofencing.shared.getDistanceAPIRequestEnable(), animated: false)
@@ -67,6 +70,16 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
         } else {
             UserDefaults.standard.setValue(false, forKey: "TrackingEnable")
             WoosmapGeofencing.shared.setTrackingEnable(enable: false)
+        }
+    }
+    
+    @objc func disableEnableRefresh() {
+        if refreshAllTimeSwitch.isOn {
+            UserDefaults.standard.setValue(true, forKey: "RefreshPositionEnable")
+            WoosmapGeofencing.shared.setRefreshLocationAllTime(allTime: true)
+        } else {
+            UserDefaults.standard.setValue(false, forKey: "RefreshPositionEnable")
+            WoosmapGeofencing.shared.setRefreshLocationAllTime(allTime: false)
         }
     }
 

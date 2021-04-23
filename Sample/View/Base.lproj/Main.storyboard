@@ -416,6 +416,9 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEX-Xy-smo">
                                 <rect key="frame" x="20" y="369" width="51" height="31"/>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AlP-XP-Ntl">
+                                <rect key="frame" x="20" y="420" width="51" height="31"/>
+                            </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tracking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XT1-ev-ZVu">
                                 <rect key="frame" x="79" y="374" width="65.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -423,34 +426,34 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xVB-20-h2R">
-                                <rect key="frame" x="20" y="420" width="51" height="31"/>
-                            </switch>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W24-9x-aBv">
                                 <rect key="frame" x="20" y="471" width="51" height="31"/>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W24-9x-aBv">
+                                <rect key="frame" x="20" y="522" width="51" height="31"/>
+                            </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search API" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zCT-8o-N5e">
-                                <rect key="frame" x="79" y="425" width="83" height="21"/>
+                                <rect key="frame" x="79" y="476" width="83" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance API" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kg9-t8-iO2">
-                                <rect key="frame" x="79" y="476" width="97" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="39W-Ks-HvI">
-                                <rect key="frame" x="20" y="522" width="51" height="31"/>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POI Regions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdZ-wu-Pj2">
                                 <rect key="frame" x="79" y="527" width="97" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="39W-Ks-HvI">
+                                <rect key="frame" x="20" y="573" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POI Regions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdZ-wu-Pj2">
+                                <rect key="frame" x="79" y="578" width="97" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0aN-Rb-Hqj">
-                                <rect key="frame" x="84" y="578" width="238" height="30"/>
+                                <rect key="frame" x="84" y="629" width="238" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="zUC-mj-Oq7"/>
                                 </constraints>
@@ -458,12 +461,12 @@
                                 <state key="normal" title="Remove All Regions"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1c0-gl-iWl">
-                                <rect key="frame" x="102" y="608" width="202" height="35"/>
+                                <rect key="frame" x="102" y="659" width="202" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Remove All POI Regions"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCt-va-tsY">
-                                <rect key="frame" x="84.5" y="643" width="237" height="35"/>
+                                <rect key="frame" x="84.5" y="694" width="237" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Remove All Custom Regions"/>
                             </button>
@@ -474,14 +477,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUJ-f8-JXN">
-                                <rect key="frame" x="0.0" y="686" width="414" height="35"/>
+                                <rect key="frame" x="0.0" y="737" width="414" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Test Datas"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refresh position all time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kba-0J-iv4">
+                                <rect key="frame" x="77" y="425" width="182" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wjg-3b-2Rh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="kba-0J-iv4" firstAttribute="leading" secondItem="AlP-XP-Ntl" secondAttribute="trailing" constant="8" symbolic="YES" id="1qi-9M-fS4"/>
                             <constraint firstItem="RUJ-f8-JXN" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" id="2Zv-ho-xon"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="RUJ-f8-JXN" secondAttribute="trailing" id="2w5-ts-WnK"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="top" secondItem="wjg-3b-2Rh" secondAttribute="top" constant="20" id="4FC-wg-GaW"/>
@@ -494,6 +504,8 @@
                             <constraint firstItem="RUJ-f8-JXN" firstAttribute="top" secondItem="FCt-va-tsY" secondAttribute="bottom" constant="8" id="Bp0-rj-7jr"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="0aN-Rb-Hqj" secondAttribute="trailing" constant="92" id="BqY-jO-SZv"/>
                             <constraint firstItem="1c0-gl-iWl" firstAttribute="top" secondItem="0aN-Rb-Hqj" secondAttribute="bottom" id="Def-sB-aCf"/>
+                            <constraint firstItem="kba-0J-iv4" firstAttribute="centerY" secondItem="AlP-XP-Ntl" secondAttribute="centerY" id="Ej8-WI-OK5"/>
+                            <constraint firstItem="xVB-20-h2R" firstAttribute="top" secondItem="AlP-XP-Ntl" secondAttribute="bottom" constant="20" id="Fgl-Dk-wR0"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="trailing" secondItem="Kg9-t8-iO2" secondAttribute="trailing" id="G9b-6u-OFD"/>
                             <constraint firstItem="i2I-Qa-8tz" firstAttribute="centerX" secondItem="0aN-Rb-Hqj" secondAttribute="centerX" id="Gyx-Zi-FBF"/>
                             <constraint firstItem="QNH-61-sa7" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="JPW-sq-X3G"/>
@@ -502,8 +514,8 @@
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="centerX" secondItem="1c0-gl-iWl" secondAttribute="centerX" id="LtD-iG-95l"/>
                             <constraint firstItem="8EX-ic-mne" firstAttribute="centerX" secondItem="cNe-3f-HZM" secondAttribute="centerX" id="NE3-nb-7W0"/>
                             <constraint firstItem="Kg9-t8-iO2" firstAttribute="leading" secondItem="zCT-8o-N5e" secondAttribute="leading" id="QTK-Qk-g4O"/>
-                            <constraint firstItem="xVB-20-h2R" firstAttribute="top" secondItem="JEX-Xy-smo" secondAttribute="bottom" constant="20" id="Rug-cg-mk5"/>
                             <constraint firstItem="FCt-va-tsY" firstAttribute="top" secondItem="1c0-gl-iWl" secondAttribute="bottom" id="S0M-4k-YIn"/>
+                            <constraint firstItem="AlP-XP-Ntl" firstAttribute="top" secondItem="JEX-Xy-smo" secondAttribute="bottom" constant="20" id="SDw-Nl-7WN"/>
                             <constraint firstItem="RdZ-wu-Pj2" firstAttribute="leading" secondItem="Kg9-t8-iO2" secondAttribute="leading" id="Uaj-Sg-8JJ"/>
                             <constraint firstItem="zCT-8o-N5e" firstAttribute="centerY" secondItem="xVB-20-h2R" secondAttribute="centerY" id="VF1-7d-C5r"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" secondItem="IXV-Xt-5ex" secondAttribute="trailing" constant="10" id="VVA-VI-Xt9"/>
@@ -517,6 +529,7 @@
                             <constraint firstItem="xVB-20-h2R" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="bx8-pK-mMZ"/>
                             <constraint firstItem="JEX-Xy-smo" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="c5a-Fw-pss"/>
                             <constraint firstItem="39W-Ks-HvI" firstAttribute="top" secondItem="W24-9x-aBv" secondAttribute="bottom" constant="20" id="nwj-i4-bu1"/>
+                            <constraint firstItem="AlP-XP-Ntl" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="20" id="r5p-t3-0Ln"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="leading" secondItem="wjg-3b-2Rh" secondAttribute="leading" constant="84" id="tJ3-TD-BzZ"/>
                             <constraint firstItem="wjg-3b-2Rh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XT1-ev-ZVu" secondAttribute="trailing" symbolic="YES" id="v3g-WC-jQc"/>
                             <constraint firstItem="0aN-Rb-Hqj" firstAttribute="top" secondItem="39W-Ks-HvI" secondAttribute="bottom" constant="25" id="ygP-vw-kpl"/>
@@ -528,6 +541,7 @@
                         <outlet property="POIRegionSwitch" destination="39W-Ks-HvI" id="h3u-mE-x5v"/>
                         <outlet property="TokenLabel" destination="IXV-Xt-5ex" id="vd8-mP-ab1"/>
                         <outlet property="distanceAPISwitch" destination="W24-9x-aBv" id="WhM-Bz-GFC"/>
+                        <outlet property="refreshAllTimeSwitch" destination="AlP-XP-Ntl" id="nS1-Sl-6Xh"/>
                         <outlet property="removeAllCustomRegionsButton" destination="FCt-va-tsY" id="clP-Hz-roI"/>
                         <outlet property="removeAllPOIRegionsButton" destination="1c0-gl-iWl" id="alx-RX-xAS"/>
                         <outlet property="removeAllRegionsButton" destination="0aN-Rb-Hqj" id="RjC-NR-hiK"/>

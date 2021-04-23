@@ -135,7 +135,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     func stopUpdatingLocation() {
-        self.locationManager?.stopUpdatingLocation()
+        if (!refreshLocationAllTime) {
+            self.locationManager?.stopUpdatingLocation()
+        }
     }
 
     func startMonitoringSignificantLocationChanges() {
