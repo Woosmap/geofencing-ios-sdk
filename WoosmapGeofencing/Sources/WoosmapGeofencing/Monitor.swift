@@ -119,11 +119,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     func setRegionDelegate(delegate: RegionsServiceDelegate) {
-        self.regionDelegate = delegate
-        if self.locationManager?.monitoredRegions != nil {
-            delegate.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
-        }
+        regionDelegate = delegate
 
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        delegate.updateRegions(regions: monitoredRegions)
     }
 
     func startUpdatingLocation() {
@@ -148,23 +147,18 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     func stopMonitoringCurrentRegions() {
-        if self.locationManager?.monitoredRegions != nil {
-            for region in (self.locationManager?.monitoredRegions)! {
-                if getRegionType(identifier: region.identifier) == RegionType.position {
-                    self.locationManager?.stopMonitoring(for: region)
-                }
-            }
+        locationManager?.monitoredRegions.forEach {
+            guard getRegionType(identifier: $0.identifier) != RegionType.position else { return }
+            locationManager?.stopMonitoring(for: $0)
         }
     }
 
     func startMonitoringCurrentRegions(regions: Set<CLRegion>) {
-        self.requestAuthorization()
-        for region in regions {
-            self.locationManager?.startMonitoring(for: region)
-        }
-        if self.locationManager?.monitoredRegions != nil {
-            self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
-        }
+        requestAuthorization()
+        regions.forEach { locationManager?.startMonitoring(for: $0) }
+
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        regionDelegate?.updateRegions(regions: monitoredRegions)
     }
 
     func updateRegionMonitoring () {
@@ -280,9 +274,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-        if self.locationManager?.monitoredRegions != nil {
-            self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
-        }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        regionDelegate?.updateRegions(regions: monitoredRegions)
     }
 
     func updateVisit(visit: CLVisit) {
