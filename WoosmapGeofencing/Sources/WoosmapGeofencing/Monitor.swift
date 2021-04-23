@@ -148,7 +148,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     func stopMonitoringCurrentRegions() {
         locationManager?.monitoredRegions.forEach {
-            guard getRegionType(identifier: $0.identifier) != RegionType.position else { return }
+            guard getRegionType(identifier: $0.identifier) == RegionType.position else { return }
             locationManager?.stopMonitoring(for: $0)
         }
     }
