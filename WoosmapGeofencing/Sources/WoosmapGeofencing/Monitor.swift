@@ -361,6 +361,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 return
             }
         }
+        
+        if(WoosmapAPIKey.isEmpty) {
+            return
+        }
 
         // Get POI nearest
         // Get the current coordiante
