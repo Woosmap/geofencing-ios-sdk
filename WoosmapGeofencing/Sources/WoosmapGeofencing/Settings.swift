@@ -43,10 +43,10 @@ public var visitEnable = true
 public var accuracyVisitFilter = 50.0
 
 // Active creation of ZOI
-public var creationOfZOIEnable = true
+public var creationOfZOIEnable = false
 
 // Active Classification
-public var classificationEnable = true
+public var classificationEnable = false
 public var radiusDetectionClassifiedZOI = 100.0
 
 // Delay of Duration data

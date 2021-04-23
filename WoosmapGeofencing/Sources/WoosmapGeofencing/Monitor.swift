@@ -162,7 +162,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for region in regions {
             self.locationManager?.startMonitoring(for: region)
         }
-        self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
+        if self.locationManager?.monitoredRegions != nil {
+            self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
+        }
     }
 
     func updateRegionMonitoring () {
@@ -278,7 +280,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-        self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
+        if self.locationManager?.monitoredRegions != nil {
+            self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
+        }
     }
 
     func updateVisit(visit: CLVisit) {
