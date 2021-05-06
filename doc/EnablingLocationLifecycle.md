@@ -26,3 +26,13 @@ myLocationManager.pausesLocationUpdatesAutomatically = true
 ```
 
 See the reference Apple [documentation](https://developer.apple.com/documentation/corelocation/getting_the_user_s_location/handling_location_events_in_the_background)
+
+## Refresh Location with high frequency
+
+To retrieve a maximum of refreshing location updating, you can set the mode like this : 
+```swift
+WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: true)
+```
+
+The locations are updated every 10 meters, the sdk detect crossing of your custom geofence region but he doesn't refresh POI, distance and classification zone. 
+This mode can work in background or app Killed but he consume a lot a battery. It's important to disable the mode if you don't need a location high frequency refreshing.
