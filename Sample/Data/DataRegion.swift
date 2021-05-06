@@ -20,10 +20,36 @@ public class DataRegion: RegionsServiceDelegate {
 
     public func didEnterPOIRegion(POIregion: Region) {
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": POIregion])
+        let content = UNMutableNotificationContent()
+        content.title = "Region enter"
+        content.body = "Region = " + POIregion.identifier!
+        content.body += "Lat = " + String(format: "%f", POIregion.latitude) + " Lng = " + String(format: "%f", POIregion.longitude)
+        content.body += "\n FromPositionDetection = " + String(POIregion.fromPositionDetection)
+        // Create the request
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString,
+                                            content: content, trigger: nil)
+        
+        // Schedule the request with the system.
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request)
     }
 
     public func didExitPOIRegion(POIregion: Region) {
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": POIregion])
+        let content = UNMutableNotificationContent()
+        content.title = "Region exit"
+        content.body = "Region = " + POIregion.identifier!
+        content.body += "Lat = " + String(format: "%f", POIregion.latitude) + " Lng = " + String(format: "%f", POIregion.longitude)
+        content.body += "\n FromPositionDetection = " + String(POIregion.fromPositionDetection)
+        // Create the request
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString,
+                                            content: content, trigger: nil)
+        
+        // Schedule the request with the system.
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request)
     }
     
     public func workZOIEnter(classifiedRegion: Region) {

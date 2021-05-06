@@ -47,6 +47,7 @@ import CoreLocation
     public func setTrackingEnable(enable: Bool) {
         if enable != getTrackingState() {
             trackingEnable = enable
+            setModeHighfrequencyLocation(enable: false)
             trackingChanged(tracking: trackingEnable)
         }
     }
@@ -203,24 +204,28 @@ import CoreLocation
         NSLog("User has activated DNT")
     }
     
-    public func setRefreshLocationAllTime(allTime: Bool) {
-        refreshLocationAllTime = allTime
+    public func setModeHighfrequencyLocation(enable: Bool) {
+        modeHighfrequencyLocation = enable
         
-        if (refreshLocationAllTime == true) {
+        if (modeHighfrequencyLocation == true) {
             self.locationService?.startUpdatingLocation()
+            setSearchAPIRequestEnable(enable: false)
+            setDistanceAPIRequestEnable(enable: false)
+            setClassification(enable: false)
+            setSearchAPICreationRegionEnable(enable: false)
         } else {
             self.locationService?.stopUpdatingLocation()
         }
     }
     
-    public func getRefreshLocationAllTimeState() -> Bool {
-        return refreshLocationAllTime
+    public func getModeHighfrequencyLocation() -> Bool {
+        return modeHighfrequencyLocation
     }
     
     public func refreshLocation(allTime: Bool) {
         self.locationService?.startUpdatingLocation()
         if(allTime){
-            refreshLocationAllTime = true
+            modeHighfrequencyLocation = true
         }
         
     }

@@ -2,22 +2,22 @@ import Foundation
 import CoreLocation
 import UserNotifications
 
-public protocol LocationServiceDelegate: class {
+public protocol LocationServiceDelegate: AnyObject {
     func tracingLocation(location: Location)
     func tracingLocationDidFailWithError(error: Error)
 }
 
-public protocol SearchAPIDelegate: class {
+public protocol SearchAPIDelegate: AnyObject {
     func searchAPIResponse(poi: POI)
     func serachAPIError(error: String)
 }
 
-public protocol DistanceAPIDelegate: class {
+public protocol DistanceAPIDelegate: AnyObject {
     func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String)
     func distanceAPIError(error: String)
 }
 
-public protocol RegionsServiceDelegate: class {
+public protocol RegionsServiceDelegate: AnyObject {
     func updateRegions(regions: Set<CLRegion>)
     func didEnterPOIRegion(POIregion: Region)
     func didExitPOIRegion(POIregion: Region)
@@ -27,11 +27,11 @@ public protocol RegionsServiceDelegate: class {
     
 }
 
-public protocol VisitServiceDelegate: class {
+public protocol VisitServiceDelegate: AnyObject {
     func processVisit(visit: Visit)
 }
 
-public protocol AirshipEventsDelegate: class {
+public protocol AirshipEventsDelegate: AnyObject {
     func poiEvent(POIEvent: Dictionary <String, Any>)
     func regionEnterEvent(regionEvent: Dictionary <String, Any>)
     func regionExitEvent(regionEvent: Dictionary <String, Any>)
@@ -120,10 +120,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     func setRegionDelegate(delegate: RegionsServiceDelegate) {
         self.regionDelegate = delegate
-        if self.locationManager?.monitoredRegions != nil {
-            delegate.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
-        }
-
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        delegate.updateRegions(regions: monitoredRegions)
     }
 
     func startUpdatingLocation() {
@@ -135,7 +133,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     func stopUpdatingLocation() {
-        if (!refreshLocationAllTime) {
+        if (!modeHighfrequencyLocation) {
             self.locationManager?.stopUpdatingLocation()
         }
     }
@@ -150,11 +148,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     func stopMonitoringCurrentRegions() {
-        if self.locationManager?.monitoredRegions != nil {
-            for region in (self.locationManager?.monitoredRegions)! {
-                if getRegionType(identifier: region.identifier) == RegionType.position {
-                    self.locationManager?.stopMonitoring(for: region)
-                }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        for region in monitoredRegions {
+            if getRegionType(identifier: region.identifier) == RegionType.position {
+                self.locationManager?.stopMonitoring(for: region)
             }
         }
     }
@@ -164,9 +161,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for region in regions {
             self.locationManager?.startMonitoring(for: region)
         }
-        if self.locationManager?.monitoredRegions != nil {
-            self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
-        }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        self.regionDelegate?.updateRegions(regions: monitoredRegions)
     }
 
     func updateRegionMonitoring () {
@@ -202,8 +198,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if (modeHighfrequencyLocation) {
+            self.handleRegionChange()
+            return
+        }
         if  (getRegionType(identifier: region.identifier) == RegionType.custom) || (getRegionType(identifier: region.identifier) == RegionType.poi) {
-            let regionExit = Regions.add(POIregion: region, didEnter: false)
+            let regionExit = Regions.add(POIregion: region, didEnter: false, fromPositionDetection: false)
             sendASRegionEvents(region: regionExit)
             if regionExit.identifier != nil {
                 self.regionDelegate?.didExitPOIRegion(POIregion: regionExit)
@@ -213,8 +213,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if (modeHighfrequencyLocation) {
+            self.handleRegionChange()
+            return
+        }
         if  (getRegionType(identifier: region.identifier) == RegionType.custom) || (getRegionType(identifier: region.identifier) == RegionType.poi) {
-            let regionEnter = Regions.add(POIregion: region, didEnter: true)
+            let regionEnter = Regions.add(POIregion: region, didEnter: true, fromPositionDetection: false)
             sendASRegionEvents(region: regionEnter)
             if regionEnter.identifier != nil {
                 self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
@@ -224,54 +228,53 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate: Bool, identifier: String) {
-        if self.locationManager?.monitoredRegions != nil {
-            if (self.locationManager?.monitoredRegions.count)! < 20 {
-                let id = RegionType.custom.rawValue + "_" + identifier
-                self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
-                checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
-                return (true, RegionType.custom.rawValue + "_" + identifier)
-            } else {
-                return (false, "")
-            }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return (false, "") }
+        
+        if (monitoredRegions.count < 20) {
+            let id = RegionType.custom.rawValue + "_" + identifier
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
+            checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
+            return (true, RegionType.custom.rawValue + "_" + identifier)
+        } else {
+            return (false, "")
         }
-        return (false, "")
+        
     }
 
     public func removeRegion(center: CLLocationCoordinate2D) {
-        if self.locationManager?.monitoredRegions != nil {
-            for region in (self.locationManager?.monitoredRegions)! {
-                let latRegion = (region as! CLCircularRegion).center.latitude
-                let lngRegion = (region as! CLCircularRegion).center.longitude
-                if center.latitude == latRegion && center.longitude == lngRegion {
-                    self.locationManager?.stopMonitoring(for: region)
-                    self.handleRegionChange()
-                }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        for region in monitoredRegions {
+            let latRegion = (region as! CLCircularRegion).center.latitude
+            let lngRegion = (region as! CLCircularRegion).center.longitude
+            if center.latitude == latRegion && center.longitude == lngRegion {
+                self.locationManager?.stopMonitoring(for: region)
+                self.handleRegionChange()
             }
         }
     }
 
     public func removeRegions(type: RegionType) {
-        if self.locationManager?.monitoredRegions != nil {
-            if RegionType.none == type {
-                for region in (self.locationManager?.monitoredRegions)! {
-                    if !region.identifier.contains(RegionType.position.rawValue) {
-                        self.locationManager?.stopMonitoring(for: region)
-                    }
-                }
-            } else {
-                for region in (self.locationManager?.monitoredRegions)! {
-                    if region.identifier.contains(type.rawValue) {
-                        self.locationManager?.stopMonitoring(for: region)
-                    }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        if RegionType.none == type {
+            for region in monitoredRegions {
+                if !region.identifier.contains(RegionType.position.rawValue) {
+                    self.locationManager?.stopMonitoring(for: region)
                 }
             }
-            self.handleRegionChange()
+        } else {
+            for region in monitoredRegions {
+                if region.identifier.contains(type.rawValue) {
+                    self.locationManager?.stopMonitoring(for: region)
+                }
+            }
         }
+        self.handleRegionChange()
     }
     
     public func checkIfUserIsInRegion(region: CLCircularRegion) {
-        if(region.contains(currentLocation!.coordinate)) {
-            let regionEnter = Regions.add(POIregion: region, didEnter: true)
+        guard let location = currentLocation else { return }
+        if(region.contains(location.coordinate)) {
+            let regionEnter = Regions.add(POIregion: region, didEnter: true, fromPositionDetection: true)
             sendASRegionEvents(region: regionEnter)
             self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
         }
@@ -282,9 +285,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-        if self.locationManager?.monitoredRegions != nil {
-            self.regionDelegate?.updateRegions(regions: (self.locationManager?.monitoredRegions)!)
-        }
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        self.regionDelegate?.updateRegions(regions: monitoredRegions)
     }
 
     func updateVisit(visit: CLVisit) {
@@ -337,6 +339,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if searchAPIRequestEnable {
             searchAPIRequest(location: currentLocation!, locationId: locationSaved.locationId!)
         }
+        
+        checkIfPositionIsInsideGeofencingRegions(location: location)
 
     }
 
@@ -409,24 +413,24 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     public func createRegionPOI(center: CLLocationCoordinate2D, name: String) {
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
         var POIRegionExist = false
-        if self.locationManager?.monitoredRegions != nil {
-            for region in (self.locationManager?.monitoredRegions)! {
-                let latRegion = (region as! CLCircularRegion).center.latitude
-                let lngRegion = (region as! CLCircularRegion).center.longitude
-                if center.latitude == latRegion && center.longitude == lngRegion {
-                    POIRegionExist = true
-                }
+        
+        for region in monitoredRegions {
+            let latRegion = (region as! CLCircularRegion).center.latitude
+            let lngRegion = (region as! CLCircularRegion).center.longitude
+            if center.latitude == latRegion && center.longitude == lngRegion {
+                POIRegionExist = true
             }
         }
+
         if !POIRegionExist {
-            if self.locationManager?.monitoredRegions != nil {
-                for region in (self.locationManager?.monitoredRegions)! {
-                    if  getRegionType(identifier: region.identifier) == RegionType.poi {
-                        self.locationManager?.stopMonitoring(for: region)
-                    }
+            for region in monitoredRegions {
+                if  getRegionType(identifier: region.identifier) == RegionType.poi {
+                    self.locationManager?.stopMonitoring(for: region)
                 }
             }
+
             let identifier = RegionType.poi.rawValue + "_" + name
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
             checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
@@ -527,6 +531,49 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         return RegionType.none
     }
+    
+    func checkIfPositionIsInsideGeofencingRegions(location: CLLocation) {
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        for region in monitoredRegions {
+            if (!region.identifier.contains(RegionType.position.rawValue)) {
+                let latRegion = (region as! CLCircularRegion).center.latitude
+                let lngRegion = (region as! CLCircularRegion).center.longitude
+                let distance = location.distance(from: CLLocation(latitude: latRegion, longitude: lngRegion))
+                if(distance < (region as! CLCircularRegion).radius) {
+                    addRegionLogTransition(region: region, didEnter: true, location: location)
+                }else {
+                    addRegionLogTransition(region: region, didEnter: false, location: location)
+                }
+            }
+        }
+    }
+    
+    func addRegionLogTransition(region: CLRegion, didEnter: Bool, location: CLLocation) {
+        if let regionLog = Regions.getRegionFromId(id: region.identifier) {
+            if (regionLog.didEnter != didEnter && regionLog.date != location.timestamp) {
+                let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection: true)
+                sendASRegionEvents(region: newRegionLog)
+                if newRegionLog.identifier != nil {
+                    if (didEnter) {
+                        self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
+                    } else {
+                        self.regionDelegate?.didExitPOIRegion(POIregion: newRegionLog)
+                    }
+                }
+            }
+        } else if (didEnter) {
+            let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection: true)
+            sendASRegionEvents(region: newRegionLog)
+            if newRegionLog.identifier != nil {
+                if (didEnter) {
+                    self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
+                } else {
+                    self.regionDelegate?.didExitPOIRegion(POIregion: newRegionLog)
+                }
+            }
+        }
+    }
+    
     
     func detectVisitInZOIClassified(visit: CLVisit) {
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)

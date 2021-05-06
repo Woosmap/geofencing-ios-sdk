@@ -99,6 +99,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     func initMap() {
         self.circles = []
+        self.circlesPOI = []
         self.zoiPolygon = []
 
         let overlays = mapView.overlays
@@ -336,7 +337,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         } else {
             circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
             mapView.addOverlays(circlesPOI)
-            initMap()
         }
 
     }
@@ -352,7 +352,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 if WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.RegionType.position {
                     circle.title = "refresh"
                 } else {
-                    circle.title = "POI"
+                    if let regionLog = Regions.getRegionFromId(id: region.identifier) {
+                        if(regionLog.didEnter) {
+                            circle.title = regionLog.identifier! + "ENTER"
+                            if(self.circlesPOI.contains(where: {$0.title == (regionLog.identifier! + "ENTER")})) {
+                                circle.title = "POI"
+                            } else {
+                                self.circlesPOI.append(circle)
+                            }
+                        } else{
+                            circle.title = "POI"
+                        }
+                    } else {
+                        circle.title = "POI"
+                    }
                 }
                 self.circles.append(circle)
             }

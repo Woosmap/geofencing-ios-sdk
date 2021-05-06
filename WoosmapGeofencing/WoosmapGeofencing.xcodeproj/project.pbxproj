@@ -437,7 +437,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -464,7 +464,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -574,7 +574,7 @@
 			repositoryURL = "https://github.com/realm/realm-cocoa";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.5.1;
+				minimumVersion = 10.5.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
