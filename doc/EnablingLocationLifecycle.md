@@ -29,10 +29,10 @@ See the reference Apple [documentation](https://developer.apple.com/documentatio
 
 ## Refresh Location with high frequency
 
-To retrieve a maximum of refreshing location updating, you can set the mode like this : 
+Some use cases or situations are more demanding on position collection or geofence detection. To complete standard mode the SDK provides a high frequency location mode. This mode allows to retrieve a maximum of location when activated. It also assures a more accurate detection of geofence crossings. This mode can be set with: 
 ```swift
 WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: true)
 ```
 
-The locations are updated every 10 meters, the sdk detect crossing of your custom geofence region but he doesn't refresh POI, distance and classification zone. 
-This mode can work in background or app Killed but he consume a lot a battery. It's important to disable the mode if you don't need a location high frequency refreshing.
+When activated, locations are updated every 10 meters but for battery and performance optimisation, no POI detection, Distance calculations or zone classification are done over the collected locations.
+This mode can be used in background or even whne the app has been killed but it generates high battery consumption. Therefore, it should be used for proper use cases, when user is well aware of the tracking and be turned off as soon as high frequent positioning is not usefull anymore.
