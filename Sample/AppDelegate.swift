@@ -12,7 +12,7 @@ import WoosmapGeofencing
 #endif
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
     let dataLocation = DataLocation()
@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UserDefaults.standard.register(defaults: ["TrackingEnable": true,
+                                                  "ModeHighfrequencyLocation":false,
                                                  "SearchAPIEnable": true,
                                                  "DistanceAPIEnable": true,
                                                  "searchAPICreationRegionEnable": true])
@@ -78,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Set classification of zoi enable
         WoosmapGeofencing.shared.setClassification(enable: true)
-
+        
         WoosmapGeofencing.shared.setFirstSearchAPIRegionRadius(radius: 100.0)
         WoosmapGeofencing.shared.setSecondSearchAPIRegionRadius(radius: 200.0)
         WoosmapGeofencing.shared.setThirdSearchAPIRegionRadius(radius: 300.0)
@@ -95,6 +96,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Set Tracking state
         WoosmapGeofencing.shared.setTrackingEnable(enable: UserDefaults.standard.bool(forKey: "TrackingEnable"))
+        
+        // Set Refreshing Position Hight frequency state
+        WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: UserDefaults.standard.bool(forKey: "ModeHighfrequencyLocation"))
 
         // Set SearchAPI automatic on each location
         WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "SearchAPIEnable"))
@@ -137,6 +141,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        print("applicationDidEnterBackground")
         if CLLocationManager.authorizationStatus() != .notDetermined {
             WoosmapGeofencing.shared.startMonitoringInBackground()
         }
@@ -144,10 +149,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        print("applicationWillTerminate")
+        // Set Refreshing Position Hight frequency state
+        WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: false)
+    }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         WoosmapGeofencing.shared.didBecomeActive()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+         completionHandler([.alert,.badge])
     }
 
     func showInvalidConfigAlert() {

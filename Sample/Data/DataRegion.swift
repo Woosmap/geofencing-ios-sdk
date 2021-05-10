@@ -20,10 +20,12 @@ public class DataRegion: RegionsServiceDelegate {
 
     public func didEnterPOIRegion(POIregion: Region) {
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": POIregion])
+        sendNotification(POIregion: POIregion, didEnter: true)
     }
 
     public func didExitPOIRegion(POIregion: Region) {
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": POIregion])
+        sendNotification(POIregion: POIregion, didEnter: false)
     }
     
     public func workZOIEnter(classifiedRegion: Region) {
@@ -41,6 +43,26 @@ public class DataRegion: RegionsServiceDelegate {
 
     public func eraseRegions() {
         Regions.deleteAll()
+    }
+    
+    public func sendNotification(POIregion: Region, didEnter: Bool){
+        let content = UNMutableNotificationContent()
+        if(didEnter){
+            content.title = "Region enter"
+        }else {
+            content.title = "Region exit"
+        }
+        content.body = "Region = " + POIregion.identifier!
+        content.body += "Lat = " + String(format: "%f", POIregion.latitude) + " Lng = " + String(format: "%f", POIregion.longitude)
+        content.body += "\n FromPositionDetection = " + String(POIregion.fromPositionDetection)
+        // Create the request
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString,
+                                            content: content, trigger: nil)
+        
+        // Schedule the request with the system.
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request)
     }
 }
 

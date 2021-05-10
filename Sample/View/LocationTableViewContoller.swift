@@ -34,6 +34,7 @@ class PlaceData: PropertyPlace {
     public var poiLatitude: Double = 0.0
     public var poiLongitude: Double = 0.0
     public var didEnterRegion: Bool = false
+    public var fromPositionDetection: Bool = false
     public var identifier: String?
 
     public init() {
@@ -49,6 +50,7 @@ class PlaceData: PropertyPlace {
         self.poiLatitude = 0.0
         self.poiLongitude = 0.0
         self.didEnterRegion = false
+        self.fromPositionDetection = false
         self.identifier = ""
     }
 
@@ -186,6 +188,7 @@ class LocationTableViewContoller: UITableViewController {
             placeData.longitude = region.longitude
             placeData.identifier = region.identifier
             placeData.didEnterRegion = region.didEnter
+            placeData.fromPositionDetection = region.fromPositionDetection
             placeData.type = dataType.region
             placeToShow.append(placeData)
         }
@@ -373,7 +376,7 @@ class LocationTableViewContoller: UITableViewController {
             cell.location.text = symbolEnterExit +  String(format: "%f", latitude) + "," + String(format: "%f", longitude)
             cell.time.text = placeData.date!.stringFromDate()
             cell.info.numberOfLines = 3
-            cell.info.text =  placeData.identifier!
+            cell.info.text =  placeData.identifier! +  "\n From Position Detection =  " + String(placeData.fromPositionDetection)
             return cell
         }
 

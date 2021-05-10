@@ -15,8 +15,9 @@ public class Region: Object {
     @objc public dynamic var latitude: Double = 0.0
     @objc public dynamic var longitude: Double = 0.0
     @objc public dynamic var radius: Double = 0.0
+    @objc public dynamic var fromPositionDetection: Bool = false
 
-    convenience init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool) {
+    convenience init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
         self.init()
         self.latitude = latitude
         self.longitude = longitude
@@ -24,17 +25,18 @@ public class Region: Object {
         self.didEnter = didEnter
         self.identifier = identifier
         self.radius = radius
+        self.fromPositionDetection = fromPositionDetection
     }
 }
 
 public class Regions {
-    public class func add(POIregion: CLRegion, didEnter: Bool) -> Region {
+    public class func add(POIregion: CLRegion, didEnter: Bool, fromPositionDetection: Bool) -> Region {
         do {
             let realm = try Realm()
             let latRegion = (POIregion as! CLCircularRegion).center.latitude
             let lngRegion = (POIregion as! CLCircularRegion).center.longitude
             let radius = (POIregion as! CLCircularRegion).radius
-            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: POIregion.identifier, didEnter: didEnter)
+            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: POIregion.identifier, didEnter: didEnter, fromPositionDetection: fromPositionDetection)
             realm.beginWrite()
             realm.add(entry)
             try realm.commitWrite()
@@ -52,6 +54,19 @@ public class Regions {
             try realm.commitWrite()
         } catch {
         }
+    }
+    
+    public class func getRegionFromId(id: String) -> Region? {
+        do {
+            let realm = try Realm()
+            let predicate = NSPredicate(format: "identifier == %@", id)
+            let fetchedResults = realm.objects(Region.self).filter(predicate)
+            if let aRegion = fetchedResults.last {
+               return aRegion
+            }
+        } catch {
+        }
+        return nil
     }
 
     public class func getAll() -> [Region] {
