@@ -352,19 +352,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 if WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.RegionType.position {
                     circle.title = "refresh"
                 } else {
+                    circle.title = "POI"
                     if let regionLog = Regions.getRegionFromId(id: region.identifier) {
-                        if(regionLog.didEnter) {
+                        if(regionLog.didEnter && !self.circlesPOI.contains(where: {$0.title == (regionLog.identifier! + "ENTER")})) {
                             circle.title = regionLog.identifier! + "ENTER"
-                            if(self.circlesPOI.contains(where: {$0.title == (regionLog.identifier! + "ENTER")})) {
-                                circle.title = "POI"
-                            } else {
-                                self.circlesPOI.append(circle)
-                            }
-                        } else{
-                            circle.title = "POI"
+                            self.circlesPOI.append(circle)
                         }
-                    } else {
-                        circle.title = "POI"
                     }
                 }
                 self.circles.append(circle)
