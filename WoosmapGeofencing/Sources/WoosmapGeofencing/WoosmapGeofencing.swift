@@ -213,8 +213,10 @@ import CoreLocation
             setDistanceAPIRequestEnable(enable: false)
             setClassification(enable: false)
             setSearchAPICreationRegionEnable(enable: false)
+            self.locationService?.removeRegions(type: LocationService.RegionType.position)
         } else {
             self.locationService?.stopUpdatingLocation()
+            self.locationService?.startUpdatingLocation()
         }
     }
     
