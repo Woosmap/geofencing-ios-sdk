@@ -169,7 +169,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if self.currentLocation != nil {
             self.stopUpdatingLocation()
             self.stopMonitoringCurrentRegions()
-            self.startMonitoringCurrentRegions(regions: RegionsGenerator().generateRegionsFrom(location: self.currentLocation!))
+            if(!modeHighfrequencyLocation) {
+                self.startMonitoringCurrentRegions(regions: RegionsGenerator().generateRegionsFrom(location: self.currentLocation!))
+            }
         }
     }
 

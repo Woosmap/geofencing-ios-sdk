@@ -338,7 +338,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
             mapView.addOverlays(circlesPOI)
         }
-
+        initMap()
     }
 
     func overlaysForRegions(regions: Set<CLRegion>) {
