@@ -93,6 +93,8 @@ Whenever the user crosses the boundary of one of your app's registered regions, 
 
 Boundary crossing notifications are delivered to your region delegate object. Specifically, `(_:didEnterRegion:)` or `(_:didExitRegion:)` methods.
 
+On the object `Region`, there are an boolean `didEnter` that indicate if you enter or exit of the region. You have another boolean `fromPositionDetection` to know if the detection was launch by the position detection or by the system detection.  
+
 When determining whether a boundary crossing happened, the system waits to be sure before sending the notification. Specifically, the user must travel a minimum distance over the boundary and remain on the same side of the boundary for at least 20 seconds. These conditions help eliminate spurious calls to your delegate object’s methods.
 
 <p align="center">
