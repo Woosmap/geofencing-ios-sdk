@@ -25,7 +25,7 @@ public var distanceWoosmapAPI = "https://api.woosmap.com/distance/distancematrix
 // Location filters
 public var currentLocationDistanceFilter = 0.0
 public var currentLocationTimeFilter = 0
-public var modeHighfrequencyLocation = false
+public var modeHighfrequencyLocation = true
 
 // Search API filters
 public var searchAPIRequestEnable = true
