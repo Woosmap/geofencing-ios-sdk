@@ -119,6 +119,10 @@ import CoreLocation
     public func setVisitEnable(enable: Bool) {
         visitEnable = enable
     }
+    
+    public func getVisitEnable() -> Bool {
+        return visitEnable
+    }
 
     public func setAccuracyVisitFilter(accuracy: Double) {
         accuracyVisitFilter = accuracy

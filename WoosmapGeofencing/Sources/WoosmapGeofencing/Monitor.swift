@@ -205,11 +205,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         if  (getRegionType(identifier: region.identifier) == RegionType.custom) || (getRegionType(identifier: region.identifier) == RegionType.poi) {
-            let regionExit = Regions.add(POIregion: region, didEnter: false, fromPositionDetection: false)
-            sendASRegionEvents(region: regionExit)
-            if regionExit.identifier != nil {
-                self.regionDelegate?.didExitPOIRegion(POIregion: regionExit)
-            }
+            addRegionLogTransition(region: region, didEnter: false,fromPositionDetection: false)
         }
         self.handleRegionChange()
     }
@@ -220,11 +216,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
         if  (getRegionType(identifier: region.identifier) == RegionType.custom) || (getRegionType(identifier: region.identifier) == RegionType.poi) {
-            let regionEnter = Regions.add(POIregion: region, didEnter: true, fromPositionDetection: false)
-            sendASRegionEvents(region: regionEnter)
-            if regionEnter.identifier != nil {
-                self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
-            }
+            addRegionLogTransition(region: region, didEnter: true, fromPositionDetection: false)
         }
         self.handleRegionChange()
     }
@@ -540,20 +532,23 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             if (!region.identifier.contains(RegionType.position.rawValue)) {
                 let latRegion = (region as! CLCircularRegion).center.latitude
                 let lngRegion = (region as! CLCircularRegion).center.longitude
-                let distance = location.distance(from: CLLocation(latitude: latRegion, longitude: lngRegion))
+                let distance = location.distance(from: CLLocation(latitude: latRegion, longitude: lngRegion)) - location.horizontalAccuracy
                 if(distance < (region as! CLCircularRegion).radius) {
-                    addRegionLogTransition(region: region, didEnter: true, location: location)
+                    addRegionLogTransition(region: region, didEnter: true, fromPositionDetection: true)
                 }else {
-                    addRegionLogTransition(region: region, didEnter: false, location: location)
+                    addRegionLogTransition(region: region, didEnter: false, fromPositionDetection: true)
                 }
             }
         }
     }
     
-    func addRegionLogTransition(region: CLRegion, didEnter: Bool, location: CLLocation) {
+    func addRegionLogTransition(region: CLRegion, didEnter: Bool, fromPositionDetection: Bool) {
         if let regionLog = Regions.getRegionFromId(id: region.identifier) {
-            if (regionLog.didEnter != didEnter && regionLog.date != location.timestamp) {
-                let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection: true)
+            if (regionLog.date!.timeIntervalSinceNow > -5) {
+                return
+            }
+            if (regionLog.didEnter != didEnter) {
+                let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
                 sendASRegionEvents(region: newRegionLog)
                 if newRegionLog.identifier != nil {
                     if (didEnter) {
@@ -564,7 +559,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 }
             }
         } else if (didEnter) {
-            let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection: true)
+            let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
             sendASRegionEvents(region: newRegionLog)
             if newRegionLog.identifier != nil {
                 if (didEnter) {
