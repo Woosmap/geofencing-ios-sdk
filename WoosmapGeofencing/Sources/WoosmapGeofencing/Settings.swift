@@ -63,3 +63,12 @@ public var GoogleStaticMapKey = ""
 public let GoogleMapStaticAPIBaseURL = "http://maps.google.com/maps/api/staticmap"
 public let GoogleMapStaticAPIOneMark = GoogleMapStaticAPIBaseURL + "?markers=color:blue|%@,%@&zoom=15&size=400x400&sensor=true&key=\(GoogleStaticMapKey)"
 public let GoogleMapStaticAPITwoMark = GoogleMapStaticAPIBaseURL + "?markers=color:red|%@,%@&markers=color:blue|%@,%@&zoom=14&size=400x400&sensor=true&key=\(GoogleStaticMapKey)"
+
+// Parameter for SearchAPI request
+public var searchAPIParameters : [String: String] = [:]
+
+// filter for user_properties data
+public var userPropertiesFilter : [String] = []
+
+public var poiRadius:Any = 100
+

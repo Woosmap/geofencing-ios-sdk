@@ -235,5 +235,17 @@ import CoreLocation
         }
         
     }
+    
+    public func setSearchAPIParameters(parameters : [String: String]) {
+        searchAPIParameters = parameters
+    }
+    
+    public func setUserPropertiesFilter(properties : [String]) {
+        userPropertiesFilter = properties
+    }
+    
+    public func setPoiRadius(radius: Any) {
+        poiRadius = radius
+    }
 
 }
