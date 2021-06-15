@@ -60,7 +60,9 @@ public class POIs {
                             
                             if let radius = poiRadius as? Double {
                                 poi.radius = radius
-                            } else if let radius = poiRadius as? String{
+                            } else if let radius = poiRadius as? Int {
+                                poi.radius = Double(radius)
+                            }else if let radius = poiRadius as? String{
                                 if let userProperties = properties["user_properties"] as? [String: Any] {
                                     for (key, value) in userProperties {
                                         if(key == radius) {

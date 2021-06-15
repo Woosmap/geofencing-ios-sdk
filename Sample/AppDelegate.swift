@@ -60,7 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             print("Config:\n \(config)")
             WoosmapGeofencing.shared.getLocationService().airshipEventsDelegate = airshipEvents
         #endif
-    
         
         // Set private Woosmap key API
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
@@ -80,10 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         // Set classification of zoi enable
         WoosmapGeofencing.shared.setClassification(enable: true)
         
-        WoosmapGeofencing.shared.setFirstSearchAPIRegionRadius(radius: 100.0)
-        WoosmapGeofencing.shared.setSecondSearchAPIRegionRadius(radius: 200.0)
-        WoosmapGeofencing.shared.setThirdSearchAPIRegionRadius(radius: 300.0)
-
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI

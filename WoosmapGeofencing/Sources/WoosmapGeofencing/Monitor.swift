@@ -376,8 +376,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
         for (key, value) in searchAPIParameters {
             if(key == "stores_by_page") {
-               let nbPage =  Int(value) ?? 0
-                if (nbPage > 5){
+               let storesByPage =  Int(value) ?? 0
+                if (storesByPage > 5){
                     components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: "5" ))
                 } else {
                     components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: value ))
@@ -679,8 +679,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["longitude"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
-        print("region = " + region.identifier!)
-        
         if(getRegionType(identifier: region.identifier!) == RegionType.poi) {
             let idStore = region.identifier!.components(separatedBy: "_")[1]
             guard let poi = POIs.getPOIbyIdStore(idstore: idStore) else {
@@ -693,18 +691,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         if let properties = feature["properties"] as? [String: Any] {
                             let idstoreFromJson = properties["store_id"] as? String ?? ""
                             if let userProperties = properties["user_properties"] as? [String: Any] {
-                                
                                 if (idstoreFromJson == idStore) {
-                                    if(userPropertiesFilter.isEmpty) {
-                                        for (key, value) in userProperties {
-                                            propertyDictionary[key] = value
-                                        }
-                                    } else {
-                                        for (key, value) in userProperties {
-                                            if(userPropertiesFilter.contains(key)) {
-                                                propertyDictionary[key] = value
-                                            }
-                                        }
+                                    for (key, value) in userProperties {
+                                          if(userPropertiesFilter.isEmpty || userPropertiesFilter.contains(key)) {
+                                              propertyDictionary[key] = value
+                                          }
                                     }
                                 }
                             }

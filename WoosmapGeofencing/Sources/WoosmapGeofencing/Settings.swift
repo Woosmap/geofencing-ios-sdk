@@ -32,9 +32,6 @@ public var searchAPIRequestEnable = true
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
 public var searchAPICreationRegionEnable = true
-public var firstSearchAPIRegionRadius = 100.0
-public var secondSearchAPIRegionRadius = 200.0
-public var thirdSearchAPIRegionRadius = 300.0
 
 // Distance API filters
 public var distanceAPIRequestEnable = true

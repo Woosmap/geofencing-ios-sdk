@@ -140,18 +140,6 @@ import CoreLocation
         radiusDetectionClassifiedZOI = radius
     }
 
-    public func setFirstSearchAPIRegionRadius(radius: Double) {
-        firstSearchAPIRegionRadius = radius
-    }
-
-    public func setSecondSearchAPIRegionRadius(radius: Double) {
-        secondSearchAPIRegionRadius = radius
-    }
-
-    public func setThirdSearchAPIRegionRadius(radius: Double) {
-        thirdSearchAPIRegionRadius = radius
-    }
-
     public func startMonitoringInForeGround() {
         if self.locationService == nil {
             return
