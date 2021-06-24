@@ -37,6 +37,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     var circlesPOI: [MKCircle] = []
     var zoiPolygon: [CustomPolygon] = []
     var stateSwitchPOI = true
+    var stateSwitchVisits = true
+    var stateSwitchLocation = true
+    var stateSwitchRegions = true
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -101,33 +104,35 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         self.circles = []
         self.circlesPOI = []
         self.zoiPolygon = []
+        
+        DispatchQueue.main.async { [self] in
+            let overlays = mapView.overlays
+            mapView.removeOverlays(overlays)
 
-        let overlays = mapView.overlays
-        mapView.removeOverlays(overlays)
+            let annontations = mapView.annotations
+            mapView.removeAnnotations(annontations)
 
-        let annontations = mapView.annotations
-        mapView.removeAnnotations(annontations)
-
-        if switchPOI.isOn {
-            for poi: POI in DataPOI().readPOI() {
-                mapView.addAnnotation(annotationForPOI(poi))
+            if stateSwitchPOI {
+                for poi: POI in DataPOI().readPOI() {
+                    mapView.addAnnotation(annotationForPOI(poi))
+                }
             }
-        }
 
-        if switchVisits.isOn {
-            for visit: Visit in DataVisit().readVisits() {
-                mapView.addAnnotation(annotationForVisit(visit))
+            if stateSwitchVisits {
+                for visit: Visit in DataVisit().readVisits() {
+                    mapView.addAnnotation(annotationForVisit(visit))
+                }
             }
-        }
 
-        if switchLocation.isOn {
-            for location: Location in DataLocation().readLocations() {
-                mapView.addAnnotation(annotationForLocation(location))
+            if stateSwitchLocation {
+                for location: Location in DataLocation().readLocations() {
+                    mapView.addAnnotation(annotationForLocation(location))
+                }
             }
-        }
 
-        if switchRegions.isOn {
-            overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions ?? [])
+            if stateSwitchRegions {
+                overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions ?? [])
+            }
         }
 
     }
@@ -319,7 +324,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         guard let regions = notification.userInfo?["Regions"] as? Set<CLRegion> else {
             return
         }
-        if switchRegions.isOn {
+        if stateSwitchRegions {
             overlaysForRegions(regions: regions)
         }
     }
@@ -380,7 +385,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         guard let location = notification.userInfo?["Location"] as? Location else {
             return
         }
-        if switchLocation.isOn {
+        if stateSwitchLocation {
             let annotation = annotationForLocation(location)
             mapView.addAnnotation(annotation)
         }
@@ -430,7 +435,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             return
         }
 
-        if switchVisits.isOn {
+        if stateSwitchVisits {
             let annotation = annotationForVisit(visit)
             mapView.addAnnotation(annotation)
         }
@@ -460,8 +465,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     @objc func disableEnableZOI() {
         if switchRegions.isOn {
-           addZois()
+            stateSwitchRegions = true
+            addZois()
         } else {
+            stateSwitchRegions = false
             let overlays = mapView.overlays
             mapView.removeOverlays(overlays)
         }
@@ -469,8 +476,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     @objc func disableEnableVisits() {
         if switchVisits.isOn {
+            stateSwitchVisits = true
             disableEnableAnnotion(enable: true, annotationType: AnnotationType.visit)
         } else {
+            stateSwitchVisits = false
             disableEnableAnnotion(enable: false, annotationType: AnnotationType.visit)
         }
     }
@@ -487,8 +496,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     @objc func disableEnableLocation() {
         if switchLocation.isOn {
+            stateSwitchLocation = true
             disableEnableAnnotion(enable: true, annotationType: AnnotationType.location)
         } else {
+            stateSwitchLocation = false
             disableEnableAnnotion(enable: false, annotationType: AnnotationType.location)
         }
     }
