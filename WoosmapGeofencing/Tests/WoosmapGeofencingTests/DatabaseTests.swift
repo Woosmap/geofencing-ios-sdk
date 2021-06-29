@@ -55,7 +55,7 @@ class DatabaseTests: XCTestCase {
             let id = UUID().uuidString
             let dateCaptured = Calendar.current.date(byAdding: .day, value: -day, to: Date())
 
-            let POIToSave = POI(locationId: id, city: "CityTest", zipCode: "CodeTest", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: dateCaptured)
+            let POIToSave = POI(locationId: id, city: "CityTest", zipCode: "CodeTest", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: dateCaptured, radius: 100.0)
             
             POIs.addTest(poi: POIToSave)
             
@@ -117,8 +117,7 @@ class DatabaseTests: XCTestCase {
             let id = UUID().uuidString
             let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: lat, longitude: lng), radius: 100.0, identifier: id )
             
-            Regions.add(POIregion: region, didEnter: true)
-        
+            Regions.add(POIregion: region, didEnter: true, fromPositionDetection: false)
         }
 
         XCTAssert(Regions.getAll().count == 60)

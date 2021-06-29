@@ -20,9 +20,13 @@ public class POI: Object {
     @objc public dynamic var longitude: Double = 0.0
     @objc public dynamic var zipCode: String?
     @objc public dynamic var radius: Double = 0.0
+    @objc public dynamic var address: String?
+    @objc public dynamic var country_code: String?
+    @objc public dynamic var tags: String?
+    @objc public dynamic var types: String?
 
 
-    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil) {
+    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil, address: String? = nil, tags: String? = nil, types: String? = nil, country_code: String? = nil) {
         self.init()
         self.locationId = locationId
         self.city = city
@@ -32,6 +36,10 @@ public class POI: Object {
         self.longitude = longitude!
         self.date = dateCaptured
         self.radius = radius!
+        self.address = address
+        self.country_code = country_code
+        self.tags = tags
+        self.types = types
     }
 }
 
@@ -56,13 +64,20 @@ public class POIs {
                             if let address = properties["address"] as? [String: Any] {
                                 poi.city = address["city"] as? String ?? ""
                                 poi.zipCode = address["zipcode"] as? String ?? ""
+                                poi.country_code = address["country_code"] as? String ?? ""
+                                if let address = address["lines"] as? [String] {
+                                    poi.address = address.joined(separator:" - ")
+                                }
                             }
+                            
+                            //Value by default
+                            poi.radius = 300
                             
                             if let radius = poiRadius as? Double {
                                 poi.radius = radius
                             } else if let radius = poiRadius as? Int {
                                 poi.radius = Double(radius)
-                            }else if let radius = poiRadius as? String{
+                            } else if let radius = poiRadius as? String{
                                 if let userProperties = properties["user_properties"] as? [String: Any] {
                                     for (key, value) in userProperties {
                                         if(key == radius) {
@@ -71,6 +86,14 @@ public class POIs {
                                     }
                                 }
                             }
+                            
+                            if let tags = properties["tags"] as? [String] {
+                                poi.tags = tags.joined(separator:" - ")
+                            }
+                            if let types = properties["types"] as? [String] {
+                                poi.types = types.joined(separator:" - ")
+                            }
+                            
                         }
                         
                         if let geometry = feature["geometry"] as? [String: Any] {

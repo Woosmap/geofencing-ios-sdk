@@ -32,12 +32,12 @@ public protocol VisitServiceDelegate: AnyObject {
 }
 
 public protocol AirshipEventsDelegate: AnyObject {
-    func poiEvent(POIEvent: Dictionary <String, Any>)
-    func regionEnterEvent(regionEvent: Dictionary <String, Any>)
-    func regionExitEvent(regionEvent: Dictionary <String, Any>)
-    func visitEvent(visitEvent: Dictionary <String, Any>)
-    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>)
-    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>)
+    func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
+    func regionEnterEvent(regionEvent: Dictionary <String, Any>, eventName: String)
+    func regionExitEvent(regionEvent: Dictionary <String, Any>, eventName: String)
+    func visitEvent(visitEvent: Dictionary <String, Any>, eventName: String)
+    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>, eventName: String)
+    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
 }
 
 
@@ -645,7 +645,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["latitude"] = visit.latitude
         propertyDictionary["longitude"] = visit.longitude
         
-        delegate.visitEvent(visitEvent: propertyDictionary)
+        delegate.visitEvent(visitEvent: propertyDictionary, eventName: "WGS_visit_event")
     }
     
     func sendASPOIEvents(poi: POI) {
@@ -658,14 +658,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["idStore"] = poi.idstore
         propertyDictionary["city"] = poi.city
         propertyDictionary["distance"] = poi.distance
-        
-        let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: poi.jsonData ?? Data.init())
-        
-        for feature in (responseJSON?.features)! {
-            propertyDictionary["tag"] = feature.properties?.tags
-            propertyDictionary["type"] = feature.properties?.types
-        }
-        delegate.poiEvent(POIEvent: propertyDictionary)
+        propertyDictionary["tags"] = poi.tags
+        propertyDictionary["types"] = poi.types
+
+        delegate.poiEvent(POIEvent: propertyDictionary, eventName: "WGS_poi_event")
     }
     
     func sendASRegionEvents(region: Region) {
@@ -703,12 +699,21 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     }
                 }
             }
+            propertyDictionary["city"] = poi.city
+            propertyDictionary["zipCode"] = poi.zipCode
+            propertyDictionary["distance"] = poi.distance
+            propertyDictionary["idstore"] = poi.idstore
+            propertyDictionary["name"] = poi.name
+            propertyDictionary["country_code"] = poi.country_code
+            propertyDictionary["tags"] = poi.tags
+            propertyDictionary["types"] = poi.types
+            propertyDictionary["address"] = poi.address
         }
         
         if(region.didEnter) {
-            delegate.regionEnterEvent(regionEvent: propertyDictionary)
+            delegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "WGS_geofence_entered_event")
         } else {
-            delegate.regionExitEvent(regionEvent: propertyDictionary)
+            delegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "WGS_geofence_exited_event")
         }
     }
     
@@ -724,9 +729,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["radius"] = region.radius
         
         if(region.didEnter) {
-            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary)
+            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "WGS_zoi_classified_entered_event")
         } else {
-            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary)
+            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "WGS_zoi_classified_exited_event")
         }
     }
 
