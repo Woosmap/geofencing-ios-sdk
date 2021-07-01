@@ -660,6 +660,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["distance"] = poi.distance
         propertyDictionary["tags"] = poi.tags
         propertyDictionary["types"] = poi.types
+        
+        setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
 
         delegate.poiEvent(POIEvent: propertyDictionary, eventName: "WGS_poi_event")
     }
@@ -680,34 +682,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             guard let poi = POIs.getPOIbyIdStore(idstore: idStore) else {
                 return
             }
-            let jsonStructure = try? JSONDecoder().decode(JSONAny.self, from:  poi.jsonData ?? Data.init())
-            if let value = jsonStructure!.value as? [String: Any] {
-                if let features = value["features"] as? [[String: Any]] {
-                    for feature in features {
-                        if let properties = feature["properties"] as? [String: Any] {
-                            let idstoreFromJson = properties["store_id"] as? String ?? ""
-                            if let userProperties = properties["user_properties"] as? [String: Any] {
-                                if (idstoreFromJson == idStore) {
-                                    for (key, value) in userProperties {
-                                          if(userPropertiesFilter.isEmpty || userPropertiesFilter.contains(key)) {
-                                              propertyDictionary[key] = value
-                                          }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            propertyDictionary["city"] = poi.city
-            propertyDictionary["zipCode"] = poi.zipCode
-            propertyDictionary["distance"] = poi.distance
-            propertyDictionary["idstore"] = poi.idstore
-            propertyDictionary["name"] = poi.name
-            propertyDictionary["country_code"] = poi.country_code
-            propertyDictionary["tags"] = poi.tags
-            propertyDictionary["types"] = poi.types
-            propertyDictionary["address"] = poi.address
+            setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
         }
         
         if(region.didEnter) {
@@ -715,6 +690,37 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         } else {
             delegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "WGS_geofence_exited_event")
         }
+    }
+    
+    func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>) {
+        let jsonStructure = try? JSONDecoder().decode(JSONAny.self, from:  poi.jsonData ?? Data.init())
+        if let value = jsonStructure!.value as? [String: Any] {
+            if let features = value["features"] as? [[String: Any]] {
+                for feature in features {
+                    if let properties = feature["properties"] as? [String: Any] {
+                        let idstoreFromJson = properties["store_id"] as? String ?? ""
+                        if let userProperties = properties["user_properties"] as? [String: Any] {
+                            if (idstoreFromJson == poi.idstore) {
+                                for (key, value) in userProperties {
+                                      if(userPropertiesFilter.isEmpty || userPropertiesFilter.contains(key)) {
+                                          propertyDictionary[key] = value
+                                      }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        propertyDictionary["city"] = poi.city
+        propertyDictionary["zipCode"] = poi.zipCode
+        propertyDictionary["distance"] = poi.distance
+        propertyDictionary["idstore"] = poi.idstore
+        propertyDictionary["name"] = poi.name
+        propertyDictionary["country_code"] = poi.country_code
+        propertyDictionary["tags"] = poi.tags
+        propertyDictionary["types"] = poi.types
+        propertyDictionary["address"] = poi.address
     }
     
     func sendASZOIClassifiedEvents(region: Region) {

@@ -24,9 +24,10 @@ public class POI: Object {
     @objc public dynamic var country_code: String?
     @objc public dynamic var tags: String?
     @objc public dynamic var types: String?
+    @objc public dynamic var contact: String?
 
 
-    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil, address: String? = nil, tags: String? = nil, types: String? = nil, country_code: String? = nil) {
+    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil, address: String? = nil, tags: String? = nil, types: String? = nil, country_code: String? = nil, contact: String? = nil) {
         self.init()
         self.locationId = locationId
         self.city = city
@@ -40,6 +41,7 @@ public class POI: Object {
         self.country_code = country_code
         self.tags = tags
         self.types = types
+        self.contact = contact
     }
 }
 
@@ -67,6 +69,12 @@ public class POIs {
                                 poi.country_code = address["country_code"] as? String ?? ""
                                 if let address = address["lines"] as? [String] {
                                     poi.address = address.joined(separator:" - ")
+                                }
+                            }
+                            
+                            if let contact = properties["contact"] as? [String: String] {
+                                for (key, value) in contact {
+                                    poi.contact = (poi.contact ?? "") + " " + key + "=" + value
                                 }
                             }
                             
