@@ -21,13 +21,13 @@ public class POI: Object {
     @objc public dynamic var zipCode: String?
     @objc public dynamic var radius: Double = 0.0
     @objc public dynamic var address: String?
-    @objc public dynamic var country_code: String?
+    @objc public dynamic var countryCode: String?
     @objc public dynamic var tags: String?
     @objc public dynamic var types: String?
     @objc public dynamic var contact: String?
 
 
-    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil, address: String? = nil, tags: String? = nil, types: String? = nil, country_code: String? = nil, contact: String? = nil) {
+    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil, address: String? = nil, tags: String? = nil, types: String? = nil, countryCode: String? = nil, contact: String? = nil) {
         self.init()
         self.locationId = locationId
         self.city = city
@@ -38,7 +38,7 @@ public class POI: Object {
         self.date = dateCaptured
         self.radius = radius!
         self.address = address
-        self.country_code = country_code
+        self.countryCode = countryCode
         self.tags = tags
         self.types = types
         self.contact = contact
@@ -66,7 +66,7 @@ public class POIs {
                             if let address = properties["address"] as? [String: Any] {
                                 poi.city = address["city"] as? String ?? ""
                                 poi.zipCode = address["zipcode"] as? String ?? ""
-                                poi.country_code = address["country_code"] as? String ?? ""
+                                poi.countryCode = address["country_code"] as? String ?? ""
                                 if let address = address["lines"] as? [String] {
                                     poi.address = address.joined(separator:" - ")
                                 }
