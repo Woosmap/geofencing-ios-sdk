@@ -1,6 +1,7 @@
 import Foundation
 import AdSupport
 import CoreLocation
+import RealmSwift
 
 /**
  WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
@@ -23,7 +24,11 @@ import CoreLocation
     private override init () {
         super.init()
         self.initServices()
-
+        self.initRealm()
+    }
+    
+    private func initRealm() {
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 1)
     }
 
     public func getLocationService() -> LocationService {
@@ -140,18 +145,6 @@ import CoreLocation
         radiusDetectionClassifiedZOI = radius
     }
 
-    public func setFirstSearchAPIRegionRadius(radius: Double) {
-        firstSearchAPIRegionRadius = radius
-    }
-
-    public func setSecondSearchAPIRegionRadius(radius: Double) {
-        secondSearchAPIRegionRadius = radius
-    }
-
-    public func setThirdSearchAPIRegionRadius(radius: Double) {
-        thirdSearchAPIRegionRadius = radius
-    }
-
     public func startMonitoringInForeGround() {
         if self.locationService == nil {
             return
@@ -234,6 +227,18 @@ import CoreLocation
             modeHighfrequencyLocation = true
         }
         
+    }
+    
+    public func setSearchAPIParameters(parameters : [String: String]) {
+        searchAPIParameters = parameters
+    }
+    
+    public func setUserPropertiesFilter(properties : [String]) {
+        userPropertiesFilter = properties
+    }
+    
+    public func setPoiRadius(radius: Any) {
+        poiRadius = radius
     }
 
 }

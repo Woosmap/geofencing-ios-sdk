@@ -45,7 +45,7 @@ class DelayDataDurationTests: XCTestCase {
 
             let visitToSave = Visit(visitId: id, arrivalDate: dateCaptured, departureDate: Calendar.current.date(byAdding: .day, value: 1, to: dateCaptured!), latitude: lat, longitude: lng, dateCaptured: dateCaptured, accuracy: accuracy)
 
-            let POIToSave = POI(locationId: id, city: "CityTest", zipCode: "CodeTest", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: dateCaptured)
+            let POIToSave = POI(locationId: id, city: "CityTest", zipCode: "CodeTest", distance: 10.0, latitude: lat, longitude: lng, dateCaptured: dateCaptured, radius: 100.0)
 
             let locationToSave = Location(locationId: id, latitude: lat, longitude: lng, dateCaptured: dateCaptured!, descriptionToSave: "mockLocation")
 

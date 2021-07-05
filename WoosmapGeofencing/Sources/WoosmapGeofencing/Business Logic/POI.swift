@@ -19,8 +19,15 @@ public class POI: Object {
     @objc public dynamic var locationId: String?
     @objc public dynamic var longitude: Double = 0.0
     @objc public dynamic var zipCode: String?
+    @objc public dynamic var radius: Double = 0.0
+    @objc public dynamic var address: String?
+    @objc public dynamic var countryCode: String?
+    @objc public dynamic var tags: String?
+    @objc public dynamic var types: String?
+    @objc public dynamic var contact: String?
 
-    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil) {
+
+    convenience public init(locationId: String? = nil, city: String? = nil, zipCode: String? = nil, distance: Double? = nil, latitude: Double? = nil, longitude: Double? = nil, dateCaptured: Date? = nil, radius: Double? = nil, address: String? = nil, tags: String? = nil, types: String? = nil, countryCode: String? = nil, contact: String? = nil) {
         self.init()
         self.locationId = locationId
         self.city = city
@@ -29,37 +36,93 @@ public class POI: Object {
         self.latitude = latitude!
         self.longitude = longitude!
         self.date = dateCaptured
+        self.radius = radius!
+        self.address = address
+        self.countryCode = countryCode
+        self.tags = tags
+        self.types = types
+        self.contact = contact
     }
 }
 
 public class POIs {
-    public class func addFromResponseJson(searchAPIResponse: Data, locationId: String) -> POI {
+    public class func addFromResponseJson(searchAPIResponse: Data, locationId: String) -> [POI] {
         do {
-            let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: searchAPIResponse)
-            if((responseJSON?.features)!.isEmpty) {
-                return POI()
-            }
+            let jsonStructure = try JSONDecoder().decode(JSONAny.self, from: searchAPIResponse)
             let realm = try Realm()
-            let poi = POI()
-            poi.jsonData = searchAPIResponse
-            poi.locationId = locationId
-            for feature in (responseJSON?.features)! {
-                poi.city = feature.properties?.address?.city ?? ""
-                poi.zipCode = feature.properties?.address?.zipcode ?? ""
-                poi.distance = feature.properties?.distance ?? 0.0
-                poi.latitude = (feature.geometry?.coordinates![1]) ?? 0.0
-                poi.longitude = (feature.geometry?.coordinates![0]) ?? 0.0
-                poi.date = Date()
-                poi.idstore = (feature.properties?.store_id) ?? ""
-                poi.name = (feature.properties?.name) ?? ""
+            var aPOIs: [POI] = []
+            if let value = jsonStructure.value as? [String: Any] {
+                if let features = value["features"] as? [[String: Any]] {
+                    for feature in features {
+                        let poi = POI()
+                        poi.jsonData = searchAPIResponse
+                        poi.locationId = locationId
+                        poi.date = Date()
+                        
+                        if let properties = feature["properties"] as? [String: Any] {
+                            poi.idstore = properties["store_id"] as? String ?? ""
+                            poi.name = properties["name"] as? String ?? ""
+                            poi.distance = properties["distance"] as? Double ?? 0.0
+                            if let address = properties["address"] as? [String: Any] {
+                                poi.city = address["city"] as? String ?? ""
+                                poi.zipCode = address["zipcode"] as? String ?? ""
+                                poi.countryCode = address["country_code"] as? String ?? ""
+                                if let address = address["lines"] as? [String] {
+                                    poi.address = address.joined(separator:" - ")
+                                }
+                            }
+                            
+                            if let contact = properties["contact"] as? [String: String] {
+                                for (key, value) in contact {
+                                    poi.contact = (poi.contact ?? "") + key + "=" + value + "_"
+                                }
+                            }
+                            
+                            //Value by default
+                            poi.radius = 300
+                            
+                            if let radius = poiRadius as? Double {
+                                poi.radius = radius
+                            } else if let radius = poiRadius as? Int {
+                                poi.radius = Double(radius)
+                            } else if let radius = poiRadius as? String{
+                                if let userProperties = properties["user_properties"] as? [String: Any] {
+                                    for (key, value) in userProperties {
+                                        if(key == radius) {
+                                            poi.radius = Double(value as! Int64)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if let tags = properties["tags"] as? [String] {
+                                poi.tags = tags.joined(separator:" - ")
+                            }
+                            if let types = properties["types"] as? [String] {
+                                poi.types = types.joined(separator:" - ")
+                            }
+                            
+                        }
+                        
+                        if let geometry = feature["geometry"] as? [String: Any] {
+                            let coord:Array<Double> = geometry["coordinates"] as! Array<Double>
+                            poi.latitude = coord[1]
+                            poi.longitude = coord[0]
+                        }
+                        
+                        
+                        aPOIs.append(poi)
+                    }
+                }
             }
+            
             realm.beginWrite()
-            realm.add(poi)
+            realm.add(aPOIs)
             try realm.commitWrite()
-            return poi
+            return aPOIs
         } catch {
         }
-        return POI()
+        return []
     }
 
     public class func addTest(poi: POI) {
@@ -86,6 +149,19 @@ public class POIs {
         do {
             let realm = try Realm()
             let predicate = NSPredicate(format: "locationId == %@", locationId)
+            let fetchedResults = realm.objects(POI.self).filter(predicate)
+            if let aPOI = fetchedResults.first {
+               return aPOI
+            }
+        } catch {
+        }
+        return nil
+    }
+    
+    public class func getPOIbyIdStore(idstore: String) -> POI? {
+        do {
+            let realm = try Realm()
+            let predicate = NSPredicate(format: "idstore == %@", idstore)
             let fetchedResults = realm.objects(POI.self).filter(predicate)
             if let aPOI = fetchedResults.first {
                return aPOI

@@ -27,6 +27,7 @@
 		A2710EF725B5CADE00AF62F5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF625B5CADE00AF62F5 /* Location.swift */; };
 		A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EFA25B5CB3500AF62F5 /* Region.swift */; };
 		A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */; };
+		A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
 		A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		A2710EF625B5CADE00AF62F5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		A2710EFA25B5CB3500AF62F5 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DistanceAPIJsonswift.swift; path = Sources/WoosmapGeofencing/DistanceAPIJsonswift.swift; sourceTree = SOURCE_ROOT; };
+		A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONGeneric.swift; sourceTree = "<group>"; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +119,7 @@
 				A262B9CF24E29B0000EB621F /* RegionGenerator.swift */,
 				A262B9CE24E29AFF00EB621F /* SearchAPiJson.swift */,
 				A262B9D124E29B0000EB621F /* Settings.swift */,
+				A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */,
 				A262B9D024E29B0000EB621F /* WoosmapGeofencing.h */,
 				A262B9CD24E29AFF00EB621F /* WoosmapGeofencing.swift */,
 				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
@@ -279,6 +282,7 @@
 				A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */,
 				A26E645D25B9865800EDBA72 /* DataCleaner.swift in Sources */,
 				A262B9DA24E29B0000EB621F /* Settings.swift in Sources */,
+				A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */,
 				A262B9D624E29B0000EB621F /* WoosmapGeofencing.swift in Sources */,
 				A262B9D424E29B0000EB621F /* Monitor.swift in Sources */,
 				A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */,
@@ -576,7 +580,7 @@
 			repositoryURL = "https://github.com/realm/realm-cocoa";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.5.3;
+				minimumVersion = 10.8.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

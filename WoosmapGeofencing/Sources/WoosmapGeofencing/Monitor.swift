@@ -32,12 +32,12 @@ public protocol VisitServiceDelegate: AnyObject {
 }
 
 public protocol AirshipEventsDelegate: AnyObject {
-    func poiEvent(POIEvent: Dictionary <String, Any>)
-    func regionEnterEvent(regionEvent: Dictionary <String, Any>)
-    func regionExitEvent(regionEvent: Dictionary <String, Any>)
-    func visitEvent(visitEvent: Dictionary <String, Any>)
-    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>)
-    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>)
+    func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
+    func regionEnterEvent(regionEvent: Dictionary <String, Any>, eventName: String)
+    func regionExitEvent(regionEvent: Dictionary <String, Any>, eventName: String)
+    func visitEvent(visitEvent: Dictionary <String, Any>, eventName: String)
+    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>, eventName: String)
+    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
 }
 
 
@@ -371,7 +371,24 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let userLatitude: String = String(format: "%f", location.coordinate.latitude)
         let userLongitude: String = String(format: "%f", location.coordinate.longitude)
         let storeAPIUrl: String = String(format: searchWoosmapAPI, userLatitude, userLongitude)
-        let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+        
+        var components = URLComponents(string: storeAPIUrl)!
+
+        for (key, value) in searchAPIParameters {
+            if(key == "stores_by_page") {
+               let storesByPage =  Int(value) ?? 0
+                if (storesByPage > 5){
+                    components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: "5" ))
+                } else {
+                    components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: value ))
+                }
+            } else {
+                components.queryItems?.append(URLQueryItem(name: key, value: value ))
+            }
+        }
+        
+        components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
+        let url = URLRequest(url: components.url!)
 
         // Call API search
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -384,20 +401,26 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let poi = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
-                    if(poi.locationId == nil) {
+                    let pois = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
+
+                    if(pois.isEmpty) {
                         return
                     }
-                    self.sendASPOIEvents(poi: poi)
-                    delegate.searchAPIResponse(poi: poi)
-                    self.lastSearchLocation = self.currentLocation
+                    
+                    self.removeRegions(type: LocationService.RegionType.poi)
+                    
+                    for poi in pois {
+                        self.sendASPOIEvents(poi: poi)
+                        delegate.searchAPIResponse(poi: poi)
+                        self.lastSearchLocation = self.currentLocation
 
-                    if distanceAPIRequestEnable {
-                        self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(poi.latitude, poi.longitude)], locationId: locationId)
-                    }
-                    if searchAPICreationRegionEnable {
-                        let POIname = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
-                        self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname)
+                        if distanceAPIRequestEnable {
+                            self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(poi.latitude, poi.longitude)], locationId: locationId)
+                        }
+                        if searchAPICreationRegionEnable {
+                            let POIname = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
+                            self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname, radius: poi.radius)
+                        }
                     }
                 }
             }
@@ -405,36 +428,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         task.resume()
 
     }
+    
 
-    public func createRegionPOI(center: CLLocationCoordinate2D, name: String) {
-        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
-        var POIRegionExist = false
-        
-        for region in monitoredRegions {
-            let latRegion = (region as! CLCircularRegion).center.latitude
-            let lngRegion = (region as! CLCircularRegion).center.longitude
-            if center.latitude == latRegion && center.longitude == lngRegion {
-                POIRegionExist = true
-            }
-        }
+    public func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
+        let identifier = RegionType.poi.rawValue + "_" + name
+        self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
+        checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
 
-        if !POIRegionExist {
-            for region in monitoredRegions {
-                if  getRegionType(identifier: region.identifier) == RegionType.poi {
-                    self.locationManager?.stopMonitoring(for: region)
-                }
-            }
-
-            let identifier = RegionType.poi.rawValue + "_" + name
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
-            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(firstSearchAPIRegionRadius), identifier: identifier + " - " + String(firstSearchAPIRegionRadius) + " m"))
-            
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(secondSearchAPIRegionRadius), identifier: identifier + " - " + String(secondSearchAPIRegionRadius) + " m"))
-            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(secondSearchAPIRegionRadius), identifier: identifier + " - " + String(secondSearchAPIRegionRadius) + " m"))
-            
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(thirdSearchAPIRegionRadius), identifier: identifier + " - " + String(thirdSearchAPIRegionRadius) + " m"))
-            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(thirdSearchAPIRegionRadius), identifier: identifier + " - " + String(thirdSearchAPIRegionRadius) + " m"))
-        }
     }
 
     public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "") {
@@ -645,7 +645,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["latitude"] = visit.latitude
         propertyDictionary["longitude"] = visit.longitude
         
-        delegate.visitEvent(visitEvent: propertyDictionary)
+        delegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
     }
     
     func sendASPOIEvents(poi: POI) {
@@ -658,12 +658,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["idStore"] = poi.idstore
         propertyDictionary["city"] = poi.city
         propertyDictionary["distance"] = poi.distance
-        let responseJSON = try? JSONDecoder().decode(SearchAPIData.self, from: poi.jsonData ?? Data.init())
-        for feature in (responseJSON?.features)! {
-            propertyDictionary["tag"] = feature.properties?.tags
-            propertyDictionary["type"] = feature.properties?.types
-        }
-        delegate.poiEvent(POIEvent: propertyDictionary)
+        propertyDictionary["tags"] = poi.tags
+        propertyDictionary["types"] = poi.types
+        
+        setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
+
+        delegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
     }
     
     func sendASRegionEvents(region: Region) {
@@ -677,11 +677,50 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["longitude"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
-        if(region.didEnter) {
-            delegate.regionEnterEvent(regionEvent: propertyDictionary)
-        } else {
-            delegate.regionExitEvent(regionEvent: propertyDictionary)
+        if(getRegionType(identifier: region.identifier!) == RegionType.poi) {
+            let idStore = region.identifier!.components(separatedBy: "_")[1]
+            guard let poi = POIs.getPOIbyIdStore(idstore: idStore) else {
+                return
+            }
+            setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
         }
+        
+        if(region.didEnter) {
+            delegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
+        } else {
+            delegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
+        }
+    }
+    
+    func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>) {
+        let jsonStructure = try? JSONDecoder().decode(JSONAny.self, from:  poi.jsonData ?? Data.init())
+        if let value = jsonStructure!.value as? [String: Any] {
+            if let features = value["features"] as? [[String: Any]] {
+                for feature in features {
+                    if let properties = feature["properties"] as? [String: Any] {
+                        let idstoreFromJson = properties["store_id"] as? String ?? ""
+                        if let userProperties = properties["user_properties"] as? [String: Any] {
+                            if (idstoreFromJson == poi.idstore) {
+                                for (key, value) in userProperties {
+                                      if(userPropertiesFilter.isEmpty || userPropertiesFilter.contains(key)) {
+                                          propertyDictionary[key] = value
+                                      }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        propertyDictionary["city"] = poi.city
+        propertyDictionary["zipCode"] = poi.zipCode
+        propertyDictionary["distance"] = poi.distance
+        propertyDictionary["idstore"] = poi.idstore
+        propertyDictionary["name"] = poi.name
+        propertyDictionary["country_code"] = poi.countryCode
+        propertyDictionary["tags"] = poi.tags
+        propertyDictionary["types"] = poi.types
+        propertyDictionary["address"] = poi.address
     }
     
     func sendASZOIClassifiedEvents(region: Region) {
@@ -696,9 +735,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["radius"] = region.radius
         
         if(region.didEnter) {
-            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary)
+            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
         } else {
-            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary)
+            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
         }
     }
 
