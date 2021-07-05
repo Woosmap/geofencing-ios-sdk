@@ -645,7 +645,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["latitude"] = visit.latitude
         propertyDictionary["longitude"] = visit.longitude
         
-        delegate.visitEvent(visitEvent: propertyDictionary, eventName: "WGS_visit_event")
+        delegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
     }
     
     func sendASPOIEvents(poi: POI) {
@@ -663,7 +663,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
 
-        delegate.poiEvent(POIEvent: propertyDictionary, eventName: "WGS_poi_event")
+        delegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
     }
     
     func sendASRegionEvents(region: Region) {
@@ -686,9 +686,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         
         if(region.didEnter) {
-            delegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "WGS_geofence_entered_event")
+            delegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
         } else {
-            delegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "WGS_geofence_exited_event")
+            delegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
         }
     }
     
@@ -735,9 +735,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["radius"] = region.radius
         
         if(region.didEnter) {
-            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "WGS_zoi_classified_entered_event")
+            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
         } else {
-            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "WGS_zoi_classified_exited_event")
+            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
         }
     }
 
