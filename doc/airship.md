@@ -70,77 +70,106 @@ public class AirshipEvents: AirshipEventsDelegate {
     
     public init() {}
     
-    public func regionEnterEvent(regionEvent: Dictionary<String, Any>) {
+    public func regionEnterEvent(regionEvent: Dictionary<String, Any>, eventName: String) {
         #if canImport(AirshipCore)
-            let event = UACustomEvent(name: "Geofence_entered_event", value: 1)
+        // here you can modify your event name and add your data in the dictonnary
+            let event = UACustomEvent(name: eventName, value: 1)
             event.properties = regionEvent
             event.track()
         #endif
     }
     
-    public func regionExitEvent(regionEvent: Dictionary<String, Any>) {
+    public func regionExitEvent(regionEvent: Dictionary<String, Any>, eventName: String) {
         #if canImport(AirshipCore)
-            let event = UACustomEvent(name: "Geofence_exited_event", value: 1)
+        // here you can modify your event name and add your data in the dictonnary
+            let event = UACustomEvent(name: eventName, value: 1)
             event.properties = regionEvent
             event.track()
         #endif
     }
     
-    public func visitEvent(visitEvent: Dictionary<String, Any>) {
+    public func visitEvent(visitEvent: Dictionary<String, Any>, eventName: String) {
         #if canImport(AirshipCore)
-            let event = UACustomEvent(name: "Visit_event", value: 1)
+        // here you can modify your event name and add your data in the dictonnary
+            let event = UACustomEvent(name: eventName, value: 1)
             event.properties = visitEvent
             event.track()
         #endif
     }
     
-    public func poiEvent(POIEvent: Dictionary<String, Any>) {
+    public func poiEvent(POIEvent: Dictionary<String, Any>, eventName: String) {
         #if canImport(AirshipCore)
-            let event = UACustomEvent(name: "poi_event", value: 1)
+        // here you can modify your event name and add your data in the dictonnary
+            let event = UACustomEvent(name: eventName, value: 1)
             event.properties = POIEvent
             event.track()
         #endif
     }
     
-    public func ZOIclassifiedEnter(regionEvent: Dictionary<String, Any>) {
+    public func ZOIclassifiedEnter(regionEvent: Dictionary<String, Any>, eventName: String) {
         #if canImport(AirshipCore)
-            let event = UACustomEvent(name: "zoi_classified_entered_event", value: 1)
+        // here you can modify your event name and add your data in the dictonnary
+            let event = UACustomEvent(name: eventName, value: 1)
             event.properties = regionEvent
             event.track()
         #endif
     }
     
-    public func ZOIclassifiedExit(regionEvent: Dictionary<String, Any>) {
+    public func ZOIclassifiedExit(regionEvent: Dictionary<String, Any>, eventName: String) {
         #if canImport(AirshipCore)
-            let event = UACustomEvent(name: "zoi_classified_exited_event", value: 1)
+        // here you can modify your event name and add your data in the dictonnary
+            let event = UACustomEvent(name: eventName, value: 1)
             event.properties = regionEvent
             event.track()
         #endif
     }
 }
+    
 ```
 
 ##  Events and Properties
 
 ### Geofences
 
-**geofence_entered_event**
+**woos_geofence_entered_event**
 
 date: String  
 id: String  
 latitude: Double  
 longitude: Double  
 radius: Double
+Additionnals data if the region is a POI : 
+    name: String  
+    idStore: String  
+    city: String  
+    zipCode: String
+    distance: String  
+    country_code: String
+    address: String
+    tags: String  
+    types: String  
+    user-properties: String
 
-**geofence_exited_event**
+**woos_geofence_exited_event**
 
 date: String  
 id: String  
 latitude: Double  
 longitude: Double  
 radius: Double
+Additionnals data if the region is a POI : 
+    name: String  
+    idStore: String  
+    city: String  
+    zipCode: String
+    distance: String  
+    country_code: String
+    address: String
+    tags: String  
+    types: String  
+    user-properties: String
 
-**zoi_classified_entered_event**
+**woos_zoi_classified_entered_event**
 
 date: String \
 id: String\
@@ -148,7 +177,7 @@ latitude: Double\
 longitude: Double\
 radius: Double 
 
-**zoi_classified_exited_event**
+**woos_zoi_classified_exited_event**
 
 date: String \
 id: String\
@@ -158,19 +187,23 @@ radius: Double
 
 ### POI
 
-**POI_event**
+**woos_POI_event**
 
 date: String  
 name: String  
 idStore: String  
 city: String  
+zipCode: String
 distance: String  
-tag: String  
-type: String  
+country_code: String
+address: String
+tags: String  
+types: String  
+user-properties: String
 
 ### Visit
 
-**Visit_event**
+**woos_Visit_event**
 date: String  
 arrivalDate: String  
 departureDate: String  

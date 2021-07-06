@@ -84,12 +84,40 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
+### Request Parameters
+
+Set parameter of the request (see all paramters on the documentation https://developers.woosmap.com/products/search-api/get-started/): 
+```swift
+WoosmapGeofencing.shared.setSearchAPIParameters(parameters: ["radius":"20000","stores_by_page":"2", "query":"tag:rugby"])
+```
+Note you can create a maximum of 5 POI on each response of the SearchAPI request.  So the parameter "stores_by_page" can't be exceed 5.
+
+### User_properties filter
+
+Set the filter on the user_properties in the response : 
+```swift
+WoosmapGeofencing.shared.setUserPropertiesFilter(properties: ["creation_date","radius"])
+```
+
+### Radius of POI
+On the creation of the region POI, you can set manually the radius with a value : 
+```swift
+WoosmapGeofencing.shared.setPoiRadius(radius: 200.0)
+```
+or set the radius of the region by defining the parameter name of the user_properties from the reponse : 
+```swift
+WoosmapGeofencing.shared.setPoiRadius(radius: "radiusPOI")
+```
+
+### Send Request
 On a refresh location event or whenever you want :
 
 ```swift
 let location = CLLocation(latitude: latitude, longitude: longitude)
 WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location)
 ```
+
+### Retrieve data of the reponse 
 
 Get the result of the Search API request in your class delagate `DataPOI` :
 ```swift
