@@ -100,7 +100,7 @@ WoosmapGeofencing.shared.setUserPropertiesFilter(properties: ["creation_date","r
 ```
 
 ### Radius of POI
-On the creation of the region POI, you can set manually the radius with a value : 
+When you create a geofence around a POI, manually define the radius value: 
 ```swift
 WoosmapGeofencing.shared.setPoiRadius(radius: 200.0)
 ```
