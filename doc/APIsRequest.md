@@ -90,7 +90,7 @@ Set parameter to narrow your results or filters it with the `query` parameter (s
 ```swift
 WoosmapGeofencing.shared.setSearchAPIParameters(parameters: ["radius":"20000","stores_by_page":"2", "query":"tag:rugby"])
 ```
-Note you can create a maximum of 5 POI on each response of the SearchAPI request.  So the parameter "stores_by_page" can't be exceed 5.
+Note that you can create a maximum of 5 POI from each SearchAPI's response. So the parameter "stores_by_page" can't exceed 5.
 
 ### User_properties filter
 
@@ -211,5 +211,4 @@ public class DataDistance:DistanceAPIDelegate  {
 ```
 
 Informations about the Distance API :https://developers.woosmap.com/products/distance-api/get-started/
-
 
