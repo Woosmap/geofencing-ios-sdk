@@ -104,7 +104,7 @@ On the creation of the region POI, you can set manually the radius with a value 
 ```swift
 WoosmapGeofencing.shared.setPoiRadius(radius: 200.0)
 ```
-or set the radius of the region by defining the parameter name of the user_properties from the reponse : 
+or choose the user_properties subfield that corresponds to radius value of the geofence:
 ```swift
 WoosmapGeofencing.shared.setPoiRadius(radius: "radiusPOI")
 ```
@@ -211,4 +211,3 @@ public class DataDistance:DistanceAPIDelegate  {
 ```
 
 Informations about the Distance API :https://developers.woosmap.com/products/distance-api/get-started/
-
