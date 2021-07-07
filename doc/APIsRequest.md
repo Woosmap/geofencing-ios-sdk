@@ -86,7 +86,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 ### Request Parameters
 
-Set parameter of the request (see all paramters on the documentation https://developers.woosmap.com/products/search-api/get-started/): 
+Set parameter to narrow your results or filters it with the `query` parameter (see all parameters on the documentation https://developers.woosmap.com/products/search-api/get-started/): 
 ```swift
 WoosmapGeofencing.shared.setSearchAPIParameters(parameters: ["radius":"20000","stores_by_page":"2", "query":"tag:rugby"])
 ```
@@ -211,6 +211,5 @@ public class DataDistance:DistanceAPIDelegate  {
 ```
 
 Informations about the Distance API :https://developers.woosmap.com/products/distance-api/get-started/
-
 
 
