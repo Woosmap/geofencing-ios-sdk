@@ -721,6 +721,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["tags"] = poi.tags
         propertyDictionary["types"] = poi.types
         propertyDictionary["address"] = poi.address
+        propertyDictionary["contact"] = poi.contact
     }
     
     func sendASZOIClassifiedEvents(region: Region) {
