@@ -84,12 +84,40 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
+### Request Parameters
+
+Set parameter to narrow your results or filters it with the `query` parameter (see all parameters on the documentation https://developers.woosmap.com/products/search-api/get-started/): 
+```swift
+WoosmapGeofencing.shared.setSearchAPIParameters(parameters: ["radius":"20000","stores_by_page":"2", "query":"tag:rugby"])
+```
+Note that you can create a maximum of 5 POI from each SearchAPI's response. So the parameter "stores_by_page" can't exceed 5.
+
+### User_properties filter
+
+Set the filter on the user_properties in the response : 
+```swift
+WoosmapGeofencing.shared.setUserPropertiesFilter(properties: ["creation_date","radius"])
+```
+
+### Radius of POI
+When you create a geofence around a POI, manually define the radius value: 
+```swift
+WoosmapGeofencing.shared.setPoiRadius(radius: 200.0)
+```
+or choose the user_properties subfield that corresponds to radius value of the geofence:
+```swift
+WoosmapGeofencing.shared.setPoiRadius(radius: "radiusPOI")
+```
+
+### Send Request
 On a refresh location event or whenever you want :
 
 ```swift
 let location = CLLocation(latitude: latitude, longitude: longitude)
 WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location)
 ```
+
+### Retrieve data of the reponse 
 
 Get the result of the Search API request in your class delagate `DataPOI` :
 ```swift
@@ -183,6 +211,3 @@ public class DataDistance:DistanceAPIDelegate  {
 ```
 
 Informations about the Distance API :https://developers.woosmap.com/products/distance-api/get-started/
-
-
-
