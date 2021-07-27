@@ -19,6 +19,8 @@ public class DataRegion: RegionsServiceDelegate {
     }
 
     public func didEnterPOIRegion(POIregion: Region) {
+        NSLog("didEnterPOIRegion : " + POIregion.description)
+        // let poi =
         NotificationCenter.default.post(name: .didEventPOIRegion, object: self, userInfo: ["Region": POIregion])
         sendNotification(POIregion: POIregion, didEnter: true)
     }

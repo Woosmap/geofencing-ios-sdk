@@ -12,10 +12,12 @@ public class DataPOI: SearchAPIDelegate {
     public init() {}
 
     public func searchAPIResponse(poi: POI) {
-        NotificationCenter.default.post(name: .newPOISaved, object: self, userInfo: ["POI": poi])
+        //NotificationCenter.default.post(name: .newPOISaved, object: self, userInfo: ["POI": poi])
+        //NSLog("SearchAPIResponse POI: " + poi.description)
     }
 
     public func serachAPIError(error: String) {
+        NSLog("SearchAPIResponse Error: " + error)
 
     }
 

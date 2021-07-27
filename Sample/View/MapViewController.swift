@@ -291,8 +291,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         if let overlay = overlay as? MKCircle {
 
             let circleRenderer = MKCircleRenderer(circle: overlay)
-            circleRenderer.fillColor = (circleRenderer.circle.title == "POI") ? UIColor.green : UIColor.blue
-            circleRenderer.alpha = 0.2
+            circleRenderer.fillColor = (circleRenderer.circle.title == "POI") ? UIColor(red: 0, green: 1, blue: 0, alpha: 0.2) : UIColor(red: 0, green: 0, blue: 0, alpha: 0)
             if circleRenderer.circle.title!.contains("ENTER") {
                 circleRenderer.fillColor = UIColor.red
                 circleRenderer.alpha = 0.2
@@ -333,7 +332,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         guard let region = notification.userInfo?["Region"] as? Region else {
             return
         }
-
         if region.didEnter {
             let circlePOI = MKCircle(center: CLLocationCoordinate2D(latitude: region.latitude, longitude: region.longitude), radius: region.radius)
             circlePOI.title = region.identifier! + "ENTER"
