@@ -26,6 +26,8 @@
 		A2710EF325B5CA7C00AF62F5 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF225B5CA7C00AF62F5 /* Visit.swift */; };
 		A2710EF725B5CADE00AF62F5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF625B5CADE00AF62F5 /* Location.swift */; };
 		A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EFA25B5CB3500AF62F5 /* Region.swift */; };
+		A2A8FB3E26B1AB9F00A0C848 /* ConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A8FB3D26B1AB9F00A0C848 /* ConfigModel.swift */; };
+		A2A8FB4026B1AC4600A0C848 /* liveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A2A8FB3F26B1AC4600A0C848 /* liveTracking.json */; };
 		A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */; };
 		A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
@@ -63,6 +65,8 @@
 		A2710EF225B5CA7C00AF62F5 /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
 		A2710EF625B5CADE00AF62F5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		A2710EFA25B5CB3500AF62F5 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		A2A8FB3D26B1AB9F00A0C848 /* ConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigModel.swift; sourceTree = "<group>"; };
+		A2A8FB3F26B1AC4600A0C848 /* liveTracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = liveTracking.json; sourceTree = "<group>"; };
 		A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DistanceAPIJsonswift.swift; path = Sources/WoosmapGeofencing/DistanceAPIJsonswift.swift; sourceTree = SOURCE_ROOT; };
 		A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONGeneric.swift; sourceTree = "<group>"; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +116,7 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
+				A2A8FB3C26B1AB8E00A0C848 /* Config */,
 				A2710EE525B5C88100AF62F5 /* Business Logic */,
 				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
 				A262B9D324E29B0000EB621F /* Info.plist */,
@@ -140,6 +145,15 @@
 				A26E645C25B9865800EDBA72 /* DataCleaner.swift */,
 			);
 			path = "Business Logic";
+			sourceTree = "<group>";
+		};
+		A2A8FB3C26B1AB8E00A0C848 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A2A8FB3D26B1AB9F00A0C848 /* ConfigModel.swift */,
+				A2A8FB3F26B1AC4600A0C848 /* liveTracking.json */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */ = {
@@ -257,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2A8FB4026B1AC4600A0C848 /* liveTracking.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +292,7 @@
 				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
 				A2710EEB25B5C8C400AF62F5 /* POI.swift in Sources */,
 				A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */,
+				A2A8FB3E26B1AB9F00A0C848 /* ConfigModel.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
 				A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */,

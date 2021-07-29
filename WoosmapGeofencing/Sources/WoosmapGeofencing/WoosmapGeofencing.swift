@@ -187,6 +187,11 @@ import RealmSwift
             self.locationService?.startMonitoringSignificantLocationChanges()
         }
     }
+    
+    public func stopTracking() {
+        trackingEnable = false
+        self._stopAllMonitoring()
+    }
 
     func _stopAllMonitoring() {
         self.locationService.stopUpdatingLocation()
@@ -239,6 +244,37 @@ import RealmSwift
     
     public func setPoiRadius(radius: Any) {
         poiRadius = radius
+    }
+    
+    public func startTracking(configurationProfile: ConfigurationProfile){
+        let bundle = Bundle(for: Self.self)
+        let url = bundle.url(forResource: configurationProfile.rawValue, withExtension: ".json")
+        do {
+            let jsonData = try Data(contentsOf: url!)
+            let configJSON = try? JSONDecoder().decode(ConfigModel.self, from: jsonData)
+            setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
+            setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
+            
+            setVisitEnable(enable: configJSON?.visitEnable ?? false)
+            setClassification(enable: configJSON?.classificationEnable ?? false)
+            setRadiusDetectionClassifiedZOI(radius: configJSON?.radiusDetectionClassifiedZOI ?? 100.0)
+            setCreationOfZOIEnable(enable: configJSON?.creationOfZOIEnable ?? false)
+            setAccuracyVisitFilter(accuracy: configJSON?.accuracyVisitFilter ?? 50.0)
+            
+            setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
+            
+            setSearchAPIRequestEnable(enable: configJSON?.searchAPIEnable ?? false)
+            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
+            setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
+            
+            setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
+            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.modeDistance)!) ?? DistanceMode.driving)
+            outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
+            dataDurationDelay = configJSON?.dataDurationDelay ?? 30
+
+        } catch { print(error) }
+       
+        
     }
 
 }

@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             print("Config:\n \(config)")
             WoosmapGeofencing.shared.getLocationService().airshipEventsDelegate = airshipEvents
         #endif
-        
+    
         // Set private Woosmap key API
         WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
         WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
@@ -71,13 +71,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         // Set the distance url Woosmap API
         WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
         WoosmapGeofencing.shared.setDistanceAPIMode(mode: DistanceMode.driving)
-
-        // Set your filter on position location and search
-        //WoosmapGeofencing.shared.setCurrentPositionFilter(distance: 10.0, time: 10)
-        //WoosmapGeofencing.shared.setSearchAPIFilter(distance: 10.0, time: 10)
-
-        // Set classification of zoi enable
-        WoosmapGeofencing.shared.setClassification(enable: true)
         
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
@@ -86,23 +79,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         WoosmapGeofencing.shared.getLocationService().regionDelegate = dataRegion
 
         // Enable Visit and set delegate of protocol Visit
-        WoosmapGeofencing.shared.setVisitEnable(enable: true)
         WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
-
-        // Set Tracking state
-        WoosmapGeofencing.shared.setTrackingEnable(enable: UserDefaults.standard.bool(forKey: "TrackingEnable"))
         
-        // Set Refreshing Position Hight frequency state
-        WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: UserDefaults.standard.bool(forKey: "ModeHighfrequencyLocation"))
-
-        // Set SearchAPI automatic on each location
-        WoosmapGeofencing.shared.setSearchAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "SearchAPIEnable"))
-
-        // Set 3 Creations Regions POI from Search API result
-        WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: UserDefaults.standard.bool(forKey: "searchAPICreationRegionEnable"))
-
-        // Set DistanceAPI automatic on each POI
-        WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: UserDefaults.standard.bool(forKey: "DistanceAPIEnable"))
+        WoosmapGeofencing.shared.startTracking(configurationProfile: ConfigurationProfile.liveTracking)
 
         // Check if the authorization Status of location Manager
         if CLLocationManager.authorizationStatus() != .notDetermined {
