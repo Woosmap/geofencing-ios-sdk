@@ -7,13 +7,13 @@
 import UIKit
 import CoreLocation
 import WoosmapGeofencing
-import MarketingCloudSDK
+//import MarketingCloudSDK
 #if canImport(AirshipCore)
   import AirshipCore
 #endif
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate, MarketingCloudSDKURLHandlingDelegate  {
+class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate  {
 
     var window: UIWindow?
     let dataLocation = DataLocation()
@@ -138,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 
         
         // -- SFMC --
-        self.configureMarketingCloudSDK()
+        //self.configureMarketingCloudSDK()
         
         return true
     }
@@ -215,17 +215,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         
         // Use the builder method to configure the SDK for usage. This gives you the maximum flexibility in SDK configuration.
         // The builder lets you configure the SDK parameters at runtime.
-        
-        let appID = "[DEV-APNS App ID value from MobilePush app admin]"
-        let accessToken = "[DEV-APNS Access Token value from MobilePush app admin]"
-        let appEndpoint = "[DEV-APNS App Endpoint value from MobilePush app admin]"
-        let mid = "[DEV-APNS account MID value from MobilePush app admin]"
-        
+        /*
+
+        let appID = "218fbb61-d43f-4e3c-9541-770f0f5a94c3"
+        let accessToken = "qGZNbR6lLYcqHslHfRXtqxLh"
+        let appEndpoint = "https://mcdmfc5rbyc0pxgr4nlpqqy0j-x1.device.marketingcloudapis.com/"
+        let mid = "510004998"
+
+
         
         // Define features of MobilePush your app will use.
         let inbox = false
         let location = false
-        let analytics = true
+        let analytics = false
+        
         
         // MobilePush SDK: REQUIRED IMPLEMENTATION
         @discardableResult
@@ -295,16 +298,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
                     }
             return success
         }
+    /*
         
         // MobilePush SDK: OPTIONAL IMPLEMENTATION (if using Data Protection)
-        func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
+        /*func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
             if(MarketingCloudSDK.sharedInstance().sfmc_isReady() == false)
             {
                 self.configureMarketingCloudSDK()
             }
-        }
+        }*/
     
-        
+      */
     // Implement the protocol method and have iOS handle the URL itself
     func sfmc_handle(_ url: URL, type: String) {
         if UIApplication.shared.canOpenURL(url) == true {
@@ -326,5 +330,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         }
     }
         
-    
+    */
 }
