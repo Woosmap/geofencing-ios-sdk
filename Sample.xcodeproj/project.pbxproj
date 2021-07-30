@@ -3,10 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FB4AF0F26AF053A0056659F /* MarketingCloudSDKURLHandlingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4AF0E26AF053A0056659F /* MarketingCloudSDKURLHandlingDelegate.swift */; };
+		4FF2C77426B05F3F00A998AE /* MarketingCloudSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF2C77326B05F3F00A998AE /* MarketingCloudSDK.xcframework */; };
+		4FF2C77526B05F3F00A998AE /* MarketingCloudSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF2C77326B05F3F00A998AE /* MarketingCloudSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4FF2C77726B0605200A998AE /* MarketingCloudSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4FF2C77626B0605200A998AE /* MarketingCloudSDK.bundle */; };
+		4FF2C79E26B19D4100A998AE /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF2C79726B19D1700A998AE /* OAuth2.framework */; };
+		4FF2C79F26B19D5B00A998AE /* OAuth2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF2C79726B19D1700A998AE /* OAuth2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A20DDE7023EAD6D300124E56 /* LocationTableViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE6F23EAD6D300124E56 /* LocationTableViewContoller.swift */; };
 		A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7223EAF66D00124E56 /* MapViewController.swift */; };
 		A20DDE7823EAFB9E00124E56 /* DataLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20DDE7723EAFB9E00124E56 /* DataLocation.swift */; };
@@ -36,6 +42,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4FF2C79426B19D1700A998AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEE209471942772800736F1A;
+			remoteInfo = OAuth2macOS;
+		};
+		4FF2C79626B19D1700A998AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEDB8624193FAAE500C4EEA1;
+			remoteInfo = OAuth2iOS;
+		};
+		4FF2C79826B19D1700A998AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 659854461C5B3BEA00237D39;
+			remoteInfo = OAuth2tvOS;
+		};
+		4FF2C79A26B19D1700A998AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEE209A219427DFE00736F1A;
+			remoteInfo = OAuth2Tests;
+		};
+		4FF2C79C26B19D3A00A998AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EEDB8623193FAAE500C4EEA1;
+			remoteInfo = OAuth2iOS;
+		};
 		A262B9E024E29FB100EB621F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
@@ -87,7 +128,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4FF2C79F26B19D5B00A998AE /* OAuth2.framework in Embed Frameworks */,
 				A2140413241955A900537968 /* WoosmapGeofencing.framework in Embed Frameworks */,
+				4FF2C77526B05F3F00A998AE /* MarketingCloudSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +149,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4FB4AF0926AF018F0056659F /* MarketingCloudSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MarketingCloudSDK; path = "../../../../Downloads/MarketingCloudSDK-iOS-master/MarketingCloudSDK"; sourceTree = "<group>"; };
+		4FB4AF0E26AF053A0056659F /* MarketingCloudSDKURLHandlingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCloudSDKURLHandlingDelegate.swift; sourceTree = "<group>"; };
+		4FF2C77326B05F3F00A998AE /* MarketingCloudSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MarketingCloudSDK.xcframework; sourceTree = "<group>"; };
+		4FF2C77626B0605200A998AE /* MarketingCloudSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MarketingCloudSDK.bundle; sourceTree = "<group>"; };
+		4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuth2.xcodeproj; path = OAuth2/OAuth2.xcodeproj; sourceTree = "<group>"; };
 		A20DDE6F23EAD6D300124E56 /* LocationTableViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewContoller.swift; sourceTree = "<group>"; };
 		A20DDE7223EAF66D00124E56 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		A20DDE7723EAFB9E00124E56 /* DataLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLocation.swift; sourceTree = "<group>"; };
@@ -122,7 +170,6 @@
 		A235A0B1242A570300B51E1F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A238041B23EC6A95002F53F2 /* DataPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPOI.swift; sourceTree = "<group>"; };
 		A239055F25791D87001B3754 /* DataRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRegion.swift; sourceTree = "<group>"; };
-		A262B9E224E29FB100EB621F /* paris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = paris.gpx; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/paris.gpx"; sourceTree = "<absolute>"; };
 		A273027D23EB0BB00042FC5A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27D4421250A28770043B676 /* Locations.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Locations.csv; sourceTree = "<group>"; };
@@ -142,7 +189,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FF2C79E26B19D4100A998AE /* OAuth2.framework in Frameworks */,
 				A2140412241955A900537968 /* WoosmapGeofencing.framework in Frameworks */,
+				4FF2C77426B05F3F00A998AE /* MarketingCloudSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +213,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4FF2C78E26B19D1700A998AE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4FF2C79526B19D1700A998AE /* OAuth2.framework */,
+				4FF2C79726B19D1700A998AE /* OAuth2.framework */,
+				4FF2C79926B19D1700A998AE /* OAuth2.framework */,
+				4FF2C79B26B19D1700A998AE /* OAuth2Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A20DDE7623EAFB5C00124E56 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +239,8 @@
 		A2140410241955A900537968 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FF2C77326B05F3F00A998AE /* MarketingCloudSDK.xcframework */,
+				4FB4AF0926AF018F0056659F /* MarketingCloudSDK */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -186,6 +248,8 @@
 		A216FB7F23E9CE720003AAC8 = {
 			isa = PBXGroup;
 			children = (
+				4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */,
+				4FF2C77626B0605200A998AE /* MarketingCloudSDK.bundle */,
 				A216FB8A23E9CE720003AAC8 /* Sample */,
 				A2AC8535240E743800C65900 /* NotificationService */,
 				A216FB8923E9CE720003AAC8 /* Products */,
@@ -212,7 +276,6 @@
 				A20DDE7623EAFB5C00124E56 /* View */,
 				A216FB8B23E9CE720003AAC8 /* AppDelegate.swift */,
 				A235A0B1242A570300B51E1F /* Settings.swift */,
-				A262B9E224E29FB100EB621F /* paris.gpx */,
 				A216FB9123E9CE760003AAC8 /* Assets.xcassets */,
 				A216FB9923E9CE760003AAC8 /* Info.plist */,
 				A216FB9323E9CE760003AAC8 /* Preview Content */,
@@ -241,6 +304,7 @@
 				A239055F25791D87001B3754 /* DataRegion.swift */,
 				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
 				A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */,
+				4FB4AF0E26AF053A0056659F /* MarketingCloudSDKURLHandlingDelegate.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -288,6 +352,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4FF2C79D26B19D3A00A998AE /* PBXTargetDependency */,
 				A277BD60242A27420098F01A /* PBXTargetDependency */,
 				A2AC853A240E743800C65900 /* PBXTargetDependency */,
 			);
@@ -372,6 +437,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 4FF2C78E26B19D1700A998AE /* Products */;
+					ProjectRef = 4FF2C78D26B19D1700A998AE /* OAuth2.xcodeproj */;
+				},
+				{
 					ProductGroup = A2AC8522240E6C9B00C65900 /* Products */;
 					ProjectRef = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
 				},
@@ -386,6 +455,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4FF2C79526B19D1700A998AE /* OAuth2.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OAuth2.framework;
+			remoteRef = 4FF2C79426B19D1700A998AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FF2C79726B19D1700A998AE /* OAuth2.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OAuth2.framework;
+			remoteRef = 4FF2C79626B19D1700A998AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FF2C79926B19D1700A998AE /* OAuth2.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OAuth2.framework;
+			remoteRef = 4FF2C79826B19D1700A998AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FF2C79B26B19D1700A998AE /* OAuth2Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OAuth2Tests.xctest;
+			remoteRef = 4FF2C79A26B19D1700A998AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A262B9E124E29FB100EB621F /* WoosmapGeofencingTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -407,6 +504,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FF2C77726B0605200A998AE /* MarketingCloudSDK.bundle in Resources */,
 				A216FB9823E9CE760003AAC8 /* LaunchScreen.storyboard in Resources */,
 				A218C85F24B716E5006086B5 /* Visit_qualif.csv in Resources */,
 				A27D4422250A28770043B676 /* Locations.csv in Resources */,
@@ -447,6 +545,7 @@
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
 				A239056025791D87001B3754 /* DataRegion.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
+				4FB4AF0F26AF053A0056659F /* MarketingCloudSDKURLHandlingDelegate.swift in Sources */,
 				A29D6F9D25EFF88600F95790 /* AirshipEvents.swift in Sources */,
 				A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */,
 				A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */,
@@ -473,6 +572,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4FF2C79D26B19D3A00A998AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OAuth2iOS;
+			targetProxy = 4FF2C79C26B19D3A00A998AE /* PBXContainerItemProxy */;
+		};
 		A2777916250FA3B900068AEA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A216FB8723E9CE720003AAC8 /* Sample */;
@@ -640,7 +744,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
-				DEVELOPMENT_TEAM = 38H4FA3J9J;
+				DEVELOPMENT_TEAM = 7LLPH8QA65;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -649,6 +753,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.2;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies;
 				PRODUCT_NAME = SampleGeofencing;
 				SWIFT_VERSION = 5.0;
@@ -665,7 +770,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
-				DEVELOPMENT_TEAM = 38H4FA3J9J;
+				DEVELOPMENT_TEAM = 7LLPH8QA65;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -674,6 +779,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.2;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies;
 				PRODUCT_NAME = SampleGeofencing;
 				SWIFT_VERSION = 5.0;
