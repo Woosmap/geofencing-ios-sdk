@@ -6,6 +6,13 @@
 
 import Foundation
 
+//Profil
+public enum ConfigurationProfile: String {
+    case liveTracking
+    case passiveTracking
+    case stopsTracking
+}
+
 // Tracking
 public var trackingEnable = true
 
