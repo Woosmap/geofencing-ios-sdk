@@ -10,7 +10,7 @@ import Foundation
 public enum ConfigurationProfile: String {
     case liveTracking
     case passiveTracking
-    case stopsTracking
+    case visitsTracking
 }
 
 // Tracking
