@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A21E173126B99DFB00D2440C /* ConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21E173026B99DFB00D2440C /* ConfigModel.swift */; };
+		A21E173326B99E5C00D2440C /* liveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173226B99E5C00D2440C /* liveTracking.json */; };
+		A21E173626BD751000D2440C /* passiveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173426BD751000D2440C /* passiveTracking.json */; };
+		A21E173726BD751000D2440C /* visitsTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173526BD751000D2440C /* visitsTracking.json */; };
 		A2245475247D591800A0B8B0 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2245474247D591800A0B8B0 /* Surge */; };
 		A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */; };
 		A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */; };
@@ -44,6 +48,10 @@
 
 /* Begin PBXFileReference section */
 		A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WoosmapGeofencing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A21E173026B99DFB00D2440C /* ConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigModel.swift; sourceTree = "<group>"; };
+		A21E173226B99E5C00D2440C /* liveTracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = liveTracking.json; sourceTree = "<group>"; };
+		A21E173426BD751000D2440C /* passiveTracking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = passiveTracking.json; sourceTree = "<group>"; };
+		A21E173526BD751000D2440C /* visitsTracking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = visitsTracking.json; sourceTree = "<group>"; };
 		A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FIGMMCreatorTests.swift; path = Tests/WoosmapGeofencingTests/FIGMMCreatorTests.swift; sourceTree = SOURCE_ROOT; };
 		A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZoiQualifierTests.swift; path = Tests/WoosmapGeofencingTests/ZoiQualifierTests.swift; sourceTree = SOURCE_ROOT; };
 		A262B9C724E29ADF00EB621F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/WoosmapGeofencingTests/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -112,6 +120,7 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
+				A21E172F26B99DE900D2440C /* Config */,
 				A2710EE525B5C88100AF62F5 /* Business Logic */,
 				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
 				A262B9D324E29B0000EB621F /* Info.plist */,
@@ -127,6 +136,17 @@
 			);
 			name = WoosmapGeofencing;
 			path = Sources/WoosmapGeofencing;
+			sourceTree = "<group>";
+		};
+		A21E172F26B99DE900D2440C /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A21E173026B99DFB00D2440C /* ConfigModel.swift */,
+				A21E173426BD751000D2440C /* passiveTracking.json */,
+				A21E173526BD751000D2440C /* visitsTracking.json */,
+				A21E173226B99E5C00D2440C /* liveTracking.json */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		A2710EE525B5C88100AF62F5 /* Business Logic */ = {
@@ -257,6 +277,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A21E173726BD751000D2440C /* visitsTracking.json in Resources */,
+				A21E173626BD751000D2440C /* passiveTracking.json in Resources */,
+				A21E173326B99E5C00D2440C /* liveTracking.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +300,7 @@
 				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
 				A2710EEB25B5C8C400AF62F5 /* POI.swift in Sources */,
 				A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */,
+				A21E173126B99DFB00D2440C /* ConfigModel.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
 				A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */,
@@ -441,7 +465,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -469,7 +493,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
