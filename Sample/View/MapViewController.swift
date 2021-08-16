@@ -192,7 +192,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 if renderer.path.contains(tapPoint) {
                     let circleRenderer = MKCircleRenderer(circle: region)
                     if circleRenderer.circle.title == "POI" {
-                        WoosmapGeofencing.shared.locationService.removeRegion(center: region.coordinate)
+                        guard let monitoredRegions = WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions else { return }
+                        for monitoredRegion in monitoredRegions {
+                            let latRegion = (monitoredRegion as! CLCircularRegion).center.latitude
+                            let lngRegion = (monitoredRegion as! CLCircularRegion).center.longitude
+                            if region.coordinate.latitude == latRegion && region.coordinate.longitude == lngRegion {
+                                WoosmapGeofencing.shared.locationService.removeRegion(identifier: monitoredRegion.identifier)
+                            }
+                        }
+                        //WoosmapGeofencing.shared.locationService.removeRegion(center: region.coordinate)
                         initMap()
                         return
                     }
