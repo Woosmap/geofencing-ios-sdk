@@ -234,6 +234,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         
     }
+    public func removeRegion(identifier: String) {
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        for region in monitoredRegions {
+            if (region.identifier == identifier) {
+                self.locationManager?.stopMonitoring(for: region)
+                self.handleRegionChange()
+            }
+        }
+    }
 
     public func removeRegion(center: CLLocationCoordinate2D) {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return }
