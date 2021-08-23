@@ -15,8 +15,8 @@
     "currentLocationDistanceFilter": 0,
     "accuracyFilter": 100,
 
-    "searchAPIEnable": false,
-    "searchAPICreationRegionEnable": false,
+    "searchAPIEnable": true,
+    "searchAPICreationRegionEnable": true,
     "searchAPITimeFilter": 0,
     "searchAPIDistanceFilter": 0,
 
