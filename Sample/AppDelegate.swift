@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
     let dataRegion = DataRegion()
     let dataVisit = DataVisit()
     let airshipEvents = AirshipEvents()
+    let marketingCloudEvents = MarketingCloudEvents()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -77,7 +78,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI
         WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = dataDistance
         WoosmapGeofencing.shared.getLocationService().regionDelegate = dataRegion
-
+        
+        //Set delagate for Marketing Cloud
+        //WoosmapGeofencing.shared.getLocationService().marketingCloudEventsDelegate = marketingCloudEvents
+        
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
         
