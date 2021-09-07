@@ -81,7 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
         
-        WoosmapGeofencing.shared.startTracking(configurationProfile: ConfigurationProfile.liveTracking)
 
         // Check if the authorization Status of location Manager
         if CLLocationManager.authorizationStatus() != .notDetermined {
