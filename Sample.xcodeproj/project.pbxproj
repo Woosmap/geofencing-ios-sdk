@@ -23,6 +23,7 @@
 		A235A0B3242A570C00B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
 		A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041B23EC6A95002F53F2 /* DataPOI.swift */; };
 		A239056025791D87001B3754 /* DataRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A239055F25791D87001B3754 /* DataRegion.swift */; };
+		A25B062526E76E6100906A6B /* MarketingCloudEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25B062426E76E6100906A6B /* MarketingCloudEvents.swift */; };
 		A2710F0B25B5CF2F00AF62F5 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; };
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
 		A27D4422250A28770043B676 /* Locations.csv in Resources */ = {isa = PBXBuildFile; fileRef = A27D4421250A28770043B676 /* Locations.csv */; };
@@ -122,6 +123,7 @@
 		A235A0B1242A570300B51E1F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A238041B23EC6A95002F53F2 /* DataPOI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPOI.swift; sourceTree = "<group>"; };
 		A239055F25791D87001B3754 /* DataRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRegion.swift; sourceTree = "<group>"; };
+		A25B062426E76E6100906A6B /* MarketingCloudEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCloudEvents.swift; sourceTree = "<group>"; };
 		A262B9E224E29FB100EB621F /* paris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = paris.gpx; path = "/Users/maclaurent/work/ios_geofencing_swift_package/woosmap-geofencing-ios-sdk/Sample/Data/paris.gpx"; sourceTree = "<absolute>"; };
 		A273027D23EB0BB00042FC5A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,6 +243,7 @@
 				A239055F25791D87001B3754 /* DataRegion.swift */,
 				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
 				A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */,
+				A25B062426E76E6100906A6B /* MarketingCloudEvents.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				A20DDE7323EAF66D00124E56 /* MapViewController.swift in Sources */,
 				A216FB8C23E9CE720003AAC8 /* AppDelegate.swift in Sources */,
 				A21DC0C4248FF50000E45471 /* MockDataVisit.swift in Sources */,
+				A25B062526E76E6100906A6B /* MarketingCloudEvents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

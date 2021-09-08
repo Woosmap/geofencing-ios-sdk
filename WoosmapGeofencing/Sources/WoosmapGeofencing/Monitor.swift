@@ -40,6 +40,15 @@ public protocol AirshipEventsDelegate: AnyObject {
     func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
 }
 
+public protocol MarketingCloudEventsDelegate: AnyObject {
+    func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
+    func regionEnterEvent(regionEvent: Dictionary <String, Any>, eventName: String)
+    func regionExitEvent(regionEvent: Dictionary <String, Any>, eventName: String)
+    func visitEvent(visitEvent: Dictionary <String, Any>, eventName: String)
+    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>, eventName: String)
+    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
+}
+
 
 public extension Date {
     /// Returns the amount of seconds from another date
@@ -86,6 +95,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public weak var regionDelegate: RegionsServiceDelegate?
     public weak var visitDelegate: VisitServiceDelegate?
     public weak var airshipEventsDelegate: AirshipEventsDelegate?
+    public weak var marketingCloudEventsDelegate: MarketingCloudEventsDelegate?
 
     init(locationManger: LocationManagerProtocol?) {
 
@@ -643,9 +653,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 //    }
     
     func sendASVisitEvents(visit: Visit) {
-        guard let delegate = self.airshipEventsDelegate else {
-            return
-        }
+        
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["date"] = visit.date?.stringFromDate()
         propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
@@ -654,13 +662,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["latitude"] = visit.latitude
         propertyDictionary["longitude"] = visit.longitude
         
-        delegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
+        if let ASdelegate = self.airshipEventsDelegate {
+            ASdelegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
+        }
+        
+        if let MCdelegate = self.marketingCloudEventsDelegate {
+            MCdelegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
+        }
+        
     }
     
     func sendASPOIEvents(poi: POI) {
-        guard let delegate = self.airshipEventsDelegate else {
-            return
-        }
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["date"] = poi.date?.stringFromDate()
         propertyDictionary["name"] = poi.name
@@ -672,13 +684,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
 
-        delegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
+        if let ASdelegate = self.airshipEventsDelegate {
+            ASdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
+        }
+        
+        if let MCdelegate = self.marketingCloudEventsDelegate {
+            MCdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
+        }
     }
     
     func sendASRegionEvents(region: Region) {
-        guard let delegate = self.airshipEventsDelegate else {
-            return
-        }
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["date"] = region.date?.stringFromDate()
         propertyDictionary["id"] = region.identifier
@@ -694,10 +709,20 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
         }
         
-        if(region.didEnter) {
-            delegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
-        } else {
-            delegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
+        if let ASdelegate = self.airshipEventsDelegate {
+            if(region.didEnter) {
+                ASdelegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
+            } else {
+                ASdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
+            }
+        }
+        
+        if let MCdelegate = self.marketingCloudEventsDelegate {
+            if(region.didEnter) {
+                MCdelegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
+            } else {
+                MCdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
+            }
         }
     }
     
@@ -734,9 +759,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     func sendASZOIClassifiedEvents(region: Region) {
-        guard let delegate = self.airshipEventsDelegate else {
-            return
-        }
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["date"] = region.date?.stringFromDate()
         propertyDictionary["id"] = region.identifier
@@ -744,10 +766,20 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["longitude"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
-        if(region.didEnter) {
-            delegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
-        } else {
-            delegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
+        if let ASdelegate = self.airshipEventsDelegate {
+            if(region.didEnter) {
+                ASdelegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
+            } else {
+                ASdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
+            }
+        }
+        
+        if let MCdelegate = self.marketingCloudEventsDelegate {
+            if(region.didEnter) {
+                MCdelegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
+            } else {
+                MCdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
+            }
         }
     }
 
