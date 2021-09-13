@@ -28,7 +28,7 @@ import RealmSwift
     }
     
     private func initRealm() {
-        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 1)
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 2)
     }
 
     public func getLocationService() -> LocationService {

@@ -21,6 +21,7 @@ public class POI: Object {
     @objc public dynamic var zipCode: String?
     @objc public dynamic var radius: Double = 0.0
     @objc public dynamic var address: String?
+    @objc public dynamic var openNow: Bool = false
     @objc public dynamic var countryCode: String?
     @objc public dynamic var tags: String?
     @objc public dynamic var types: String?
@@ -72,10 +73,16 @@ public class POIs {
                                 }
                             }
                             
+                            if let open = properties["open"] as? [String: Any] {
+                                poi.openNow = open["open_now"] as? Bool ?? false
+                            }
+                            
                             if let contact = properties["contact"] as? [String: String] {
                                 for (key, value) in contact {
                                     poi.contact = (poi.contact ?? "") + key + "=" + value + "_"
                                 }
+                            } else {
+                                poi.contact = "null"
                             }
                             
                             //Value by default

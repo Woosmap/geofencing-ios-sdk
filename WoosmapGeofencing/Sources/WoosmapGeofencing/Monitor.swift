@@ -655,12 +655,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func sendASVisitEvents(visit: Visit) {
         
         var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["event"] = "woos_visit_event"
         propertyDictionary["date"] = visit.date?.stringFromDate()
         propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
         propertyDictionary["departureDate"] = visit.departureDate?.stringFromDate()
         propertyDictionary["id"] = visit.visitId
-        propertyDictionary["latitude"] = visit.latitude
-        propertyDictionary["longitude"] = visit.longitude
+        propertyDictionary["lat"] = visit.latitude
+        propertyDictionary["lng"] = visit.longitude
         
         if let ASdelegate = self.airshipEventsDelegate {
             propertyDictionary["date"] = visit.date?.stringFromDate()
@@ -676,8 +677,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     func sendASPOIEvents(poi: POI) {
         var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["event"] = "woos_poi_event"
         propertyDictionary["name"] = poi.name
-        propertyDictionary["idStore"] = poi.idstore
+        propertyDictionary["lat"] = poi.latitude
+        propertyDictionary["lng"] = poi.longitude
         propertyDictionary["city"] = poi.city
         propertyDictionary["distance"] = poi.distance
         propertyDictionary["tags"] = poi.tags
@@ -699,8 +702,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func sendASRegionEvents(region: Region) {
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["id"] = region.identifier
-        propertyDictionary["latitude"] = region.latitude
-        propertyDictionary["longitude"] = region.longitude
+        propertyDictionary["lat"] = region.latitude
+        propertyDictionary["lng"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
         if(getRegionType(identifier: region.identifier!) == RegionType.poi) {
@@ -714,8 +717,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if let ASdelegate = self.airshipEventsDelegate {
             propertyDictionary["date"] = region.date?.stringFromDate()
             if(region.didEnter) {
+                propertyDictionary["event"] = "woos_geofence_entered_event"
                 ASdelegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
             } else {
+                propertyDictionary["event"] = "woos_geofence_exited_event"
                 ASdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
             }
         }
@@ -723,8 +728,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if let MCdelegate = self.marketingCloudEventsDelegate {
             propertyDictionary["date"] = region.date?.stringFromISO8601Date()
             if(region.didEnter) {
+                propertyDictionary["event"] = "woos_geofence_entered_event"
                 MCdelegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
             } else {
+                propertyDictionary["event"] = "woos_geofence_exited_event"
                 MCdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
             }
         }
@@ -760,20 +767,23 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["types"] = poi.types
         propertyDictionary["address"] = poi.address
         propertyDictionary["contact"] = poi.contact
+        propertyDictionary["openNow"] = poi.openNow
     }
     
     func sendASZOIClassifiedEvents(region: Region) {
         var propertyDictionary = Dictionary <String, Any>()
         propertyDictionary["id"] = region.identifier
-        propertyDictionary["latitude"] = region.latitude
-        propertyDictionary["longitude"] = region.longitude
+        propertyDictionary["lat"] = region.latitude
+        propertyDictionary["lng"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
         if let ASdelegate = self.airshipEventsDelegate {
             propertyDictionary["date"] = region.date?.stringFromDate()
             if(region.didEnter) {
+                propertyDictionary["event"] = "woos_zoi_classified_entered_event"
                 ASdelegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
             } else {
+                propertyDictionary["event"] = "woos_zoi_classified_exited_event"
                 ASdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
             }
         }
@@ -781,8 +791,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if let MCdelegate = self.marketingCloudEventsDelegate {
             propertyDictionary["date"] = region.date?.stringFromISO8601Date()
             if(region.didEnter) {
+                propertyDictionary["event"] = "woos_zoi_classified_entered_event"
                 MCdelegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
             } else {
+                propertyDictionary["event"] = "woos_zoi_classified_exited_event"
                 MCdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
             }
         }
