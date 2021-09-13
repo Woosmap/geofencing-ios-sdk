@@ -760,7 +760,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["city"] = poi.city
         propertyDictionary["zipCode"] = poi.zipCode
         propertyDictionary["distance"] = poi.distance
-        propertyDictionary["idstore"] = poi.idstore
+        propertyDictionary["idStore"] = poi.idstore
         propertyDictionary["name"] = poi.name
         propertyDictionary["country_code"] = poi.countryCode
         propertyDictionary["tags"] = poi.tags
