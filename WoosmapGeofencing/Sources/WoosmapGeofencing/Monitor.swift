@@ -685,6 +685,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["distance"] = poi.distance
         propertyDictionary["tags"] = poi.tags
         propertyDictionary["types"] = poi.types
+        propertyDictionary["radius"] = poi.radius
         
         setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
 
