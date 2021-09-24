@@ -362,7 +362,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
 
-        if self.lastSearchLocation != nil && locationId.isEmpty {
+        if self.lastSearchLocation != nil /*&& locationId.isEmpty*/ {
 
             let theLastSearchLocation = self.lastSearchLocation!
 
@@ -697,6 +697,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if let MCdelegate = self.marketingCloudEventsDelegate {
             propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
             MCdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
+            UserAPIClient.pushDataToMC(poiData: propertyDictionary)
         }
     }
     

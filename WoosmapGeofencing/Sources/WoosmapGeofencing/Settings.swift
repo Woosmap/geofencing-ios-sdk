@@ -74,5 +74,8 @@ public var searchAPIParameters : [String: String] = [:]
 // filter for user_properties data
 public var userPropertiesFilter : [String] = []
 
+// credentials SFMC
+public var SFMCCredentials : [String: String] = [:]
+
 public var poiRadius:Any = 100
 
