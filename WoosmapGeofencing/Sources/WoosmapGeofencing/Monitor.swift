@@ -699,6 +699,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             MCdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
             UserAPIClient.pushDataToMC(poiData: propertyDictionary)
         }
+        
+        propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
+        UserAPIClient.pushDataToMC(poiData: propertyDictionary)
     }
     
     func sendASRegionEvents(region: Region) {
