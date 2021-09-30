@@ -1,8 +1,7 @@
 //
-//  OAuth.swift
+//  APIClient.swift
 //  WoosmapGeofencing
 //
-//  Created by Mac de Laurent on 24/09/2021.
 //  Copyright © 2021 Web Geo Services. All rights reserved.
 //
 
