@@ -673,6 +673,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             MCdelegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
         }
         
+        if((SFMCCredentials["visitEventDefinitionKey"]) != nil) {
+            propertyDictionary["date"] = visit.date?.stringFromISO8601Date()
+            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["visitEventDefinitionKey"]!)
+        }
+        
     }
     
     func sendASPOIEvents(poi: POI) {
@@ -697,16 +702,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if let MCdelegate = self.marketingCloudEventsDelegate {
             propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
             MCdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
-            UserAPIClient.pushDataToMC(poiData: propertyDictionary)
         }
         
-        propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
-        UserAPIClient.pushDataToMC(poiData: propertyDictionary)
+        if((SFMCCredentials["poiEventDefinitionKey"]) != nil) {
+            propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
+            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["poiEventDefinitionKey"]!)
+        }
     }
     
     func sendASRegionEvents(region: Region) {
         var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["id"] = region.identifier
         propertyDictionary["lat"] = region.latitude
         propertyDictionary["lng"] = region.longitude
         propertyDictionary["radius"] = region.radius
@@ -717,6 +722,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 return
             }
             setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
+        } else {
+            propertyDictionary["id"] = region.identifier
         }
         
         if let ASdelegate = self.airshipEventsDelegate {
@@ -739,6 +746,18 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 propertyDictionary["event"] = "woos_geofence_exited_event"
                 MCdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
             }
+        }
+        
+        if((SFMCCredentials["regionEnteredEventDefinitionKey"]) != nil && region.didEnter) {
+            propertyDictionary["date"] = region.date?.stringFromISO8601Date()
+            propertyDictionary["event"] = "woos_geofence_entered_event"
+            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["regionEnteredEventDefinitionKey"]!)
+        }
+        
+        if((SFMCCredentials["regionExitedEventDefinitionKey"]) != nil && !region.didEnter) {
+            propertyDictionary["date"] = region.date?.stringFromISO8601Date()
+            propertyDictionary["event"] = "woos_geofence_exited_event"
+            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["regionExitedEventDefinitionKey"]!)
         }
     }
     
@@ -802,6 +821,18 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 propertyDictionary["event"] = "woos_zoi_classified_exited_event"
                 MCdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
             }
+        }
+        
+        if((SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"]) != nil && region.didEnter) {
+            propertyDictionary["date"] = region.date?.stringFromISO8601Date()
+            propertyDictionary["event"] = "woos_zoi_classified_entered_event"
+            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"]!)
+        }
+        
+        if((SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]) != nil && !region.didEnter) {
+            propertyDictionary["date"] = region.date?.stringFromISO8601Date()
+            propertyDictionary["event"] = "woos_zoi_classified_exited_event"
+            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]!)
         }
     }
 
