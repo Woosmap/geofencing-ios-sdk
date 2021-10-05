@@ -12,14 +12,14 @@ import Foundation
 class APIClient {
     class func getBearer( completion: @escaping (Error?) -> ()) {
         if(SFMCAccesToken.isEmpty) {
-            let url = URL(string:SFMCCredentials["authenticationBaseURI"] ?? "")!
+            let url = URL(string:(SFMCCredentials["authenticationBaseURI"] ?? "") + "/v2/Token")!
             var urlRequest = URLRequest(url: url)
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
             let authenBody = ["client_id": SFMCCredentials["client_id"],
                               "client_secret":SFMCCredentials["client_secret"],
-                              "grant_type":SFMCCredentials["grant_type"],
-                              "scope":SFMCCredentials["scope"],
+                              "grant_type":"client_credentials",
+                              "scope":"list_and_subscribers_read journeys_read",
                               "account_id":SFMCCredentials["account_id"]]
             
             
@@ -71,7 +71,6 @@ class APIClient {
 
 class SFMCAPIclient: APIClient {
     static func pushDataToMC(poiData: [String: Any], eventDefinitionKey: String) {
-        print("access_token = " + SFMCAccesToken)
         if(SFMCAccesToken.isEmpty) {
             getBearer() {  error in
                 if let error = error {
@@ -86,7 +85,7 @@ class SFMCAPIclient: APIClient {
     }
     
     static func sendRequest(poiData: [String: Any], eventDefinitionKey: String) {
-        let url = URL(string: SFMCCredentials["restBaseURI"] ?? "")!
+        let url = URL(string: (SFMCCredentials["restBaseURI"] ?? "") + "/interaction/v1/events")!
         var request = URLRequest(url: url)
         let session = URLSession.shared
         

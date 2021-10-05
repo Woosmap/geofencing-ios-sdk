@@ -772,7 +772,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             if (idstoreFromJson == poi.idstore) {
                                 for (key, value) in userProperties {
                                       if(userPropertiesFilter.isEmpty || userPropertiesFilter.contains(key)) {
-                                          propertyDictionary["user_properties." + key] = value
+                                          propertyDictionary["user_properties_" + key] = value
                                       }
                                 }
                             }
