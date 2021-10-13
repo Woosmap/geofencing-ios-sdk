@@ -362,8 +362,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             return
         }
 
-        if self.lastSearchLocation != nil /*&& locationId.isEmpty*/ {
-
+        if self.lastSearchLocation != nil && !locationId.isEmpty {
             let theLastSearchLocation = self.lastSearchLocation!
 
             let timeEllapsed = abs(currentLocation!.timestamp.seconds(from: theLastSearchLocation.timestamp))
@@ -426,8 +425,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         return
                     }
                     
-                    self.removeRegions(type: LocationService.RegionType.poi)
-                    
                     for poi in pois {
                         self.sendASPOIEvents(poi: poi)
                         delegate.searchAPIResponse(poi: poi)
@@ -441,6 +438,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname, radius: poi.radius)
                         }
                     }
+                    self.removeOldPOIRegions(newPOIS: pois)
                 }
             }
         }
@@ -451,9 +449,36 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     public func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
         let identifier = RegionType.poi.rawValue + "_" + name
-        self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
-        checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
-
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        var exist = false
+        for region in monitoredRegions {
+            if (region.identifier.contains(identifier)) {
+               exist = true
+            }
+        }
+        if !exist {
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
+            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
+        }
+    }
+    
+    public func removeOldPOIRegions(newPOIS: [POI]) {
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        for region in monitoredRegions {
+            var exist = false
+            for poi in newPOIS {
+                let identifier = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
+                if (region.identifier.contains(identifier)) {
+                    exist = true
+                }
+            }
+            if(!exist) {
+                if region.identifier.contains(LocationService.RegionType.poi.rawValue) {
+                    self.locationManager?.stopMonitoring(for: region)
+                }
+            }
+        }
+        
     }
 
     public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "") {
