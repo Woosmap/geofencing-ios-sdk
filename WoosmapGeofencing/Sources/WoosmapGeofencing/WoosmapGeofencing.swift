@@ -237,6 +237,10 @@ import RealmSwift
         userPropertiesFilter = properties
     }
     
+    public func setSFMCCredentials(credentials : [String: String]) {
+        SFMCCredentials = credentials
+    }
+    
     public func setPoiRadius(radius: Any) {
         poiRadius = radius
     }
