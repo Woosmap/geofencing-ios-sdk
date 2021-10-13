@@ -235,10 +235,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return (false, "") }
         
         if (monitoredRegions.count < 20) {
-            let id = RegionType.custom.rawValue + "_" + identifier
+            let id = RegionType.custom.rawValue + "<id>" + identifier
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
             checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
-            return (true, RegionType.custom.rawValue + "_" + identifier)
+            return (true, RegionType.custom.rawValue + "<id>" + identifier)
         } else {
             return (false, "")
         }
@@ -437,7 +437,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(poi.latitude, poi.longitude)], locationId: locationId)
                         }
                         if searchAPICreationRegionEnable {
-                            let POIname = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
+                            let POIname = (poi.idstore ?? "")  + "<id>" + (poi.name ?? "")
                             self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname, radius: poi.radius)
                         }
                     }
@@ -450,7 +450,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
 
     public func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
-        let identifier = RegionType.poi.rawValue + "_" + name
+        let identifier = RegionType.poi.rawValue + "<id>" + name
         self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
         checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
 
@@ -702,17 +702,18 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     func sendASRegionEvents(region: Region) {
         var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["id"] = region.identifier
         propertyDictionary["lat"] = region.latitude
         propertyDictionary["lng"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
         if(getRegionType(identifier: region.identifier!) == RegionType.poi) {
-            let idStore = region.identifier!.components(separatedBy: "_")[1]
+            let idStore = region.identifier!.components(separatedBy: "<id>")[1]
             guard let poi = POIs.getPOIbyIdStore(idstore: idStore) else {
                 return
             }
             setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
+        } else {
+            propertyDictionary["id"] = region.identifier
         }
         
         if let ASdelegate = self.airshipEventsDelegate {
