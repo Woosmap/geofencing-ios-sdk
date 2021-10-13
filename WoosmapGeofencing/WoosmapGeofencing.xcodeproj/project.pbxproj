@@ -34,6 +34,7 @@
 		A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
 		A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */; };
+		A2FF527326FDB9FD00E2202A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FF527226FDB9FD00E2202A /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONGeneric.swift; sourceTree = "<group>"; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
+		A2FF527226FDB9FD00E2202A /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				A262B9CD24E29AFF00EB621F /* WoosmapGeofencing.swift */,
 				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
 				A2B5187925545E48003B7C19 /* DistanceAPIJsonswift.swift */,
+				A2FF527226FDB9FD00E2202A /* APIClient.swift */,
 			);
 			name = WoosmapGeofencing;
 			path = Sources/WoosmapGeofencing;
@@ -300,6 +303,7 @@
 				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
 				A2710EEB25B5C8C400AF62F5 /* POI.swift in Sources */,
 				A2B5187A25545E48003B7C19 /* DistanceAPIJsonswift.swift in Sources */,
+				A2FF527326FDB9FD00E2202A /* APIClient.swift in Sources */,
 				A21E173126B99DFB00D2440C /* ConfigModel.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
