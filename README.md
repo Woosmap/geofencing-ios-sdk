@@ -477,6 +477,7 @@ To emulate, follow instructions here:  <http://www.madebyuppercut.com/testing-ge
 * [ZOI Classification](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/Classification.md): Find out how Classification are built from duration of ZOI.
 * [Geographic Data Lifecycle and import data from a CSV](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/GeographicDataLifecycle.md): Find out how to manage the data lifecycle to be in compliance with GDPR and how to import data from a CSV.
 * [Airship Integration](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/airship.md): Track location data and generate contextual events using custom event types.
+* [Salesforce MarketingCloud Integration](https://github.com/woosmap/woosmap-geofencing-ios-sdk/blob/master/doc/MarketingCloudConnector.md): Track location data and generate contextual events using custom event types and push it to SFMC.
 
 ## Contributing
 
