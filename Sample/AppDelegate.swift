@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
     var window: UIWindow?
     let dataLocation = DataLocation()
     let dataPOI = DataPOI()
-    let dataDistance = DataDistance()
+    let dataTrafficDistance = DataTrafficDistance()
     let dataRegion = DataRegion()
     let dataVisit = DataVisit()
     let airshipEvents = AirshipEvents()
@@ -68,15 +68,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 
         // Set the search url Woosmap API
         WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
-
-        // Set the distance url Woosmap API
-        WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: DistanceMode.driving)
         
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI
-        WoosmapGeofencing.shared.getLocationService().distanceAPIDataDelegate = dataDistance
+        WoosmapGeofencing.shared.getLocationService().trafficDistanceAPIDataDelegate = dataTrafficDistance
         WoosmapGeofencing.shared.getLocationService().regionDelegate = dataRegion
         
         //Set delagate for Marketing Cloud

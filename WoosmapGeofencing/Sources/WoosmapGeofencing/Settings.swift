@@ -20,14 +20,42 @@ public var trackingEnable = true
 public var WoosmapAPIKey = ""
 public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_key=\(WoosmapAPIKey)&lat=%@&lng=%@&stores_by_page=1"
 
-// Woosmap DistanceAPI
+// Woosmap Distance provider
+public enum DistanceProvider: String {
+  case WoosmapTraffic
+  case WoosmapDistance
+}
+
+public var distanceProvider = DistanceProvider.WoosmapDistance
+
+// Woosmap Distance mode
 public enum DistanceMode: String {
   case driving
   case cycling
   case walking
+  case truck
 }
+
 public var distanceMode = DistanceMode.driving // cycling,walking
-public var distanceWoosmapAPI = "https://api.woosmap.com/distance/distancematrix/json?mode=\(distanceMode)&units=metric&origins=%@,%@&destinations=%@&private_key=\(WoosmapAPIKey)&elements=duration_distance"
+
+public var distanceWoosmapAPI = "https://api.woosmap.com/distance/distancematrix/json?mode=\(distanceMode)&units=\(distanceUnits)&language=\(distanceLanguage)&origins=%@,%@&destinations=%@&private_key=\(WoosmapAPIKey)&elements=duration_distance"
+
+
+public enum TrafficDistanceRouting: String {
+  case fastest
+  case balanced
+}
+
+public enum DistanceUnits: String {
+  case metric
+  case imperial
+}
+
+public var trafficDistanceRouting = TrafficDistanceRouting.fastest
+public var distanceUnits = DistanceUnits.metric
+public var distanceLanguage = "en"
+
+public var trafficDistanceWoosmapAPI = "https://api.woosmap.com/traffic/distancematrix/json?mode=\(distanceMode)&units=\(distanceUnits)&routing=\(trafficDistanceRouting)&language=\(distanceLanguage)&departure_time=now&origins=%@,%@&destinations=%@,%@&private_key=\(WoosmapAPIKey)"
 
 // Location filters
 public var currentLocationDistanceFilter = 0.0

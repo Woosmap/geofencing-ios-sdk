@@ -28,7 +28,7 @@ import RealmSwift
     }
     
     private func initRealm() {
-        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 2)
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 3)
     }
 
     public func getLocationService() -> LocationService {
@@ -76,9 +76,29 @@ import RealmSwift
     public func setDistanceWoosmapAPI(api: String) {
         distanceWoosmapAPI = api
     }
+    
+    public func setTrafficDistanceWoosmapAPI(api: String) {
+        trafficDistanceWoosmapAPI = api
+    }
+    
+    public func setDistanceProvider(provider: DistanceProvider) {
+         distanceProvider = provider
+    }
 
     public func setDistanceAPIMode(mode: DistanceMode) {
         distanceMode = mode
+    }
+    
+    public func setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting) {
+        trafficDistanceRouting = routing
+    }
+    
+    public func setDistanceAPIUnits(units: DistanceUnits) {
+        distanceUnits = units
+    }
+    
+    public func setDistanceAPILanguage(language: String) {
+        distanceLanguage = language
     }
 
     public func setCurrentPositionFilter(distance: Double, time: Int) {
@@ -272,8 +292,12 @@ import RealmSwift
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
 
+            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distanceProvider)!) ?? DistanceProvider.WoosmapDistance)
             setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
             setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.modeDistance)!) ?? DistanceMode.driving)
+            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distanceUnits)!) ?? DistanceUnits.metric)
+            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.trafficDistanceRouting)!) ?? TrafficDistanceRouting.fastest)
+            setDistanceAPILanguage(language: configJSON?.distanceLanguage ?? "en")
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 

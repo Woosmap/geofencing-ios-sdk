@@ -17,9 +17,13 @@ class ConfigModel: Codable {
     let searchAPITimeFilter, searchAPIDistanceFilter: Int?
     let distanceAPIEnable: Bool?
     let modeDistance: String?
+    let trafficDistanceRouting: String?
+    let distanceUnits: String?
+    let distanceLanguage: String?
+    let distanceProvider: String?
     let outOfTimeDelay, dataDurationDelay: Int?
 
-    init(trackingEnable: Bool?, foregroundLocationServiceEnable: Bool?, modeHighFrequencyLocation: Bool?, visitEnable: Bool?, classificationEnable: Bool?, minDurationVisitDisplay: Double?, radiusDetectionClassifiedZOI: Double?, distanceDetectionThresholdVisits: Double?, creationOfZOIEnable: Bool?, accuracyVisitFilter: Double?, currentLocationTimeFilter: Double?, currentLocationDistanceFilter: Double?, accuracyFilter: Double?, searchAPIEnable: Bool?, searchAPICreationRegionEnable: Bool?, searchAPITimeFilter: Int?, searchAPIDistanceFilter: Int?, distanceAPIEnable: Bool?, modeDistance: String?, outOfTimeDelay: Int?, dataDurationDelay: Int?) {
+    init(trackingEnable: Bool?, foregroundLocationServiceEnable: Bool?, modeHighFrequencyLocation: Bool?, visitEnable: Bool?, classificationEnable: Bool?, minDurationVisitDisplay: Double?, radiusDetectionClassifiedZOI: Double?, distanceDetectionThresholdVisits: Double?, creationOfZOIEnable: Bool?, accuracyVisitFilter: Double?, currentLocationTimeFilter: Double?, currentLocationDistanceFilter: Double?, accuracyFilter: Double?, searchAPIEnable: Bool?, searchAPICreationRegionEnable: Bool?, searchAPITimeFilter: Int?, searchAPIDistanceFilter: Int?, distanceAPIEnable: Bool?, modeDistance: String?, distanceProvider: String?, trafficDistanceRouting: String?, distanceUnits: String?, distanceLanguage: String?, outOfTimeDelay: Int?, dataDurationDelay: Int?) {
         self.trackingEnable = trackingEnable
         self.foregroundLocationServiceEnable = foregroundLocationServiceEnable
         self.modeHighFrequencyLocation = modeHighFrequencyLocation
@@ -39,6 +43,10 @@ class ConfigModel: Codable {
         self.searchAPIDistanceFilter = searchAPIDistanceFilter
         self.distanceAPIEnable = distanceAPIEnable
         self.modeDistance = modeDistance
+        self.distanceProvider = distanceProvider
+        self.distanceUnits = distanceUnits
+        self.trafficDistanceRouting = trafficDistanceRouting
+        self.distanceLanguage = distanceLanguage
         self.outOfTimeDelay = outOfTimeDelay
         self.dataDurationDelay = dataDurationDelay
     }

@@ -403,7 +403,8 @@ class LocationTableViewContoller: UITableViewController {
             let poi = DataPOI().getPOIbyLocationID(locationId: placeData.locationId)
             let latDest = poi!.latitude
             let lngDest = poi!.longitude
-            WoosmapGeofencing.shared.getLocationService().distanceAPIRequest(locationOrigin: location, coordinatesDest: [(latDest, lngDest)], locationId: placeData.locationId)
+            WoosmapGeofencing.shared.getLocationService().calculateETA(origin: location, destination: CLLocation(latitude: latDest, longitude: lngDest))
+            
         }
     }
 

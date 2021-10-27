@@ -12,6 +12,7 @@
 		A21E173626BD751000D2440C /* passiveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173426BD751000D2440C /* passiveTracking.json */; };
 		A21E173726BD751000D2440C /* visitsTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173526BD751000D2440C /* visitsTracking.json */; };
 		A2245475247D591800A0B8B0 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2245474247D591800A0B8B0 /* Surge */; };
+		A24796FF2726DF700081AADC /* TrafficDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24796FE2726DF700081AADC /* TrafficDistance.swift */; };
 		A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */; };
 		A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */; };
 		A262B9D424E29B0000EB621F /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9CB24E29AFF00EB621F /* Monitor.swift */; };
@@ -34,6 +35,7 @@
 		A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
 		A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */; };
+		A2DFFA202728254200ED2B48 /* TrafficDistanceAPIJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DFFA1F2728254200ED2B48 /* TrafficDistanceAPIJson.swift */; };
 		A2FF527326FDB9FD00E2202A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FF527226FDB9FD00E2202A /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +55,7 @@
 		A21E173226B99E5C00D2440C /* liveTracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = liveTracking.json; sourceTree = "<group>"; };
 		A21E173426BD751000D2440C /* passiveTracking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = passiveTracking.json; sourceTree = "<group>"; };
 		A21E173526BD751000D2440C /* visitsTracking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = visitsTracking.json; sourceTree = "<group>"; };
+		A24796FE2726DF700081AADC /* TrafficDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficDistance.swift; sourceTree = "<group>"; };
 		A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FIGMMCreatorTests.swift; path = Tests/WoosmapGeofencingTests/FIGMMCreatorTests.swift; sourceTree = SOURCE_ROOT; };
 		A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZoiQualifierTests.swift; path = Tests/WoosmapGeofencingTests/ZoiQualifierTests.swift; sourceTree = SOURCE_ROOT; };
 		A262B9C724E29ADF00EB621F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/WoosmapGeofencingTests/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -76,6 +79,7 @@
 		A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONGeneric.swift; sourceTree = "<group>"; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
+		A2DFFA1F2728254200ED2B48 /* TrafficDistanceAPIJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficDistanceAPIJson.swift; sourceTree = "<group>"; };
 		A2FF527226FDB9FD00E2202A /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,6 +133,7 @@
 				A262B9CB24E29AFF00EB621F /* Monitor.swift */,
 				A262B9CF24E29B0000EB621F /* RegionGenerator.swift */,
 				A262B9CE24E29AFF00EB621F /* SearchAPiJson.swift */,
+				A2DFFA1F2728254200ED2B48 /* TrafficDistanceAPIJson.swift */,
 				A262B9D124E29B0000EB621F /* Settings.swift */,
 				A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */,
 				A262B9D024E29B0000EB621F /* WoosmapGeofencing.h */,
@@ -161,6 +166,7 @@
 				A2710EF625B5CADE00AF62F5 /* Location.swift */,
 				A2710EFA25B5CB3500AF62F5 /* Region.swift */,
 				A26E645C25B9865800EDBA72 /* DataCleaner.swift */,
+				A24796FE2726DF700081AADC /* TrafficDistance.swift */,
 			);
 			path = "Business Logic";
 			sourceTree = "<group>";
@@ -308,9 +314,11 @@
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
 				A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */,
+				A24796FF2726DF700081AADC /* TrafficDistance.swift in Sources */,
 				A26E645D25B9865800EDBA72 /* DataCleaner.swift in Sources */,
 				A262B9DA24E29B0000EB621F /* Settings.swift in Sources */,
 				A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */,
+				A2DFFA202728254200ED2B48 /* TrafficDistanceAPIJson.swift in Sources */,
 				A262B9D624E29B0000EB621F /* WoosmapGeofencing.swift in Sources */,
 				A262B9D424E29B0000EB621F /* Monitor.swift in Sources */,
 				A262B9D824E29B0000EB621F /* RegionGenerator.swift in Sources */,

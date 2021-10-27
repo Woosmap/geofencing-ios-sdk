@@ -12,9 +12,9 @@ public protocol SearchAPIDelegate: AnyObject {
     func serachAPIError(error: String)
 }
 
-public protocol DistanceAPIDelegate: AnyObject {
-    func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String)
-    func distanceAPIError(error: String)
+public protocol TrafficDistanceAPIDelegate: AnyObject {
+    func trafficDistanceAPIResponse(trafficDistance: TrafficDistance)
+    func trafficDistanceAPIError(error: String)
 }
 
 public protocol RegionsServiceDelegate: AnyObject {
@@ -91,7 +91,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     public weak var locationServiceDelegate: LocationServiceDelegate?
     public weak var searchAPIDataDelegate: SearchAPIDelegate?
-    public weak var distanceAPIDataDelegate: DistanceAPIDelegate?
+    public weak var trafficDistanceAPIDataDelegate: TrafficDistanceAPIDelegate?
     public weak var regionDelegate: RegionsServiceDelegate?
     public weak var visitDelegate: VisitServiceDelegate?
     public weak var airshipEventsDelegate: AirshipEventsDelegate?
@@ -431,7 +431,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         self.lastSearchLocation = self.currentLocation
 
                         if distanceAPIRequestEnable {
-                            self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(poi.latitude, poi.longitude)], locationId: locationId)
+                            self.distanceAPIRequest(locationOrigin: location, coordinatesDest: CLLocation(latitude: poi.latitude, longitude: poi.longitude), locationId: locationId)
                         }
                         if searchAPICreationRegionEnable {
                             let POIname = (poi.idstore ?? "")  + "<id>" + (poi.name ?? "")
@@ -480,62 +480,82 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "") {
+    public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: CLLocation, locationId: String = "") {
 
-        guard let delegateDistance = self.distanceAPIDataDelegate else {
-            return
-        }
-
-        guard let delegateSearch = self.searchAPIDataDelegate else {
+        guard let delegateTrafficDistance = self.trafficDistanceAPIDataDelegate else {
             return
         }
 
         let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
         let userLongitude: String = String(format: "%f", locationOrigin.coordinate.longitude)
         var coordinateDest = ""
-        for coordinate in coordinatesDest {
-            let destLatitude: String = String(format: "%f", Double(coordinate.0))
-            let destLongitude: String = String(format: "%f", Double(coordinate.1))
-            coordinateDest += destLatitude + "," + destLongitude
-            if coordinatesDest.last! != coordinate {
-                coordinateDest += "|"
-            }
-        }
+        let destLatitude: String = String(format: "%f", coordinatesDest.coordinate.latitude)
+        let destLongitude: String = String(format: "%f", coordinatesDest.coordinate.longitude)
+        coordinateDest += destLatitude + "," + destLongitude
 
         let storeAPIUrl: String = String(format: distanceWoosmapAPI, userLatitude, userLongitude, coordinateDest)
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-
-        // Call API search
+        
+        // Call API Distance
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let response = response as? HTTPURLResponse {
                 if response.statusCode != 200 {
                     NSLog("statusCode: \(response.statusCode)")
-                    delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
+                    delegateTrafficDistance.trafficDistanceAPIError(error: "Error Traffic Distance API " + String(response.statusCode))
                     return
                 }
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let responseJSON = try? JSONDecoder().decode(DistanceAPIData.self, from: data!)
-                    delegateDistance.distanceAPIResponseData(distanceAPIData: responseJSON!, locationId: locationId)
-                    // update POI
-                    if responseJSON!.status == "OK" {
-                        if responseJSON?.rows?.first?.elements?.first?.status == "OK" {
-                            let distance = responseJSON?.rows?.first?.elements?.first?.distance?.value!
-                            let duration = responseJSON?.rows?.first?.elements?.first?.duration?.text!
-                            if distance != nil && duration != nil {
-                                let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
-                                if poiUpdated.locationId != nil {
-                                    delegateSearch.searchAPIResponse(poi: poiUpdated)
-                                }
-                            }
-                        }
-                    }
+                    let trafficDistance = TrafficDistances.addFromResponseJson(APIResponse: data!, locationId: locationId, origin: locationOrigin, destination: coordinatesDest)
+                    delegateTrafficDistance.trafficDistanceAPIResponse(trafficDistance: trafficDistance)
                 }
             }
         }
         task.resume()
 
+    }
+    
+    public func traffiDistanceAPI(origin: CLLocation, destination: CLLocation, locationId: String = "") {
+        guard let delegateTrafficDistance = self.trafficDistanceAPIDataDelegate else {
+            return
+        }
+
+        let originLatitude: String = String(format: "%f", origin.coordinate.latitude)
+        let originLongitude: String = String(format: "%f", origin.coordinate.longitude)
+        let destinationLatitude: String = String(format: "%f", destination.coordinate.latitude)
+        let destinationLongitude: String = String(format: "%f", destination.coordinate.longitude)
+        
+        let storeAPIUrl: String = String(format: trafficDistanceWoosmapAPI, originLatitude, originLongitude, destinationLatitude,destinationLongitude)
+        let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+
+        // Call API TrafficDistance
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let response = response as? HTTPURLResponse {
+                if response.statusCode != 200 {
+                    NSLog("statusCode: \(response.statusCode)")
+                    delegateTrafficDistance.trafficDistanceAPIError(error: "Error Traffic Distance API " + String(response.statusCode))
+                    return
+                }
+                if let error = error {
+                    NSLog("error: \(error)")
+                } else {
+                    let trafficDistance = TrafficDistances.addFromResponseJson(APIResponse: data!, locationId: locationId, origin: origin, destination: destination)
+                    delegateTrafficDistance.trafficDistanceAPIResponse(trafficDistance: trafficDistance)
+                }
+            }
+        }
+        task.resume()
+
+    }
+    
+    public func calculateETA(origin: CLLocation, destination: CLLocation, locationId: String = "") {
+        if(distanceProvider == DistanceProvider.WoosmapDistance) {
+            distanceAPIRequest(locationOrigin: origin, coordinatesDest: destination, locationId: locationId)
+        } else {
+            traffiDistanceAPI(origin: origin, destination: destination, locationId: locationId)
+        }
+        
     }
 
     public func tracingLocationDidFailWithError(error: Error) {

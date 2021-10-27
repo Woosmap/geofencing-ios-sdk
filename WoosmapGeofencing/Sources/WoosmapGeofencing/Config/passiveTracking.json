@@ -20,8 +20,12 @@
     "searchAPITimeFilter": 0,
     "searchAPIDistanceFilter": 0,
 
+    "distanceProvider": "WoosmapDistance",
     "distanceAPIEnable": false,
     "modeDistance": "driving",
+    "trafficDistanceRouting": "fastest",
+    "distanceUnits": "metric",
+    "distanceLanguage": "en",
     "outOfTimeDelay": 300,
     "dataDurationDelay": 30
 }
