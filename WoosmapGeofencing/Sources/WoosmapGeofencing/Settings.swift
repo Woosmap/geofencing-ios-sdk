@@ -22,11 +22,11 @@ public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_ke
 
 // Woosmap Distance provider
 public enum DistanceProvider: String {
-  case WoosmapTraffic
-  case WoosmapDistance
+  case woosmapTraffic
+  case woosmapDistance
 }
 
-public var distanceProvider = DistanceProvider.WoosmapDistance
+public var distanceProvider = DistanceProvider.woosmapDistance
 
 // Woosmap Distance mode
 public enum DistanceMode: String {
@@ -55,7 +55,7 @@ public var trafficDistanceRouting = TrafficDistanceRouting.fastest
 public var distanceUnits = DistanceUnits.metric
 public var distanceLanguage = "en"
 
-public var trafficDistanceWoosmapAPI = "https://api.woosmap.com/traffic/distancematrix/json?mode=\(distanceMode)&units=\(distanceUnits)&routing=\(trafficDistanceRouting)&language=\(distanceLanguage)&departure_time=now&origins=%@,%@&destinations=%@,%@&private_key=\(WoosmapAPIKey)"
+public var trafficDistanceWoosmapAPI = "https://api.woosmap.com/traffic/distancematrix/json?mode=\(distanceMode)&units=\(distanceUnits)&routing=\(trafficDistanceRouting)&language=\(distanceLanguage)&departure_time=now&origins=%@,%@&destinations=%@&private_key=\(WoosmapAPIKey)"
 
 // Location filters
 public var currentLocationDistanceFilter = 0.0

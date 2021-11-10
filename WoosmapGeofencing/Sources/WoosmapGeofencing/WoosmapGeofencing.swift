@@ -82,19 +82,35 @@ import RealmSwift
     }
     
     public func setDistanceProvider(provider: DistanceProvider) {
-         distanceProvider = provider
+        if(provider != DistanceProvider.woosmapDistance || provider != DistanceProvider.woosmapTraffic){
+            distanceProvider = provider
+        }else {
+            distanceProvider = DistanceProvider.woosmapDistance
+        }
     }
 
     public func setDistanceAPIMode(mode: DistanceMode) {
-        distanceMode = mode
+        if(mode != DistanceMode.driving || mode != DistanceMode.cycling || mode != DistanceMode.truck || mode != DistanceMode.walking) {
+            distanceMode = mode
+        } else {
+            distanceMode = DistanceMode.driving
+        }
     }
     
     public func setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting) {
-        trafficDistanceRouting = routing
+        if(trafficDistanceRouting != TrafficDistanceRouting.fastest || trafficDistanceRouting != TrafficDistanceRouting.balanced) {
+            trafficDistanceRouting = routing
+        }else {
+            trafficDistanceRouting = TrafficDistanceRouting.fastest
+        }
     }
     
     public func setDistanceAPIUnits(units: DistanceUnits) {
-        distanceUnits = units
+        if(units != DistanceUnits.metric || units != DistanceUnits.imperial) {
+            distanceUnits = DistanceUnits.metric
+        }else {
+            distanceUnits = units
+        }
     }
     
     public func setDistanceAPILanguage(language: String) {
@@ -292,12 +308,12 @@ import RealmSwift
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
 
-            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distanceProvider)!) ?? DistanceProvider.WoosmapDistance)
+            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
             setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
-            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.modeDistance)!) ?? DistanceMode.driving)
-            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distanceUnits)!) ?? DistanceUnits.metric)
-            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.trafficDistanceRouting)!) ?? TrafficDistanceRouting.fastest)
-            setDistanceAPILanguage(language: configJSON?.distanceLanguage ?? "en")
+            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
+            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
+            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
+            setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 

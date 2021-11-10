@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ConfigModel: Codable {
+public struct ConfigModel: Codable {
     let trackingEnable, foregroundLocationServiceEnable, modeHighFrequencyLocation, visitEnable: Bool?
     let classificationEnable: Bool?
     let minDurationVisitDisplay, radiusDetectionClassifiedZOI, distanceDetectionThresholdVisits: Double?
@@ -16,14 +16,10 @@ class ConfigModel: Codable {
     let searchAPIEnable, searchAPICreationRegionEnable: Bool?
     let searchAPITimeFilter, searchAPIDistanceFilter: Int?
     let distanceAPIEnable: Bool?
-    let modeDistance: String?
-    let trafficDistanceRouting: String?
-    let distanceUnits: String?
-    let distanceLanguage: String?
-    let distanceProvider: String?
+    let distance: DistanceConfig?
     let outOfTimeDelay, dataDurationDelay: Int?
 
-    init(trackingEnable: Bool?, foregroundLocationServiceEnable: Bool?, modeHighFrequencyLocation: Bool?, visitEnable: Bool?, classificationEnable: Bool?, minDurationVisitDisplay: Double?, radiusDetectionClassifiedZOI: Double?, distanceDetectionThresholdVisits: Double?, creationOfZOIEnable: Bool?, accuracyVisitFilter: Double?, currentLocationTimeFilter: Double?, currentLocationDistanceFilter: Double?, accuracyFilter: Double?, searchAPIEnable: Bool?, searchAPICreationRegionEnable: Bool?, searchAPITimeFilter: Int?, searchAPIDistanceFilter: Int?, distanceAPIEnable: Bool?, modeDistance: String?, distanceProvider: String?, trafficDistanceRouting: String?, distanceUnits: String?, distanceLanguage: String?, outOfTimeDelay: Int?, dataDurationDelay: Int?) {
+    init(trackingEnable: Bool?, foregroundLocationServiceEnable: Bool?, modeHighFrequencyLocation: Bool?, visitEnable: Bool?, classificationEnable: Bool?, minDurationVisitDisplay: Double?, radiusDetectionClassifiedZOI: Double?, distanceDetectionThresholdVisits: Double?, creationOfZOIEnable: Bool?, accuracyVisitFilter: Double?, currentLocationTimeFilter: Double?, currentLocationDistanceFilter: Double?, accuracyFilter: Double?, searchAPIEnable: Bool?, searchAPICreationRegionEnable: Bool?, searchAPITimeFilter: Int?, searchAPIDistanceFilter: Int?, distanceAPIEnable: Bool?, distanceConfig: DistanceConfig?, distanceLanguage: String?, outOfTimeDelay: Int?, dataDurationDelay: Int?) {
         self.trackingEnable = trackingEnable
         self.foregroundLocationServiceEnable = foregroundLocationServiceEnable
         self.modeHighFrequencyLocation = modeHighFrequencyLocation
@@ -42,12 +38,14 @@ class ConfigModel: Codable {
         self.searchAPITimeFilter = searchAPITimeFilter
         self.searchAPIDistanceFilter = searchAPIDistanceFilter
         self.distanceAPIEnable = distanceAPIEnable
-        self.modeDistance = modeDistance
-        self.distanceProvider = distanceProvider
-        self.distanceUnits = distanceUnits
-        self.trafficDistanceRouting = trafficDistanceRouting
-        self.distanceLanguage = distanceLanguage
+        self.distance = distanceConfig
         self.outOfTimeDelay = outOfTimeDelay
         self.dataDurationDelay = dataDurationDelay
     }
+}
+
+
+public struct DistanceConfig: Codable {
+    let distanceProvider, distanceMode, distanceRouting, distanceUnits: String?
+    let distanceLanguage: String?
 }

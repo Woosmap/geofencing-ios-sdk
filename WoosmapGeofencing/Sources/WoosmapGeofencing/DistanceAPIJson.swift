@@ -5,7 +5,7 @@
 
 import Foundation
 
-public struct TrafficDistanceAPIData: Codable {
+public struct DistanceAPIData: Codable {
     public let rows: [RowDistance]?
     public let status: String?
 }
@@ -16,11 +16,12 @@ public struct RowDistance: Codable {
 
 public struct ElementDistance: Codable {
     public let status: String?
-    public let duration_with_traffic: TrafficDistanceInfo?
-    public let distance: TrafficDistanceInfo?
+    public let duration_with_traffic: DistanceInfo?
+    public let duration: DistanceInfo?
+    public let distance: DistanceInfo?
 }
 
-public struct TrafficDistanceInfo: Codable {
+public struct DistanceInfo: Codable {
     public let value: Int?
     public let text: String?
 }
