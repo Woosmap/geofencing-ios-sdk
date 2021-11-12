@@ -25,6 +25,7 @@ public class DataCleaner {
                     let predicate = NSPredicate(format: "(date <= %@)", limitDate! as CVarArg)
                     let locationFetchedResults = realm.objects(Location.self).filter(predicate)
                     let poiFetchedResults = realm.objects(POI.self).filter(predicate)
+                    let regionFetchedResults = realm.objects(Region.self).filter(predicate)
                     let visitFetchedResults = realm.objects(Visit.self).filter(predicate)
                     if !visitFetchedResults.isEmpty {
                         ZOIs.updateZOI(visits: Array(visitFetchedResults))
@@ -33,6 +34,7 @@ public class DataCleaner {
                     realm.delete(locationFetchedResults)
                     realm.delete(poiFetchedResults)
                     realm.delete(visitFetchedResults)
+                    realm.delete(regionFetchedResults)
                     try realm.commitWrite()
                 } catch {
                 }
