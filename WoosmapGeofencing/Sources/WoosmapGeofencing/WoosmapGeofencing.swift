@@ -107,9 +107,9 @@ import RealmSwift
     
     public func setDistanceAPIUnits(units: DistanceUnits) {
         if(units != DistanceUnits.metric || units != DistanceUnits.imperial) {
-            distanceUnits = DistanceUnits.metric
-        }else {
             distanceUnits = units
+        }else {
+            distanceUnits = DistanceUnits.metric
         }
     }
     
