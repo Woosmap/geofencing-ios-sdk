@@ -77,8 +77,8 @@ public class Distances {
                                 distance.durationText = durationText
                                 distanceArray.append(distance)
                             }
-                            indexElement+=1
                         }
+                        indexElement+=1
                     }
                 }
             } else {

@@ -519,7 +519,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     NSLog("error: \(error)")
                 } else {
                     let distance = Distances.addFromResponseJson(APIResponse: data!, locationId: locationId, origin: locationOrigin, destination: coordinatesDest)
-                    if(locationId != "") {
+                    if(locationId != "" && !distance.isEmpty) {
                         guard let delegateSearch = self.searchAPIDataDelegate else {
                             return
                         }
