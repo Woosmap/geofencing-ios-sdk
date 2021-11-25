@@ -37,7 +37,6 @@ public class DataCleaner {
                     realm.delete(visitFetchedResults)
                     realm.delete(distanceFetchedResults)
                     realm.delete(regionFetchedResults)
-                    
                     try realm.commitWrite()
                 } catch {
                 }

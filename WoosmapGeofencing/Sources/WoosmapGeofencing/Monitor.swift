@@ -681,6 +681,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     func sendASVisitEvents(visit: Visit) {
         
         var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
         propertyDictionary["event"] = "woos_visit_event"
         propertyDictionary["date"] = visit.date?.stringFromDate()
         propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
@@ -708,6 +709,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     func sendASPOIEvents(poi: POI) {
         var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
         propertyDictionary["event"] = "woos_poi_event"
         propertyDictionary["name"] = poi.name
         propertyDictionary["lat"] = poi.latitude
@@ -738,6 +740,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     func sendASRegionEvents(region: Region) {
         var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
         propertyDictionary["lat"] = region.latitude
         propertyDictionary["lng"] = region.longitude
         propertyDictionary["radius"] = region.radius
@@ -822,6 +825,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     func sendASZOIClassifiedEvents(region: Region) {
         var propertyDictionary = Dictionary <String, Any>()
+        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
         propertyDictionary["id"] = region.identifier
         propertyDictionary["lat"] = region.latitude
         propertyDictionary["lng"] = region.longitude

@@ -41,14 +41,14 @@ class APIClient {
                 // ensure there is data returned from this HTTP response
                 guard let content = data else {
                     print("getBearer - No data")
-                    completion(NSError())
+                    completion(NSError(domain: "No data", code: 0, userInfo:nil))
                     return
                 }
                 
                 // serialise the data / NSData object into Dictionary [String : Any]
                 guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:Any] else {
                     print("getBearer - Not containing JSON")
-                    completion(NSError())
+                    completion(NSError(domain: "json", code: 0, userInfo:nil))
                     return
                 }
                 
@@ -56,6 +56,11 @@ class APIClient {
                 let error_description = response["error_description"] ?? ""
                 if (error_description.isEmpty) {
                     SFMCAccesToken = response["access_token"] ?? ""
+                    if(SFMCAccesToken.isEmpty) {
+                        print("Token message " + response.debugDescription )
+                        completion(NSError(domain: error_description, code: 0, userInfo:nil))
+                        return
+                    }
                     completion(nil)
                 } else {
                     print(error_description)
