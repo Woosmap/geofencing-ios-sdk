@@ -28,7 +28,7 @@ import RealmSwift
     }
     
     private func initRealm() {
-        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 2)
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 3)
     }
 
     public func getLocationService() -> LocationService {
@@ -76,9 +76,45 @@ import RealmSwift
     public func setDistanceWoosmapAPI(api: String) {
         distanceWoosmapAPI = api
     }
+    
+    public func setTrafficDistanceWoosmapAPI(api: String) {
+        trafficDistanceWoosmapAPI = api
+    }
+    
+    public func setDistanceProvider(provider: DistanceProvider) {
+        if(provider != DistanceProvider.woosmapDistance || provider != DistanceProvider.woosmapTraffic){
+            distanceProvider = provider
+        }else {
+            distanceProvider = DistanceProvider.woosmapDistance
+        }
+    }
 
     public func setDistanceAPIMode(mode: DistanceMode) {
-        distanceMode = mode
+        if(mode != DistanceMode.driving || mode != DistanceMode.cycling || mode != DistanceMode.truck || mode != DistanceMode.walking) {
+            distanceMode = mode
+        } else {
+            distanceMode = DistanceMode.driving
+        }
+    }
+    
+    public func setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting) {
+        if(trafficDistanceRouting != TrafficDistanceRouting.fastest || trafficDistanceRouting != TrafficDistanceRouting.balanced) {
+            trafficDistanceRouting = routing
+        }else {
+            trafficDistanceRouting = TrafficDistanceRouting.fastest
+        }
+    }
+    
+    public func setDistanceAPIUnits(units: DistanceUnits) {
+        if(units != DistanceUnits.metric || units != DistanceUnits.imperial) {
+            distanceUnits = units
+        }else {
+            distanceUnits = DistanceUnits.metric
+        }
+    }
+    
+    public func setDistanceAPILanguage(language: String) {
+        distanceLanguage = language
     }
 
     public func setCurrentPositionFilter(distance: Double, time: Int) {
@@ -272,8 +308,12 @@ import RealmSwift
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
 
+            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
             setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
-            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.modeDistance)!) ?? DistanceMode.driving)
+            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
+            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
+            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
+            setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 

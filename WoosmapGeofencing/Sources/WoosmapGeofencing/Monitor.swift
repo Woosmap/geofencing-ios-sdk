@@ -13,7 +13,7 @@ public protocol SearchAPIDelegate: AnyObject {
 }
 
 public protocol DistanceAPIDelegate: AnyObject {
-    func distanceAPIResponseData(distanceAPIData: DistanceAPIData, locationId: String)
+    func distanceAPIResponse(distance: [Distance])
     func distanceAPIError(error: String)
 }
 
@@ -431,7 +431,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         self.lastSearchLocation = self.currentLocation
 
                         if distanceAPIRequestEnable {
-                            self.distanceAPIRequest(locationOrigin: location, coordinatesDest: [(poi.latitude, poi.longitude)], locationId: locationId)
+                            self.calculateDistance(locationOrigin: location, coordinatesDest:[(poi.latitude, poi.longitude)], locationId: locationId)
                         }
                         if searchAPICreationRegionEnable {
                             let POIname = (poi.idstore ?? "")  + "<id>" + (poi.name ?? "")
@@ -480,32 +480,34 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    public func distanceAPIRequest(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "") {
+    public func calculateDistance(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "") {
 
         guard let delegateDistance = self.distanceAPIDataDelegate else {
             return
         }
 
-        guard let delegateSearch = self.searchAPIDataDelegate else {
-            return
-        }
-
         let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
         let userLongitude: String = String(format: "%f", locationOrigin.coordinate.longitude)
-        var coordinateDest = ""
+        var coordinateDestinations = ""
         for coordinate in coordinatesDest {
             let destLatitude: String = String(format: "%f", Double(coordinate.0))
             let destLongitude: String = String(format: "%f", Double(coordinate.1))
-            coordinateDest += destLatitude + "," + destLongitude
+            coordinateDestinations += destLatitude + "," + destLongitude
             if coordinatesDest.last! != coordinate {
-                coordinateDest += "|"
+                coordinateDestinations += "|"
             }
         }
 
-        let storeAPIUrl: String = String(format: distanceWoosmapAPI, userLatitude, userLongitude, coordinateDest)
+        var storeAPIUrl = ""
+        if(distanceProvider == DistanceProvider.woosmapDistance) {
+            storeAPIUrl = String(format: distanceWoosmapAPI, userLatitude, userLongitude, coordinateDestinations)
+        } else {
+            storeAPIUrl = String(format: trafficDistanceWoosmapAPI, userLatitude, userLongitude, coordinateDestinations)
+        }
+        
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-
-        // Call API search
+        
+        // Call API Distance
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let response = response as? HTTPURLResponse {
                 if response.statusCode != 200 {
@@ -516,28 +518,28 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let responseJSON = try? JSONDecoder().decode(DistanceAPIData.self, from: data!)
-                    delegateDistance.distanceAPIResponseData(distanceAPIData: responseJSON!, locationId: locationId)
-                    // update POI
-                    if responseJSON!.status == "OK" {
-                        if responseJSON?.rows?.first?.elements?.first?.status == "OK" {
-                            let distance = responseJSON?.rows?.first?.elements?.first?.distance?.value!
-                            let duration = responseJSON?.rows?.first?.elements?.first?.duration?.text!
-                            if distance != nil && duration != nil {
-                                let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distance!), duration: duration!, locationId: locationId)
-                                if poiUpdated.locationId != nil {
-                                    delegateSearch.searchAPIResponse(poi: poiUpdated)
-                                }
-                            }
+                    let distance = Distances.addFromResponseJson(APIResponse: data!, locationId: locationId, origin: locationOrigin, destination: coordinatesDest)
+                    if(locationId != "" && !distance.isEmpty) {
+                        guard let delegateSearch = self.searchAPIDataDelegate else {
+                            return
+                        }
+
+                        let distanceValue = distance.first?.distance
+                        let duration = distance.first?.durationText
+                        let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue!), duration: duration!, locationId: locationId)
+                        if poiUpdated.locationId != nil {
+                            delegateSearch.searchAPIResponse(poi: poiUpdated)
                         }
                     }
+                    
+                    delegateDistance.distanceAPIResponse(distance: distance)
                 }
             }
         }
         task.resume()
 
     }
-
+    
     public func tracingLocationDidFailWithError(error: Error) {
         print("\(error)")
     }

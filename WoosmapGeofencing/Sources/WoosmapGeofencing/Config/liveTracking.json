@@ -19,9 +19,16 @@
     "searchAPICreationRegionEnable": false,
     "searchAPITimeFilter": 0,
     "searchAPIDistanceFilter": 0,
-
     "distanceAPIEnable": false,
-    "modeDistance": "driving",
+
+    "distance": {
+        "distanceProvider": "woosmapDistance",
+        "distanceMode": "driving",
+        "distanceRouting": "fastest",
+        "distanceUnits": "metric",
+        "distanceLanguage": "fr"
+    },
+    
     "outOfTimeDelay": 300,
     "dataDurationDelay": 30
 }

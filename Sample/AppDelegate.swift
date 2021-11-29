@@ -68,10 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 
         // Set the search url Woosmap API
         WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
-
-        // Set the distance url Woosmap API
-        WoosmapGeofencing.shared.setDistanceWoosmapAPI(api: distanceWoosmapAPI)
-        WoosmapGeofencing.shared.setDistanceAPIMode(mode: DistanceMode.driving)
         
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation

@@ -31,8 +31,8 @@
 		A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A32229242911F900C98018 /* TokenIdViewController.swift */; };
 		A2AC8537240E743800C65900 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC8536240E743800C65900 /* NotificationService.swift */; };
 		A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2AC8534240E743800C65900 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A2B5187E2554655C003B7C19 /* DataDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B5187D2554655C003B7C19 /* DataDistance.swift */; };
 		A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E324192536006C4F19 /* DataVisit.swift */; };
+		A2DFFA22272859C300ED2B48 /* DataDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DFFA21272859C300ED2B48 /* DataDistance.swift */; };
 		A2F095A223EAD36B007A5419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F095A023EAD36B007A5419 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -134,8 +134,8 @@
 		A2AC8534240E743800C65900 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AC8536240E743800C65900 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A2AC8538240E743800C65900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2B5187D2554655C003B7C19 /* DataDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDistance.swift; sourceTree = "<group>"; };
 		A2B6E7E324192536006C4F19 /* DataVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVisit.swift; sourceTree = "<group>"; };
+		A2DFFA21272859C300ED2B48 /* DataDistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDistance.swift; sourceTree = "<group>"; };
 		A2F095A123EAD36B007A5419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,7 +239,7 @@
 				A238041B23EC6A95002F53F2 /* DataPOI.swift */,
 				A2B6E7E324192536006C4F19 /* DataVisit.swift */,
 				A224546F247D578600A0B8B0 /* DataZOI.swift */,
-				A2B5187D2554655C003B7C19 /* DataDistance.swift */,
+				A2DFFA21272859C300ED2B48 /* DataDistance.swift */,
 				A239055F25791D87001B3754 /* DataRegion.swift */,
 				A21DC0C3248FF50000E45471 /* MockDataVisit.swift */,
 				A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */,
@@ -446,8 +446,8 @@
 				A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */,
 				A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */,
 				A20DDE7023EAD6D300124E56 /* LocationTableViewContoller.swift in Sources */,
-				A2B5187E2554655C003B7C19 /* DataDistance.swift in Sources */,
 				A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */,
+				A2DFFA22272859C300ED2B48 /* DataDistance.swift in Sources */,
 				A239056025791D87001B3754 /* DataRegion.swift in Sources */,
 				A273027E23EB0BB00042FC5A /* Extension.swift in Sources */,
 				A29D6F9D25EFF88600F95790 /* AirshipEvents.swift in Sources */,
