@@ -20,17 +20,13 @@
 		A21DC0C4248FF50000E45471 /* MockDataVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21DC0C3248FF50000E45471 /* MockDataVisit.swift */; };
 		A2245470247D578600A0B8B0 /* DataZOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224546F247D578600A0B8B0 /* DataZOI.swift */; };
 		A235A0B2242A570300B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
-		A235A0B3242A570C00B51E1F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A235A0B1242A570300B51E1F /* Settings.swift */; };
 		A238041C23EC6A95002F53F2 /* DataPOI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A238041B23EC6A95002F53F2 /* DataPOI.swift */; };
 		A239056025791D87001B3754 /* DataRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A239055F25791D87001B3754 /* DataRegion.swift */; };
 		A25B062526E76E6100906A6B /* MarketingCloudEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25B062426E76E6100906A6B /* MarketingCloudEvents.swift */; };
-		A2710F0B25B5CF2F00AF62F5 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AC8526240E6C9B00C65900 /* WoosmapGeofencing.framework */; };
 		A273027E23EB0BB00042FC5A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A273027D23EB0BB00042FC5A /* Extension.swift */; };
 		A27D4422250A28770043B676 /* Locations.csv in Resources */ = {isa = PBXBuildFile; fileRef = A27D4421250A28770043B676 /* Locations.csv */; };
 		A29D6F9D25EFF88600F95790 /* AirshipEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */; };
 		A2A3222A242911F900C98018 /* TokenIdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A32229242911F900C98018 /* TokenIdViewController.swift */; };
-		A2AC8537240E743800C65900 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AC8536240E743800C65900 /* NotificationService.swift */; };
-		A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A2AC8534240E743800C65900 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A2B6E7E424192536006C4F19 /* DataVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7E324192536006C4F19 /* DataVisit.swift */; };
 		A2DFFA22272859C300ED2B48 /* DataDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DFFA21272859C300ED2B48 /* DataDistance.swift */; };
 		A2F095A223EAD36B007A5419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F095A023EAD36B007A5419 /* Main.storyboard */; };
@@ -58,26 +54,12 @@
 			remoteGlobalIDString = A216FBA823E9CEA70003AAC8;
 			remoteInfo = WoosmapGeofencing;
 		};
-		A277BD61242A27AB0098F01A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A216FBA823E9CEA70003AAC8;
-			remoteInfo = WoosmapGeofencing;
-		};
 		A2AC8525240E6C9B00C65900 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencing.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = A216FBA923E9CEA70003AAC8;
 			remoteInfo = WoosmapGeofencing;
-		};
-		A2AC8539240E743800C65900 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A216FB8023E9CE720003AAC8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A2AC8533240E743800C65900;
-			remoteInfo = NotificationService;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -99,7 +81,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A2AC853B240E743800C65900 /* NotificationService.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,7 +112,6 @@
 		A29D6F9C25EFF88600F95790 /* AirshipEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirshipEvents.swift; sourceTree = "<group>"; };
 		A2A32229242911F900C98018 /* TokenIdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenIdViewController.swift; sourceTree = "<group>"; };
 		A2AC852F240E73FB00C65900 /* SampleGeofencing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleGeofencing.entitlements; sourceTree = "<group>"; };
-		A2AC8534240E743800C65900 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AC8536240E743800C65900 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A2AC8538240E743800C65900 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2B6E7E324192536006C4F19 /* DataVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVisit.swift; sourceTree = "<group>"; };
@@ -152,14 +132,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A2AC8531240E743800C65900 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A2710F0B25B5CF2F00AF62F5 /* WoosmapGeofencing.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +172,6 @@
 			isa = PBXGroup;
 			children = (
 				A216FB8823E9CE720003AAC8 /* SampleGeofencing.app */,
-				A2AC8534240E743800C65900 /* NotificationService.appex */,
 				A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */,
 			);
 			name = Products;
@@ -292,7 +263,6 @@
 			);
 			dependencies = (
 				A277BD60242A27420098F01A /* PBXTargetDependency */,
-				A2AC853A240E743800C65900 /* PBXTargetDependency */,
 			);
 			name = Sample;
 			packageProductDependencies = (
@@ -319,24 +289,6 @@
 			productReference = A2777910250FA3B900068AEA /* SampleGeofencingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A2AC8533240E743800C65900 /* NotificationService */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A2AC853C240E743800C65900 /* Build configuration list for PBXNativeTarget "NotificationService" */;
-			buildPhases = (
-				A2AC8530240E743800C65900 /* Sources */,
-				A2AC8531240E743800C65900 /* Frameworks */,
-				A2AC8532240E743800C65900 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A277BD62242A27AB0098F01A /* PBXTargetDependency */,
-			);
-			name = NotificationService;
-			productName = NotificationService;
-			productReference = A2AC8534240E743800C65900 /* NotificationService.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -354,9 +306,6 @@
 						CreatedOnToolsVersion = 11.7;
 						LastSwiftMigration = 1170;
 						TestTargetID = A216FB8723E9CE720003AAC8;
-					};
-					A2AC8533240E743800C65900 = {
-						CreatedOnToolsVersion = 11.3.1;
 					};
 				};
 			};
@@ -382,7 +331,6 @@
 			projectRoot = "";
 			targets = (
 				A216FB8723E9CE720003AAC8 /* Sample */,
-				A2AC8533240E743800C65900 /* NotificationService */,
 				A277790F250FA3B900068AEA /* SampleGeofencingTests */,
 			);
 		};
@@ -426,13 +374,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A2AC8532240E743800C65900 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -465,15 +406,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A2AC8530240E743800C65900 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A235A0B3242A570C00B51E1F /* Settings.swift in Sources */,
-				A2AC8537240E743800C65900 /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -486,16 +418,6 @@
 			isa = PBXTargetDependency;
 			name = WoosmapGeofencing;
 			targetProxy = A277BD5F242A27420098F01A /* PBXContainerItemProxy */;
-		};
-		A277BD62242A27AB0098F01A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = WoosmapGeofencing;
-			targetProxy = A277BD61242A27AB0098F01A /* PBXContainerItemProxy */;
-		};
-		A2AC853A240E743800C65900 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A2AC8533240E743800C65900 /* NotificationService */;
-			targetProxy = A2AC8539240E743800C65900 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -642,7 +564,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sample/SampleGeofencing.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				ENABLE_PREVIEWS = YES;
@@ -667,7 +589,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sample/SampleGeofencing.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Sample/Preview Content\"";
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				ENABLE_PREVIEWS = YES;
@@ -732,52 +654,6 @@
 			};
 			name = Release;
 		};
-		A2AC853D240E743800C65900 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = 38H4FA3J9J;
-				INFOPLIST_FILE = NotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 3.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies.NotificationService;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		A2AC853E240E743800C65900 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = 38H4FA3J9J;
-				INFOPLIST_FILE = NotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 3.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.webgeoservices.woozies.NotificationService;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -804,15 +680,6 @@
 			buildConfigurations = (
 				A2777918250FA3B900068AEA /* Debug */,
 				A2777919250FA3B900068AEA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A2AC853C240E743800C65900 /* Build configuration list for PBXNativeTarget "NotificationService" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A2AC853D240E743800C65900 /* Debug */,
-				A2AC853E240E743800C65900 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

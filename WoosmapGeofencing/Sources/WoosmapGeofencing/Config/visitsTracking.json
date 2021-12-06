@@ -26,7 +26,9 @@
         "distanceMode": "driving",
         "distanceRouting": "fastest",
         "distanceUnits": "metric",
-        "distanceLanguage": "fr"
+        "distanceLanguage": "fr",
+        "distanceMaxAirDistanceFilter": 1000000,
+        "distanceTimeFilter": 0
     },
     
     "outOfTimeDelay": 300,

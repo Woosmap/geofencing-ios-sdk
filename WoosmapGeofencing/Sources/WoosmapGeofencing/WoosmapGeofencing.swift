@@ -116,6 +116,14 @@ import RealmSwift
     public func setDistanceAPILanguage(language: String) {
         distanceLanguage = language
     }
+    
+    public func setDistanceMaxAirDistanceFilter(distance: Int) {
+        distanceMaxAirDistanceFilter = distance
+    }
+    
+    public func setDistanceTimeFilter(time: Int) {
+        distanceTimeFilter = time
+    }
 
     public func setCurrentPositionFilter(distance: Double, time: Int) {
         currentLocationDistanceFilter = distance
@@ -314,6 +322,8 @@ import RealmSwift
             setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
             setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
             setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
+            setDistanceMaxAirDistanceFilter(distance: configJSON?.distance?.distanceMaxAirDistanceFilter ?? 1000000)
+            setDistanceTimeFilter(time: configJSON?.distance?.distanceTimeFilter ?? 0)
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 

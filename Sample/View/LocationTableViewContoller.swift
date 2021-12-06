@@ -36,6 +36,7 @@ class PlaceData: PropertyPlace {
     public var didEnterRegion: Bool = false
     public var fromPositionDetection: Bool = false
     public var identifier: String?
+    public var isCircle: Bool = true
 
     public init() {
         self.date = Date()
@@ -190,6 +191,11 @@ class LocationTableViewContoller: UITableViewController {
             placeData.didEnterRegion = region.didEnter
             placeData.fromPositionDetection = region.fromPositionDetection
             placeData.type = dataType.region
+            if(region.type == "isochrone") {
+                placeData.isCircle = false
+                placeData.distance = Double(region.distance)
+                placeData.movingDuration = region.durationText
+            }
             placeToShow.append(placeData)
         }
 
@@ -242,6 +248,7 @@ class LocationTableViewContoller: UITableViewController {
         DataVisit().eraseVisits()
         DataZOI().eraseZOIs()
         DataRegion().eraseRegions()
+        RegionIsochrones.deleteAll()
         placeToShow.removeAll()
         tableView.reloadData()
     }
@@ -375,8 +382,14 @@ class LocationTableViewContoller: UITableViewController {
             let symbolEnterExit = placeData.didEnterRegion ? "\u{2B07}" : "\u{2B06}"
             cell.location.text = symbolEnterExit +  String(format: "%f", latitude) + "," + String(format: "%f", longitude)
             cell.time.text = placeData.date!.stringFromDate()
-            cell.info.numberOfLines = 3
-            cell.info.text =  placeData.identifier! +  "\n From Position Detection =  " + String(placeData.fromPositionDetection)
+            
+            if(placeData.isCircle) {
+                cell.info.numberOfLines = 3
+                cell.info.text =  placeData.identifier! +  "\n From Position Detection =  " + String(placeData.fromPositionDetection)
+            }else {
+                cell.info.numberOfLines = 4
+                cell.info.text = "Isochrone: " + placeData.identifier! +  "\nDistance = " + String(format: "%f", placeData.distance) + "\nDuration = " + placeData.movingDuration
+            }
             return cell
         }
 

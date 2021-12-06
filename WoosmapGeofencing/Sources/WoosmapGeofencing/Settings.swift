@@ -57,6 +57,10 @@ public var distanceLanguage = "en"
 
 public var trafficDistanceWoosmapAPI = "https://api.woosmap.com/traffic/distancematrix/json?mode=\(distanceMode)&units=\(distanceUnits)&routing=\(trafficDistanceRouting)&language=\(distanceLanguage)&departure_time=now&origins=%@,%@&destinations=%@&private_key=\(WoosmapAPIKey)"
 
+//Distance filters
+public var distanceMaxAirDistanceFilter = 1000000
+public var distanceTimeFilter = 0
+
 // Location filters
 public var currentLocationDistanceFilter = 0.0
 public var currentLocationTimeFilter = 0
