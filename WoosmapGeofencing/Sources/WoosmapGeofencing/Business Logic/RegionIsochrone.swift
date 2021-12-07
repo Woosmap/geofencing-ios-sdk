@@ -57,6 +57,7 @@ public class RegionIsochrones {
                 regionToUpdate!.duration = distanceInfo.duration
                 regionToUpdate!.durationText = distanceInfo.durationText!
                 regionToUpdate!.didEnter = didEnter
+                regionToUpdate!.date = Date()
                 realm.add(regionToUpdate!)
                 try realm.commitWrite()
                 return regionToUpdate!
