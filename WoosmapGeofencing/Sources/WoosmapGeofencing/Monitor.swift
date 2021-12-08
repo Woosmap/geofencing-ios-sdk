@@ -506,7 +506,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    public func calculateDistance(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "", regionIsochroneToUpdate: Bool = false) {
+    public func calculateDistance(locationOrigin: CLLocation,
+                                  coordinatesDest: [(Double, Double)],
+                                  distanceProvider : DistanceProvider = distanceProvider,
+                                  distanceMode: DistanceMode = distanceMode,
+                                  distanceUnits: DistanceUnits = distanceUnits,
+                                  distanceLanguage: String = distanceLanguage,
+                                  trafficDistanceRouting: TrafficDistanceRouting = trafficDistanceRouting,
+                                  locationId: String = "",
+                                  regionIsochroneToUpdate: Bool = false) {
 
         guard let delegateDistance = self.distanceAPIDataDelegate else {
             return
@@ -544,7 +552,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let distance = Distances.addFromResponseJson(APIResponse: data!, locationId: locationId, origin: locationOrigin, destination: coordinatesDest)
+                    let distance = Distances.addFromResponseJson(APIResponse: data!,
+                                                                 locationId: locationId,
+                                                                 origin: locationOrigin,
+                                                                 destination: coordinatesDest,
+                                                                 distanceProvider: distanceProvider,
+                                                                 distanceMode: distanceMode,
+                                                                 distanceUnits: distanceUnits,
+                                                                 distanceLanguage: distanceLanguage,
+                                                                 trafficDistanceRouting: trafficDistanceRouting)
+                                                                
                     if(locationId != "" && !distance.isEmpty) {
                         guard let delegateSearch = self.searchAPIDataDelegate else {
                             return

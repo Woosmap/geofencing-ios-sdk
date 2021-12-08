@@ -40,7 +40,15 @@ public class Distance: Object {
 }
 
 public class Distances {
-    public class func addFromResponseJson(APIResponse: Data, locationId: String, origin: CLLocation, destination: [(Double, Double)]) -> [Distance] {
+    public class func addFromResponseJson(APIResponse: Data,
+                                          locationId: String,
+                                          origin: CLLocation,
+                                          destination: [(Double, Double)],
+                                          distanceProvider : DistanceProvider = distanceProvider,
+                                          distanceMode: DistanceMode = distanceMode,
+                                          distanceUnits: DistanceUnits = distanceUnits,
+                                          distanceLanguage: String = distanceLanguage,
+                                          trafficDistanceRouting: TrafficDistanceRouting = trafficDistanceRouting) -> [Distance] {
         do {
             var distanceArray: [Distance] = []
             let jsonStructure = try JSONDecoder().decode(DistanceAPIData.self, from: APIResponse)
