@@ -18,6 +18,7 @@ enum AnnotationType {
     case visit
     case POI
     case location
+    case isochrone
 }
 
 class CustomPolygon: MKPolygon {
@@ -129,6 +130,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     mapView.addAnnotation(annotationForLocation(location))
                 }
             }
+            
+            for regionIso in RegionIsochrones.getAll() {
+                mapView.addAnnotation(annotationForRegionIso(regionIso: regionIso))
+            }
 
             if stateSwitchRegions {
                 overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions ?? [])
@@ -214,12 +219,35 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let point = gesture.location(in: self.mapView)
             let coordinate = self.mapView.convert(point, toCoordinateFrom: nil)
             let region_identifer = UUID().uuidString
-            let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: 100)
-            if !regionIsCreated {
-                let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+            
+            let alert = UIAlertController(title: "Create Region", message: "Enter a radius", preferredStyle: .alert)
+            alert.addTextField { (textField) in
+                textField.text = "300"
             }
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                let textField = alert?.textFields![0]
+                
+                if((textField!.text!.isEmpty)){
+                    return
+                }
+    
+                if(textField!.text!.contains("s")) {
+                    let radius = textField!.text!.dropLast()
+                    WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Double(radius)!, type: "isochrone")
+                    self.initMap()
+                } else {
+                    let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Double(textField!.text!)!)
+                    if !regionIsCreated {
+                        let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }))
+
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+            
         }
     }
 
@@ -269,6 +297,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 } else if annotationWGS.type == AnnotationType.location {
                     annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "LocationAnnotation")
                     let pinImage = UIImage(named: "ic_place_48pt")
+                    let size = CGSize(width: 30, height: 30)
+                    UIGraphicsBeginImageContext(size)
+                    pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    annotationView!.image = resizedImage
+                } else if annotationWGS.type == AnnotationType.isochrone {
+                    annotationView = MKAnnotationView(annotation: annotationWGS, reuseIdentifier: "IsochroneAnnotation")
+                    let pinImage = UIImage(named: "ic_iso")
                     let size = CGSize(width: 30, height: 30)
                     UIGraphicsBeginImageContext(size)
                     pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -416,6 +452,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             let annotation = annotationForPOI(POI)
             mapView.addAnnotation(annotation)
         }
+    }
+    
+    func annotationForRegionIso(regionIso: RegionIsochrone) -> MKAnnotation {
+        let annotation = MyPointAnnotation()
+        annotation.type = AnnotationType.isochrone
+        annotation.title = (regionIso.didEnter ? "\u{2B07}" : "\u{2B06}") + " " + regionIso.identifier!.components(separatedBy: "-")[0]
+        annotation.subtitle = "radius = " + String(regionIso.radius) + "s" + " duration = " + regionIso.durationText
+        annotation.coordinate = CLLocationCoordinate2D(latitude: regionIso.latitude, longitude: regionIso.longitude)
+        return annotation
     }
 
     func annotationForVisit(_ visit: Visit) -> MKAnnotation {

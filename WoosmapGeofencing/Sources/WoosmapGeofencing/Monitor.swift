@@ -242,8 +242,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         } else {
             return (false, "")
         }
-        
     }
+    
     public func removeRegion(identifier: String) {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return }
         for region in monitoredRegions {
@@ -252,6 +252,30 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 self.handleRegionChange()
             }
         }
+    }
+    
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance, type: String){
+        if(type == "isochrone"){
+            addRegionIsochrone(identifier: identifier, center: center, radius: Int(radius))
+        }
+    }
+    
+    public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int)  {
+        let regionIso = RegionIsochrone()
+        regionIso.identifier = identifier
+        regionIso.date = Date()
+        regionIso.latitude = center.latitude
+        regionIso.longitude = center.longitude
+        regionIso.radius = radius
+        regionIso.type = "isochrone"
+        RegionIsochrones.add(regionIsochrone: regionIso)
+        if self.currentLocation != nil {
+            calculateDistanceWithRegion(location: self.currentLocation!)
+        }
+    }
+    
+    public func removeRegionIsochrone(identifier: String) {
+        RegionIsochrones.removeRegionIsochrone(id: identifier)
     }
 
     public func removeRegion(center: CLLocationCoordinate2D) {
@@ -354,6 +378,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         
         checkIfPositionIsInsideGeofencingRegions(location: location)
+        
+        detectRegionIsochrone(location: location, locationId: locationSaved.locationId!)
 
     }
 
@@ -480,7 +506,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    public func calculateDistance(locationOrigin: CLLocation, coordinatesDest: [(Double, Double)], locationId: String = "") {
+    public func calculateDistance(locationOrigin: CLLocation,
+                                  coordinatesDest: [(Double, Double)],
+                                  distanceProvider : DistanceProvider = distanceProvider,
+                                  distanceMode: DistanceMode = distanceMode,
+                                  distanceUnits: DistanceUnits = distanceUnits,
+                                  distanceLanguage: String = distanceLanguage,
+                                  trafficDistanceRouting: TrafficDistanceRouting = trafficDistanceRouting,
+                                  locationId: String = "",
+                                  regionIsochroneToUpdate: Bool = false) {
 
         guard let delegateDistance = self.distanceAPIDataDelegate else {
             return
@@ -500,15 +534,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
         var storeAPIUrl = ""
         if(distanceProvider == DistanceProvider.woosmapDistance) {
-            storeAPIUrl = String(format: distanceWoosmapAPI, userLatitude, userLongitude, coordinateDestinations)
+            storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, userLatitude, userLongitude, coordinateDestinations)
         } else {
-            storeAPIUrl = String(format: trafficDistanceWoosmapAPI, userLatitude, userLongitude, coordinateDestinations)
+            storeAPIUrl = String(format: trafficDistanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue,trafficDistanceRouting.rawValue,distanceLanguage, userLatitude, userLongitude, coordinateDestinations)
         }
         
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         
         // Call API Distance
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
             if let response = response as? HTTPURLResponse {
                 if response.statusCode != 200 {
                     NSLog("statusCode: \(response.statusCode)")
@@ -518,7 +552,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let distance = Distances.addFromResponseJson(APIResponse: data!, locationId: locationId, origin: locationOrigin, destination: coordinatesDest)
+                    let distance = Distances.addFromResponseJson(APIResponse: data!,
+                                                                 locationId: locationId,
+                                                                 origin: locationOrigin,
+                                                                 destination: coordinatesDest,
+                                                                 distanceProvider: distanceProvider,
+                                                                 distanceMode: distanceMode,
+                                                                 distanceUnits: distanceUnits,
+                                                                 distanceLanguage: distanceLanguage,
+                                                                 trafficDistanceRouting: trafficDistanceRouting)
+                                                                
                     if(locationId != "" && !distance.isEmpty) {
                         guard let delegateSearch = self.searchAPIDataDelegate else {
                             return
@@ -532,12 +575,53 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         }
                     }
                     
+                    if (regionIsochroneToUpdate) {
+                        self.updateRegionWithDistance(distanceAr: distance)
+                    }
+                    
                     delegateDistance.distanceAPIResponse(distance: distance)
                 }
             }
         }
         task.resume()
 
+    }
+    
+    public func updateRegionWithDistance(distanceAr: [Distance]) {
+        for regionIso in RegionIsochrones.getAll() {
+            for distance in distanceAr {
+                if(distance.destinationLatitude == regionIso.latitude && distance.destinationLongitude == regionIso.longitude) {
+                    var didEnter = regionIso.didEnter
+                    let lastStatedidEnter = regionIso.didEnter
+                    if(distance.duration <= regionIso.radius) {
+                        if(regionIso.didEnter == false) {
+                            didEnter = true
+                            
+                        }
+                    } else {
+                        if(regionIso.didEnter == true) {
+                            didEnter = false
+                        }
+                    }
+                    let regionUpdated = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: didEnter, distanceInfo: distance)
+                    if(regionUpdated.didEnter != lastStatedidEnter) {
+                        didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                    }
+                }
+            }
+        }
+    }
+    
+    public func didEventRegionIsochrone(regionIsochrone: RegionIsochrone) {
+        let newRegionLog = Regions.add(regionIso: regionIsochrone)
+        sendASRegionEvents(region: newRegionLog)
+        if newRegionLog.identifier != nil {
+            if (newRegionLog.didEnter) {
+                self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
+            } else {
+                self.regionDelegate?.didExitPOIRegion(POIregion: newRegionLog)
+            }
+        }
     }
     
     public func tracingLocationDidFailWithError(error: Error) {
@@ -616,6 +700,40 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
     
+    func detectRegionIsochrone(location: CLLocation, locationId: String = "") {
+        let regionsIsochrones = RegionIsochrones.getAll()
+        var regionsBeUpdated = false
+        for regionIso in regionsIsochrones {
+            let distance = location.distance(from: CLLocation(latitude: regionIso.latitude, longitude: regionIso.longitude))
+            if (distance < Double(distanceMaxAirDistanceFilter)) {
+                let spendtime = -regionIso.date!.timeIntervalSinceNow
+                let timeLimit = (regionIso.duration - regionIso.radius)/2
+                if (spendtime > Double(timeLimit)) {
+                    if(spendtime > Double(distanceTimeFilter)) {
+                        regionsBeUpdated = true
+                    }
+                }
+            }
+            if(regionsBeUpdated) {
+                break
+            }
+        }
+        
+        if(regionsBeUpdated) {
+            calculateDistanceWithRegion(location: location, locationId: locationId)
+        }
+        
+    }
+    
+    func calculateDistanceWithRegion(location: CLLocation, locationId: String = "") {
+        var dest:[(Double, Double)] = [(Double, Double)]()
+        for regionIso in  RegionIsochrones.getAll() {
+            dest.append((regionIso.latitude, regionIso.longitude))
+        }
+        calculateDistance(locationOrigin: location, coordinatesDest: dest, locationId: locationId, regionIsochroneToUpdate: true)
+    }
+        
+       
     
     func detectVisitInZOIClassified(visit: CLVisit) {
         let visitLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)

@@ -48,4 +48,6 @@ public struct ConfigModel: Codable {
 public struct DistanceConfig: Codable {
     let distanceProvider, distanceMode, distanceRouting, distanceUnits: String?
     let distanceLanguage: String?
+    let distanceMaxAirDistanceFilter: Int?
+    let distanceTimeFilter: Int?
 }

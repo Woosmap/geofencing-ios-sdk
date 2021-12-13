@@ -54,7 +54,13 @@ public class DataRegion: RegionsServiceDelegate {
         }
         content.body = "Region = " + POIregion.identifier!
         content.body += "Lat = " + String(format: "%f", POIregion.latitude) + " Lng = " + String(format: "%f", POIregion.longitude)
-        content.body += "\n FromPositionDetection = " + String(POIregion.fromPositionDetection)
+        if(POIregion.type == "circle") {
+            content.body += "\n FromPositionDetection = " + String(POIregion.fromPositionDetection)
+        } else {
+            content.body += "\n Radius = " + String(POIregion.radius)
+            content.body += "\n Duration = " + POIregion.durationText
+            content.body += "\n Distance = " + POIregion.distanceText
+        }
         // Create the request
         let uuidString = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuidString,
