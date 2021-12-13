@@ -96,7 +96,7 @@ public class POIs {
                                 if let userProperties = properties["user_properties"] as? [String: Any] {
                                     for (key, value) in userProperties {
                                         if(key == radius) {
-                                            if let radius = value as? Int64 {
+                                           if let radius = value as? Int64 {
                                                 poi.radius = Double(radius)
                                             } else if let radius = value as? String {
                                                 poi.radius = Double(radius) ?? 300
