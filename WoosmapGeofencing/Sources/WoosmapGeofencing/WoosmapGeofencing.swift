@@ -164,6 +164,10 @@ import RealmSwift
         searchAPIDistanceFilter = distance
         searchAPITimeFilter = time
     }
+    
+    public func setsearchAPIRefreshDelayDay(day: Int) {
+        searchAPIRefreshDelayDay = day
+    }
 
     public func setVisitEnable(enable: Bool) {
         visitEnable = enable
@@ -315,6 +319,7 @@ import RealmSwift
             setSearchAPIRequestEnable(enable: configJSON?.searchAPIEnable ?? false)
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
+            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPIRefreshDelayDay ?? 1))
 
             setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
             setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
