@@ -72,6 +72,7 @@ public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
 public var searchAPIRefreshDelayDay = 1
 public var searchAPICreationRegionEnable = true
+public var searchAPILastRequestTimeStamp = 0.0
 
 // Distance API filters
 public var distanceAPIRequestEnable = true
@@ -111,5 +112,5 @@ public var userPropertiesFilter : [String] = []
 public var SFMCCredentials : [String: String] = [:]
 public var SFMCAccesToken = ""
 
-public var poiRadius:Any = "near_radius"
+public var poiRadius:Any = ""
 

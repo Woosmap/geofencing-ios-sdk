@@ -395,6 +395,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let lastPOI = POIs.getAll().last
 
         if lastPOI != nil && !locationId.isEmpty && lastSearchLocation != nil {
+            if(searchAPILastRequestTimeStamp > lastPOI!.date!.timeIntervalSince1970) {
+                if ((searchAPILastRequestTimeStamp - lastPOI!.date!.timeIntervalSince1970) < Double(searchAPIRefreshDelayDay*3600*24)) {
+                    return
+                }
+            }
+            
             let timeEllapsed = abs(currentLocation!.timestamp.seconds(from: lastPOI!.date!))
         
             if (timeEllapsed < searchAPIRefreshDelayDay*3600*24) {
@@ -410,7 +416,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 }
 
                 if timeEllapsed < searchAPITimeFilter {
-                    return
+                   return
                 }
             }
                                                              
@@ -454,13 +460,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     let pois = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
 
                     if(pois.isEmpty) {
+                        searchAPILastRequestTimeStamp = Date().timeIntervalSince1970
                         return
                     }
                     
                     for poi in pois {
                         self.sendASPOIEvents(poi: poi)
                         delegate.searchAPIResponse(poi: poi)
-
 
                         if distanceAPIRequestEnable {
                             self.calculateDistance(locationOrigin: location, coordinatesDest:[(poi.latitude, poi.longitude)], locationId: locationId)
@@ -500,7 +506,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for region in monitoredRegions {
             var exist = false
             for poi in newPOIS {
-                let identifier = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
+                let identifier = "<id>" + (poi.idstore ?? "") + "<id>" + (poi.name ?? "")
                 if (region.identifier.contains(identifier)) {
                     exist = true
                 }

@@ -145,10 +145,18 @@ import RealmSwift
             searchAPICreationRegionEnable = enable
         }
     }
-
     public func getSearchAPICreationRegionEnable() -> Bool {
         return searchAPICreationRegionEnable
     }
+    
+    public func setSearchAPILastRequestTimeStamp(time: Double) {
+        searchAPILastRequestTimeStamp = time
+    }
+    
+    public func getSearchAPILastRequestTimeStamp() -> Double {
+        return searchAPILastRequestTimeStamp
+    }
+    
 
     public func setDistanceAPIRequestEnable(enable: Bool) {
         if enable != getDistanceAPIRequestEnable() {
