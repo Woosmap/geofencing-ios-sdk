@@ -254,10 +254,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance, type: String){
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
         if(type == "isochrone"){
-            addRegionIsochrone(identifier: identifier, center: center, radius: Int(radius))
+            addRegionIsochrone(identifier: identifier, center: center, radius: radius)
+            return (true, identifier)
+        } else if(type == "circle"){
+            let (regionIsCreated, identifier) = addRegion(identifier: identifier, center: center, radius: Double(radius))
+            return (regionIsCreated, identifier)
         }
+        return (false, "")
     }
     
     public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int)  {

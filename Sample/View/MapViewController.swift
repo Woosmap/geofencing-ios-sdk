@@ -230,13 +230,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 if((textField!.text!.isEmpty)){
                     return
                 }
+                let radius = textField!.text!.dropLast()
     
                 if(textField!.text!.contains("s")) {
-                    let radius = textField!.text!.dropLast()
-                    WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Double(radius)!, type: "isochrone")
+                    let (_, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "isochrone")
                     self.initMap()
                 } else {
-                    let (regionIsCreated, identifier) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Double(textField!.text!)!)
+                    let (regionIsCreated, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "circle")
                     if !regionIsCreated {
                         let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))

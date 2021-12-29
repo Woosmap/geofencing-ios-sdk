@@ -18,7 +18,7 @@ public var trackingEnable = true
 
 // Woosmap SearchAPI Key
 public var WoosmapAPIKey = ""
-public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_key=\(WoosmapAPIKey)&lat=%@&lng=%@&stores_by_page=1"
+public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_key=\(WoosmapAPIKey)&lat=%@&lng=%@&stores_by_page=5"
 
 // Woosmap Distance provider
 public enum DistanceProvider: String {
