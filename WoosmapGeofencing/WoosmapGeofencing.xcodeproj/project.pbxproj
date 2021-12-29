@@ -11,7 +11,6 @@
 		A21E173326B99E5C00D2440C /* liveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173226B99E5C00D2440C /* liveTracking.json */; };
 		A21E173626BD751000D2440C /* passiveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173426BD751000D2440C /* passiveTracking.json */; };
 		A21E173726BD751000D2440C /* visitsTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173526BD751000D2440C /* visitsTracking.json */; };
-		A2245475247D591800A0B8B0 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2245474247D591800A0B8B0 /* Surge */; };
 		A24796FF2726DF700081AADC /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24796FE2726DF700081AADC /* Distance.swift */; };
 		A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */; };
 		A262B9C924E29ADF00EB621F /* ZoiQualifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C624E29ADF00EB621F /* ZoiQualifierTests.swift */; };
@@ -31,6 +30,7 @@
 		A2710EF325B5CA7C00AF62F5 /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF225B5CA7C00AF62F5 /* Visit.swift */; };
 		A2710EF725B5CADE00AF62F5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF625B5CADE00AF62F5 /* Location.swift */; };
 		A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EFA25B5CB3500AF62F5 /* Region.swift */; };
+		A2920CDF27690C820024FB06 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2920CDE27690C820024FB06 /* Surge */; };
 		A2AEE8092756273200FC1B0E /* RegionIsochrone.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AEE8082756273200FC1B0E /* RegionIsochrone.swift */; };
 		A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
@@ -88,9 +88,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2920CDF27690C820024FB06 /* Surge in Frameworks */,
 				A2710EE225B5C87700AF62F5 /* RealmSwift in Frameworks */,
 				A2710EE025B5C87700AF62F5 /* Realm in Frameworks */,
-				A2245475247D591800A0B8B0 /* Surge in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,9 +212,9 @@
 			);
 			name = WoosmapGeofencing;
 			packageProductDependencies = (
-				A2245474247D591800A0B8B0 /* Surge */,
 				A2710EDF25B5C87700AF62F5 /* Realm */,
 				A2710EE125B5C87700AF62F5 /* RealmSwift */,
+				A2920CDE27690C820024FB06 /* Surge */,
 			);
 			productName = GeoSearchSDK;
 			productReference = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */;
@@ -268,8 +268,8 @@
 			);
 			mainGroup = A216FB9F23E9CEA70003AAC8;
 			packageReferences = (
-				A2245473247D591800A0B8B0 /* XCRemoteSwiftPackageReference "Surge" */,
 				A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				A2920CDD27690C820024FB06 /* XCRemoteSwiftPackageReference "Surge" */,
 			);
 			productRefGroup = A216FBAA23E9CEA70003AAC8 /* Products */;
 			projectDirPath = "";
@@ -477,7 +477,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -505,7 +505,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 38H4FA3J9J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -603,30 +603,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A2245473247D591800A0B8B0 /* XCRemoteSwiftPackageReference "Surge" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Jounce/Surge.git";
-			requirement = {
-				kind = exactVersion;
-				version = 2.3.0;
-			};
-		};
 		A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.8.1;
+				minimumVersion = 10.20.0;
+			};
+		};
+		A2920CDD27690C820024FB06 /* XCRemoteSwiftPackageReference "Surge" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Jounce/Surge.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A2245474247D591800A0B8B0 /* Surge */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A2245473247D591800A0B8B0 /* XCRemoteSwiftPackageReference "Surge" */;
-			productName = Surge;
-		};
 		A2710EDF25B5C87700AF62F5 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
@@ -636,6 +631,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
+		};
+		A2920CDE27690C820024FB06 /* Surge */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A2920CDD27690C820024FB06 /* XCRemoteSwiftPackageReference "Surge" */;
+			productName = Surge;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

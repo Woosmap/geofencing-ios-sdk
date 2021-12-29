@@ -254,10 +254,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance, type: String){
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
         if(type == "isochrone"){
-            addRegionIsochrone(identifier: identifier, center: center, radius: Int(radius))
+            addRegionIsochrone(identifier: identifier, center: center, radius: radius)
+            return (true, identifier)
+        } else if(type == "circle"){
+            let (regionIsCreated, identifier) = addRegion(identifier: identifier, center: center, radius: Double(radius))
+            return (regionIsCreated, identifier)
         }
+        return (false, "")
     }
     
     public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int)  {
@@ -387,27 +392,39 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         guard let delegate = self.searchAPIDataDelegate else {
             return
         }
-
-        if self.lastSearchLocation != nil && !locationId.isEmpty {
-            let theLastSearchLocation = self.lastSearchLocation!
-
-            let timeEllapsed = abs(currentLocation!.timestamp.seconds(from: theLastSearchLocation.timestamp))
-
-            if lastSearchLocation!.distance(from: currentLocation!) < searchAPIDistanceFilter {
-                return
-            }
-
-            if timeEllapsed < searchAPITimeFilter {
-                return
-            }
-
-            if timeEllapsed < 2 && lastSearchLocation!.horizontalAccuracy >= lastSearchLocation!.horizontalAccuracy {
-                return
-            }
-        }
         
         if(WoosmapAPIKey.isEmpty) {
             return
+        }
+        
+        let lastPOI = POIs.getAll().last
+
+        if lastPOI != nil && !locationId.isEmpty && lastSearchLocation != nil {
+            if(searchAPILastRequestTimeStamp > lastPOI!.date!.timeIntervalSince1970) {
+                if ((searchAPILastRequestTimeStamp - lastPOI!.date!.timeIntervalSince1970) < Double(searchAPIRefreshDelayDay*3600*24)) {
+                    return
+                }
+            }
+            
+            let timeEllapsed = abs(currentLocation!.timestamp.seconds(from: lastPOI!.date!))
+        
+            if (timeEllapsed < searchAPIRefreshDelayDay*3600*24) {
+                let distanceLimit = lastPOI!.distance - lastPOI!.radius
+                let distanceTraveled = lastSearchLocation!.distance(from: currentLocation!)
+                
+                if distanceTraveled < distanceLimit {
+                    return
+                }
+                
+                if distanceTraveled < searchAPIDistanceFilter {
+                    return
+                }
+
+                if timeEllapsed < searchAPITimeFilter {
+                   return
+                }
+            }
+                                                             
         }
 
         // Get POI nearest
@@ -448,13 +465,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     let pois = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
 
                     if(pois.isEmpty) {
+                        searchAPILastRequestTimeStamp = Date().timeIntervalSince1970
                         return
                     }
                     
                     for poi in pois {
                         self.sendASPOIEvents(poi: poi)
                         delegate.searchAPIResponse(poi: poi)
-                        self.lastSearchLocation = self.currentLocation
 
                         if distanceAPIRequestEnable {
                             self.calculateDistance(locationOrigin: location, coordinatesDest:[(poi.latitude, poi.longitude)], locationId: locationId)
@@ -465,6 +482,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         }
                     }
                     self.removeOldPOIRegions(newPOIS: pois)
+                    self.lastSearchLocation = self.currentLocation
                 }
             }
         }
@@ -493,7 +511,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for region in monitoredRegions {
             var exist = false
             for poi in newPOIS {
-                let identifier = (poi.idstore ?? "")  + "_" + (poi.name ?? "")
+                let identifier = "<id>" + (poi.idstore ?? "") + "<id>" + (poi.name ?? "")
                 if (region.identifier.contains(identifier)) {
                     exist = true
                 }

@@ -18,7 +18,7 @@ public var trackingEnable = true
 
 // Woosmap SearchAPI Key
 public var WoosmapAPIKey = ""
-public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_key=\(WoosmapAPIKey)&lat=%@&lng=%@&stores_by_page=1"
+public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_key=\(WoosmapAPIKey)&lat=%@&lng=%@&stores_by_page=5"
 
 // Woosmap Distance provider
 public enum DistanceProvider: String {
@@ -70,7 +70,9 @@ public var modeHighfrequencyLocation = false
 public var searchAPIRequestEnable = true
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
+public var searchAPIRefreshDelayDay = 1
 public var searchAPICreationRegionEnable = true
+public var searchAPILastRequestTimeStamp = 0.0
 
 // Distance API filters
 public var distanceAPIRequestEnable = true
@@ -110,5 +112,5 @@ public var userPropertiesFilter : [String] = []
 public var SFMCCredentials : [String: String] = [:]
 public var SFMCAccesToken = ""
 
-public var poiRadius:Any = "near_radius"
+public var poiRadius:Any = ""
 
