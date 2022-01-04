@@ -31,6 +31,8 @@
 		A2710EF725B5CADE00AF62F5 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EF625B5CADE00AF62F5 /* Location.swift */; };
 		A2710EFB25B5CB3500AF62F5 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2710EFA25B5CB3500AF62F5 /* Region.swift */; };
 		A2920CDF27690C820024FB06 /* Surge in Frameworks */ = {isa = PBXBuildFile; productRef = A2920CDE27690C820024FB06 /* Surge */; };
+		A29B0307277F3AF20044944E /* JSONSchema in Frameworks */ = {isa = PBXBuildFile; productRef = A29B0306277F3AF20044944E /* JSONSchema */; };
+		A29B0309277F4D0B0044944E /* TrackingSchema.json in Resources */ = {isa = PBXBuildFile; fileRef = A29B0308277F3B5B0044944E /* TrackingSchema.json */; };
 		A2AEE8092756273200FC1B0E /* RegionIsochrone.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AEE8082756273200FC1B0E /* RegionIsochrone.swift */; };
 		A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */; };
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */; };
@@ -75,6 +77,7 @@
 		A2710EF225B5CA7C00AF62F5 /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
 		A2710EF625B5CADE00AF62F5 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		A2710EFA25B5CB3500AF62F5 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		A29B0308277F3B5B0044944E /* TrackingSchema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TrackingSchema.json; sourceTree = "<group>"; };
 		A2AEE8082756273200FC1B0E /* RegionIsochrone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionIsochrone.swift; sourceTree = "<group>"; };
 		A2BAB7B826774A1F00AA4E80 /* JSONGeneric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONGeneric.swift; sourceTree = "<group>"; };
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +92,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2920CDF27690C820024FB06 /* Surge in Frameworks */,
+				A29B0307277F3AF20044944E /* JSONSchema in Frameworks */,
 				A2710EE225B5C87700AF62F5 /* RealmSwift in Frameworks */,
 				A2710EE025B5C87700AF62F5 /* Realm in Frameworks */,
 			);
@@ -152,6 +156,7 @@
 				A21E173426BD751000D2440C /* passiveTracking.json */,
 				A21E173526BD751000D2440C /* visitsTracking.json */,
 				A21E173226B99E5C00D2440C /* liveTracking.json */,
+				A29B0308277F3B5B0044944E /* TrackingSchema.json */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -215,6 +220,7 @@
 				A2710EDF25B5C87700AF62F5 /* Realm */,
 				A2710EE125B5C87700AF62F5 /* RealmSwift */,
 				A2920CDE27690C820024FB06 /* Surge */,
+				A29B0306277F3AF20044944E /* JSONSchema */,
 			);
 			productName = GeoSearchSDK;
 			productReference = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencing.framework */;
@@ -270,6 +276,7 @@
 			packageReferences = (
 				A2710EDE25B5C87700AF62F5 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				A2920CDD27690C820024FB06 /* XCRemoteSwiftPackageReference "Surge" */,
+				A29B0305277F3AF20044944E /* XCRemoteSwiftPackageReference "JSONSchema" */,
 			);
 			productRefGroup = A216FBAA23E9CEA70003AAC8 /* Products */;
 			projectDirPath = "";
@@ -289,6 +296,7 @@
 				A21E173726BD751000D2440C /* visitsTracking.json in Resources */,
 				A21E173626BD751000D2440C /* passiveTracking.json in Resources */,
 				A21E173326B99E5C00D2440C /* liveTracking.json in Resources */,
+				A29B0309277F4D0B0044944E /* TrackingSchema.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +498,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.WoosmapGeofencing;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -518,7 +526,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = WebGeoServices.WoosmapGeofencing;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -619,6 +627,14 @@
 				minimumVersion = 2.3.0;
 			};
 		};
+		A29B0305277F3AF20044944E /* XCRemoteSwiftPackageReference "JSONSchema" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kylef/JSONSchema.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -636,6 +652,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A2920CDD27690C820024FB06 /* XCRemoteSwiftPackageReference "Surge" */;
 			productName = Surge;
+		};
+		A29B0306277F3AF20044944E /* JSONSchema */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A29B0305277F3AF20044944E /* XCRemoteSwiftPackageReference "JSONSchema" */;
+			productName = JSONSchema;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -71,7 +71,7 @@ public class Distances {
                             let distanceText = element.distance?.text!
                             var durationValue = 0
                             var durationText = ""
-                            if(distanceProvider == DistanceProvider.woosmapTraffic) {
+                            if(distanceProvider == DistanceProvider.WoosmapTraffic) {
                                 durationValue = element.duration_with_traffic?.value! ?? 0
                                 durationText = element.duration_with_traffic?.text! ?? ""
                             } else {

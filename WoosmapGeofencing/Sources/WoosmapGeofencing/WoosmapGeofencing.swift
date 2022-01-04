@@ -2,6 +2,7 @@ import Foundation
 import AdSupport
 import CoreLocation
 import RealmSwift
+import JSONSchema
 
 /**
  WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
@@ -82,10 +83,10 @@ import RealmSwift
     }
     
     public func setDistanceProvider(provider: DistanceProvider) {
-        if(provider != DistanceProvider.woosmapDistance || provider != DistanceProvider.woosmapTraffic){
+        if(provider != DistanceProvider.WoosmapDistance || provider != DistanceProvider.WoosmapTraffic){
             distanceProvider = provider
         }else {
-            distanceProvider = DistanceProvider.woosmapDistance
+            distanceProvider = DistanceProvider.WoosmapDistance
         }
     }
 
@@ -307,11 +308,23 @@ import RealmSwift
         trackingChanged(tracking: trackingEnable)
     }
     
-    public func startTracking(configurationProfile: ConfigurationProfile){
-        let bundle = Bundle(for: Self.self)
-        let url = bundle.url(forResource: configurationProfile.rawValue, withExtension: ".json")
+    
+    public func startCustomTracking(url:String) -> (status: Bool, errors: [String]) {
+        guard let myURL = URL(string: url) else {
+                return (false,["Error: \(url) doesn't seem to be a valid URL"])
+            }
+        
         do {
-            let jsonData = try Data(contentsOf: url!)
+            let jsonData = try Data(contentsOf: myURL)
+            let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
+            let test = try! validate(object, schema: TRACKING_SCHEMA)
+            if(test.valid == false) {
+                var errors:[String] = []
+                for reason in test.errors! {
+                    errors.append(reason.description)
+                }
+                return (false, errors)
+            }
             let configJSON = try? JSONDecoder().decode(ConfigModel.self, from: jsonData)
             setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
             setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
@@ -324,12 +337,58 @@ import RealmSwift
 
             setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
 
-            setSearchAPIRequestEnable(enable: configJSON?.searchAPIEnable ?? false)
-            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
-            setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
-            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPIRefreshDelayDay ?? 1))
+            setSearchAPIRequestEnable(enable: configJSON?.searchAPI?.searchAPIEnable ?? false)
+            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
+            setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
+            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
 
-            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
+            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.WoosmapDistance)
+            setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
+            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
+            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
+            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
+            setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
+            setDistanceMaxAirDistanceFilter(distance: configJSON?.distance?.distanceMaxAirDistanceFilter ?? 1000000)
+            setDistanceTimeFilter(time: configJSON?.distance?.distanceTimeFilter ?? 0)
+            outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
+            dataDurationDelay = configJSON?.dataDurationDelay ?? 30
+
+        } catch { print(error) }
+        return (true,[""])
+    }
+    
+    public func startTracking(configurationProfile: ConfigurationProfile){
+        
+        let bundle = Bundle(for: Self.self)
+        let url = bundle.url(forResource: configurationProfile.rawValue, withExtension: ".json")
+        do {
+            let jsonData = try Data(contentsOf: url!)
+            let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
+            let test = try! validate(object, schema: TRACKING_SCHEMA)
+            if(test.valid == false) {
+                for reason in test.errors! {
+                    print(reason.description)
+                }
+                return
+            }
+            let configJSON = try? JSONDecoder().decode(ConfigModel.self, from: jsonData)
+            setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
+            setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
+
+            setVisitEnable(enable: configJSON?.visitEnable ?? false)
+            setClassification(enable: configJSON?.classificationEnable ?? false)
+            setRadiusDetectionClassifiedZOI(radius: configJSON?.radiusDetectionClassifiedZOI ?? 100.0)
+            setCreationOfZOIEnable(enable: configJSON?.creationOfZOIEnable ?? false)
+            setAccuracyVisitFilter(accuracy: configJSON?.accuracyVisitFilter ?? 50.0)
+
+            setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
+
+            setSearchAPIRequestEnable(enable: configJSON?.searchAPI?.searchAPIEnable ?? false)
+            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
+            setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
+            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
+
+            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.WoosmapDistance)
             setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
             setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
             setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
@@ -343,4 +402,12 @@ import RealmSwift
         } catch { print(error) }
     }
 
+
 }
+let TRACKING_SCHEMA: [String: Any] = {
+    let bundle = Bundle(identifier: "WebGeoServices.WoosmapGeofencing")
+    let url = bundle!.url(forResource: "TrackingSchema", withExtension: ".json")
+    let jsonData = try! Data(contentsOf: url!)
+    let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
+      return object as! [String: Any]
+}()

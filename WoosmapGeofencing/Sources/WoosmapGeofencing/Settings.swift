@@ -22,11 +22,11 @@ public var searchWoosmapAPI = "https://api.woosmap.com/stores/search/?private_ke
 
 // Woosmap Distance provider
 public enum DistanceProvider: String {
-  case woosmapTraffic
-  case woosmapDistance
+  case WoosmapTraffic
+  case WoosmapDistance
 }
 
-public var distanceProvider = DistanceProvider.woosmapDistance
+public var distanceProvider = DistanceProvider.WoosmapDistance
 
 // Woosmap Distance mode
 public enum DistanceMode: String {
