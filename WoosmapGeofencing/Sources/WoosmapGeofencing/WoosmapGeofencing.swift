@@ -321,7 +321,7 @@ import JSONSchema
             if(test.valid == false) {
                 var errors:[String] = []
                 for reason in test.errors! {
-                    errors.append(reason.description)
+                    errors.append("Geofencing SDK - Custom profil: " + reason.instanceLocation.path + " - " + reason.description)
                 }
                 return (false, errors)
             }
@@ -381,7 +381,7 @@ import JSONSchema
             let test = try! validate(object, schema: TRACKING_SCHEMA)
             if(test.valid == false) {
                 for reason in test.errors! {
-                    print(reason.description)
+                    print("Geofencing SDK - profil: " + reason.instanceLocation.path + " - " + reason.description)
                 }
                 return
             }
