@@ -23,7 +23,7 @@
     "distanceAPIEnable": false,
     
     "distance": {
-        "distanceProvider": "WoosmapTraffic",
+        "distanceProvider": "woosmapTraffic",
         "distanceMode": "driving",
         "distanceRouting": "fastest",
         "distanceUnits": "metric",

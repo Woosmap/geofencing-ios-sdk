@@ -551,7 +551,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
 
         var storeAPIUrl = ""
-        if(distanceProvider == DistanceProvider.WoosmapDistance) {
+        if(distanceProvider == DistanceProvider.woosmapDistance) {
             storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, userLatitude, userLongitude, coordinateDestinations)
         } else {
             storeAPIUrl = String(format: trafficDistanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue,trafficDistanceRouting.rawValue,distanceLanguage, userLatitude, userLongitude, coordinateDestinations)

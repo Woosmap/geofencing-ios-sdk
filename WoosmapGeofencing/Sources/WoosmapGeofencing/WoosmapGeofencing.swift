@@ -83,10 +83,10 @@ import JSONSchema
     }
     
     public func setDistanceProvider(provider: DistanceProvider) {
-        if(provider != DistanceProvider.WoosmapDistance || provider != DistanceProvider.WoosmapTraffic){
+        if(provider != DistanceProvider.woosmapDistance || provider != DistanceProvider.woosmapTraffic){
             distanceProvider = provider
         }else {
-            distanceProvider = DistanceProvider.WoosmapDistance
+            distanceProvider = DistanceProvider.woosmapDistance
         }
     }
 
@@ -342,14 +342,28 @@ import JSONSchema
             setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
             setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
 
-            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.WoosmapDistance)
-            setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
-            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
-            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
-            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
-            setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
-            setDistanceMaxAirDistanceFilter(distance: configJSON?.distance?.distanceMaxAirDistanceFilter ?? 1000000)
-            setDistanceTimeFilter(time: configJSON?.distance?.distanceTimeFilter ?? 0)
+            if let distanceConfig = configJSON?.distance {
+                setDistanceProvider(provider: DistanceProvider(rawValue: (distanceConfig.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
+                setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
+                setDistanceAPIMode(mode: DistanceMode(rawValue: (distanceConfig.distanceMode)!) ?? DistanceMode.driving)
+                setDistanceAPIUnits(units: DistanceUnits(rawValue: (distanceConfig.distanceUnits)!) ?? DistanceUnits.metric)
+                setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (distanceConfig.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
+                setDistanceAPILanguage(language: distanceConfig.distanceLanguage ?? "en")
+                setDistanceMaxAirDistanceFilter(distance: distanceConfig.distanceMaxAirDistanceFilter ?? 1000000)
+                setDistanceTimeFilter(time: distanceConfig.distanceTimeFilter ?? 0)
+            }
+            else {
+                setDistanceProvider(provider: DistanceProvider(rawValue: DistanceProvider.woosmapDistance.rawValue)!)
+                setDistanceAPIRequestEnable(enable: false)
+                setDistanceAPIMode(mode: DistanceMode(rawValue: DistanceMode.driving.rawValue)!)
+                setDistanceAPIUnits(units: DistanceUnits(rawValue: DistanceUnits.metric.rawValue)!)
+                setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue:  TrafficDistanceRouting.fastest.rawValue)!)
+                setDistanceAPILanguage(language: "en")
+                setDistanceMaxAirDistanceFilter(distance:  1000000)
+                setDistanceTimeFilter(time: 0)
+            }
+
+            
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 
@@ -387,18 +401,32 @@ import JSONSchema
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
             setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
+            
+            if let distanceConfig = configJSON?.distance {
+                setDistanceProvider(provider: DistanceProvider(rawValue: (distanceConfig.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
+                setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
+                setDistanceAPIMode(mode: DistanceMode(rawValue: (distanceConfig.distanceMode)!) ?? DistanceMode.driving)
+                setDistanceAPIUnits(units: DistanceUnits(rawValue: (distanceConfig.distanceUnits)!) ?? DistanceUnits.metric)
+                setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (distanceConfig.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
+                setDistanceAPILanguage(language: distanceConfig.distanceLanguage ?? "en")
+                setDistanceMaxAirDistanceFilter(distance: distanceConfig.distanceMaxAirDistanceFilter ?? 1000000)
+                setDistanceTimeFilter(time: distanceConfig.distanceTimeFilter ?? 0)
+            }
+            else {
+                setDistanceProvider(provider: DistanceProvider(rawValue: DistanceProvider.woosmapDistance.rawValue)!)
+                setDistanceAPIRequestEnable(enable: false)
+                setDistanceAPIMode(mode: DistanceMode(rawValue: DistanceMode.driving.rawValue)!)
+                setDistanceAPIUnits(units: DistanceUnits(rawValue: DistanceUnits.metric.rawValue)!)
+                setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue:  TrafficDistanceRouting.fastest.rawValue)!)
+                setDistanceAPILanguage(language: "en")
+                setDistanceMaxAirDistanceFilter(distance:  1000000)
+                setDistanceTimeFilter(time: 0)
+            }
 
-            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.WoosmapDistance)
-            setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
-            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
-            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
-            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
-            setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
-            setDistanceMaxAirDistanceFilter(distance: configJSON?.distance?.distanceMaxAirDistanceFilter ?? 1000000)
-            setDistanceTimeFilter(time: configJSON?.distance?.distanceTimeFilter ?? 0)
+            
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
-
+            
         } catch { print(error) }
     }
 
