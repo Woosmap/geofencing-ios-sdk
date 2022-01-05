@@ -124,7 +124,7 @@
                 "distanceProvider": {
                     "description": "Use this parameter to define which Distance provider will be used to retrieve distance and duration data.",
                     "type": "string",
-                    "enum": ["WoosmapDistance", "WoosmapTraffic"]
+                    "enum": ["woosmapDistance", "woosmapTraffic"]
                 },
                 "distanceMode": {
                     "description": "Use this parameter to define the travel mode related to the request to the Distance provider.",
@@ -156,11 +156,6 @@
                 }
             },
             "required": [
-                "distanceProvider",
-                "distanceMode",
-                "distanceUnits",
-                "distanceMaxAirDistanceFilter",
-                "distanceTimeFilter"
             ]
         }
     },
@@ -168,14 +163,6 @@
         "trackingEnable",
         "foregroundLocationServiceEnable",
         "modeHighFrequencyLocation",
-        "visitEnable",
-        "currentLocationTimeFilter",
-        "currentLocationDistanceFilter",
-        "accuracyFilter",
-        "searchAPI",
-        "distanceAPIEnable",
-        "outOfTimeDelay",
-        "dataDurationDelay",
-        "distance"
+        "visitEnable"
     ]
 }
