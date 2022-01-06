@@ -174,8 +174,12 @@ import JSONSchema
         searchAPITimeFilter = time
     }
     
-    public func setsearchAPIRefreshDelayDay(day: Int) {
+    public func setSearchAPIRefreshDelayDay(day: Int) {
         searchAPIRefreshDelayDay = day
+    }
+    
+    public func getSearchAPIRefreshDelayDay() -> Int {
+        return searchAPIRefreshDelayDay
     }
 
     public func setVisitEnable(enable: Bool) {
@@ -340,7 +344,7 @@ import JSONSchema
             setSearchAPIRequestEnable(enable: configJSON?.searchAPI?.searchAPIEnable ?? false)
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
-            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
+            setSearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
 
             if let distanceConfig = configJSON?.distance {
                 setDistanceProvider(provider: DistanceProvider(rawValue: (distanceConfig.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
@@ -400,7 +404,7 @@ import JSONSchema
             setSearchAPIRequestEnable(enable: configJSON?.searchAPI?.searchAPIEnable ?? false)
             setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
-            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
+            setSearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
             
             if let distanceConfig = configJSON?.distance {
                 setDistanceProvider(provider: DistanceProvider(rawValue: (distanceConfig.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
