@@ -320,8 +320,8 @@ import JSONSchema
         
         do {
             let jsonData = try Data(contentsOf: myURL)
-            let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
-            let test = try! validate(object, schema: TRACKING_SCHEMA)
+            let object = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
+            let test = try validate(object, schema: TRACKING_SCHEMA)
             if(test.valid == false) {
                 var errors:[String] = []
                 for reason in test.errors! {
@@ -371,7 +371,10 @@ import JSONSchema
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 
-        } catch { print(error) }
+        } catch {
+            return(false, [error.localizedDescription])
+            
+        }
         return (true,[""])
     }
     
