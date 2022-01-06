@@ -372,7 +372,7 @@ import JSONSchema
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 
         } catch {
-            return(false, [error.localizedDescription])
+            return(false, ["Geofencing SDK - Custom profil: " + error.localizedDescription])
             
         }
         return (true,[""])
