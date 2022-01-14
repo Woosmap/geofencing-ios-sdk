@@ -3,6 +3,11 @@
     "title": "Woosmap Geofencing SDK - Tracking profile Json schema",
     "description": "Configuration file ",
     "properties": {
+        "woosmapKey": {
+            "description": "Define the Woosmap private key use to perform request to Woosmap API.",
+            "type": "string",
+            "minimum": 0
+        },
         "trackingProfileRefreshDelay": {
             "description": "Minimum number of day to wait before refresh the custom profile. A value of 0 indicates that no refresh is performed by the SDK.",
             "type": "integer",
@@ -93,14 +98,18 @@
                     "description": "Number of day to wait before force to send a new request to the Woosmap Search API.",
                     "type": "integer",
                     "minimum": 1
+                },
+                "searchAPIParameters": {
+                    "description": "Set parameter to narrow your results or filters it with the query parameter. More details in the Woosmap Search API documentation.",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
                 }
             },
             "required": [
                 "searchAPIEnable",
-                "searchAPICreationRegionEnable",
-                "searchAPITimeFilter",
-                "searchAPIDistanceFilter",
-                "searchAPIRefreshDelayDay"
+                "searchAPICreationRegionEnable"
             ]
         },
         "distanceAPIEnable": {
@@ -155,7 +164,59 @@
                     "type": "integer"
                 }
             },
+            "required": ["distanceProvider"]
+        },
+        "sfmcCredentials": {
+            "description": "Some input and credentials to perform the API call to Salesforce Marketing Cloud API.",
+            "type": "object",
+            "properties": {
+                "authenticationBaseURI": {
+                    "description": "Authentication Base URI.",
+                    "type": "string"
+                },
+                "restBaseURI": {
+                    "description": "REST Base URI.",
+                    "type": "string"
+                },
+                "client_id": {
+                    "description": "client_id (journey_read and list_and_subscribers_read rights are required).",
+                    "type": "string"
+                },
+                "client_secret": {
+                    "description": "client_secret (journey_read and list_and_subscribers_read rights are required).",
+                    "type": "string"
+                },
+                "regionEnteredEventDefinitionKey": {
+                    "description": "EventDefinitionKey for the Woosmap event woos_geofence_entered_event.",
+                    "type": "string"
+                },
+                "regionExitedEventDefinitionKey": {
+                    "description": "EventDefinitionKey for the Woosmap event woos_geofence_exited_event.",
+                    "type": "string"
+                },
+                "poiEventDefinitionKey": {
+                    "description": "EventDefinitionKey for the Woosmap event woos_POI_event.",
+                    "type": "string"
+                },
+                "zoiClassifiedEnteredEventDefinitionKey": {
+                    "description": "EventDefinitionKey for the Woosmap event woos_zoi_classified_entered_event.",
+                    "type": "string"
+                },
+                "zoiClassifiedExitedEventDefinitionKey": {
+                    "description": "EventDefinitionKey for the Woosmap event woos_zoi_classified_exited_event.",
+                    "type": "string"
+                },
+                "visitEventDefinitionKey": {
+                    "description": "EventDefinitionKey for the Woosmap event woos_Visit_event.",
+                    "type": "string"
+                }
+            },
             "required": [
+                "authenticationBaseURI",
+                "restBaseURI",
+                "client_id",
+                "client_secret",
+                "contactKey"
             ]
         }
     },

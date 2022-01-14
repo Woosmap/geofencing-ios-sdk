@@ -333,6 +333,7 @@ import JSONSchema
             setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
             setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
 
+            setWoosmapAPIKey(key: configJSON?.woosmapKey ?? "")
             setVisitEnable(enable: configJSON?.visitEnable ?? false)
             setClassification(enable: configJSON?.classificationEnable ?? false)
             setRadiusDetectionClassifiedZOI(radius: configJSON?.radiusDetectionClassifiedZOI ?? 100.0)
@@ -340,12 +341,19 @@ import JSONSchema
             setAccuracyVisitFilter(accuracy: configJSON?.accuracyVisitFilter ?? 50.0)
 
             setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
-
-            setSearchAPIRequestEnable(enable: configJSON?.searchAPI?.searchAPIEnable ?? false)
-            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
-            setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
-            setSearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
-
+            
+            if let searchAPI = configJSON?.searchAPI {
+                setSearchAPIRequestEnable(enable: searchAPI.searchAPIEnable ?? false)
+                setSearchAPICreationRegionEnable(enable: searchAPI.searchAPICreationRegionEnable ?? false)
+                setSearchAPIFilter(distance: Double(searchAPI.searchAPIDistanceFilter ?? 0), time: Int(searchAPI.searchAPITimeFilter ?? 0))
+                setSearchAPIRefreshDelayDay(day: Int(searchAPI.searchAPIRefreshDelayDay ?? 1))
+                if let paramArray = searchAPI.searchAPIParameters {
+                    for param in paramArray {
+                        searchAPIParameters.updateValue(param.value!, forKey: param.key!)
+                    }
+                }
+            }
+        
             if let distanceConfig = configJSON?.distance {
                 setDistanceProvider(provider: DistanceProvider(rawValue: (distanceConfig.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
                 setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
@@ -365,6 +373,20 @@ import JSONSchema
                 setDistanceAPILanguage(language: "en")
                 setDistanceMaxAirDistanceFilter(distance:  1000000)
                 setDistanceTimeFilter(time: 0)
+            }
+            
+            if let SFMC = configJSON?.sfmcCredentials {
+                SFMCCredentials.updateValue(SFMC.authenticationBaseURI!, forKey: "authenticationBaseURI")
+                SFMCCredentials.updateValue(SFMC.restBaseURI!, forKey: "restBaseURI")
+                SFMCCredentials.updateValue(SFMC.client_id!, forKey: "client_id")
+                SFMCCredentials.updateValue(SFMC.client_secret!, forKey: "client_secret")
+                
+                SFMCCredentials.updateValue(SFMC.regionEnteredEventDefinitionKey ?? "", forKey: "regionEnteredEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.regionExitedEventDefinitionKey ?? "", forKey: "regionExitedEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.poiEventDefinitionKey ?? "", forKey: "poiEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.zoiClassifiedEnteredEventDefinitionKey ?? "", forKey: "zoiClassifiedEnteredEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.zoiClassifiedExitedEventDefinitionKey ?? "", forKey: "zoiClassifiedExitedEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.visitEventDefinitionKey ?? "", forKey: "visitEventDefinitionKey")
             }
 
             
@@ -392,10 +414,12 @@ import JSONSchema
                 }
                 return
             }
+            
             let configJSON = try? JSONDecoder().decode(ConfigModel.self, from: jsonData)
             setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
             setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
 
+            setWoosmapAPIKey(key: configJSON?.woosmapKey ?? "")
             setVisitEnable(enable: configJSON?.visitEnable ?? false)
             setClassification(enable: configJSON?.classificationEnable ?? false)
             setRadiusDetectionClassifiedZOI(radius: configJSON?.radiusDetectionClassifiedZOI ?? 100.0)
@@ -404,10 +428,17 @@ import JSONSchema
 
             setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
 
-            setSearchAPIRequestEnable(enable: configJSON?.searchAPI?.searchAPIEnable ?? false)
-            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPI?.searchAPICreationRegionEnable ?? false)
-            setSearchAPIFilter(distance: Double(configJSON?.searchAPI?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPI?.searchAPITimeFilter ?? 0))
-            setSearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPI?.searchAPIRefreshDelayDay ?? 1))
+            if let searchAPI = configJSON?.searchAPI {
+                setSearchAPIRequestEnable(enable: searchAPI.searchAPIEnable ?? false)
+                setSearchAPICreationRegionEnable(enable: searchAPI.searchAPICreationRegionEnable ?? false)
+                setSearchAPIFilter(distance: Double(searchAPI.searchAPIDistanceFilter ?? 0), time: Int(searchAPI.searchAPITimeFilter ?? 0))
+                setSearchAPIRefreshDelayDay(day: Int(searchAPI.searchAPIRefreshDelayDay ?? 1))
+                if let paramArray = searchAPI.searchAPIParameters {
+                    for param in paramArray {
+                        searchAPIParameters.updateValue(param.value!, forKey: param.key!)
+                    }
+                }
+            }
             
             if let distanceConfig = configJSON?.distance {
                 setDistanceProvider(provider: DistanceProvider(rawValue: (distanceConfig.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
@@ -430,6 +461,19 @@ import JSONSchema
                 setDistanceTimeFilter(time: 0)
             }
 
+            if let SFMC = configJSON?.sfmcCredentials {
+                SFMCCredentials.updateValue(SFMC.authenticationBaseURI!, forKey: "authenticationBaseURI")
+                SFMCCredentials.updateValue(SFMC.restBaseURI!, forKey: "restBaseURI")
+                SFMCCredentials.updateValue(SFMC.client_id!, forKey: "client_id")
+                SFMCCredentials.updateValue(SFMC.client_secret!, forKey: "client_secret")
+                
+                SFMCCredentials.updateValue(SFMC.regionEnteredEventDefinitionKey ?? "", forKey: "regionEnteredEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.regionExitedEventDefinitionKey ?? "", forKey: "regionExitedEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.poiEventDefinitionKey ?? "", forKey: "poiEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.zoiClassifiedEnteredEventDefinitionKey ?? "", forKey: "zoiClassifiedEnteredEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.zoiClassifiedExitedEventDefinitionKey ?? "", forKey: "zoiClassifiedExitedEventDefinitionKey")
+                SFMCCredentials.updateValue(SFMC.visitEventDefinitionKey ?? "", forKey: "visitEventDefinitionKey")
+            }
             
             outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
