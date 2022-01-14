@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'WoosmapGeofencing'
-  s.version = '1.6.0'
+  s.version = '1.7.0'
   s.license = 'MIT'
   s.summary = 'Geofencing in Swift'
   s.homepage = 'https://github.com/woosmap/woosmap-geofencing-ios-sdk'
@@ -16,4 +16,5 @@ Pod::Spec.new do |s|
   s.dependency 'Surge', '~> 2.3.0'
   s.dependency 'RealmSwift'
   s.dependency 'Realm' 
+  s.dependency 'JSONSchema'
 end
