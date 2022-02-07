@@ -9,9 +9,9 @@ import RealmSwift
 import CoreLocation
 
 public class Region: Object {
-    @objc public dynamic var date: Date?
+    @objc public dynamic var date: Date = Date()
     @objc public dynamic var didEnter: Bool = false
-    @objc public dynamic var identifier: String?
+    @objc public dynamic var identifier: String = ""
     @objc public dynamic var latitude: Double = 0.0
     @objc public dynamic var longitude: Double = 0.0
     @objc public dynamic var radius: Double = 0.0

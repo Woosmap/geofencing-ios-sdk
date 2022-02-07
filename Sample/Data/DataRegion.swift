@@ -52,7 +52,7 @@ public class DataRegion: RegionsServiceDelegate {
         }else {
             content.title = "Region exit"
         }
-        content.body = "Region = " + POIregion.identifier!
+        content.body = "Region = " + POIregion.identifier
         content.body += "Lat = " + String(format: "%f", POIregion.latitude) + " Lng = " + String(format: "%f", POIregion.longitude)
         if(POIregion.type == "circle") {
             content.body += "\n FromPositionDetection = " + String(POIregion.fromPositionDetection)
