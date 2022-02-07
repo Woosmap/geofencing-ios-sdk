@@ -230,8 +230,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 if((textField!.text!.isEmpty)){
                     return
                 }
-                let radius = textField!.text!.dropLast()
-    
+                let radius = textField!.text!
+                
                 if(textField!.text!.contains("s")) {
                     let (_, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "isochrone")
                     self.initMap()
@@ -380,11 +380,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
         if region.didEnter {
             let circlePOI = MKCircle(center: CLLocationCoordinate2D(latitude: region.latitude, longitude: region.longitude), radius: region.radius)
-            circlePOI.title = region.identifier! + "ENTER"
+            circlePOI.title = region.identifier + "ENTER"
             self.circlesPOI.append(circlePOI)
             mapView.addOverlays(circlesPOI)
         } else {
-            circlesPOI.removeAll(where: {$0.title == (region.identifier! + "ENTER")})
+            circlesPOI.removeAll(where: {$0.title == (region.identifier + "ENTER")})
             mapView.addOverlays(circlesPOI)
         }
         initMap()
@@ -403,8 +403,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 } else {
                     circle.title = "POI"
                     if let regionLog = Regions.getRegionFromId(id: region.identifier) {
-                        if(regionLog.didEnter && !self.circlesPOI.contains(where: {$0.title == (regionLog.identifier! + "ENTER")})) {
-                            circle.title = regionLog.identifier! + "ENTER"
+                        if(regionLog.didEnter && !self.circlesPOI.contains(where: {$0.title == (regionLog.identifier + "ENTER")})) {
+                            circle.title = regionLog.identifier + "ENTER"
                             self.circlesPOI.append(circle)
                         }
                     }
