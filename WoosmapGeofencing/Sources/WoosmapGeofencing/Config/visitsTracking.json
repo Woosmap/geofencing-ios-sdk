@@ -16,11 +16,9 @@
     "accuracyFilter": 100,
 
     "searchAPIEnable": false,
-    "searchAPICreationRegionEnable": false,
     "searchAPITimeFilter": 20,
     "searchAPIDistanceFilter": 100,
     "searchAPIRefreshDelayDay": 1,
-    "distanceAPIEnable": false,
 
     "distance": {
         "distanceProvider": "woosmapDistance",

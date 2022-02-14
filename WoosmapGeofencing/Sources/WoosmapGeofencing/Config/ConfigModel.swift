@@ -13,13 +13,12 @@ public struct ConfigModel: Codable {
     let minDurationVisitDisplay, radiusDetectionClassifiedZOI, distanceDetectionThresholdVisits: Double?
     let creationOfZOIEnable: Bool?
     let accuracyVisitFilter, currentLocationTimeFilter, currentLocationDistanceFilter, accuracyFilter: Double?
-    let searchAPIEnable, searchAPICreationRegionEnable: Bool?
+    let searchAPIEnable: Bool?
     let searchAPITimeFilter, searchAPIDistanceFilter, searchAPIRefreshDelayDay: Int?
-    let distanceAPIEnable: Bool?
     let distance: DistanceConfig?
     let outOfTimeDelay, dataDurationDelay: Int?
 
-    init(trackingEnable: Bool?, foregroundLocationServiceEnable: Bool?, modeHighFrequencyLocation: Bool?, visitEnable: Bool?, classificationEnable: Bool?, minDurationVisitDisplay: Double?, radiusDetectionClassifiedZOI: Double?, distanceDetectionThresholdVisits: Double?, creationOfZOIEnable: Bool?, accuracyVisitFilter: Double?, currentLocationTimeFilter: Double?, currentLocationDistanceFilter: Double?, accuracyFilter: Double?, searchAPIEnable: Bool?, searchAPICreationRegionEnable: Bool?, searchAPITimeFilter: Int?, searchAPIDistanceFilter: Int?, searchAPIRefreshDelayDay: Int?, distanceAPIEnable: Bool?, distanceConfig: DistanceConfig?, distanceLanguage: String?, outOfTimeDelay: Int?, dataDurationDelay: Int?) {
+    init(trackingEnable: Bool?, foregroundLocationServiceEnable: Bool?, modeHighFrequencyLocation: Bool?, visitEnable: Bool?, classificationEnable: Bool?, minDurationVisitDisplay: Double?, radiusDetectionClassifiedZOI: Double?, distanceDetectionThresholdVisits: Double?, creationOfZOIEnable: Bool?, accuracyVisitFilter: Double?, currentLocationTimeFilter: Double?, currentLocationDistanceFilter: Double?, accuracyFilter: Double?, searchAPIEnable: Bool?, searchAPITimeFilter: Int?, searchAPIDistanceFilter: Int?, searchAPIRefreshDelayDay: Int?, distanceConfig: DistanceConfig?, distanceLanguage: String?, outOfTimeDelay: Int?, dataDurationDelay: Int?) {
         self.trackingEnable = trackingEnable
         self.foregroundLocationServiceEnable = foregroundLocationServiceEnable
         self.modeHighFrequencyLocation = modeHighFrequencyLocation
@@ -34,10 +33,8 @@ public struct ConfigModel: Codable {
         self.currentLocationDistanceFilter = currentLocationDistanceFilter
         self.accuracyFilter = accuracyFilter
         self.searchAPIEnable = searchAPIEnable
-        self.searchAPICreationRegionEnable = searchAPICreationRegionEnable
         self.searchAPITimeFilter = searchAPITimeFilter
         self.searchAPIDistanceFilter = searchAPIDistanceFilter
-        self.distanceAPIEnable = distanceAPIEnable
         self.distance = distanceConfig
         self.outOfTimeDelay = outOfTimeDelay
         self.dataDurationDelay = dataDurationDelay

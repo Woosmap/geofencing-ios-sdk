@@ -24,7 +24,7 @@ let WoosmapKey = ""
 let WoosmapURL = "https://api.woosmap.com"
 
 // Woosmap SearchAPI Key
-let searchWoosmapAPI = "\(WoosmapURL)/stores/search/?private_key=\(WoosmapKey)&lat=%@&lng=%@&stores_by_page=1"
+let searchWoosmapAPI = "\(WoosmapURL)/stores/search/?private_key=\(WoosmapKey)&lat=%@&lng=%@&stores_by_page=10"
 
 // Woosmap DistanceAPI
 

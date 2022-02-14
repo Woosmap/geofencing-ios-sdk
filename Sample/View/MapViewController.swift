@@ -130,10 +130,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     mapView.addAnnotation(annotationForLocation(location))
                 }
             }
-            
-            for regionIso in RegionIsochrones.getAll() {
-                mapView.addAnnotation(annotationForRegionIso(regionIso: regionIso))
-            }
 
             if stateSwitchRegions {
                 overlaysForRegions(regions: WoosmapGeofencing.shared.locationService.locationManager?.monitoredRegions ?? [])
@@ -232,17 +228,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 }
                 let radius = textField!.text!
                 
-                if(textField!.text!.contains("s")) {
-                    let (_, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "isochrone")
-                    self.initMap()
-                } else {
-                    let (regionIsCreated, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "circle")
-                    if !regionIsCreated {
-                        let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                    }
+                
+                let (regionIsCreated, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: CLLocationDistance(Int(radius)!))
+                if !regionIsCreated {
+                    let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
+                
             }))
 
             // 4. Present the alert.
@@ -454,15 +447,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    func annotationForRegionIso(regionIso: RegionIsochrone) -> MKAnnotation {
-        let annotation = MyPointAnnotation()
-        annotation.type = AnnotationType.isochrone
-        annotation.title = (regionIso.didEnter ? "\u{2B07}" : "\u{2B06}") + " " + regionIso.identifier!.components(separatedBy: "-")[0]
-        annotation.subtitle = "radius = " + String(regionIso.radius) + "s" + " duration = " + regionIso.durationText
-        annotation.coordinate = CLLocationCoordinate2D(latitude: regionIso.latitude, longitude: regionIso.longitude)
-        return annotation
-    }
-
     func annotationForVisit(_ visit: Visit) -> MKAnnotation {
         let annotation = MyPointAnnotation()
         annotation.type = AnnotationType.visit

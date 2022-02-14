@@ -31,24 +31,6 @@ public protocol VisitServiceDelegate: AnyObject {
     func processVisit(visit: Visit)
 }
 
-public protocol AirshipEventsDelegate: AnyObject {
-    func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
-    func regionEnterEvent(regionEvent: Dictionary <String, Any>, eventName: String)
-    func regionExitEvent(regionEvent: Dictionary <String, Any>, eventName: String)
-    func visitEvent(visitEvent: Dictionary <String, Any>, eventName: String)
-    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>, eventName: String)
-    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
-}
-
-public protocol MarketingCloudEventsDelegate: AnyObject {
-    func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
-    func regionEnterEvent(regionEvent: Dictionary <String, Any>, eventName: String)
-    func regionExitEvent(regionEvent: Dictionary <String, Any>, eventName: String)
-    func visitEvent(visitEvent: Dictionary <String, Any>, eventName: String)
-    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>, eventName: String)
-    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
-}
-
 
 public extension Date {
     /// Returns the amount of seconds from another date
@@ -94,8 +76,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public weak var distanceAPIDataDelegate: DistanceAPIDelegate?
     public weak var regionDelegate: RegionsServiceDelegate?
     public weak var visitDelegate: VisitServiceDelegate?
-    public weak var airshipEventsDelegate: AirshipEventsDelegate?
-    public weak var marketingCloudEventsDelegate: MarketingCloudEventsDelegate?
 
     init(locationManger: LocationManagerProtocol?) {
 
@@ -253,35 +233,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
     }
-    
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
-        if(type == "isochrone"){
-            addRegionIsochrone(identifier: identifier, center: center, radius: radius)
-            return (true, identifier)
-        } else if(type == "circle"){
-            let (regionIsCreated, identifier) = addRegion(identifier: identifier, center: center, radius: Double(radius))
-            return (regionIsCreated, identifier)
-        }
-        return (false, "")
-    }
-    
-    public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int)  {
-        let regionIso = RegionIsochrone()
-        regionIso.identifier = identifier
-        regionIso.date = Date()
-        regionIso.latitude = center.latitude
-        regionIso.longitude = center.longitude
-        regionIso.radius = radius
-        regionIso.type = "isochrone"
-        RegionIsochrones.add(regionIsochrone: regionIso)
-        if self.currentLocation != nil {
-            calculateDistanceWithRegion(location: self.currentLocation!)
-        }
-    }
-    
-    public func removeRegionIsochrone(identifier: String) {
-        RegionIsochrones.removeRegionIsochrone(id: identifier)
-    }
 
     public func removeRegion(center: CLLocationCoordinate2D) {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return }
@@ -317,7 +268,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         guard let location = currentLocation else { return }
         if(region.contains(location.coordinate)) {
             let regionEnter = Regions.add(POIregion: region, didEnter: true, fromPositionDetection: true)
-            sendASRegionEvents(region: regionEnter)
             self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
         }
     }
@@ -340,7 +290,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             let visitRecorded = Visits.add(visit: visit)
             if visitRecorded.visitId != nil {
                 delegate.processVisit(visit: visitRecorded)
-                sendASVisitEvents(visit: visitRecorded)
             }
         }
     }
@@ -384,8 +333,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         checkIfPositionIsInsideGeofencingRegions(location: location)
         
-        detectRegionIsochrone(location: location, locationId: locationSaved.locationId!)
-
     }
 
     public func searchAPIRequest(location: CLLocation, locationId: String = "") {
@@ -470,18 +417,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     }
                     
                     for poi in pois {
-                        self.sendASPOIEvents(poi: poi)
                         delegate.searchAPIResponse(poi: poi)
-
-                        if distanceAPIRequestEnable {
-                            self.calculateDistance(locationOrigin: location, coordinatesDest:[(poi.latitude, poi.longitude)], locationId: locationId)
-                        }
-                        if searchAPICreationRegionEnable {
-                            let POIname = (poi.idstore ?? "")  + "<id>" + (poi.name ?? "")
-                            self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname, radius: poi.radius)
-                        }
                     }
-                    self.removeOldPOIRegions(newPOIS: pois)
                     self.lastSearchLocation = self.currentLocation
                 }
             }
@@ -490,40 +427,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     }
     
-
-    public func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
-        let identifier = RegionType.poi.rawValue + "<id>" + name
-        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
-        var exist = false
-        for region in monitoredRegions {
-            if (region.identifier.contains(identifier)) {
-               exist = true
-            }
-        }
-        if !exist {
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
-            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
-        }
-    }
-    
-    public func removeOldPOIRegions(newPOIS: [POI]) {
-        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
-        for region in monitoredRegions {
-            var exist = false
-            for poi in newPOIS {
-                let identifier = "<id>" + (poi.idstore ?? "") + "<id>" + (poi.name ?? "")
-                if (region.identifier.contains(identifier)) {
-                    exist = true
-                }
-            }
-            if(!exist) {
-                if region.identifier.contains(LocationService.RegionType.poi.rawValue) {
-                    self.locationManager?.stopMonitoring(for: region)
-                }
-            }
-        }
-    }
-
     public func calculateDistance(locationOrigin: CLLocation,
                                   coordinatesDest: [(Double, Double)],
                                   distanceProvider : DistanceProvider = distanceProvider,
@@ -593,10 +496,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         }
                     }
                     
-                    if (regionIsochroneToUpdate) {
-                        self.updateRegionWithDistance(distanceAr: distance)
-                    }
-                    
                     delegateDistance.distanceAPIResponse(distance: distance)
                 }
             }
@@ -605,42 +504,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     }
     
-    public func updateRegionWithDistance(distanceAr: [Distance]) {
-        for regionIso in RegionIsochrones.getAll() {
-            for distance in distanceAr {
-                if(distance.destinationLatitude == regionIso.latitude && distance.destinationLongitude == regionIso.longitude) {
-                    var didEnter = regionIso.didEnter
-                    let lastStatedidEnter = regionIso.didEnter
-                    if(distance.duration <= regionIso.radius) {
-                        if(regionIso.didEnter == false) {
-                            didEnter = true
-                            
-                        }
-                    } else {
-                        if(regionIso.didEnter == true) {
-                            didEnter = false
-                        }
-                    }
-                    let regionUpdated = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: didEnter, distanceInfo: distance)
-                    if(regionUpdated.didEnter != lastStatedidEnter) {
-                        didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                    }
-                }
-            }
-        }
-    }
-    
-    public func didEventRegionIsochrone(regionIsochrone: RegionIsochrone) {
-        let newRegionLog = Regions.add(regionIso: regionIsochrone)
-        sendASRegionEvents(region: newRegionLog)
-        if newRegionLog.identifier != "" {
-            if (newRegionLog.didEnter) {
-                self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
-            } else {
-                self.regionDelegate?.didExitPOIRegion(POIregion: newRegionLog)
-            }
-        }
-    }
     
     public func tracingLocationDidFailWithError(error: Error) {
         print("\(error)")
@@ -696,7 +559,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
             if (regionLog.didEnter != didEnter) {
                 let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
-                sendASRegionEvents(region: newRegionLog)
                 if newRegionLog.identifier != "" {
                     if (didEnter) {
                         self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
@@ -708,7 +570,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         } else if (didEnter) {
             let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
             if newRegionLog.identifier != "" {
-                sendASRegionEvents(region: newRegionLog)
                 if (didEnter) {
                     self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
                 } else {
@@ -717,40 +578,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
     }
-    
-    func detectRegionIsochrone(location: CLLocation, locationId: String = "") {
-        let regionsIsochrones = RegionIsochrones.getAll()
-        var regionsBeUpdated = false
-        for regionIso in regionsIsochrones {
-            let distance = location.distance(from: CLLocation(latitude: regionIso.latitude, longitude: regionIso.longitude))
-            if (distance < Double(distanceMaxAirDistanceFilter)) {
-                let spendtime = -regionIso.date!.timeIntervalSinceNow
-                let timeLimit = (regionIso.duration - regionIso.radius)/2
-                if (spendtime > Double(timeLimit)) {
-                    if(spendtime > Double(distanceTimeFilter)) {
-                        regionsBeUpdated = true
-                    }
-                }
-            }
-            if(regionsBeUpdated) {
-                break
-            }
-        }
-        
-        if(regionsBeUpdated) {
-            calculateDistanceWithRegion(location: location, locationId: locationId)
-        }
-        
-    }
-    
-    func calculateDistanceWithRegion(location: CLLocation, locationId: String = "") {
-        var dest:[(Double, Double)] = [(Double, Double)]()
-        for regionIso in  RegionIsochrones.getAll() {
-            dest.append((regionIso.latitude, regionIso.longitude))
-        }
-        calculateDistance(locationOrigin: location, coordinatesDest: dest, locationId: locationId, regionIsochroneToUpdate: true)
-    }
-        
        
     
     func detectVisitInZOIClassified(visit: CLVisit) {
@@ -776,7 +603,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 classifiedRegion.identifier = classifiedZOI.period ?? ""
                 Regions.add(classifiedRegion: classifiedRegion)
                 self.regionDelegate?.homeZOIEnter(classifiedRegion: classifiedRegion)
-                sendASZOIClassifiedEvents(region: classifiedRegion)
             }
         }
 
@@ -814,193 +640,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 //
 //    }
     
-    func sendASVisitEvents(visit: Visit) {
-        
-        var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
-        propertyDictionary["event"] = "woos_visit_event"
-        propertyDictionary["date"] = visit.date?.stringFromDate()
-        propertyDictionary["arrivalDate"] = visit.arrivalDate?.stringFromDate()
-        propertyDictionary["departureDate"] = visit.departureDate?.stringFromDate()
-        propertyDictionary["id"] = visit.visitId
-        propertyDictionary["lat"] = visit.latitude
-        propertyDictionary["lng"] = visit.longitude
-        
-        if let ASdelegate = self.airshipEventsDelegate {
-            propertyDictionary["date"] = visit.date?.stringFromDate()
-            ASdelegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
-        }
-        
-        if let MCdelegate = self.marketingCloudEventsDelegate {
-            propertyDictionary["date"] = visit.date?.stringFromISO8601Date()
-            MCdelegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
-        }
-        
-        if((SFMCCredentials["visitEventDefinitionKey"]) != nil) {
-            propertyDictionary["date"] = visit.date?.stringFromISO8601Date()
-            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["visitEventDefinitionKey"]!)
-        }
-        
-    }
-    
-    func sendASPOIEvents(poi: POI) {
-        var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
-        propertyDictionary["event"] = "woos_poi_event"
-        propertyDictionary["name"] = poi.name
-        propertyDictionary["lat"] = poi.latitude
-        propertyDictionary["lng"] = poi.longitude
-        propertyDictionary["city"] = poi.city
-        propertyDictionary["distance"] = poi.distance
-        propertyDictionary["tags"] = poi.tags
-        propertyDictionary["types"] = poi.types
-        propertyDictionary["radius"] = poi.radius
-        
-        setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
-
-        if let ASdelegate = self.airshipEventsDelegate {
-            propertyDictionary["date"] = poi.date?.stringFromDate()
-            ASdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
-        }
-        
-        if let MCdelegate = self.marketingCloudEventsDelegate {
-            propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
-            MCdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
-        }
-        
-        if((SFMCCredentials["poiEventDefinitionKey"]) != nil) {
-            propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
-            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["poiEventDefinitionKey"]!)
-        }
-    }
-    
-    func sendASRegionEvents(region: Region) {
-        var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
-        propertyDictionary["lat"] = region.latitude
-        propertyDictionary["lng"] = region.longitude
-        propertyDictionary["radius"] = region.radius
-        
-        if(getRegionType(identifier: region.identifier) == RegionType.poi) {
-            let idStore = region.identifier.components(separatedBy: "<id>")[1]
-            guard let poi = POIs.getPOIbyIdStore(idstore: idStore) else {
-                return
-            }
-            setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
-        } else {
-            propertyDictionary["id"] = region.identifier
-        }
-        
-        if let ASdelegate = self.airshipEventsDelegate {
-            propertyDictionary["date"] = region.date.stringFromDate()
-            if(region.didEnter) {
-                propertyDictionary["event"] = "woos_geofence_entered_event"
-                ASdelegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
-            } else {
-                propertyDictionary["event"] = "woos_geofence_exited_event"
-                ASdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
-            }
-        }
-        
-        if let MCdelegate = self.marketingCloudEventsDelegate {
-            propertyDictionary["date"] = region.date.stringFromISO8601Date()
-            if(region.didEnter) {
-                propertyDictionary["event"] = "woos_geofence_entered_event"
-                MCdelegate.regionEnterEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_entered_event")
-            } else {
-                propertyDictionary["event"] = "woos_geofence_exited_event"
-                MCdelegate.regionExitEvent(regionEvent: propertyDictionary, eventName: "woos_geofence_exited_event")
-            }
-        }
-        
-        if((SFMCCredentials["regionEnteredEventDefinitionKey"]) != nil && region.didEnter) {
-            propertyDictionary["date"] = region.date.stringFromISO8601Date()
-            propertyDictionary["event"] = "woos_geofence_entered_event"
-            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["regionEnteredEventDefinitionKey"]!)
-        }
-        
-        if((SFMCCredentials["regionExitedEventDefinitionKey"]) != nil && !region.didEnter) {
-            propertyDictionary["date"] = region.date.stringFromISO8601Date()
-            propertyDictionary["event"] = "woos_geofence_exited_event"
-            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["regionExitedEventDefinitionKey"]!)
-        }
-    }
-    
-    func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>) {
-        let jsonStructure = try? JSONDecoder().decode(JSONAny.self, from:  poi.jsonData ?? Data.init())
-        if let value = jsonStructure!.value as? [String: Any] {
-            if let features = value["features"] as? [[String: Any]] {
-                for feature in features {
-                    if let properties = feature["properties"] as? [String: Any] {
-                        let idstoreFromJson = properties["store_id"] as? String ?? ""
-                        if let userProperties = properties["user_properties"] as? [String: Any] {
-                            if (idstoreFromJson == poi.idstore) {
-                                for (key, value) in userProperties {
-                                      if(userPropertiesFilter.isEmpty || userPropertiesFilter.contains(key)) {
-                                          propertyDictionary["user_properties_" + key] = value
-                                      }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        propertyDictionary["city"] = poi.city
-        propertyDictionary["zipCode"] = poi.zipCode
-        propertyDictionary["distance"] = poi.distance
-        propertyDictionary["idStore"] = poi.idstore
-        propertyDictionary["name"] = poi.name
-        propertyDictionary["country_code"] = poi.countryCode
-        propertyDictionary["tags"] = poi.tags
-        propertyDictionary["types"] = poi.types
-        propertyDictionary["address"] = poi.address
-        propertyDictionary["contact"] = poi.contact
-        propertyDictionary["openNow"] = poi.openNow
-    }
-    
-    func sendASZOIClassifiedEvents(region: Region) {
-        var propertyDictionary = Dictionary <String, Any>()
-        propertyDictionary["ContactKey"] = SFMCCredentials["contactKey"] ?? ""
-        propertyDictionary["id"] = region.identifier
-        propertyDictionary["lat"] = region.latitude
-        propertyDictionary["lng"] = region.longitude
-        propertyDictionary["radius"] = region.radius
-        
-        if let ASdelegate = self.airshipEventsDelegate {
-            propertyDictionary["date"] = region.date.stringFromDate()
-            if(region.didEnter) {
-                propertyDictionary["event"] = "woos_zoi_classified_entered_event"
-                ASdelegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
-            } else {
-                propertyDictionary["event"] = "woos_zoi_classified_exited_event"
-                ASdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
-            }
-        }
-        
-        if let MCdelegate = self.marketingCloudEventsDelegate {
-            propertyDictionary["date"] = region.date.stringFromISO8601Date()
-            if(region.didEnter) {
-                propertyDictionary["event"] = "woos_zoi_classified_entered_event"
-                MCdelegate.ZOIclassifiedEnter(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_entered_event")
-            } else {
-                propertyDictionary["event"] = "woos_zoi_classified_exited_event"
-                MCdelegate.ZOIclassifiedExit(regionEvent: propertyDictionary, eventName: "woos_zoi_classified_exited_event")
-            }
-        }
-        
-        if((SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"]) != nil && region.didEnter) {
-            propertyDictionary["date"] = region.date.stringFromISO8601Date()
-            propertyDictionary["event"] = "woos_zoi_classified_entered_event"
-            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"]!)
-        }
-        
-        if((SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]) != nil && !region.didEnter) {
-            propertyDictionary["date"] = region.date.stringFromISO8601Date()
-            propertyDictionary["event"] = "woos_zoi_classified_exited_event"
-            SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]!)
-        }
-    }
 
 }
 

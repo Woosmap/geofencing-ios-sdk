@@ -248,7 +248,6 @@ class LocationTableViewContoller: UITableViewController {
         DataVisit().eraseVisits()
         DataZOI().eraseZOIs()
         DataRegion().eraseRegions()
-        RegionIsochrones.deleteAll()
         placeToShow.removeAll()
         tableView.reloadData()
     }

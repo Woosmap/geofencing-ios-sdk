@@ -13,11 +13,7 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var trackingSwitch: UISwitch!
     @IBOutlet weak var refreshAllTimeSwitch: UISwitch!
     @IBOutlet weak var searchAPISwitch: UISwitch!
-    @IBOutlet weak var distanceAPISwitch: UISwitch!
-    @IBOutlet weak var POIRegionSwitch: UISwitch!
     @IBOutlet weak var removeAllRegionsButton: UIButton!
-    @IBOutlet weak var removeAllPOIRegionsButton: UIButton!
-    @IBOutlet weak var removeAllCustomRegionsButton: UIButton!
     @IBOutlet weak var testDataButton: UIButton!
     @IBOutlet weak var versionLabel: UILabel!
 
@@ -30,15 +26,8 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
         refreshAllTimeSwitch.addTarget(self, action: #selector(disableEnableRefresh), for: .touchUpInside)
         searchAPISwitch.setOn(WoosmapGeofencing.shared.getSearchAPIRequestEnable(), animated: false)
         searchAPISwitch.addTarget(self, action: #selector(disableEnableSearchAPI), for: .touchUpInside)
-        distanceAPISwitch.setOn(WoosmapGeofencing.shared.getDistanceAPIRequestEnable(), animated: false)
-        distanceAPISwitch.addTarget(self, action: #selector(disableEnableDistanceAPI), for: .touchUpInside)
-        POIRegionSwitch.setOn(WoosmapGeofencing.shared.getSearchAPICreationRegionEnable(), animated: false)
-        POIRegionSwitch.addTarget(self, action: #selector(searchAPICreationRegionEnable), for: .touchUpInside)
 
         removeAllRegionsButton.addTarget(self, action: #selector(removeAllRegions), for: .touchUpInside)
-        removeAllPOIRegionsButton.addTarget(self, action: #selector(removeAllPOIRegions), for: .touchUpInside)
-        removeAllCustomRegionsButton.addTarget(self, action: #selector(removeAllCustomRegions), for: .touchUpInside)
-
         testDataButton.addTarget(self, action: #selector(testData), for: .touchUpInside)
         
         let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
@@ -81,10 +70,6 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
             WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: true)
             searchAPISwitch.setOn(WoosmapGeofencing.shared.getSearchAPIRequestEnable(), animated: true)
             UserDefaults.standard.setValue(WoosmapGeofencing.shared.getSearchAPIRequestEnable(), forKey: "SearchAPIEnable")
-            distanceAPISwitch.setOn(WoosmapGeofencing.shared.getDistanceAPIRequestEnable(), animated: true)
-            UserDefaults.standard.setValue(WoosmapGeofencing.shared.getDistanceAPIRequestEnable(), forKey: "DistanceAPIEnable")
-            POIRegionSwitch.setOn(WoosmapGeofencing.shared.getSearchAPICreationRegionEnable(), animated: false)
-            UserDefaults.standard.setValue(WoosmapGeofencing.shared.getSearchAPICreationRegionEnable(), forKey: "searchAPICreationRegionEnable")
         } else {
             UserDefaults.standard.setValue(false, forKey: "ModeHighfrequencyLocation")
             WoosmapGeofencing.shared.setModeHighfrequencyLocation(enable: false)
@@ -101,36 +86,8 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @objc func disableEnableDistanceAPI() {
-        if distanceAPISwitch.isOn {
-            UserDefaults.standard.setValue(true, forKey: "DistanceAPIEnable")
-            WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: true)
-        } else {
-            UserDefaults.standard.setValue(false, forKey: "DistanceAPIEnable")
-            WoosmapGeofencing.shared.setDistanceAPIRequestEnable(enable: false)
-        }
-    }
-
-    @objc func searchAPICreationRegionEnable() {
-        if POIRegionSwitch.isOn {
-            UserDefaults.standard.setValue(true, forKey: "searchAPICreationRegionEnable")
-            WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: true)
-        } else {
-            UserDefaults.standard.setValue(false, forKey: "searchAPICreationRegionEnable")
-            WoosmapGeofencing.shared.setSearchAPICreationRegionEnable(enable: false)
-        }
-    }
-
     @objc func removeAllRegions() {
         WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.RegionType.none)
-    }
-
-    @objc func removeAllPOIRegions() {
-        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.RegionType.poi)
-    }
-
-    @objc func removeAllCustomRegions() {
-        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.RegionType.custom)
     }
 
     @objc func testData() {

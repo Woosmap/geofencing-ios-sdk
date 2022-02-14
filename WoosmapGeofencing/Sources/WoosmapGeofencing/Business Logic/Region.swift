@@ -61,26 +61,6 @@ public class Regions {
         }
     }
     
-    public class func add(regionIso: RegionIsochrone) -> Region {
-        do {
-            let realm = try Realm()
-            let latRegion = regionIso.latitude
-            let lngRegion = regionIso.longitude
-            let radius = regionIso.radius
-            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: Double(radius), dateCaptured: Date(), identifier: regionIso.identifier!, didEnter: regionIso.didEnter, fromPositionDetection: true)
-            entry.duration = regionIso.duration
-            entry.durationText = regionIso.durationText
-            entry.distance = regionIso.distance
-            entry.distanceText = regionIso.distanceText
-            entry.type = "isochrone"
-            realm.beginWrite()
-            realm.add(entry)
-            try realm.commitWrite()
-            return entry
-        } catch {
-        }
-        return Region()
-    }
     
     public class func getRegionFromId(id: String) -> Region? {
         do {

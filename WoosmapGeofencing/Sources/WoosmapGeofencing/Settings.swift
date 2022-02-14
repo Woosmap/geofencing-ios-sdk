@@ -71,11 +71,7 @@ public var searchAPIRequestEnable = true
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
 public var searchAPIRefreshDelayDay = 1
-public var searchAPICreationRegionEnable = true
 public var searchAPILastRequestTimeStamp = 0.0
-
-// Distance API filters
-public var distanceAPIRequestEnable = true
 
 // Active visit
 public var visitEnable = true

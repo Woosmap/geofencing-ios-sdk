@@ -140,15 +140,6 @@ import RealmSwift
         return searchAPIRequestEnable
     }
 
-    public func setSearchAPICreationRegionEnable(enable: Bool) {
-        if enable != getSearchAPICreationRegionEnable() {
-            searchAPICreationRegionEnable = enable
-        }
-    }
-    public func getSearchAPICreationRegionEnable() -> Bool {
-        return searchAPICreationRegionEnable
-    }
-    
     public func setSearchAPILastRequestTimeStamp(time: Double) {
         searchAPILastRequestTimeStamp = time
     }
@@ -157,16 +148,6 @@ import RealmSwift
         return searchAPILastRequestTimeStamp
     }
     
-
-    public func setDistanceAPIRequestEnable(enable: Bool) {
-        if enable != getDistanceAPIRequestEnable() {
-            distanceAPIRequestEnable = enable
-        }
-    }
-
-    public func getDistanceAPIRequestEnable() -> Bool {
-        return distanceAPIRequestEnable
-    }
 
     public func setSearchAPIFilter(distance: Double, time: Int) {
         searchAPIDistanceFilter = distance
@@ -263,9 +244,7 @@ import RealmSwift
         if (modeHighfrequencyLocation == true) {
             self.locationService?.startUpdatingLocation()
             setSearchAPIRequestEnable(enable: false)
-            setDistanceAPIRequestEnable(enable: false)
             setClassification(enable: false)
-            setSearchAPICreationRegionEnable(enable: false)
             self.locationService?.removeRegions(type: LocationService.RegionType.position)
         } else {
             self.locationService?.stopUpdatingLocation()
@@ -325,12 +304,10 @@ import RealmSwift
             setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
 
             setSearchAPIRequestEnable(enable: configJSON?.searchAPIEnable ?? false)
-            setSearchAPICreationRegionEnable(enable: configJSON?.searchAPICreationRegionEnable ?? false)
             setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
             setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPIRefreshDelayDay ?? 1))
 
             setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
-            setDistanceAPIRequestEnable(enable: configJSON?.distanceAPIEnable ?? false)
             setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
             setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
             setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
