@@ -1,0 +1,4 @@
+framework module WoosmapGeofencing {
+  header "WoosmapGeofencing-Swift.h"
+  requires objc
+}

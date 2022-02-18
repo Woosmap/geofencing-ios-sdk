@@ -16,4 +16,5 @@ Pod::Spec.new do |s|
   s.dependency 'Surge', '~> 2.3.0'
   s.dependency 'RealmSwift'
   s.dependency 'Realm' 
+  s.dependency 'JSONSchema', '~> 0.6.0'
 end

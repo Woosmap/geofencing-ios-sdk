@@ -1,0 +1,36 @@
+{
+    "trackingEnable": true,
+    "foregroundLocationServiceEnable": true,
+    "modeHighFrequencyLocation": true,
+
+    "visitEnable": false,
+    "classificationEnable": false,
+    "creationOfZOIEnable": false,
+
+    "currentLocationTimeFilter": 0,
+    "currentLocationDistanceFilter": 0,
+    "accuracyFilter": 100,
+
+    "searchAPI": {
+        "searchAPIEnable": false,
+        "searchAPICreationRegionEnable": false,
+        "searchAPITimeFilter": 20,
+        "searchAPIDistanceFilter": 100,
+        "searchAPIRefreshDelayDay": 1
+    },
+    
+    "distanceAPIEnable": false,
+        
+    "distance": {
+        "distanceProvider": "woosmapDistance",
+        "distanceMode": "driving",
+        "distanceRouting": "fastest",
+        "distanceUnits": "metric",
+        "distanceLanguage": "fr",
+        "distanceMaxAirDistanceFilter": 1000000,
+        "distanceTimeFilter": 30
+    },
+    
+    "outOfTimeDelay": 300,
+    "dataDurationDelay": 30
+}
