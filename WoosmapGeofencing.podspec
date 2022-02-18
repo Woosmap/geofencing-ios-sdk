@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.authors = { 'Web Geo Services' => 'https://developers.woosmap.com/support/contact/'}
   s.documentation_url = 'https://github.com/woosmap/woosmap-geofencing-ios-sdk'
 
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '12.0'
 
   s.swift_versions = ['5.1', '5.2']
   s.source       = { :git => "https://github.com/woosmap/woosmap-geofencing-ios-sdk/tree/deploy/package", :tag => "#{s.version}" }
