@@ -21,9 +21,10 @@ public class Distance: Object {
     @objc public dynamic var mode: String?
     @objc public dynamic var units: String?
     @objc public dynamic var routing: String?
+    @objc public dynamic var status: String?
 
 
-    convenience public init(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double,dateCaptured: Date, distance: Int, duration: Int, mode: String, units: String, routing: String) {
+    convenience public init(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double,dateCaptured: Date, distance: Int, duration: Int, mode: String, units: String, routing: String, status: String) {
         self.init()
         self.originLatitude = originLatitude
         self.originLongitude = originLongitude
@@ -35,6 +36,7 @@ public class Distance: Object {
         self.mode = mode
         self.units = units
         self.routing = routing
+        self.status = status
     }
 
 }
@@ -56,7 +58,7 @@ public class Distances {
                 for row in jsonStructure.rows! {
                     var indexElement = 0
                     for element in row.elements! {
-                        if(element.status == "OK") {
+                       // if(element.status == "OK") {
                             let distance = Distance()
                             distance.units = distanceUnits.rawValue
                             distance.date = Date()
@@ -68,23 +70,24 @@ public class Distances {
                             distance.destinationLatitude = dest.0
                             distance.destinationLongitude = dest.1
                             let distanceValue = element.distance?.value
-                            let distanceText = element.distance?.text!
+                            let distanceText = element.distance?.text
                             var durationValue = 0
                             var durationText = ""
                             if(distanceProvider == DistanceProvider.woosmapTraffic) {
-                                durationValue = element.duration_with_traffic?.value! ?? 0
-                                durationText = element.duration_with_traffic?.text! ?? ""
+                                durationValue = element.duration_with_traffic?.value ?? 0
+                                durationText = element.duration_with_traffic?.text ?? ""
                             } else {
-                                durationValue = element.duration?.value! ?? 0
-                                durationText = element.duration?.text! ?? ""
+                                durationValue = element.duration?.value ?? 0
+                                durationText = element.duration?.text ?? ""
                             }
 
                             distance.distance = distanceValue ?? 0
                             distance.distanceText = distanceText
                             distance.duration = durationValue
                             distance.durationText = durationText
+                            distance.status = element.status
                             distanceArray.append(distance)
-                        }
+                        //}
                         indexElement+=1
                     }
                 }

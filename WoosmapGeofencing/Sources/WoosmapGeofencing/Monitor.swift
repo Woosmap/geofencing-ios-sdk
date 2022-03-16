@@ -625,32 +625,37 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     public func updateRegionWithDistance(distanceAr: [Distance]) {
+        var regionIsoTodelete:[String] = []
         for regionIso in RegionIsochrones.getAll() {
-            var regionIsUpdatedWithDistance = false
             for distance in distanceAr {
                 if(distance.destinationLatitude == regionIso.latitude && distance.destinationLongitude == regionIso.longitude) {
-                    var didEnter = regionIso.didEnter
-                    let lastStatedidEnter = regionIso.didEnter
-                    if(distance.duration <= regionIso.radius) {
-                        if(regionIso.didEnter == false) {
-                            didEnter = true
-                            
+                    if(distance.status != "OK"){
+                        print("Respone status = " + (distance.status ?? "NOK") + " Region Isochrone " + regionIso.identifier! + " is delete")
+                        regionIsoTodelete.append(regionIso.identifier!)
+                    }else {
+                        var didEnter = regionIso.didEnter
+                        let lastStatedidEnter = regionIso.didEnter
+                        if(distance.duration <= regionIso.radius) {
+                            if(regionIso.didEnter == false) {
+                                didEnter = true
+                                
+                            }
+                        } else {
+                            if(regionIso.didEnter == true) {
+                                didEnter = false
+                            }
                         }
-                    } else {
-                        if(regionIso.didEnter == true) {
-                            didEnter = false
+                        let regionUpdated = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: didEnter, distanceInfo: distance)
+                        if(regionUpdated.didEnter != lastStatedidEnter) {
+                            didEventRegionIsochrone(regionIsochrone: regionUpdated)
                         }
                     }
-                    let regionUpdated = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: didEnter, distanceInfo: distance)
-                    if(regionUpdated.didEnter != lastStatedidEnter) {
-                        didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                    }
-                    regionIsUpdatedWithDistance = true
                 }
             }
-            if(!regionIsUpdatedWithDistance) {
-                _ = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: false, distanceInfo: Distance())
-            }
+        }
+        
+        for regionIsoIdentifer in regionIsoTodelete {
+            RegionIsochrones.removeRegionIsochrone(id: regionIsoIdentifer)
         }
        
     }
