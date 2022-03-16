@@ -233,12 +233,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 let radius = textField!.text!
                 
                 if(textField!.text!.contains("s")) {
-                    let (_, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "isochrone")
+                    let durationRadius = radius.replacingOccurrences(of: "s", with: "")
+                    let (regionIsCreated, state) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(durationRadius)!, type: "isochrone")
+                    if !regionIsCreated {
+                        let alert = UIAlertController(title: "Region Identifier illegal", message: state, preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
                     self.initMap()
                 } else {
-                    let (regionIsCreated, _) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "circle")
+                    let (regionIsCreated, state) = WoosmapGeofencing.shared.locationService.addRegion(identifier: region_identifer, center: coordinate, radius: Int(radius)!, type: "circle")
                     if !regionIsCreated {
-                        let alert = UIAlertController(title: "Region Limit creation", message: "You can't create more than 20 regions", preferredStyle: UIAlertController.Style.alert)
+                        let alert = UIAlertController(title: "Region Limit creation", message: state, preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     }

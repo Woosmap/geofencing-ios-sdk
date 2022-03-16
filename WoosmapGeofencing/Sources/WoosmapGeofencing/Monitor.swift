@@ -231,16 +231,16 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.handleRegionChange()
     }
 
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate: Bool, identifier: String) {
-        guard let monitoredRegions = locationManager?.monitoredRegions else { return (false, "") }
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> Bool {
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return false }
         
         if (monitoredRegions.count < 20) {
             let id = RegionType.custom.rawValue + "<id>" + identifier
             self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
             checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
-            return (true, RegionType.custom.rawValue + "<id>" + identifier)
+            return true
         } else {
-            return (false, "")
+            return false
         }
     }
     
@@ -254,18 +254,34 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, state: String){
         if(type == "isochrone"){
-            addRegionIsochrone(identifier: identifier, center: center, radius: radius)
-            return (true, identifier)
+            let regionIsCreated = addRegionIsochrone(identifier: identifier, center: center, radius: radius)
+            var state = ""
+            if(regionIsCreated) {
+                state = "The region is created"
+            } else {
+                state = "Identifier already exist"
+            }
+            return (regionIsCreated, state)
         } else if(type == "circle"){
-            let (regionIsCreated, identifier) = addRegion(identifier: identifier, center: center, radius: Double(radius))
-            return (regionIsCreated, identifier)
+            let regionIsCreated = addRegion(identifier: identifier, center: center, radius: Double(radius))
+            var state = ""
+            if(regionIsCreated) {
+                state = "The region is created"
+            } else {
+                state = "You can't create more than 20 regions"
+            }
+            return (regionIsCreated, state)
         }
-        return (false, "")
+        return (false, "the type is incorrect")
     }
     
-    public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int)  {
+    public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int) -> Bool  {
+        if (RegionIsochrones.getRegionFromId(id: identifier) != nil) {
+            return false
+        }
+        
         let regionIso = RegionIsochrone()
         regionIso.identifier = identifier
         regionIso.date = Date()
@@ -277,6 +293,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if self.currentLocation != nil {
             calculateDistanceWithRegion(location: self.currentLocation!)
         }
+        
+        return true
     }
     
     public func removeRegionIsochrone(identifier: String) {
@@ -541,11 +559,11 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
         let userLongitude: String = String(format: "%f", locationOrigin.coordinate.longitude)
         var coordinateDestinations = ""
-        for coordinate in coordinatesDest {
-            let destLatitude: String = String(format: "%f", Double(coordinate.0))
-            let destLongitude: String = String(format: "%f", Double(coordinate.1))
+        for i in 0 ..< coordinatesDest.count {
+            let destLatitude: String = String(format: "%f", Double(coordinatesDest[i].0))
+            let destLongitude: String = String(format: "%f", Double(coordinatesDest[i].1))
             coordinateDestinations += destLatitude + "," + destLongitude
-            if coordinatesDest.last! != coordinate {
+            if i != coordinatesDest.count-1 {
                 coordinateDestinations += "|"
             }
         }
@@ -580,6 +598,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                                                                  distanceLanguage: distanceLanguage,
                                                                  trafficDistanceRouting: trafficDistanceRouting)
                                                                 
+                    
+                    if (regionIsochroneToUpdate) {
+                        self.updateRegionWithDistance(distanceAr: distance)
+                    }
+                    
+                    delegateDistance.distanceAPIResponse(distance: distance)
+                    
                     if(locationId != "" && !distance.isEmpty) {
                         guard let delegateSearch = self.searchAPIDataDelegate else {
                             return
@@ -592,12 +617,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             delegateSearch.searchAPIResponse(poi: poiUpdated)
                         }
                     }
-                    
-                    if (regionIsochroneToUpdate) {
-                        self.updateRegionWithDistance(distanceAr: distance)
-                    }
-                    
-                    delegateDistance.distanceAPIResponse(distance: distance)
                 }
             }
         }
@@ -607,6 +626,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     public func updateRegionWithDistance(distanceAr: [Distance]) {
         for regionIso in RegionIsochrones.getAll() {
+            var regionIsUpdatedWithDistance = false
             for distance in distanceAr {
                 if(distance.destinationLatitude == regionIso.latitude && distance.destinationLongitude == regionIso.longitude) {
                     var didEnter = regionIso.didEnter
@@ -625,9 +645,14 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                     if(regionUpdated.didEnter != lastStatedidEnter) {
                         didEventRegionIsochrone(regionIsochrone: regionUpdated)
                     }
+                    regionIsUpdatedWithDistance = true
                 }
             }
+            if(!regionIsUpdatedWithDistance) {
+                _ = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: false, distanceInfo: Distance())
+            }
         }
+       
     }
     
     public func didEventRegionIsochrone(regionIsochrone: RegionIsochrone) {

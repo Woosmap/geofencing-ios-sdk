@@ -78,13 +78,12 @@ public class Distances {
                                 durationValue = element.duration?.value! ?? 0
                                 durationText = element.duration?.text! ?? ""
                             }
-                            if distanceValue != nil && durationValue != 0 {
-                                distance.distance = distanceValue ?? 0
-                                distance.distanceText = distanceText
-                                distance.duration = durationValue
-                                distance.durationText = durationText
-                                distanceArray.append(distance)
-                            }
+
+                            distance.distance = distanceValue ?? 0
+                            distance.distanceText = distanceText
+                            distance.duration = durationValue
+                            distance.durationText = durationText
+                            distanceArray.append(distance)
                         }
                         indexElement+=1
                     }
