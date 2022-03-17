@@ -53,9 +53,9 @@ public class RegionIsochrones {
                 let realm = try Realm()
                 realm.beginWrite()
                 regionToUpdate!.distance = distanceInfo.distance
-                regionToUpdate!.distanceText = distanceInfo.distanceText!
+                regionToUpdate!.distanceText = distanceInfo.distanceText ?? ""
                 regionToUpdate!.duration = distanceInfo.duration
-                regionToUpdate!.durationText = distanceInfo.durationText!
+                regionToUpdate!.durationText = distanceInfo.durationText ?? ""
                 regionToUpdate!.didEnter = didEnter
                 regionToUpdate!.date = Date()
                 realm.add(regionToUpdate!)
