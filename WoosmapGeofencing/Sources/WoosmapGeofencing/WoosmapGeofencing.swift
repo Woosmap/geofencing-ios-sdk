@@ -309,9 +309,12 @@ import RealmSwift
     
     public func startTracking(configurationProfile: ConfigurationProfile){
         let bundle = Bundle(for: Self.self)
-        let url = bundle.url(forResource: configurationProfile.rawValue, withExtension: ".json")
+        guard let url = bundle.url(forResource: configurationProfile.rawValue, withExtension: ".json") else {
+                print(["Error: \(configurationProfile.rawValue) profil loading"])
+                return
+        }
         do {
-            let jsonData = try Data(contentsOf: url!)
+            let jsonData = try Data(contentsOf: url)
             let configJSON = try? JSONDecoder().decode(ConfigModel.self, from: jsonData)
             setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
             setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
