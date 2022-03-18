@@ -254,31 +254,20 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, state: String){
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
         if(type == "isochrone"){
             let regionIsCreated = addRegionIsochrone(identifier: identifier, center: center, radius: radius)
-            var state = ""
-            if(regionIsCreated) {
-                state = "The region is created"
-            } else {
-                state = "Identifier already exist"
-            }
-            return (regionIsCreated, state)
+            return (regionIsCreated, identifier)
         } else if(type == "circle"){
             let regionIsCreated = addRegion(identifier: identifier, center: center, radius: Double(radius))
-            var state = ""
-            if(regionIsCreated) {
-                state = "The region is created"
-            } else {
-                state = "You can't create more than 20 regions"
-            }
-            return (regionIsCreated, state)
+            return (regionIsCreated, identifier)
         }
         return (false, "the type is incorrect")
     }
     
     public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int) -> Bool  {
         if (RegionIsochrones.getRegionFromId(id: identifier) != nil) {
+            print("Identifier already exist")
             return false
         }
         
