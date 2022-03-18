@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'WoosmapGeofencing'
-  s.version = '1.6.2'
+  s.version = '1.6.3'
   s.license = 'MIT'
   s.summary = 'Geofencing in Swift'
   s.homepage = 'https://github.com/woosmap/woosmap-geofencing-ios-sdk'
