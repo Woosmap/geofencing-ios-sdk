@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.public_header_files = "WoosmapGeofencing.framework/Headers/*.h"
   s.source_files = "WoosmapGeofencing.xcframework/*.h"
   s.vendored_frameworks = "WoosmapGeofencing.xcframework"
-  s.dependency = 'Realm', :git => 'https://github.com/realm/realm-swift.git'
-  s.dependency = 'RealmSwift', :git => 'https://github.com/realm/realm-swift.git'
+  s.dependency = 'Realm'
+  s.dependency = 'RealmSwift'
 end
