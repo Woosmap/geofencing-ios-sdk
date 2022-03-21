@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '12.0'
 
   s.swift_versions = ['5.1', '5.2']
-  s.source       = { :git => "https://github.com/Woosmap/woosmap-geofencing-ios-sdk/raw/deploy/package/WoosmapGeofencing.xcframework" }
+  s.source       = { :git => "https://github.com/Woosmap/woosmap-geofencing-ios-sdk/deploy/package/" }
   s.public_header_files = "WoosmapGeofencing.framework/Headers/*.h"
   s.source_files = "WoosmapGeofencing.xcframework/*.h"
   s.vendored_frameworks = "WoosmapGeofencing.xcframework"
