@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/woosmap/woosmap-geofencing-ios-sdk/tree/deploy/package", :tag => "#{s.version}" }
   s.public_header_files = "WoosmapGeofencing.framework/Headers/*.h"
   s.source_files = "WoosmapGeofencing.framework/Headers/*.h"
-  s.vendored_frameworks = "WoosmapGeofencing.framework"
+  s.vendored_frameworks = "WoosmapGeofencing.xcframework"
 end
