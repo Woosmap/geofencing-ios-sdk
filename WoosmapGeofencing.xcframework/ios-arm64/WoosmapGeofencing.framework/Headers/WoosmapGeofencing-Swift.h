@@ -276,6 +276,8 @@ SWIFT_CLASS("_TtC17WoosmapGeofencing12LogSearchAPI")
 @property (nonatomic, copy) NSString * _Nullable distanceTraveledLastRefreshPOIRegion;
 @property (nonatomic) double searchAPILastRequestTimeStampValue;
 @property (nonatomic) BOOL sendSearchAPIRequest;
+@property (nonatomic, copy) NSString * _Nullable woosmapAPIKey;
+@property (nonatomic) BOOL searchAPIRequestEnable;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
