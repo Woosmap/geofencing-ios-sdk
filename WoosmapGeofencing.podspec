@@ -14,6 +14,10 @@ Pod::Spec.new do |s|
   s.public_header_files = "WoosmapGeofencing.framework/Headers/*.h"
   s.source_files = "WoosmapGeofencing.xcframework/*.h"
   s.vendored_frameworks = "WoosmapGeofencing.xcframework"
-  s.dependency 'Realm','~> 10.24.2'
-  s.dependency 'RealmSwift','~> 10.24.2'
+  s.dependency 'Realm'
+  s.dependency 'RealmSwift'
+  s.dependency 'RealmSwift'
+  s.dependency 'Surge'
+  s.dependency 'JSONSchema', :git => 'https://github.com/kylef/JSONSchema.swift'
+  
 end
