@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
   s.dependency 'RealmSwift'
   s.dependency 'RealmSwift'
   s.dependency 'Surge'
-  s.dependency 'JSONSchema', :git => 'https://github.com/kylef/JSONSchema.swift'
+  s.dependency 'JSONSchema'
   
 end
