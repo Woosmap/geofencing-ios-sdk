@@ -21,6 +21,7 @@ public class Region: Object {
     @objc public dynamic var duration = 0;
     @objc public dynamic var durationText = "";
     @objc public dynamic var type = "circle";
+    @objc public dynamic var origin = "";
 
     convenience init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
         self.init()
@@ -41,7 +42,17 @@ public class Regions {
             let latRegion = (POIregion as! CLCircularRegion).center.latitude
             let lngRegion = (POIregion as! CLCircularRegion).center.longitude
             let radius = (POIregion as! CLCircularRegion).radius
-            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: POIregion.identifier, didEnter: didEnter, fromPositionDetection: fromPositionDetection)
+            var identifier = POIregion.identifier
+            var origin = "custom"
+            if(POIregion.identifier.contains(LocationService.RegionType.poi.rawValue)) {
+                identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
+                origin = "POI"
+            } else if (POIregion.identifier.contains(LocationService.RegionType.custom.rawValue)) {
+                identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
+                origin = "custom"
+            }
+            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: identifier, didEnter: didEnter, fromPositionDetection: fromPositionDetection)
+            entry.origin = origin
             realm.beginWrite()
             realm.add(entry)
             try realm.commitWrite()
@@ -73,6 +84,7 @@ public class Regions {
             entry.distance = regionIso.distance
             entry.distanceText = regionIso.distanceText
             entry.type = "isochrone"
+            entry.origin = "custom"
             realm.beginWrite()
             realm.add(entry)
             try realm.commitWrite()
@@ -85,7 +97,11 @@ public class Regions {
     public class func getRegionFromId(id: String) -> Region? {
         do {
             let realm = try Realm()
-            let predicate = NSPredicate(format: "identifier == %@", id)
+            var identifier = id
+            if(id.contains(LocationService.RegionType.poi.rawValue) || id.contains(LocationService.RegionType.custom.rawValue)) {
+                identifier = id.components(separatedBy: "<id>")[1]
+            } 
+            let predicate = NSPredicate(format: "identifier == %@", identifier)
             let fetchedResults = realm.objects(Region.self).filter(predicate)
             if let aRegion = fetchedResults.last {
                return aRegion
