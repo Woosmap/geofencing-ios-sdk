@@ -900,9 +900,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         propertyDictionary["lng"] = region.longitude
         propertyDictionary["radius"] = region.radius
         
-        if(getRegionType(identifier: region.identifier) == RegionType.poi) {
-            let idStore = region.identifier.components(separatedBy: "<id>")[1]
-            guard let poi = POIs.getPOIbyIdStore(idstore: idStore) else {
+        if(region.origin == "POI") {
+            guard let poi = POIs.getPOIbyIdStore(idstore: region.identifier) else {
                 return
             }
             setDataFromPOI(poi: poi, propertyDictionary: &propertyDictionary)
