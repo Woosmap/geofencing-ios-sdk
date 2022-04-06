@@ -44,7 +44,6 @@ import WoosmapGeofencing
         // Enable Visit and set delegate of protocol Visit
         WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
         
-        WoosmapGeofencing.shared.startTracking(configurationProfile: ConfigurationProfile.passiveTracking)
 
         // Check if the authorization Status of location Manager
         if CLLocationManager.authorizationStatus() != .notDetermined {

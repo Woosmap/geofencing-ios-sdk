@@ -11,7 +11,7 @@ import RealmSwift
     public var locationService: LocationService!
     public var sphericalMercator: SphericalMercator!
     public var visitPoint: LoadedVisit!
-    var locationManager: CLLocationManager? = CLLocationManager()
+    var locationManager: CLLocationManager?
 
     /**
      Access singleton of Now object
@@ -286,38 +286,4 @@ import RealmSwift
         trackingChanged(tracking: trackingEnable)
     }
     
-    public func startTracking(configurationProfile: ConfigurationProfile){
-        let bundle = Bundle(for: Self.self)
-        let url = bundle.url(forResource: configurationProfile.rawValue, withExtension: ".json")
-        do {
-            let jsonData = try Data(contentsOf: url!)
-            let configJSON = try? JSONDecoder().decode(ConfigModel.self, from: jsonData)
-            setTrackingEnable(enable: configJSON?.trackingEnable ?? false)
-            setModeHighfrequencyLocation(enable: configJSON?.modeHighFrequencyLocation ?? false)
-
-            setVisitEnable(enable: configJSON?.visitEnable ?? false)
-            setClassification(enable: configJSON?.classificationEnable ?? false)
-            setRadiusDetectionClassifiedZOI(radius: configJSON?.radiusDetectionClassifiedZOI ?? 100.0)
-            setCreationOfZOIEnable(enable: configJSON?.creationOfZOIEnable ?? false)
-            setAccuracyVisitFilter(accuracy: configJSON?.accuracyVisitFilter ?? 50.0)
-
-            setCurrentPositionFilter(distance: configJSON?.currentLocationDistanceFilter ?? 0, time: Int(configJSON?.currentLocationTimeFilter ?? 0))
-
-            setSearchAPIRequestEnable(enable: configJSON?.searchAPIEnable ?? false)
-            setSearchAPIFilter(distance: Double(configJSON?.searchAPIDistanceFilter ?? 0), time: Int(configJSON?.searchAPITimeFilter ?? 0))
-            setsearchAPIRefreshDelayDay(day: Int(configJSON?.searchAPIRefreshDelayDay ?? 1))
-
-            setDistanceProvider(provider: DistanceProvider(rawValue: (configJSON?.distance?.distanceProvider)!) ?? DistanceProvider.woosmapDistance)
-            setDistanceAPIMode(mode: DistanceMode(rawValue: (configJSON?.distance?.distanceMode)!) ?? DistanceMode.driving)
-            setDistanceAPIUnits(units: DistanceUnits(rawValue: (configJSON?.distance?.distanceUnits)!) ?? DistanceUnits.metric)
-            setTrafficDistanceAPIRouting(routing: TrafficDistanceRouting(rawValue: (configJSON?.distance?.distanceRouting)!) ?? TrafficDistanceRouting.fastest)
-            setDistanceAPILanguage(language: configJSON?.distance?.distanceLanguage ?? "en")
-            setDistanceMaxAirDistanceFilter(distance: configJSON?.distance?.distanceMaxAirDistanceFilter ?? 1000000)
-            setDistanceTimeFilter(time: configJSON?.distance?.distanceTimeFilter ?? 0)
-            outOfTimeDelay = configJSON?.outOfTimeDelay ?? 300
-            dataDurationDelay = configJSON?.dataDurationDelay ?? 30
-
-        } catch { print(error) }
-    }
-
 }

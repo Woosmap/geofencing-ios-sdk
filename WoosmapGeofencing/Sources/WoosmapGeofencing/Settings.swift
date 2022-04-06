@@ -14,7 +14,7 @@ public enum ConfigurationProfile: String {
 }
 
 // Tracking
-public var trackingEnable = true
+public var trackingEnable = false
 
 // Woosmap SearchAPI Key
 public var WoosmapAPIKey = ""
