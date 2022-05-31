@@ -750,6 +750,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         regionsBeUpdated = true
                     }
                 }
+                else{
+                    if (!optimizeDistanceRequest){
+                        if (spendtime > 60){ //1 minute
+                            let avarageSpeed:Double = distance/spendtime
+                            let averageSpeedLimit:Double = regionIso.expectedAverageSpeed * 2
+                            if(avarageSpeed > averageSpeedLimit){
+                                regionsBeUpdated = true
+                            }
+                        }
+                    }
+                }
             }
             if(regionsBeUpdated) {
                 break
@@ -757,9 +768,24 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         
         if(regionsBeUpdated) {
-            calculateDistanceWithRegion(location: location, locationId: locationId)
+            if (!optimizeDistanceRequest){
+                calculateDistanceWithRegion(origin: location.coordinate, regions: regionsIsochrones, locationId: locationId) { status, functionError in
+                    if(status){
+                        let regionsIsochrones = RegionIsochrones.getAll()
+                        regionsIsochrones.forEach { item in
+                            if(item.duration != -1 ){
+                                if(item.duration <= item.radius){
+                                    //TODO: Pending part
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                calculateDistanceWithRegion(location: location, locationId: locationId)
+            }
         }
-        
     }
     
     func calculateDistanceWithRegion(location: CLLocation, locationId: String = "") {
@@ -1017,6 +1043,98 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             propertyDictionary["date"] = region.date.stringFromISO8601Date()
             propertyDictionary["event"] = "woos_zoi_classified_exited_event"
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]!)
+        }
+    }
+    
+    func calculateDistanceWithRegion (origin:CLLocationCoordinate2D,
+                                                   regions:[RegionIsochrone],
+                                                   locationId:String,
+                                      completion: @escaping(Bool, Error?) -> Void){
+        let location:CLLocation = CLLocation.init(latitude: origin.latitude, longitude: origin.longitude)
+        var regionWithInRange:[RegionIsochrone] = []
+        //Filter by distanceMaxAirDistanceFilter
+        regions.forEach { item in
+            let airDistance = location.distance(from: CLLocation.init(latitude: item.latitude, longitude: item.longitude))
+            if(airDistance > Double(distanceMaxAirDistanceFilter)){
+                item.updateDistanceAndTime(distance: -1, duration: -1)
+            }
+            else{
+                regionWithInRange.append(item)
+            }
+            
+            if(regionWithInRange.count>0){
+                //Call Distance api
+                var collectedCoordinate:[String] = []
+                var coordinatesDest: [(Double, Double)] = []
+                regionWithInRange.forEach { item in
+                    collectedCoordinate.append("\(item.latitude),\(item.longitude)")
+                    coordinatesDest.append((item.latitude, item.longitude))
+                }
+                var storeAPIUrl = ""
+                let coordinateDestinations: String = collectedCoordinate.joined(separator: "|")
+                if(distanceProvider == DistanceProvider.woosmapDistance) {
+                    storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, origin.latitude, origin.longitude, coordinateDestinations)
+                } else {
+                    storeAPIUrl = String(format: trafficDistanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue,trafficDistanceRouting.rawValue,distanceLanguage, origin.latitude, origin.longitude, coordinateDestinations)
+                }
+                let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                    if let response = response as? HTTPURLResponse {
+                        if response.statusCode != 200 {
+                            NSLog("statusCode: \(response.statusCode)")
+                            //delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
+                            completion(false,NSError(domain:"", code:response.statusCode, userInfo:[NSLocalizedDescriptionKey: "Error Distance API " + String(response.statusCode)]))
+                            return
+                        }
+                        if let error = error {
+                            completion(false,NSError(domain:"", code:0, userInfo:[NSLocalizedDescriptionKey: error]))
+                        } else {
+                            let distance = Distances.addFromResponseJson(APIResponse: data!,
+                                                                         locationId: locationId,
+                                                                         origin: location,
+                                                                         destination: coordinatesDest,
+                                                                         distanceProvider: distanceProvider,
+                                                                         distanceMode: distanceMode,
+                                                                         distanceUnits: distanceUnits,
+                                                                         distanceLanguage: distanceLanguage,
+                                                                         trafficDistanceRouting: trafficDistanceRouting)
+                            
+                            
+                            
+                            regionWithInRange.forEach { item in
+                                if let matchDistance = distance.first(where: { apidistance in
+                                    if(apidistance.destinationLatitude == item.latitude &&
+                                       apidistance.destinationLongitude == item.longitude &&
+                                       apidistance.status == "OK"){
+                                        return true
+                                    }
+                                    else{
+                                        return false
+                                    }
+                                }){
+                                    
+                                    //Add new record in Distance Log
+                                    let _ = Distance(originLatitude: origin.latitude, originLongitude: origin.longitude,
+                                                     destinationLatitude: item.latitude, destinationLongitude: item.longitude,
+                                                     dateCaptured: Date(), distance: matchDistance.distance,
+                                                     duration: matchDistance.duration, mode: distanceMode.rawValue, units: distanceUnits.rawValue,
+                                                     routing: distanceProvider.rawValue, status:  "OK")
+                                    item.updateDistanceAndTime(distance: matchDistance.distance, duration: matchDistance.duration)
+                                    
+                                }
+                                else{
+                                    item.updateDistanceAndTime(distance: -1, duration: -1)
+                                }
+                            }
+                            completion(true,nil)
+                        }
+                    }
+                }
+                task.resume()
+            }
+            else{
+                completion(true,nil)
+            }
         }
     }
 

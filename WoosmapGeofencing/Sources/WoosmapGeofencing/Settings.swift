@@ -114,3 +114,6 @@ public var SFMCAccesToken = ""
 
 public var poiRadius:Any = ""
 
+// Forcing ETA refresh when the user doesn't use the expected travel mode
+public var optimizeDistanceRequest: Bool = true
+

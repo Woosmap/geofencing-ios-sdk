@@ -22,6 +22,7 @@ public class RegionIsochrone: Object {
     @objc public dynamic var duration = 0;
     @objc public dynamic var durationText = "";
     @objc public dynamic var type = "isochrone";
+    @objc public dynamic var expectedAverageSpeed:Double = -1;
 
     convenience init(latitude: Double, longitude: Double, radius: Int, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
         self.init()
@@ -32,6 +33,21 @@ public class RegionIsochrone: Object {
         self.identifier = identifier
         self.radius = radius
         self.fromPositionDetection = fromPositionDetection
+    }
+    
+   public func updateDistanceAndTime(distance:Int,
+                                     duration:Int) {
+        do {
+            let avarageSpeed:Double = Double(distance/duration)
+            let realm = try Realm()
+            try realm.write {
+                self.duration = duration
+                self.distance = distance
+                self.expectedAverageSpeed = avarageSpeed
+            }
+        } catch let error as NSError {
+            print(error)
+        }
     }
 }
 
