@@ -741,7 +741,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let regionsIsochrones = RegionIsochrones.getAll()
         var regionsBeUpdated = false
         for regionIso in regionsIsochrones {
-            let distance = location.distance(from: CLLocation(latitude: regionIso.latitude, longitude: regionIso.longitude))
+            let distance = location.distance(from: CLLocation(latitude: regionIso.latitude,
+                                                              longitude: regionIso.longitude))
             if (distance < Double(distanceMaxAirDistanceFilter)) {
                 let spendtime = -regionIso.date!.timeIntervalSinceNow
                 let timeLimit = (regionIso.duration - regionIso.radius)/2
@@ -769,13 +770,38 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         if(regionsBeUpdated) {
             if (!optimizeDistanceRequest){
-                calculateDistanceWithRegion(origin: location.coordinate, regions: regionsIsochrones, locationId: locationId) { status, functionError in
+                calculateDistanceWithRegion(origin: location.coordinate,
+                                            regions: regionsIsochrones,
+                                            locationId: locationId) { status, functionError in
                     if(status){
                         let regionsIsochrones = RegionIsochrones.getAll()
                         regionsIsochrones.forEach { item in
+                            let didEnter = item.didEnter
                             if(item.duration != -1 ){
-                                if(item.duration <= item.radius){
-                                    //TODO: Pending part
+                                let distanceInfo = Distance()
+                                distanceInfo.distance = item.distance
+                                distanceInfo.distanceText = item.distanceText
+                                distanceInfo.duration = item.duration
+                                distanceInfo.durationText = item.durationText
+                                
+                                if(item.duration <= item.radius ){
+                                    if(didEnter == false){
+                                        let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
+                                                                                          didEnter: true,
+                                                                                          distanceInfo: distanceInfo)
+                                        //TODO:Missing to add in region log
+                                        self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                                    }
+                                }
+                                else {
+                                    if(didEnter == true){
+                                        let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
+                                                                                          didEnter: false,
+                                                                                          distanceInfo: distanceInfo)
+                                        //TODO:Missing to add in region log
+                                        self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                                    }
+                                    
                                 }
                             }
                         }
