@@ -345,5 +345,15 @@ import RealmSwift
 
         } catch { print(error) }
     }
+    
+   
+    public var OptimizeDistanceRequest: Bool {
+        get {
+            return optimizeDistanceRequest
+        }
+        set {
+            optimizeDistanceRequest = newValue
+        }
+    }
 
 }
