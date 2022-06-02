@@ -98,7 +98,8 @@ public class Regions {
         do {
             let realm = try Realm()
             var identifier = id
-            if(id.contains(LocationService.RegionType.poi.rawValue) || id.contains(LocationService.RegionType.custom.rawValue)) {
+            if((id.contains(LocationService.RegionType.poi.rawValue) || id.contains(LocationService.RegionType.custom.rawValue))
+               && id.contains("<id>")){
                 identifier = id.components(separatedBy: "<id>")[1]
             } 
             let predicate = NSPredicate(format: "identifier == %@", identifier)
