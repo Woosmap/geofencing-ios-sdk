@@ -754,9 +754,9 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 else{
                     if (!optimizeDistanceRequest){
                         if (spendtime > 60){ //1 minute
-                            let avarageSpeed:Double = distance/spendtime
+                            let averageSpeed:Double = distance/spendtime
                             let averageSpeedLimit:Double = regionIso.expectedAverageSpeed * 2
-                            if(avarageSpeed > averageSpeedLimit){
+                            if(averageSpeed > averageSpeedLimit){
                                 regionsBeUpdated = true
                             }
                         }
