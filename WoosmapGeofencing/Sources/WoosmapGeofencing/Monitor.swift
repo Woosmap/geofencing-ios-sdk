@@ -638,10 +638,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             }
                         }
                         let regionUpdated = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: didEnter, distanceInfo: distance)
-                        if ( optimizeDistanceRequest == true){
-                            if(regionUpdated.didEnter != lastStatedidEnter) {
-                                didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                            }
+                        if(regionUpdated.didEnter != lastStatedidEnter) {
+                            didEventRegionIsochrone(regionIsochrone: regionUpdated)
                         }
                     }
                 }
@@ -650,43 +648,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         for regionIsoIdentifer in regionIsoTodelete {
             RegionIsochrones.removeRegionIsochrone(id: regionIsoIdentifer)
-        }
-        
-        //Enhance ETA Logic
-        if ( optimizeDistanceRequest == false){
-            let regionsIsochrones = RegionIsochrones.getAll()
-            let nearRegions = regionsIsochrones.filter { item in
-                item.duration != -1
-            }
-            
-            nearRegions.forEach { item in
-                let didEnter = item.didEnter
-                let distanceInfo = Distance()
-                distanceInfo.distance = item.distance
-                distanceInfo.distanceText = item.distanceText
-                distanceInfo.duration = item.duration
-                distanceInfo.durationText = item.durationText
-                
-                if(item.duration <= item.radius ){
-                    if(didEnter == false){
-                        let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
-                                                                          didEnter: true,
-                                                                          distanceInfo: distanceInfo)
-                        //TODO:Missing to add in region log
-                        self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                    }
-                }
-                else {
-                    if(didEnter == true){
-                        let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
-                                                                          didEnter: false,
-                                                                          distanceInfo: distanceInfo)
-                        //TODO:Missing to add in region log
-                        self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                    }
-                    
-                }
-            }
         }
     }
     
@@ -787,6 +748,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             if (distance < Double(distanceMaxAirDistanceFilter)) {
                 let spendtime = -regionIso.date!.timeIntervalSinceNow
                 let timeLimit = (regionIso.duration - regionIso.radius)/2
+                print("** log ** \(regionIso.duration) \(regionIso.radius)")
                 if (spendtime > Double(timeLimit)) {
                     if(spendtime > Double(distanceTimeFilter)) {
                         regionsBeUpdated = true
