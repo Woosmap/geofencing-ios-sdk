@@ -547,16 +547,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
         let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
         let userLongitude: String = String(format: "%f", locationOrigin.coordinate.longitude)
-        var coordinateDestinations = ""
-        for i in 0 ..< coordinatesDest.count {
-            let destLatitude: String = String(format: "%f", Double(coordinatesDest[i].0))
-            let destLongitude: String = String(format: "%f", Double(coordinatesDest[i].1))
-            coordinateDestinations += destLatitude + "," + destLongitude
-            if i != coordinatesDest.count-1 {
-                coordinateDestinations += "|"
-            }
+        var coordinatesDestList: [String] = []
+        coordinatesDest.forEach { item in
+            coordinatesDestList.append("\(item.0),\(item.1)")
         }
-
+        let coordinateDestinations = coordinatesDestList.joined(separator: "|")
+        
         var storeAPIUrl = ""
         if(distanceProvider == DistanceProvider.woosmapDistance) {
             storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, userLatitude, userLongitude, coordinateDestinations)
@@ -567,11 +563,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         
         // Call API Distance
-        let task = URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             DispatchQueue.main.async {
                 if let response = response as? HTTPURLResponse {
                     if response.statusCode != 200 {
-                        NSLog("statusCode: \(response.statusCode)")
                         delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
                         return
                     }
@@ -590,23 +585,24 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                                                                     
                         
                         if (regionIsochroneToUpdate) {
-                            self.updateRegionWithDistance(distanceAr: distance)
-                            
+                            self?.updateRegionWithDistance(distanceAr: distance)
                         }
                         
                         delegateDistance.distanceAPIResponse(distance: distance)
                         
                         if(locationId != "" && !distance.isEmpty) {
-                            guard let delegateSearch = self.searchAPIDataDelegate else {
+                            guard let delegateSearch = self?.searchAPIDataDelegate else {
                                 return
                             }
-
-                            let distanceValue = distance.first?.distance
-                            let duration = distance.first?.durationText
-                            let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue!), duration: duration!, locationId: locationId)
-                            if poiUpdated.locationId != nil {
-                                delegateSearch.searchAPIResponse(poi: poiUpdated)
+                            if let calculatedDistance = distance.first {
+                                let distanceValue = calculatedDistance.distance
+                                let duration = calculatedDistance.durationText ?? ""
+                                let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue), duration: duration, locationId: locationId)
+                                if poiUpdated.locationId != nil {
+                                    delegateSearch.searchAPIResponse(poi: poiUpdated)
+                                }
                             }
+                            
                         }
                     }
                 }

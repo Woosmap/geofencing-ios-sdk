@@ -50,7 +50,10 @@ public class RegionIsochrones {
     public class func updateRegion(id: String, didEnter: Bool, distanceInfo: Distance) -> RegionIsochrone  {
         do {
             if let regionToUpdate = RegionIsochrones.getRegionFromId(id: id){
-                let averageSpeed:Double = Double(distanceInfo.distance/distanceInfo.duration)
+                let origin = CLLocation(latitude: distanceInfo.originLatitude, longitude: distanceInfo.originLongitude)
+                let destination = CLLocation(latitude: distanceInfo.destinationLatitude, longitude: distanceInfo.destinationLongitude)
+                let airdisance:Double = destination.distance(from: origin)
+                let averageSpeed:Double = airdisance / Double(distanceInfo.duration)
                 let realm = try Realm()
                 realm.beginWrite()
                 regionToUpdate.distance = distanceInfo.distance
