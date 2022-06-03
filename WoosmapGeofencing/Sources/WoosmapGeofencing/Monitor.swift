@@ -748,7 +748,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             if (distance < Double(distanceMaxAirDistanceFilter)) {
                 let spendtime = -regionIso.date!.timeIntervalSinceNow
                 let timeLimit = (regionIso.duration - regionIso.radius)/2
-                print("** log ** \(regionIso.duration) \(regionIso.radius)")
                 if (spendtime > Double(timeLimit)) {
                     if(spendtime > Double(distanceTimeFilter)) {
                         regionsBeUpdated = true
