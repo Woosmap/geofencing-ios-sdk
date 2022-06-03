@@ -34,21 +34,6 @@ public class RegionIsochrone: Object {
         self.radius = radius
         self.fromPositionDetection = fromPositionDetection
     }
-    
-   public func updateDistanceAndTime(distance:Int,
-                                     duration:Int) {
-        do {
-            let avarageSpeed:Double = Double(distance/duration)
-            let realm = try Realm()
-            try realm.write {
-                self.duration = duration
-                self.distance = distance
-                self.expectedAverageSpeed = avarageSpeed
-            }
-        } catch let error as NSError {
-            print(error)
-        }
-    }
 }
 
 public class RegionIsochrones {
@@ -64,20 +49,22 @@ public class RegionIsochrones {
     
     public class func updateRegion(id: String, didEnter: Bool, distanceInfo: Distance) -> RegionIsochrone  {
         do {
-            let regionToUpdate = RegionIsochrones.getRegionFromId(id: id)
-            if regionToUpdate != nil {
+            if let regionToUpdate = RegionIsochrones.getRegionFromId(id: id){
+                let averageSpeed:Double = Double(distanceInfo.distance/distanceInfo.duration)
                 let realm = try Realm()
                 realm.beginWrite()
-                regionToUpdate!.distance = distanceInfo.distance
-                regionToUpdate!.distanceText = distanceInfo.distanceText ?? ""
-                regionToUpdate!.duration = distanceInfo.duration
-                regionToUpdate!.durationText = distanceInfo.durationText ?? ""
-                regionToUpdate!.didEnter = didEnter
-                regionToUpdate!.date = Date()
-                realm.add(regionToUpdate!)
+                regionToUpdate.distance = distanceInfo.distance
+                regionToUpdate.distanceText = distanceInfo.distanceText ?? ""
+                regionToUpdate.duration = distanceInfo.duration
+                regionToUpdate.durationText = distanceInfo.durationText ?? ""
+                regionToUpdate.didEnter = didEnter
+                regionToUpdate.expectedAverageSpeed = averageSpeed
+                regionToUpdate.date = Date()
+                realm.add(regionToUpdate)
                 try realm.commitWrite()
-                return regionToUpdate!
+                return regionToUpdate
             }
+            
         } catch {
         }
         return RegionIsochrone()

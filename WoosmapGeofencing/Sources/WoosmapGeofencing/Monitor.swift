@@ -568,42 +568,45 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
         // Call API Distance
         let task = URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
-            if let response = response as? HTTPURLResponse {
-                if response.statusCode != 200 {
-                    NSLog("statusCode: \(response.statusCode)")
-                    delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
-                    return
-                }
-                if let error = error {
-                    NSLog("error: \(error)")
-                } else {
-                    let distance = Distances.addFromResponseJson(APIResponse: data!,
-                                                                 locationId: locationId,
-                                                                 origin: locationOrigin,
-                                                                 destination: coordinatesDest,
-                                                                 distanceProvider: distanceProvider,
-                                                                 distanceMode: distanceMode,
-                                                                 distanceUnits: distanceUnits,
-                                                                 distanceLanguage: distanceLanguage,
-                                                                 trafficDistanceRouting: trafficDistanceRouting)
-                                                                
-                    
-                    if (regionIsochroneToUpdate) {
-                        self.updateRegionWithDistance(distanceAr: distance)
+            DispatchQueue.main.async {
+                if let response = response as? HTTPURLResponse {
+                    if response.statusCode != 200 {
+                        NSLog("statusCode: \(response.statusCode)")
+                        delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
+                        return
                     }
-                    
-                    delegateDistance.distanceAPIResponse(distance: distance)
-                    
-                    if(locationId != "" && !distance.isEmpty) {
-                        guard let delegateSearch = self.searchAPIDataDelegate else {
-                            return
+                    if let error = error {
+                        NSLog("error: \(error)")
+                    } else {
+                        let distance = Distances.addFromResponseJson(APIResponse: data!,
+                                                                     locationId: locationId,
+                                                                     origin: locationOrigin,
+                                                                     destination: coordinatesDest,
+                                                                     distanceProvider: distanceProvider,
+                                                                     distanceMode: distanceMode,
+                                                                     distanceUnits: distanceUnits,
+                                                                     distanceLanguage: distanceLanguage,
+                                                                     trafficDistanceRouting: trafficDistanceRouting)
+                                                                    
+                        
+                        if (regionIsochroneToUpdate) {
+                            self.updateRegionWithDistance(distanceAr: distance)
+                            
                         }
+                        
+                        delegateDistance.distanceAPIResponse(distance: distance)
+                        
+                        if(locationId != "" && !distance.isEmpty) {
+                            guard let delegateSearch = self.searchAPIDataDelegate else {
+                                return
+                            }
 
-                        let distanceValue = distance.first?.distance
-                        let duration = distance.first?.durationText
-                        let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue!), duration: duration!, locationId: locationId)
-                        if poiUpdated.locationId != nil {
-                            delegateSearch.searchAPIResponse(poi: poiUpdated)
+                            let distanceValue = distance.first?.distance
+                            let duration = distance.first?.durationText
+                            let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue!), duration: duration!, locationId: locationId)
+                            if poiUpdated.locationId != nil {
+                                delegateSearch.searchAPIResponse(poi: poiUpdated)
+                            }
                         }
                     }
                 }
@@ -635,8 +638,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                             }
                         }
                         let regionUpdated = RegionIsochrones.updateRegion(id: regionIso.identifier!, didEnter: didEnter, distanceInfo: distance)
-                        if(regionUpdated.didEnter != lastStatedidEnter) {
-                            didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                        if ( optimizeDistanceRequest == true){
+                            if(regionUpdated.didEnter != lastStatedidEnter) {
+                                didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                            }
                         }
                     }
                 }
@@ -646,7 +651,43 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for regionIsoIdentifer in regionIsoTodelete {
             RegionIsochrones.removeRegionIsochrone(id: regionIsoIdentifer)
         }
-       
+        
+        //Enhance ETA Logic
+        if ( optimizeDistanceRequest == false){
+            let regionsIsochrones = RegionIsochrones.getAll()
+            let nearRegions = regionsIsochrones.filter { item in
+                item.duration != -1
+            }
+            
+            nearRegions.forEach { item in
+                let didEnter = item.didEnter
+                let distanceInfo = Distance()
+                distanceInfo.distance = item.distance
+                distanceInfo.distanceText = item.distanceText
+                distanceInfo.duration = item.duration
+                distanceInfo.durationText = item.durationText
+                
+                if(item.duration <= item.radius ){
+                    if(didEnter == false){
+                        let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
+                                                                          didEnter: true,
+                                                                          distanceInfo: distanceInfo)
+                        //TODO:Missing to add in region log
+                        self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                    }
+                }
+                else {
+                    if(didEnter == true){
+                        let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
+                                                                          didEnter: false,
+                                                                          distanceInfo: distanceInfo)
+                        //TODO:Missing to add in region log
+                        self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
+                    }
+                    
+                }
+            }
+        }
     }
     
     public func didEventRegionIsochrone(regionIsochrone: RegionIsochrone) {
@@ -769,50 +810,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
         
         if(regionsBeUpdated) {
-            if (!optimizeDistanceRequest){
-                calculateDistanceWithRegion(origin: location.coordinate,
-                                            regions: regionsIsochrones,
-                                            locationId: locationId) { status, functionError in
-                    if(status){
-                        let regionsIsochrones = RegionIsochrones.getAll()
-                        let nearRegions = regionsIsochrones.filter { item in
-                            item.duration != -1
-                        }
-                        
-                        nearRegions.forEach { item in
-                            let didEnter = item.didEnter
-                            let distanceInfo = Distance()
-                            distanceInfo.distance = item.distance
-                            distanceInfo.distanceText = item.distanceText
-                            distanceInfo.duration = item.duration
-                            distanceInfo.durationText = item.durationText
-                            
-                            if(item.duration <= item.radius ){
-                                if(didEnter == false){
-                                    let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
-                                                                                      didEnter: true,
-                                                                                      distanceInfo: distanceInfo)
-                                    //TODO:Missing to add in region log
-                                    self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                                }
-                            }
-                            else {
-                                if(didEnter == true){
-                                    let regionUpdated = RegionIsochrones.updateRegion(id: item.identifier!,
-                                                                                      didEnter: false,
-                                                                                      distanceInfo: distanceInfo)
-                                    //TODO:Missing to add in region log
-                                    self.didEventRegionIsochrone(regionIsochrone: regionUpdated)
-                                }
-                                
-                            }
-                        }
-                    }
-                }
-            }
-            else{
-                calculateDistanceWithRegion(location: location, locationId: locationId)
-            }
+            calculateDistanceWithRegion(location: location, locationId: locationId)
         }
     }
     
@@ -1074,101 +1072,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func calculateDistanceWithRegion (origin:CLLocationCoordinate2D,
-                                                   regions:[RegionIsochrone],
-                                                   locationId:String,
-                                      completion: @escaping(Bool, Error?) -> Void){
-        let location:CLLocation = CLLocation.init(latitude: origin.latitude, longitude: origin.longitude)
-        var regionWithInRange:[RegionIsochrone] = []
-        //Filter by distanceMaxAirDistanceFilter
-        regions.forEach { item in
-            let airDistance = location.distance(from: CLLocation.init(latitude: item.latitude, longitude: item.longitude))
-            if(airDistance > Double(distanceMaxAirDistanceFilter)){
-                item.updateDistanceAndTime(distance: -1, duration: -1)
-            }
-            else{
-                regionWithInRange.append(item)
-            }
-            
-            if(regionWithInRange.count>0){
-                //Call Distance api
-                var collectedCoordinate:[String] = []
-                var coordinatesDest: [(Double, Double)] = []
-                regionWithInRange.forEach { item in
-                    collectedCoordinate.append("\(item.latitude),\(item.longitude)")
-                    coordinatesDest.append((item.latitude, item.longitude))
-                }
-                var storeAPIUrl:String = ""
-                let coordinateDestinations: String = collectedCoordinate.joined(separator: "|")
-                if(distanceProvider == DistanceProvider.woosmapDistance) {
-                    storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, String(origin.latitude), String(origin.longitude), coordinateDestinations)
-                } else {
-                    storeAPIUrl = String(format: trafficDistanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue,trafficDistanceRouting.rawValue,distanceLanguage, String(origin.latitude), String(origin.longitude), coordinateDestinations)
-                }
-                let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                    DispatchQueue.main.async {
-                        if let response = response as? HTTPURLResponse {
-                            if response.statusCode != 200 {
-                                NSLog("statusCode: \(response.statusCode)")
-                                //delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
-                                completion(false,NSError(domain:"", code:response.statusCode, userInfo:[NSLocalizedDescriptionKey: "Error Distance API " + String(response.statusCode)]))
-                                return
-                            }
-                            if let error = error {
-                                completion(false,NSError(domain:"", code:0, userInfo:[NSLocalizedDescriptionKey: error]))
-                            } else {
-                                let distance = Distances.addFromResponseJson(APIResponse: data!,
-                                                                             locationId: locationId,
-                                                                             origin: location,
-                                                                             destination: coordinatesDest,
-                                                                             distanceProvider: distanceProvider,
-                                                                             distanceMode: distanceMode,
-                                                                             distanceUnits: distanceUnits,
-                                                                             distanceLanguage: distanceLanguage,
-                                                                             trafficDistanceRouting: trafficDistanceRouting)
-                                
-                                
-                                
-                                regionWithInRange.forEach { item in
-                                    if let matchDistance = distance.first(where: { apidistance in
-                                        if(apidistance.destinationLatitude == item.latitude &&
-                                           apidistance.destinationLongitude == item.longitude &&
-                                           apidistance.status == "OK"){
-                                            return true
-                                        }
-                                        else{
-                                            return false
-                                        }
-                                    }){
-                                        
-                                        //Add new record in Distance Log
-                                        let _ = Distance(originLatitude: origin.latitude, originLongitude: origin.longitude,
-                                                         destinationLatitude: item.latitude, destinationLongitude: item.longitude,
-                                                         dateCaptured: Date(), distance: matchDistance.distance,
-                                                         duration: matchDistance.duration, mode: distanceMode.rawValue, units: distanceUnits.rawValue,
-                                                         routing: distanceProvider.rawValue, status:  "OK")
-                                        item.updateDistanceAndTime(distance: matchDistance.distance, duration: matchDistance.duration)
-                                        
-                                    }
-                                    else{
-                                        item.updateDistanceAndTime(distance: -1, duration: -1)
-                                    }
-                                }
-                                completion(true,nil)
-                                
-                            }
-                        }
-                    }
-                }
-                task.resume()
-            }
-            else{
-                completion(true,nil)
-            }
-        }
-    }
-
 }
 
 public extension Date {
