@@ -83,6 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         
         WoosmapGeofencing.shared.startTracking(configurationProfile: ConfigurationProfile.passiveTracking)
 
+        WoosmapGeofencing.shared.OptimizeDistanceRequest = false
+        
         // Check if the authorization Status of location Manager
         if CLLocationManager.authorizationStatus() != .notDetermined {
             WoosmapGeofencing.shared.startMonitoringInBackground()

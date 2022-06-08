@@ -114,6 +114,6 @@ public var SFMCAccesToken = ""
 
 public var poiRadius:Any = ""
 
-// Forcing ETA refresh when the user doesn't use the expected travel mode, Default: true
+// Save API consumption by not forcing ETA refresh when the user doesn't use the expected travel mode, Default: true
 public var optimizeDistanceRequest: Bool = true
 
