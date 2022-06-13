@@ -28,7 +28,7 @@ import RealmSwift
     }
     
     private func initRealm() {
-        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 6)
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 7)
     }
 
     public func getLocationService() -> LocationService {
@@ -344,6 +344,16 @@ import RealmSwift
             dataDurationDelay = configJSON?.dataDurationDelay ?? 30
 
         } catch { print(error) }
+    }
+    
+   
+    public var OptimizeDistanceRequest: Bool {
+        get {
+            return optimizeDistanceRequest
+        }
+        set {
+            optimizeDistanceRequest = newValue
+        }
     }
 
 }

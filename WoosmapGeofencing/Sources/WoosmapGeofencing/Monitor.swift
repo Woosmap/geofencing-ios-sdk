@@ -547,16 +547,12 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
         let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
         let userLongitude: String = String(format: "%f", locationOrigin.coordinate.longitude)
-        var coordinateDestinations = ""
-        for i in 0 ..< coordinatesDest.count {
-            let destLatitude: String = String(format: "%f", Double(coordinatesDest[i].0))
-            let destLongitude: String = String(format: "%f", Double(coordinatesDest[i].1))
-            coordinateDestinations += destLatitude + "," + destLongitude
-            if i != coordinatesDest.count-1 {
-                coordinateDestinations += "|"
-            }
+        var coordinatesDestList: [String] = []
+        coordinatesDest.forEach { item in
+            coordinatesDestList.append("\(item.0),\(item.1)")
         }
-
+        let coordinateDestinations = coordinatesDestList.joined(separator: "|")
+        
         var storeAPIUrl = ""
         if(distanceProvider == DistanceProvider.woosmapDistance) {
             storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, userLatitude, userLongitude, coordinateDestinations)
@@ -567,43 +563,46 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let url = URL(string: storeAPIUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
         
         // Call API Distance
-        let task = URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
-            if let response = response as? HTTPURLResponse {
-                if response.statusCode != 200 {
-                    NSLog("statusCode: \(response.statusCode)")
-                    delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
-                    return
-                }
-                if let error = error {
-                    NSLog("error: \(error)")
-                } else {
-                    let distance = Distances.addFromResponseJson(APIResponse: data!,
-                                                                 locationId: locationId,
-                                                                 origin: locationOrigin,
-                                                                 destination: coordinatesDest,
-                                                                 distanceProvider: distanceProvider,
-                                                                 distanceMode: distanceMode,
-                                                                 distanceUnits: distanceUnits,
-                                                                 distanceLanguage: distanceLanguage,
-                                                                 trafficDistanceRouting: trafficDistanceRouting)
-                                                                
-                    
-                    if (regionIsochroneToUpdate) {
-                        self.updateRegionWithDistance(distanceAr: distance)
+        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            DispatchQueue.main.async {
+                if let response = response as? HTTPURLResponse {
+                    if response.statusCode != 200 {
+                        delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
+                        return
                     }
-                    
-                    delegateDistance.distanceAPIResponse(distance: distance)
-                    
-                    if(locationId != "" && !distance.isEmpty) {
-                        guard let delegateSearch = self.searchAPIDataDelegate else {
-                            return
+                    if let error = error {
+                        NSLog("error: \(error)")
+                    } else {
+                        let distance = Distances.addFromResponseJson(APIResponse: data!,
+                                                                     locationId: locationId,
+                                                                     origin: locationOrigin,
+                                                                     destination: coordinatesDest,
+                                                                     distanceProvider: distanceProvider,
+                                                                     distanceMode: distanceMode,
+                                                                     distanceUnits: distanceUnits,
+                                                                     distanceLanguage: distanceLanguage,
+                                                                     trafficDistanceRouting: trafficDistanceRouting)
+                                                                    
+                        
+                        if (regionIsochroneToUpdate) {
+                            self?.updateRegionWithDistance(distanceAr: distance)
                         }
-
-                        let distanceValue = distance.first?.distance
-                        let duration = distance.first?.durationText
-                        let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue!), duration: duration!, locationId: locationId)
-                        if poiUpdated.locationId != nil {
-                            delegateSearch.searchAPIResponse(poi: poiUpdated)
+                        
+                        delegateDistance.distanceAPIResponse(distance: distance)
+                        
+                        if(locationId != "" && !distance.isEmpty) {
+                            guard let delegateSearch = self?.searchAPIDataDelegate else {
+                                return
+                            }
+                            if let calculatedDistance = distance.first {
+                                let distanceValue = calculatedDistance.distance
+                                let duration = calculatedDistance.durationText ?? ""
+                                let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue), duration: duration, locationId: locationId)
+                                if poiUpdated.locationId != nil {
+                                    delegateSearch.searchAPIResponse(poi: poiUpdated)
+                                }
+                            }
+                            
                         }
                     }
                 }
@@ -646,7 +645,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for regionIsoIdentifer in regionIsoTodelete {
             RegionIsochrones.removeRegionIsochrone(id: regionIsoIdentifer)
         }
-       
     }
     
     public func didEventRegionIsochrone(regionIsochrone: RegionIsochrone) {
@@ -741,13 +739,25 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let regionsIsochrones = RegionIsochrones.getAll()
         var regionsBeUpdated = false
         for regionIso in regionsIsochrones {
-            let distance = location.distance(from: CLLocation(latitude: regionIso.latitude, longitude: regionIso.longitude))
+            let distance = location.distance(from: CLLocation(latitude: regionIso.latitude,
+                                                              longitude: regionIso.longitude))
             if (distance < Double(distanceMaxAirDistanceFilter)) {
                 let spendtime = -regionIso.date!.timeIntervalSinceNow
                 let timeLimit = (regionIso.duration - regionIso.radius)/2
                 if (spendtime > Double(timeLimit)) {
                     if(spendtime > Double(distanceTimeFilter)) {
                         regionsBeUpdated = true
+                    }
+                }
+                else{
+                    if (!optimizeDistanceRequest){
+                        if (spendtime > 60){ //1 minute
+                            let averageSpeed:Double = distance/spendtime
+                            let averageSpeedLimit:Double = regionIso.expectedAverageSpeed * 2
+                            if(averageSpeed > averageSpeedLimit){
+                                regionsBeUpdated = true
+                            }
+                        }
                     }
                 }
             }
@@ -759,7 +769,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if(regionsBeUpdated) {
             calculateDistanceWithRegion(location: location, locationId: locationId)
         }
-        
     }
     
     func calculateDistanceWithRegion(location: CLLocation, locationId: String = "") {
@@ -1019,7 +1028,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]!)
         }
     }
-
+    
 }
 
 public extension Date {

@@ -22,6 +22,7 @@ public class RegionIsochrone: Object {
     @objc public dynamic var duration = 0;
     @objc public dynamic var durationText = "";
     @objc public dynamic var type = "isochrone";
+    @objc public dynamic var expectedAverageSpeed:Double = -1;
 
     convenience init(latitude: Double, longitude: Double, radius: Int, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
         self.init()
@@ -48,20 +49,22 @@ public class RegionIsochrones {
     
     public class func updateRegion(id: String, didEnter: Bool, distanceInfo: Distance) -> RegionIsochrone  {
         do {
-            let regionToUpdate = RegionIsochrones.getRegionFromId(id: id)
-            if regionToUpdate != nil {
+            if let regionToUpdate = RegionIsochrones.getRegionFromId(id: id){
+                let averageSpeed:Double = Double(distanceInfo.distance) / Double(distanceInfo.duration)
                 let realm = try Realm()
                 realm.beginWrite()
-                regionToUpdate!.distance = distanceInfo.distance
-                regionToUpdate!.distanceText = distanceInfo.distanceText ?? ""
-                regionToUpdate!.duration = distanceInfo.duration
-                regionToUpdate!.durationText = distanceInfo.durationText ?? ""
-                regionToUpdate!.didEnter = didEnter
-                regionToUpdate!.date = Date()
-                realm.add(regionToUpdate!)
+                regionToUpdate.distance = distanceInfo.distance
+                regionToUpdate.distanceText = distanceInfo.distanceText ?? ""
+                regionToUpdate.duration = distanceInfo.duration
+                regionToUpdate.durationText = distanceInfo.durationText ?? ""
+                regionToUpdate.didEnter = didEnter
+                regionToUpdate.expectedAverageSpeed = averageSpeed
+                regionToUpdate.date = Date()
+                realm.add(regionToUpdate)
                 try realm.commitWrite()
-                return regionToUpdate!
+                return regionToUpdate
             }
+            
         } catch {
         }
         return RegionIsochrone()
