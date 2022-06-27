@@ -60,6 +60,7 @@ public class RegionIsochrones {
                 regionToUpdate.didEnter = didEnter
                 regionToUpdate.expectedAverageSpeed = averageSpeed
                 regionToUpdate.date = Date()
+                regionToUpdate.locationId = distanceInfo.locationId
                 realm.add(regionToUpdate)
                 try realm.commitWrite()
                 return regionToUpdate
