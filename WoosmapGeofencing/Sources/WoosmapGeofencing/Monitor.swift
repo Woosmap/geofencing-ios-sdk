@@ -751,8 +751,18 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 }
                 else{
                     if (!optimizeDistanceRequest){
+                        var distanceFromTheLastRefresh = Double(0)
+                        if let regionIsoLocationId = regionIso.locationId
+                        {
+                            if let locationFromTheLastRefresh = Locations.getLocationFromId(id: regionIsoLocationId)
+                                {
+                                    distanceFromTheLastRefresh = location.distance(from: CLLocation(
+                                        latitude:  locationFromTheLastRefresh.latitude,
+                                        longitude: locationFromTheLastRefresh.longitude))
+                                }
+                        }
                         if (spendtime > 60){ //1 minute
-                            let averageSpeed:Double = distance/spendtime
+                            let averageSpeed:Double = distanceFromTheLastRefresh/spendtime
                             let averageSpeedLimit:Double = regionIso.expectedAverageSpeed * 2
                             if(averageSpeed > averageSpeedLimit){
                                 regionsBeUpdated = true
