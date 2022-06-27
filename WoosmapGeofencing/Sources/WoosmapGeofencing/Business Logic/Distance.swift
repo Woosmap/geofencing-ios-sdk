@@ -22,9 +22,11 @@ public class Distance: Object {
     @objc public dynamic var units: String?
     @objc public dynamic var routing: String?
     @objc public dynamic var status: String?
+    @objc public dynamic var locationId: String?
 
 
-    convenience public init(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double,dateCaptured: Date, distance: Int, duration: Int, mode: String, units: String, routing: String, status: String) {
+
+    convenience public init(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double,dateCaptured: Date, distance: Int, duration: Int, mode: String, units: String, routing: String, status: String, locationId: String) {
         self.init()
         self.originLatitude = originLatitude
         self.originLongitude = originLongitude
@@ -37,6 +39,7 @@ public class Distance: Object {
         self.units = units
         self.routing = routing
         self.status = status
+        self.locationId = locationId
     }
 
 }
@@ -86,6 +89,7 @@ public class Distances {
                             distance.duration = durationValue
                             distance.durationText = durationText
                             distance.status = element.status
+                            distance.locationId = locationId
                             distanceArray.append(distance)
                         //}
                         indexElement+=1
