@@ -279,9 +279,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         regionIso.radius = radius
         regionIso.type = "isochrone"
         RegionIsochrones.add(regionIsochrone: regionIso)
-        if self.currentLocation != nil {
-            calculateDistanceWithRegion(location: self.currentLocation!)
-        }
         
         return true
     }
@@ -739,6 +736,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let regionsIsochrones = RegionIsochrones.getAll()
         var regionsBeUpdated = false
         for regionIso in regionsIsochrones {
+            if regionIso.locationId == nil
+            {
+                regionsBeUpdated = true
+            }
             let distance = location.distance(from: CLLocation(latitude: regionIso.latitude,
                                                               longitude: regionIso.longitude))
             if (distance < Double(distanceMaxAirDistanceFilter)) {
