@@ -61,6 +61,19 @@ public class Locations {
         }
         return []
     }
+    
+    public class func getLocationFromId(id: String) -> Location? {
+        do {
+            let realm = try Realm()
+            let predicate = NSPredicate(format: "locationId == %@", id)
+            let fetchedResults = realm.objects(Location.self).filter(predicate)
+            if let aLocation = fetchedResults.last {
+               return aLocation
+            }
+        } catch {
+        }
+        return nil
+    }
 
     public class func deleteAll() {
         do {

@@ -279,9 +279,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         regionIso.radius = radius
         regionIso.type = "isochrone"
         RegionIsochrones.add(regionIsochrone: regionIso)
-        if self.currentLocation != nil {
-            calculateDistanceWithRegion(location: self.currentLocation!)
-        }
         
         return true
     }
@@ -739,6 +736,10 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let regionsIsochrones = RegionIsochrones.getAll()
         var regionsBeUpdated = false
         for regionIso in regionsIsochrones {
+            if regionIso.locationId == nil
+            {
+                regionsBeUpdated = true
+            }
             let distance = location.distance(from: CLLocation(latitude: regionIso.latitude,
                                                               longitude: regionIso.longitude))
             if (distance < Double(distanceMaxAirDistanceFilter)) {
@@ -751,8 +752,18 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 }
                 else{
                     if (!optimizeDistanceRequest){
+                        var distanceFromTheLastRefresh = Double(0)
+                        if let regionIsoLocationId = regionIso.locationId
+                        {
+                            if let locationFromTheLastRefresh = Locations.getLocationFromId(id: regionIsoLocationId)
+                                {
+                                    distanceFromTheLastRefresh = location.distance(from: CLLocation(
+                                        latitude:  locationFromTheLastRefresh.latitude,
+                                        longitude: locationFromTheLastRefresh.longitude))
+                                }
+                        }
                         if (spendtime > 60){ //1 minute
-                            let averageSpeed:Double = distance/spendtime
+                            let averageSpeed:Double = distanceFromTheLastRefresh/spendtime
                             let averageSpeedLimit:Double = regionIso.expectedAverageSpeed * 2
                             if(averageSpeed > averageSpeedLimit){
                                 regionsBeUpdated = true
