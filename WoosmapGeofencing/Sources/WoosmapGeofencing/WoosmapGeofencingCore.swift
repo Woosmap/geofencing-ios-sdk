@@ -3,8 +3,18 @@ import AdSupport
 import CoreLocation
 import RealmSwift
 
+let TRACKING_SCHEMA: [String: Any] = {
+    let bundle = Bundle(identifier: "WebGeoServices.WoosmapGeofencing")
+    let url = bundle!.url(forResource: "TrackingSchema", withExtension: ".json")
+    let jsonData = try! Data(contentsOf: url!)
+    let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
+      return object as! [String: Any]
+}()
+
+
+
 /**
- WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
+ WoosmapGeofencingCore main class. Cannot be instanciated, use `shared` property to access singleton
  */
 @objcMembers public class WoosmapGeofencingCore: NSObject {
 
@@ -45,7 +55,7 @@ import RealmSwift
 
     public func initServices() {
         if self.locationService == nil {
-            self.locationService = LocationService(locationManger: self.locationManager)
+            self.locationService = LocationServiceCoreImpl(locationManger: self.locationManager)
         }
     }
 
@@ -270,7 +280,7 @@ import RealmSwift
             setDistanceAPIRequestEnable(enable: false)
             setClassification(enable: false)
             setSearchAPICreationRegionEnable(enable: false)
-            self.locationService?.removeRegions(type: LocationService.RegionType.position)
+            self.locationService?.removeRegions(type: RegionType.position)
         } else {
             self.locationService?.stopUpdatingLocation()
             self.locationService?.startUpdatingLocation()
@@ -492,13 +502,8 @@ import RealmSwift
             
         } catch { print(error) }
     }
-
-
 }
-let TRACKING_SCHEMA: [String: Any] = {
-    let bundle = Bundle(identifier: "WebGeoServices.WoosmapGeofencing")
-    let url = bundle!.url(forResource: "TrackingSchema", withExtension: ".json")
-    let jsonData = try! Data(contentsOf: url!)
-    let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
-      return object as! [String: Any]
-}()
+
+extension WoosmapGeofencingCore {
+    
+}

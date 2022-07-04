@@ -122,15 +122,15 @@ class TokenIdViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc func removeAllRegions() {
-        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.RegionType.none)
+        WoosmapGeofencing.shared.locationService.removeRegions(type: RegionType.none)
     }
 
     @objc func removeAllPOIRegions() {
-        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.RegionType.poi)
+        WoosmapGeofencing.shared.locationService.removeRegions(type: RegionType.poi)
     }
 
     @objc func removeAllCustomRegions() {
-        WoosmapGeofencing.shared.locationService.removeRegions(type: LocationService.RegionType.custom)
+        WoosmapGeofencing.shared.locationService.removeRegions(type: RegionType.custom)
     }
 
     @objc func testData() {

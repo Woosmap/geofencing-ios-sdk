@@ -408,7 +408,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         for region in regions {
             if let region = region as? CLCircularRegion {
                 let circle = MKCircle(center: region.center, radius: region.radius)
-                if WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == LocationService.RegionType.position {
+                if WoosmapGeofencing.shared.locationService.getRegionType(identifier: region.identifier) == RegionType.position {
                     circle.title = "refresh"
                 } else {
                     circle.title = "POI"

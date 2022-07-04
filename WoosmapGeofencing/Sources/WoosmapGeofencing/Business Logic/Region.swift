@@ -44,10 +44,10 @@ public class Regions {
             let radius = (POIregion as! CLCircularRegion).radius
             var identifier = POIregion.identifier
             var origin = "custom"
-            if(POIregion.identifier.contains(LocationService.RegionType.poi.rawValue)) {
+            if(POIregion.identifier.contains(RegionType.poi.rawValue)) {
                 identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
                 origin = "POI"
-            } else if (POIregion.identifier.contains(LocationService.RegionType.custom.rawValue)) {
+            } else if (POIregion.identifier.contains(RegionType.custom.rawValue)) {
                 identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
                 origin = "custom"
             }
@@ -98,7 +98,7 @@ public class Regions {
         do {
             let realm = try Realm()
             var identifier = id
-            if((id.contains(LocationService.RegionType.poi.rawValue) || id.contains(LocationService.RegionType.custom.rawValue))
+            if((id.contains(RegionType.poi.rawValue) || id.contains(RegionType.custom.rawValue))
                && id.contains("<id>")) {
                 identifier = id.components(separatedBy: "<id>")[1]
             }

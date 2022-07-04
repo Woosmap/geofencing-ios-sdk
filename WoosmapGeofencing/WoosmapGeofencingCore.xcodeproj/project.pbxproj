@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5FB3E7A32872F2BE0035653E /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3E7A22872F2BE0035653E /* LocationService.swift */; };
+		5FB3E7A52872F3170035653E /* LocationServiceCoreImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */; };
 		A21E173126B99DFB00D2440C /* ConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21E173026B99DFB00D2440C /* ConfigModel.swift */; };
 		A21E173326B99E5C00D2440C /* liveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173226B99E5C00D2440C /* liveTracking.json */; };
 		A21E173626BD751000D2440C /* passiveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173426BD751000D2440C /* passiveTracking.json */; };
@@ -103,6 +105,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5FB3E7A22872F2BE0035653E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceCoreImpl.swift; sourceTree = "<group>"; };
 		A216FBA923E9CEA70003AAC8 /* WoosmapGeofencingCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WoosmapGeofencingCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A21E173026B99DFB00D2440C /* ConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigModel.swift; sourceTree = "<group>"; };
 		A21E173226B99E5C00D2440C /* liveTracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = liveTracking.json; sourceTree = "<group>"; };
@@ -198,6 +202,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5FB3E7A12872F26F0035653E /* Enterprise */ = {
+			isa = PBXGroup;
+			children = (
+				5FB3E7A62872FD360035653E /* BL */,
+			);
+			path = Enterprise;
+			sourceTree = "<group>";
+		};
+		5FB3E7A62872FD360035653E /* BL */ = {
+			isa = PBXGroup;
+			children = (
+				A2AEE8082756273200FC1B0E /* RegionIsochrone.swift */,
+			);
+			path = BL;
+			sourceTree = "<group>";
+		};
 		A216FB9F23E9CEA70003AAC8 = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +241,7 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
+				5FB3E7A12872F26F0035653E /* Enterprise */,
 				A21E172F26B99DE900D2440C /* Config */,
 				A2710EE525B5C88100AF62F5 /* Business Logic */,
 				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
@@ -235,6 +256,7 @@
 				A262B9CD24E29AFF00EB621F /* WoosmapGeofencingCore.swift */,
 				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
 				A2FF527226FDB9FD00E2202A /* APIClient.swift */,
+				5FB3E7A22872F2BE0035653E /* LocationService.swift */,
 			);
 			name = WoosmapGeofencing;
 			path = Sources/WoosmapGeofencing;
@@ -331,8 +353,8 @@
 				A2710EFA25B5CB3500AF62F5 /* Region.swift */,
 				A26E645C25B9865800EDBA72 /* DataCleaner.swift */,
 				A24796FE2726DF700081AADC /* Distance.swift */,
-				A2AEE8082756273200FC1B0E /* RegionIsochrone.swift */,
 				A248052D27DA5E8900E5B7CD /* LogSearchAPI.swift */,
+				5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */,
 			);
 			path = "Business Logic";
 			sourceTree = "<group>";
@@ -501,6 +523,7 @@
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A262A10F2805DF2100E3A037 /* Draft7Validator.swift in Sources */,
 				A262A1332805DF2200E3A037 /* Draft202012Validator.swift in Sources */,
+				5FB3E7A52872F3170035653E /* LocationServiceCoreImpl.swift in Sources */,
 				A262A1162805DF2100E3A037 /* RefResolver.swift in Sources */,
 				A262A1292805DF2200E3A037 /* minMaxNumber.swift in Sources */,
 				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
@@ -516,6 +539,7 @@
 				A26E645D25B9865800EDBA72 /* DataCleaner.swift in Sources */,
 				A262A1272805DF2200E3A037 /* minMaxLength.swift in Sources */,
 				A262A1232805DF2100E3A037 /* additionalProperties.swift in Sources */,
+				5FB3E7A32872F2BE0035653E /* LocationService.swift in Sources */,
 				A262B9DA24E29B0000EB621F /* Settings.swift in Sources */,
 				A2BAB7B926774A1F00AA4E80 /* JSONGeneric.swift in Sources */,
 				A262A12F2805DF2200E3A037 /* minMaxItems.swift in Sources */,
