@@ -25,7 +25,6 @@ public class Distance: Object {
     @objc public dynamic var locationId: String?
 
 
-
     convenience public init(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double,dateCaptured: Date, distance: Int, duration: Int, mode: String, units: String, routing: String, status: String, locationId: String) {
         self.init()
         self.originLatitude = originLatitude
@@ -61,37 +60,34 @@ public class Distances {
                 for row in jsonStructure.rows! {
                     var indexElement = 0
                     for element in row.elements! {
-                       // if(element.status == "OK") {
-                            let distance = Distance()
-                            distance.units = distanceUnits.rawValue
-                            distance.date = Date()
-                            distance.routing = trafficDistanceRouting.rawValue
-                            distance.mode = distanceMode.rawValue
-                            distance.originLatitude = origin.coordinate.latitude
-                            distance.originLongitude = origin.coordinate.longitude
-                            let dest = destination[indexElement]
-                            distance.destinationLatitude = dest.0
-                            distance.destinationLongitude = dest.1
-                            let distanceValue = element.distance?.value
-                            let distanceText = element.distance?.text
-                            var durationValue = 0
-                            var durationText = ""
-                            if(distanceProvider == DistanceProvider.woosmapTraffic) {
-                                durationValue = element.duration_with_traffic?.value ?? 0
-                                durationText = element.duration_with_traffic?.text ?? ""
-                            } else {
-                                durationValue = element.duration?.value ?? 0
-                                durationText = element.duration?.text ?? ""
-                            }
-
-                            distance.distance = distanceValue ?? 0
-                            distance.distanceText = distanceText
-                            distance.duration = durationValue
-                            distance.durationText = durationText
-                            distance.status = element.status
-                            distance.locationId = locationId
-                            distanceArray.append(distance)
-                        //}
+                        let distance = Distance()
+                        distance.units = distanceUnits.rawValue
+                        distance.date = Date()
+                        distance.routing = trafficDistanceRouting.rawValue
+                        distance.mode = distanceMode.rawValue
+                        distance.originLatitude = origin.coordinate.latitude
+                        distance.originLongitude = origin.coordinate.longitude
+                        let dest = destination[indexElement]
+                        distance.destinationLatitude = dest.0
+                        distance.destinationLongitude = dest.1
+                        let distanceValue = element.distance?.value
+                        let distanceText = element.distance?.text
+                        var durationValue = 0
+                        var durationText = ""
+                        if(distanceProvider == DistanceProvider.woosmapTraffic) {
+                            durationValue = element.duration_with_traffic?.value ?? 0
+                            durationText = element.duration_with_traffic?.text ?? ""
+                        } else {
+                            durationValue = element.duration?.value ?? 0
+                            durationText = element.duration?.text ?? ""
+                        }
+                        distance.distance = distanceValue ?? 0
+                        distance.distanceText = distanceText
+                        distance.duration = durationValue
+                        distance.durationText = durationText
+                        distance.status = element.status
+                        distance.locationId = locationId
+                        distanceArray.append(distance)
                         indexElement+=1
                     }
                 }

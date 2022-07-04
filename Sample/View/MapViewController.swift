@@ -257,6 +257,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
 
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "myAnnotation") //as? MKPinAnnotationView
 
@@ -341,6 +342,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         if let overlay = overlay as? MKCircle {
 
             let circleRenderer = MKCircleRenderer(circle: overlay)
+            if(circleRenderer.circle.title != "POI" && !circleRenderer.circle.title!.contains("ENTER")) {
+                return MKOverlayRenderer()
+            }
             circleRenderer.fillColor = (circleRenderer.circle.title == "POI") ? UIColor.green : UIColor.blue
             circleRenderer.alpha = 0.2
             if circleRenderer.circle.title!.contains("ENTER") {
@@ -457,6 +461,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         if stateSwitchPOI {
             let annotation = annotationForPOI(POI)
             mapView.addAnnotation(annotation)
+            print("=>>>> annotation POI = " + POI.idstore!)
         }
     }
     

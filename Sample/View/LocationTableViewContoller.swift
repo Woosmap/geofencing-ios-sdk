@@ -7,6 +7,7 @@
 import UIKit
 import CoreLocation
 import WoosmapGeofencing
+import RealmSwift
 
 enum dataType {
     case POI
@@ -260,7 +261,8 @@ class LocationTableViewContoller: UITableViewController {
     }
 
     func saveAndExport(exportString: [String]) {
-        let exportFilePath = NSTemporaryDirectory() + "Geofencing.csv"
+       
+        /*let exportFilePath = NSTemporaryDirectory() + "Geofencing.csv"
         let exportFileURL = NSURL(fileURLWithPath: exportFilePath)
         FileManager.default.createFile(atPath: exportFilePath, contents: NSData() as Data, attributes: nil)
         var fileHandle: FileHandle?
@@ -290,7 +292,21 @@ class LocationTableViewContoller: UITableViewController {
             ]
 
             self.present(activityViewController, animated: true, completion: nil)
-        }
+        }*/
+        
+        let firstActivityItem = Realm.Configuration.defaultConfiguration.fileURL
+        let activityViewController: UIActivityViewController = UIActivityViewController(
+            activityItems: [firstActivityItem], applicationActivities: nil)
+
+        activityViewController.excludedActivityTypes = [
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.saveToCameraRoll,
+            UIActivity.ActivityType.postToFlickr,
+            UIActivity.ActivityType.postToVimeo,
+            UIActivity.ActivityType.postToTencentWeibo
+        ]
+
+        self.present(activityViewController, animated: true, completion: nil)
     }
 
     func createExportString() -> [String] {
@@ -409,8 +425,10 @@ class LocationTableViewContoller: UITableViewController {
         let longitude = placeData.longitude
 
         if placeData.type == dataType.location {
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-            WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location, locationId: placeData.locationId)
+            let location = Locations.getLocationByLocationID(locationId: placeData.locationId)
+            if location != nil {
+                WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location!)
+            }
         } else if placeData.type == dataType.POI {
             let location = CLLocation(latitude: latitude, longitude: longitude)
             let poi = DataPOI().getPOIbyLocationID(locationId: placeData.locationId)

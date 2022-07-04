@@ -61,14 +61,28 @@ public class Locations {
         }
         return []
     }
-    
+   
+    @available(*, deprecated, message: "Use getLocationFromId:id instead")
+    private class func getLocationByLocationID(locationId: String) -> Location? {
+        do {
+            let realm = try Realm()
+            let predicate = NSPredicate(format: "locationId == %@", locationId)
+            let fetchedResults = realm.objects(Location.self).filter(predicate)
+            if let aLocation = fetchedResults.first {
+               return aLocation
+            }
+        } catch {
+        }
+        return nil
+    }
+
     public class func getLocationFromId(id: String) -> Location? {
         do {
             let realm = try Realm()
             let predicate = NSPredicate(format: "locationId == %@", id)
             let fetchedResults = realm.objects(Location.self).filter(predicate)
             if let aLocation = fetchedResults.last {
-               return aLocation
+                return aLocation
             }
         } catch {
         }

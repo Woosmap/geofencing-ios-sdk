@@ -170,6 +170,23 @@ public class POIs {
         }
         return nil
     }
+    public class func getLastPOIsFromLocationID(locationId: String) -> [POI] {
+        do {
+            let realm = try Realm()
+            let predicate = NSPredicate(format: "locationId == %@", locationId)
+            let fetchedResults = realm.objects(POI.self).filter(predicate)
+            if fetchedResults.first != nil {
+                var poiArray:[POI] = []
+                for poi in fetchedResults {
+                    poiArray.append(poi)
+                }
+                return poiArray
+                
+            }
+        } catch {
+        }
+        return []
+    }
     
     public class func getPOIbyIdStore(idstore: String) -> POI? {
         do {

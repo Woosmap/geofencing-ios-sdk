@@ -7,6 +7,7 @@
 import UIKit
 import CoreLocation
 import WoosmapGeofencing
+import RealmSwift
 #if canImport(AirshipCore)
   import AirshipCore
 #endif
@@ -62,12 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             WoosmapGeofencing.shared.getLocationService().airshipEventsDelegate = airshipEvents
         #endif
         
-        // Set private Woosmap key API
-        WoosmapGeofencing.shared.setWoosmapAPIKey(key: WoosmapKey)
-        WoosmapGeofencing.shared.setGMPAPIKey(key: GoogleStaticMapKey)
-
-        // Set the search url Woosmap API
-        WoosmapGeofencing.shared.setSearchWoosmapAPI(api: searchWoosmapAPI)
         
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
@@ -82,9 +77,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         WoosmapGeofencing.shared.getLocationService().visitDelegate = dataVisit
         
         WoosmapGeofencing.shared.startTracking(configurationProfile: ConfigurationProfile.passiveTracking)
-
-        WoosmapGeofencing.shared.OptimizeDistanceRequest = false
         
+        //openRealm()
+
         // Check if the authorization Status of location Manager
         if CLLocationManager.authorizationStatus() != .notDetermined {
             WoosmapGeofencing.shared.startMonitoringInBackground()
@@ -100,6 +95,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 
         return true
     }
+    
+    func openRealm() {
+        let bundlePath = Bundle.main.path(forResource: "default", ofType: "realm")!
+        
+        let defaultPath = Realm.Configuration.defaultConfiguration.fileURL!.path
+        let fileManager = FileManager.default
+
+        // Only need to copy the prepopulated `.realm` file if it doesn't exist yet
+        if !fileManager.fileExists(atPath: defaultPath){
+            print("use pre-populated database")
+            do {
+                try fileManager.copyItem(atPath: bundlePath, toPath: defaultPath)
+                print("Copied")
+            } catch {
+                print(error)
+            }
+        }
+
+    } //f
 
     // Handle remote notification registration. (succes)
     func application(_ application: UIApplication,

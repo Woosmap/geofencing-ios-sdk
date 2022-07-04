@@ -99,9 +99,9 @@ public class Regions {
             let realm = try Realm()
             var identifier = id
             if((id.contains(LocationService.RegionType.poi.rawValue) || id.contains(LocationService.RegionType.custom.rawValue))
-               && id.contains("<id>")){
+               && id.contains("<id>")) {
                 identifier = id.components(separatedBy: "<id>")[1]
-            } 
+            }
             let predicate = NSPredicate(format: "identifier == %@", identifier)
             let fetchedResults = realm.objects(Region.self).filter(predicate)
             if let aRegion = fetchedResults.last {

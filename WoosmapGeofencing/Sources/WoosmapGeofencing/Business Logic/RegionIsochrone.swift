@@ -49,7 +49,7 @@ public class RegionIsochrones {
     
     public class func updateRegion(id: String, didEnter: Bool, distanceInfo: Distance) -> RegionIsochrone  {
         do {
-            if let regionToUpdate = RegionIsochrones.getRegionFromId(id: id){
+            if let regionToUpdate = RegionIsochrones.getRegionFromId(id: id) {
                 let averageSpeed:Double = Double(distanceInfo.distance) / Double(distanceInfo.duration)
                 let realm = try Realm()
                 realm.beginWrite()

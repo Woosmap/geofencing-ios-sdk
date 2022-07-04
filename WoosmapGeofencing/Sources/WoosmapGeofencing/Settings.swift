@@ -14,7 +14,7 @@ public enum ConfigurationProfile: String {
 }
 
 // Tracking
-public var trackingEnable = true
+public var trackingEnable = false
 
 // Woosmap SearchAPI Key
 public var WoosmapAPIKey = ""
@@ -67,18 +67,18 @@ public var currentLocationTimeFilter = 0
 public var modeHighfrequencyLocation = false
 
 // Search API filters
-public var searchAPIRequestEnable = true
+public var searchAPIRequestEnable = false
 public var searchAPIDistanceFilter = 0.0
 public var searchAPITimeFilter = 0
 public var searchAPIRefreshDelayDay = 1
-public var searchAPICreationRegionEnable = true
+public var searchAPICreationRegionEnable = false
 public var searchAPILastRequestTimeStamp = 0.0
 
 // Distance API filters
-public var distanceAPIRequestEnable = true
+public var distanceAPIRequestEnable = false
 
 // Active visit
-public var visitEnable = true
+public var visitEnable = false
 public var accuracyVisitFilter = 50.0
 
 // Active creation of ZOI

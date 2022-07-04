@@ -83,12 +83,20 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         case poi
         case none
     }
+    
+    public class LastSearhLocation {
+        var date: Date = Date()
+        var latitude: Double = 0.0
+        var locationId: String = ""
+        var longitude: Double = 0.0
+    }
 
     public var locationManager: LocationManagerProtocol?
     var currentLocation: CLLocation?
-    var lastSearchLocation: CLLocation?
+    var lastSearchLocation: LastSearhLocation = LastSearhLocation()
+    var lastRefreshRegionPOILocationId: String = ""
     var lastRegionUpdate: Date?
-
+ 
     public weak var locationServiceDelegate: LocationServiceDelegate?
     public weak var searchAPIDataDelegate: SearchAPIDelegate?
     public weak var distanceAPIDataDelegate: DistanceAPIDelegate?
@@ -204,7 +212,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
 
     }
-
+        
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         updateLocationDidFailWithError(error: error)
     }
@@ -231,17 +239,25 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.handleRegionChange()
     }
 
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> Bool {
-        guard let monitoredRegions = locationManager?.monitoredRegions else { return false }
+    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate: Bool, identifier: String) {
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return (false, "") }
         
-        if (monitoredRegions.count < 20) {
-            let id = RegionType.custom.rawValue + "<id>" + identifier
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
-            checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
-            return true
-        } else {
-            return false
+        var nbrCustomGeofence = 0
+        for region in monitoredRegions {
+            if (getRegionType(identifier: region.identifier) == RegionType.custom) {
+                nbrCustomGeofence += 1
+            }
         }
+        if(nbrCustomGeofence >= 3) {
+            return (false, "number of custom geofence can be more than 3")
+        }
+        if(searchAPICreationRegionEnable){
+            refreshSystemGeofencePOI(addCustomGeofence: true, locationId: lastSearchLocation.locationId ?? "")
+        }
+        let id = RegionType.custom.rawValue + "<id>" + identifier
+        self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
+        checkIfUserIsInRegion(region: CLCircularRegion(center: center, radius: radius, identifier: id ))
+        return (true, RegionType.custom.rawValue + "<id>" + identifier)
     }
     
     public func removeRegion(identifier: String) {
@@ -259,18 +275,17 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             let regionIsCreated = addRegionIsochrone(identifier: identifier, center: center, radius: radius)
             return (regionIsCreated, identifier)
         } else if(type == "circle"){
-            let regionIsCreated = addRegion(identifier: identifier, center: center, radius: Double(radius))
+            let (regionIsCreated, identifier) = addRegion(identifier: identifier, center: center, radius: Double(radius))
             return (regionIsCreated, identifier)
         }
         return (false, "the type is incorrect")
     }
     
-    public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int) -> Bool  {
+    public func addRegionIsochrone(identifier: String, center: CLLocationCoordinate2D, radius: Int) -> Bool {
         if (RegionIsochrones.getRegionFromId(id: identifier) != nil) {
             print("Identifier already exist")
             return false
         }
-        
         let regionIso = RegionIsochrone()
         regionIso.identifier = identifier
         regionIso.date = Date()
@@ -279,7 +294,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         regionIso.radius = radius
         regionIso.type = "isochrone"
         RegionIsochrones.add(regionIsochrone: regionIso)
-        
         return true
     }
     
@@ -383,7 +397,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         self.currentLocation = location
 
         if searchAPIRequestEnable {
-            searchAPIRequest(location: currentLocation!, locationId: locationSaved.locationId!)
+            searchAPIRequest(location: locationSaved)
         }
         
         checkIfPositionIsInsideGeofencingRegions(location: location)
@@ -392,20 +406,37 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
     }
 
-    public func searchAPIRequest(location: CLLocation, locationId: String = "") {
-        guard let delegate = self.searchAPIDataDelegate else {
-            return
-        }
+    public func searchAPIRequest(location: Location) {
+#if DEBUG
+        let logAPI = LogSearchAPI()
+        logAPI.date = Date()
+        logAPI.latitude = location.latitude
+        logAPI.longitude = location.longitude
+        logAPI.woosmapAPIKey = WoosmapAPIKey
+        logAPI.searchAPIRequestEnable = searchAPIRequestEnable
+        NSLog("=>>>>>> searchAPIRequest WoosmapKey = %@", WoosmapAPIKey)
+        logAPI.lastSearchLocationLatitude = lastSearchLocation.latitude
+        logAPI.lastSearchLocationLongitude = lastSearchLocation.longitude
+#endif
         
         if(WoosmapAPIKey.isEmpty) {
             return
         }
         
-        let lastPOI = POIs.getAll().last
-
-        if lastPOI != nil && !locationId.isEmpty && lastSearchLocation != nil {
+        let POIClassified = POIs.getAll().sorted(by: { $0.distance > $1.distance })
+        let lastPOI = POIClassified.first
+#if DEBUG
+        NSLog("=>>>>>> lastPOI distance = %@", String(lastPOI?.distance ?? 0))
+        logAPI.lastPOI_distance = String(lastPOI?.distance ?? 0)
+        logAPI.searchAPILastRequestTimeStampValue = searchAPILastRequestTimeStamp
+#endif
+        if lastPOI != nil && !location.locationId!.isEmpty && lastSearchLocation.locationId != "" {
             if(searchAPILastRequestTimeStamp > lastPOI!.date!.timeIntervalSince1970) {
-                if ((searchAPILastRequestTimeStamp - lastPOI!.date!.timeIntervalSince1970) < Double(searchAPIRefreshDelayDay*3600*24)) {
+                if ((searchAPILastRequestTimeStamp - lastPOI!.date!.timeIntervalSince1970) > Double(searchAPIRefreshDelayDay*3600*24)) {
+                    sendSearchAPIRequest(location: location)
+#if DEBUG
+                    logAPI.sendSearchAPIRequest = true
+#endif
                     return
                 }
             }
@@ -414,36 +445,77 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         
             if (timeEllapsed < searchAPIRefreshDelayDay*3600*24) {
                 let distanceLimit = lastPOI!.distance - lastPOI!.radius
-                let distanceTraveled = lastSearchLocation!.distance(from: currentLocation!)
+                let distanceTraveled =  CLLocation(latitude: lastSearchLocation.latitude, longitude: lastSearchLocation.longitude).distance(from: currentLocation!)
+#if DEBUG
+                NSLog("=>>>>>> distanceLimit = %@", String(distanceLimit))
+                NSLog("=>>>>>> distanceTraveled = %@", String(distanceTraveled))
+                logAPI.distanceLimit = String(distanceLimit)
+                logAPI.distanceTraveled = String(distanceTraveled)
+#endif
                 
-                if distanceTraveled < distanceLimit {
-                    return
+                if (distanceTraveled > distanceLimit) && (distanceTraveled > searchAPIDistanceFilter) && (timeEllapsed > searchAPITimeFilter) {
+                    POIs.deleteAll()
+                    sendSearchAPIRequest(location: location)
+#if DEBUG
+                    logAPI.sendSearchAPIRequest = true
+#endif
+                } else {
+                    let distanceToFurthestMonitoredPOI = getDistanceFurthestMonitoredPOI()
+#if DEBUG
+                    NSLog("=>>>>>> distanceToFurthestMonitoredPOI = %@", String(distanceToFurthestMonitoredPOI))
+                    logAPI.distanceToFurthestMonitoredPOI = String(distanceToFurthestMonitoredPOI)
+#endif
+                    guard let locationRefresh = Locations.getLocationFromId(id: lastRefreshRegionPOILocationId) else {return}
+                    let distanceTraveledLastRefreshPOIRegion = CLLocation(latitude: locationRefresh.latitude, longitude: locationRefresh.longitude).distance(from: currentLocation!)
+#if DEBUG
+                    NSLog("=>>>>>> distanceTraveledLastRefreshPOIRegion = %@", String(distanceTraveledLastRefreshPOIRegion))
+                    logAPI.distanceTraveledLastRefreshPOIRegion = String(distanceTraveledLastRefreshPOIRegion)
+#endif
+                    if distanceTraveledLastRefreshPOIRegion > distanceToFurthestMonitoredPOI {
+                        refreshSystemGeofencePOI(locationId: lastSearchLocation.locationId)
+                    }
                 }
-                
-                if distanceTraveled < searchAPIDistanceFilter {
-                    return
-                }
-
-                if timeEllapsed < searchAPITimeFilter {
-                   return
-                }
+            } else {
+                POIs.deleteAll()
+                sendSearchAPIRequest(location: location)
+#if DEBUG
+                logAPI.sendSearchAPIRequest = true
+#endif
             }
-                                                             
+        } else {
+            POIs.deleteAll()
+            sendSearchAPIRequest(location: location)
+#if DEBUG
+            logAPI.sendSearchAPIRequest = true
+#endif
         }
+#if DEBUG
+        LogSearchAPIs.add(log: logAPI)
+#endif
+    }
 
+    public func sendSearchAPIRequest(location: Location) {
+        guard let delegate = self.searchAPIDataDelegate else {
+            return
+        }
         // Get POI nearest
         // Get the current coordiante
-        let userLatitude: String = String(format: "%f", location.coordinate.latitude)
-        let userLongitude: String = String(format: "%f", location.coordinate.longitude)
+        let userLatitude: String = String(format: "%f", location.latitude)
+        let userLongitude: String = String(format: "%f", location.longitude)
         let storeAPIUrl: String = String(format: searchWoosmapAPI, userLatitude, userLongitude)
+        let locationId = location.locationId!
+        self.lastSearchLocation.longitude = location.longitude
+        self.lastSearchLocation.latitude = location.latitude
+        self.lastSearchLocation.locationId = location.locationId ?? ""
+        self.lastSearchLocation.date = location.date ?? Date()
         
         var components = URLComponents(string: storeAPIUrl)!
-
+        
         for (key, value) in searchAPIParameters {
             if(key == "stores_by_page") {
                let storesByPage =  Int(value) ?? 0
-                if (storesByPage > 5){
-                    components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: "5" ))
+                if (storesByPage > 20){ //todo param nbr max de poi
+                    components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: "20" ))
                 } else {
                     components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: value ))
                 }
@@ -452,11 +524,15 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
         
+        if searchAPIParameters["stores_by_page"] == nil {
+            components.queryItems?.append(URLQueryItem(name: "stores_by_page", value: "20" )) //todo param nbr max de poi
+        }
+        
         components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
         let url = URLRequest(url: components.url!)
 
         // Call API search
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { [self] (data, response, error) in
             if let response = response as? HTTPURLResponse {
                 if response.statusCode != 200 {
                     NSLog("statusCode: \(response.statusCode)")
@@ -466,37 +542,137 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                 if let error = error {
                     NSLog("error: \(error)")
                 } else {
-                    let pois = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
+                    print("=>>>>>> searchAPIRequest")
+                    let pois:[POI] = POIs.addFromResponseJson(searchAPIResponse: data!, locationId: locationId)
 
                     if(pois.isEmpty) {
                         searchAPILastRequestTimeStamp = Date().timeIntervalSince1970
                         return
                     }
                     
+                    
                     for poi in pois {
                         self.sendASPOIEvents(poi: poi)
                         delegate.searchAPIResponse(poi: poi)
-
-                        if distanceAPIRequestEnable {
-                            self.calculateDistance(locationOrigin: location, coordinatesDest:[(poi.latitude, poi.longitude)], locationId: locationId)
-                        }
-                        if searchAPICreationRegionEnable {
-                            let POIname = (poi.idstore ?? "")  + "<id>" + (poi.name ?? "")
-                            self.createRegionPOI(center: CLLocationCoordinate2D(latitude: poi.latitude, longitude: poi.longitude), name: POIname, radius: poi.radius)
-                        }
                     }
-                    self.removeOldPOIRegions(newPOIS: pois)
-                    self.lastSearchLocation = self.currentLocation
+                    
+                    
+                    self.lastRefreshRegionPOILocationId = locationId
+                    self.refreshSystemGeofencePOI(locationId: locationId)
+                   
                 }
             }
+       
         }
         task.resume()
 
     }
     
+    public func refreshSystemGeofencePOI(addCustomGeofence: Bool = false, locationId: String) {
+       
+        var nbrSLots = getNumberOfAvailableSlotsGeofence()
+        print("=>>>>>> refreshSystemGeofencePOI nbr Slots \(String(describing: nbrSLots))")
+        if(addCustomGeofence) {
+            nbrSLots -= 1
+        }
+        print("=>>>>>> refreshSystemGeofencePOI addCustomGeofence nbr Slots \(String(describing: nbrSLots))")
+        let lastPOIs = POIs.getLastPOIsFromLocationID(locationId: locationId)
+        let toBeMonitoredPOI = lastPOIs.sorted(by: { CLLocation(latitude: $0.latitude, longitude: $0.longitude).distance(from: currentLocation!) < CLLocation(latitude: $1.latitude, longitude: $1.longitude).distance(from: currentLocation!) })
+        
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        var limit = nbrSLots
+        if (limit > toBeMonitoredPOI.count){
+            limit = toBeMonitoredPOI.count
+            if(limit == 0){
+                return
+            }
+        }
+            
+        for region in monitoredRegions {
+            var exist = false
+            for index in 0...limit-1 {
+                let identifier = "<id>" + (toBeMonitoredPOI[index].idstore ?? "") + "<id>"
+                if (region.identifier.contains(identifier)) {
+                    exist = true
+                }
+            }
+            if(!exist && getRegionType(identifier: region.identifier) == RegionType.poi) {
+                print("=>>>>>> delete geofence ")
+                print("=>>>>>>  " + region.identifier)
+                self.locationManager?.stopMonitoring(for: region)
+            }
+        }
+        for index in 0...limit-1 {
+            let identifier = "<id>" + (toBeMonitoredPOI[index].idstore ?? "") + "<id>"
+            var exist = false
+            for region in monitoredRegions {
+                if (region.identifier.contains(identifier)) {
+                    exist = true
+                }
+            }
+            if(!exist) {
+                let name = RegionType.poi.rawValue + identifier
+                checkIfUserIsInRegion(region:  CLCircularRegion(center: CLLocationCoordinate2D(latitude: toBeMonitoredPOI[index].latitude, longitude: toBeMonitoredPOI[index].longitude), radius: CLLocationDistance(toBeMonitoredPOI[index].radius), identifier: name ))
+                self.locationManager?.startMonitoring(for: CLCircularRegion(center: CLLocationCoordinate2D(latitude: toBeMonitoredPOI[index].latitude, longitude: toBeMonitoredPOI[index].longitude), radius: CLLocationDistance(toBeMonitoredPOI[index].radius), identifier: name))
+                print("=>>>>>> add geofence ")
+                print("=>>>>>>  " + name)
+            }
+        }
+        
+        lastRefreshRegionPOILocationId = Locations.getAll().last?.locationId ?? ""
+        
+        print("=>>>>>> refreshSystemGeofencePOI nbr monitoring \(String(describing: locationManager?.monitoredRegions.count))")
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return }
+        var nbrPOI = 0
+        for region in monitoredRegions {
+            if(getRegionType(identifier: region.identifier) == RegionType.poi) {
+                nbrPOI += 1
+            }
+        }
+        print("=>>>>>> refreshSystemGeofencePOI nbr monitoring POI \(String(describing: nbrPOI))")
+    }
+    
+    public func getNumberOfAvailableSlotsGeofence() -> Int {
+        var nbrSlots = 0
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return nbrSlots}
+        var nbrCustomGeofence = 0
+        for region in monitoredRegions {
+            if (getRegionType(identifier: region.identifier) == RegionType.custom) {
+                nbrCustomGeofence += 1
+            }
+        }
+        nbrSlots = 20 - 13 - nbrCustomGeofence
+        return nbrSlots
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        print("WoosmapGeofencing Error : can't create geofence " + (region?.identifier ?? "") + error.localizedDescription)
+    }
+
+   
+    public func getDistanceFurthestMonitoredPOI() -> Double {
+        var distance = 0.0
+        guard let monitoredRegions = locationManager?.monitoredRegions else { return distance}
+        let identifier = RegionType.poi.rawValue
+        guard let lastRefreshLocation = Locations.getLocationFromId(id: lastRefreshRegionPOILocationId) else { return distance}
+        for region in monitoredRegions {
+            if (region.identifier.contains(identifier)) {
+                let idstore = region.identifier.components(separatedBy: "<id>")[1]
+                guard let poi = POIs.getPOIbyIdStore(idstore: idstore) else {
+                    return distance
+                }
+                let beforeLastDistance = CLLocation(latitude: lastRefreshLocation.latitude, longitude: lastRefreshLocation.longitude).distance(from: CLLocation(latitude: poi.latitude, longitude: poi.longitude))
+                if( (beforeLastDistance - poi.radius) > distance ) {
+                    distance = beforeLastDistance - poi.radius
+                }
+            }
+        }
+        return distance
+    }
+    
 
     public func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
-        let identifier = RegionType.poi.rawValue + "<id>" + name
+        let identifier = RegionType.poi.rawValue + name
         guard let monitoredRegions = locationManager?.monitoredRegions else { return }
         var exist = false
         for region in monitoredRegions {
@@ -505,8 +681,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
         if !exist {
-            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
-            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier + " - " + String(radius) + " m"))
+            self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier))
+            checkIfUserIsInRegion(region:  CLCircularRegion(center: center, radius: CLLocationDistance(radius), identifier: identifier ))
         }
     }
     
@@ -515,7 +691,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for region in monitoredRegions {
             var exist = false
             for poi in newPOIS {
-                let identifier = "<id>" + (poi.idstore ?? "") + "<id>" + (poi.name ?? "")
+                let identifier = "<id>" + (poi.idstore ?? "") + "<id>"
                 if (region.identifier.contains(identifier)) {
                     exist = true
                 }
@@ -527,7 +703,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
     }
-
     public func calculateDistance(locationOrigin: CLLocation,
                                   coordinatesDest: [(Double, Double)],
                                   distanceProvider : DistanceProvider = distanceProvider,
@@ -544,12 +719,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
 
         let userLatitude: String = String(format: "%f", locationOrigin.coordinate.latitude)
         let userLongitude: String = String(format: "%f", locationOrigin.coordinate.longitude)
+        
         var coordinatesDestList: [String] = []
         coordinatesDest.forEach { item in
             coordinatesDestList.append("\(item.0),\(item.1)")
         }
         let coordinateDestinations = coordinatesDestList.joined(separator: "|")
-        
+
         var storeAPIUrl = ""
         if(distanceProvider == DistanceProvider.woosmapDistance) {
             storeAPIUrl = String(format: distanceWoosmapAPI, distanceMode.rawValue, distanceUnits.rawValue, distanceLanguage, userLatitude, userLongitude, coordinateDestinations)
@@ -564,6 +740,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             DispatchQueue.main.async {
                 if let response = response as? HTTPURLResponse {
                     if response.statusCode != 200 {
+                        NSLog("statusCode: \(response.statusCode)")
                         delegateDistance.distanceAPIError(error: "Error Distance API " + String(response.statusCode))
                         return
                     }
@@ -579,7 +756,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                                                                      distanceUnits: distanceUnits,
                                                                      distanceLanguage: distanceLanguage,
                                                                      trafficDistanceRouting: trafficDistanceRouting)
-                                                                    
                         
                         if (regionIsochroneToUpdate) {
                             self?.updateRegionWithDistance(distanceAr: distance)
@@ -587,20 +763,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
                         
                         delegateDistance.distanceAPIResponse(distance: distance)
                         
-                        if(locationId != "" && !distance.isEmpty) {
-                            guard let delegateSearch = self?.searchAPIDataDelegate else {
-                                return
-                            }
-                            if let calculatedDistance = distance.first {
-                                let distanceValue = calculatedDistance.distance
-                                let duration = calculatedDistance.durationText ?? ""
-                                let poiUpdated = POIs.updatePOIWithDistance(distance: Double(distanceValue), duration: duration, locationId: locationId)
-                                if poiUpdated.locationId != nil {
-                                    delegateSearch.searchAPIResponse(poi: poiUpdated)
-                                }
-                            }
-                            
-                        }
                     }
                 }
             }
@@ -642,6 +804,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         for regionIsoIdentifer in regionIsoTodelete {
             RegionIsochrones.removeRegionIsochrone(id: regionIsoIdentifer)
         }
+       
     }
     
     public func didEventRegionIsochrone(regionIsochrone: RegionIsochrone) {
@@ -710,8 +873,8 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
             if (regionLog.didEnter != didEnter) {
                 let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
-                sendASRegionEvents(region: newRegionLog)
                 if newRegionLog.identifier != "" {
+                    sendASRegionEvents(region: newRegionLog)
                     if (didEnter) {
                         self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
                     } else {
@@ -736,8 +899,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let regionsIsochrones = RegionIsochrones.getAll()
         var regionsBeUpdated = false
         for regionIso in regionsIsochrones {
-            if regionIso.locationId == nil
-            {
+            if regionIso.locationId == nil {
                 regionsBeUpdated = true
             }
             let distance = location.distance(from: CLLocation(latitude: regionIso.latitude,
@@ -780,6 +942,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         if(regionsBeUpdated) {
             calculateDistanceWithRegion(location: location, locationId: locationId)
         }
+        
     }
     
     func calculateDistanceWithRegion(location: CLLocation, locationId: String = "") {
@@ -875,7 +1038,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             MCdelegate.visitEvent(visitEvent: propertyDictionary, eventName: "woos_visit_event")
         }
         
-        if((SFMCCredentials["visitEventDefinitionKey"]) != nil) {
+        if((SFMCCredentials["visitEventDefinitionKey"] != "") && (SFMCCredentials["visitEventDefinitionKey"] != nil)) {
             propertyDictionary["date"] = visit.date?.stringFromISO8601Date()
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["visitEventDefinitionKey"]!)
         }
@@ -907,7 +1070,7 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             MCdelegate.poiEvent(POIEvent: propertyDictionary, eventName: "woos_poi_event")
         }
         
-        if((SFMCCredentials["poiEventDefinitionKey"]) != nil) {
+        if((SFMCCredentials["poiEventDefinitionKey"] != "") && (SFMCCredentials["poiEventDefinitionKey"] != nil)) {
             propertyDictionary["date"] = poi.date?.stringFromISO8601Date()
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["poiEventDefinitionKey"]!)
         }
@@ -951,13 +1114,13 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
         
-        if((SFMCCredentials["regionEnteredEventDefinitionKey"]) != nil && region.didEnter) {
+        if((SFMCCredentials["regionEnteredEventDefinitionKey"] != "") && (SFMCCredentials["regionEnteredEventDefinitionKey"] != nil) && region.didEnter) {
             propertyDictionary["date"] = region.date.stringFromISO8601Date()
             propertyDictionary["event"] = "woos_geofence_entered_event"
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["regionEnteredEventDefinitionKey"]!)
         }
         
-        if((SFMCCredentials["regionExitedEventDefinitionKey"]) != nil && !region.didEnter) {
+        if((SFMCCredentials["regionExitedEventDefinitionKey"] != "") && (SFMCCredentials["regionExitedEventDefinitionKey"] != nil) && !region.didEnter) {
             propertyDictionary["date"] = region.date.stringFromISO8601Date()
             propertyDictionary["event"] = "woos_geofence_exited_event"
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["regionExitedEventDefinitionKey"]!)
@@ -1027,19 +1190,19 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
             }
         }
         
-        if((SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"]) != nil && region.didEnter) {
+        if((SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"] != "") && (SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"] != nil) && region.didEnter) {
             propertyDictionary["date"] = region.date.stringFromISO8601Date()
             propertyDictionary["event"] = "woos_zoi_classified_entered_event"
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedEnteredEventDefinitionKey"]!)
         }
         
-        if((SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]) != nil && !region.didEnter) {
+        if((SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"] != "") && (SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"] != nil) && !region.didEnter) {
             propertyDictionary["date"] = region.date.stringFromISO8601Date()
             propertyDictionary["event"] = "woos_zoi_classified_exited_event"
             SFMCAPIclient.pushDataToMC(poiData: propertyDictionary,eventDefinitionKey: SFMCCredentials["zoiClassifiedExitedEventDefinitionKey"]!)
         }
     }
-    
+
 }
 
 public extension Date {
