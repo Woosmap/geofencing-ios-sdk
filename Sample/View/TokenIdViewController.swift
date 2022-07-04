@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 class TokenIdViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var TokenLabel: UITextField!

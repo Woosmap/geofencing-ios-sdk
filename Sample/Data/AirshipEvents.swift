@@ -6,7 +6,7 @@
 
 import Foundation
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 #if canImport(AirshipCore)
   import AirshipCore
 #endif

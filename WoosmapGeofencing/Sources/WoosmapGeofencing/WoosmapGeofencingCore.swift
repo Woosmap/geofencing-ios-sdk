@@ -6,7 +6,7 @@ import RealmSwift
 /**
  WoosmapGeofencing main class. Cannot be instanciated, use `shared` property to access singleton
  */
-@objcMembers public class WoosmapGeofencing: NSObject {
+@objcMembers public class WoosmapGeofencingCore: NSObject {
 
     public var locationService: LocationService!
     public var sphericalMercator: SphericalMercator!
@@ -16,8 +16,8 @@ import RealmSwift
     /**
      Access singleton of Now object
      */
-    public static let shared: WoosmapGeofencing = {
-        let instance = WoosmapGeofencing()
+    public static let shared: WoosmapGeofencingCore = {
+        let instance = WoosmapGeofencingCore()
         return instance
     }()
 

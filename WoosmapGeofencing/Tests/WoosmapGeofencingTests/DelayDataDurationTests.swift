@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 import RealmSwift
 
 class DelayDataDurationTests: XCTestCase {

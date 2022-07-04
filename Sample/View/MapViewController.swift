@@ -6,7 +6,7 @@
 
 import UIKit
 import MapKit
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 class MyPointAnnotation: MKPointAnnotation {
     var pinTintColor: UIColor?

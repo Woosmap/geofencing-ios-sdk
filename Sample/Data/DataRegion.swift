@@ -8,7 +8,7 @@ import Foundation
 import Foundation
 import UIKit
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 public class DataRegion: RegionsServiceDelegate {
 

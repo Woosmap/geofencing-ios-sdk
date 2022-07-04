@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 // delay for obsolote notification
 let outOfTimeDelay = 300

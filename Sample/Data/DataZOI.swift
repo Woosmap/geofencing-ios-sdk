@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 public class DataZOI {
     public init() {}

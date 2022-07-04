@@ -6,12 +6,12 @@
 
 import UIKit
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 import RealmSwift
 #if canImport(AirshipCore)
   import AirshipCore
 #endif
-
+typealias WoosmapGeofencing = WoosmapGeofencingCore
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
 
@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             WoosmapGeofencing.shared.getLocationService().airshipEventsDelegate = airshipEvents
         #endif
         
-        
+
         // Set delegate of protocol Location, POI and Distance
         WoosmapGeofencing.shared.getLocationService().locationServiceDelegate = dataLocation
         WoosmapGeofencing.shared.getLocationService().searchAPIDataDelegate = dataPOI

@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 import CoreLocation
 import RealmSwift
 

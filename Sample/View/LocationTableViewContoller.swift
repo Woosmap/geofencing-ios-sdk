@@ -6,7 +6,7 @@
 
 import UIKit
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 import RealmSwift
 
 enum dataType {
@@ -425,7 +425,7 @@ class LocationTableViewContoller: UITableViewController {
         let longitude = placeData.longitude
 
         if placeData.type == dataType.location {
-            let location = Locations.getLocationByLocationID(locationId: placeData.locationId)
+            let location = Locations.getLocationFromId(id: placeData.locationId)
             if location != nil {
                 WoosmapGeofencing.shared.getLocationService().searchAPIRequest(location: location!)
             }

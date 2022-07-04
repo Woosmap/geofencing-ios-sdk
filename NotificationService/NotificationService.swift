@@ -6,7 +6,7 @@
 
 import UserNotifications
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 open class NotificationService: UNNotificationServiceExtension, CLLocationManagerDelegate {
 

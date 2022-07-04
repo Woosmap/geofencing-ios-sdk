@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 //Class to mock the visits in order to create ZOI
 public class MockDataVisit {

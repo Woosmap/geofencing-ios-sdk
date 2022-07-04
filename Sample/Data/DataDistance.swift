@@ -4,7 +4,7 @@
 
 import Foundation
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 public class DataDistance: DistanceAPIDelegate {
     public init() {}

@@ -6,7 +6,7 @@
 //
 import Foundation
 import CoreLocation
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 public class DataVisit: VisitServiceDelegate {
 

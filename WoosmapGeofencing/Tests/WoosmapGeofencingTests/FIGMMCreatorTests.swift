@@ -5,7 +5,7 @@
 //
 
 import XCTest
-import WoosmapGeofencing
+import WoosmapGeofencingCore
 
 class FIGMMCreatorTests: XCTestCase {
 
