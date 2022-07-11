@@ -24,10 +24,6 @@ let package = Package(
         .target(
             name: "WoosmapGeofencingCore",
             dependencies: ["Surge","RealmSwift"],
-            path: "WoosmapGeofencing/Sources/WoosmapGeofencing"),
-        .testTarget(
-            name: "WoosmapGeofencingTests",
-            dependencies: ["WoosmapGeofencingCore"],
-            path: "WoosmapGeofencing/Tests/WoosmapGeofencingTests")
+            path: "WoosmapGeofencing/Sources/WoosmapGeofencing")
     ]
 )
