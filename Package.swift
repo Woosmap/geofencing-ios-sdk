@@ -25,5 +25,6 @@ let package = Package(
             name: "WoosmapGeofencingCore",
             dependencies: ["Surge","RealmSwift"],
             path: "WoosmapGeofencing/Sources/WoosmapGeofencing")
-    ]
+    ],
+    exclude: ["assets","doc"]
 )
