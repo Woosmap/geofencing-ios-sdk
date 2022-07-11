@@ -6,12 +6,12 @@ import PackageDescription
 let package = Package(
     name: "WoosmapGeofencingCore",
     platforms: [.iOS(.v11)],
-//    products: [
-//        // Products define the executables and libraries produced by a package, and make them visible to other packages.
-//        .library(
-//            name: "WoosmapGeofencingCore",
-//            targets: ["WoosmapGeofencingCore"])
-//    ],
+    products: [
+        // Products define the executables and libraries produced by a package, and make them visible to other packages.
+        .library(
+            name: "WoosmapGeofencingCore",
+            targets: ["WoosmapGeofencingCore"])
+    ],
     dependencies: [
         // Surge Package
         .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0"),
@@ -24,6 +24,20 @@ let package = Package(
         .target(
             name: "WoosmapGeofencingCore",
             dependencies: ["Surge","RealmSwift"],
-            path: "WoosmapGeofencing/Sources/WoosmapGeofencing")
+            path: "",
+            exclude: ["assets",
+                      "doc",
+                     "build.sh",
+                     "LICENSE.md",
+                     "NotificationService",
+                     "Package.resolved",
+                     "Package.swift",
+                     "README.md",
+                     "Sample",
+                     "Sample.xcodeproj",
+                     "WoosmapGeofencing.podspec",
+                     "WoosmapGeofencing.xcworkspace"]
+        )
+        
     ]
 )
