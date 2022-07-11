@@ -1,10 +1,6 @@
 //
 //  LocationService.swift
-//  WoosmapGeofencingCore
-//
-//  Created by WGS on 04/07/22.
-//  Copyright © 2022 Web Geo Services. All rights reserved.
-//
+//  WoosmapGeofencing
 
 import Foundation
 import CoreLocation
@@ -45,10 +41,6 @@ internal protocol LocationServiceInternal {
     
     func addRegionLogTransition(region: CLRegion, didEnter: Bool, fromPositionDetection: Bool)
     
-    //func detectRegionIsochrone(location: CLLocation, locationId: String)
-    
-    //func calculateDistanceWithRegion(location: CLLocation, locationId: String)
-    
     func detectVisitInZOIClassified(visit: CLVisit)
     
     func sendASVisitEvents(visit: Visit)
@@ -57,35 +49,31 @@ internal protocol LocationServiceInternal {
     
     func sendASRegionEvents(region: Region)
     
+    func sendASZOIClassifiedEvents(region: Region)
+    
     func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>)
     
     func updateRegionWithDistance(distanceAr: [Distance])
     
+    func getNumberOfAvailableSlotsGeofence() -> Int
+    
+    func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double)
+    
+    func removeOldPOIRegions(newPOIS: [POI])
+    
 }
 
-extension LocationServiceInternal {
-//    func calculateDistanceWithRegion(location: CLLocation){
-//        calculateDistanceWithRegion(location: location, locationId:"")
-//    }
-//    func detectRegionIsochrone(location: CLLocation){
-//        detectRegionIsochrone(location: location, locationId: "")
-//    }
-}
 
 public protocol LocationService: NSObject {
     
     var locationManager: LocationManagerProtocol? { get set }
-    //    var currentLocation: CLLocation? { get }
-    //    var lastSearchLocation: LastSearhLocation { get set}
-    //    var lastRefreshRegionPOILocationId: String { get set }
-    //    var lastRegionUpdate: Date? { get set }
     //MARK: weak
     var locationServiceDelegate: LocationServiceDelegate? { get set }
     var searchAPIDataDelegate: SearchAPIDelegate? { get set }
     var distanceAPIDataDelegate: DistanceAPIDelegate? { get set }
     var regionDelegate: RegionsServiceDelegate? { get set }
     var visitDelegate: VisitServiceDelegate? { get set }
-    var airshipEventsDelegate: AirshipEventsDelegate? { get set }
+//    var airshipEventsDelegate: AirshipEventsDelegate? { get set }
     var marketingCloudEventsDelegate: MarketingCloudEventsDelegate? { get set }
     //MARK:  -
     
@@ -112,13 +100,6 @@ public protocol LocationService: NSObject {
     
     func refreshSystemGeofencePOI(addCustomGeofence: Bool, locationId: String)
     
-    func getNumberOfAvailableSlotsGeofence() -> Int
-    
-    func getDistanceFurthestMonitoredPOI() -> Double
-    
-    func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double)
-    
-    func removeOldPOIRegions(newPOIS: [POI])
     
     func calculateDistance(locationOrigin: CLLocation,
                            coordinatesDest: [(Double, Double)],

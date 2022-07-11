@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F0214BA2876B78400A36776 /* WoosmapGeofencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0214B92876B78400A36776 /* WoosmapGeofencing.swift */; };
+		5F0214BC2876CBD100A36776 /* LocationServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0214BB2876CBD100A36776 /* LocationServiceImpl.swift */; };
 		5FB3E7A32872F2BE0035653E /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3E7A22872F2BE0035653E /* LocationService.swift */; };
 		5FB3E7A52872F3170035653E /* LocationServiceCoreImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */; };
+		5FD719CE287BFDD10048A711 /* EventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD719CD287BFDD10048A711 /* EventDelegate.swift */; };
 		A21E173126B99DFB00D2440C /* ConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21E173026B99DFB00D2440C /* ConfigModel.swift */; };
 		A21E173326B99E5C00D2440C /* liveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173226B99E5C00D2440C /* liveTracking.json */; };
 		A21E173626BD751000D2440C /* passiveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173426BD751000D2440C /* passiveTracking.json */; };
@@ -105,8 +108,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5F0214B92876B78400A36776 /* WoosmapGeofencing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoosmapGeofencing.swift; sourceTree = "<group>"; };
+		5F0214BB2876CBD100A36776 /* LocationServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceImpl.swift; sourceTree = "<group>"; };
 		5FB3E7A22872F2BE0035653E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceCoreImpl.swift; sourceTree = "<group>"; };
+		5FD719CD287BFDD10048A711 /* EventDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDelegate.swift; sourceTree = "<group>"; };
 		A216FBA923E9CEA70003AAC8 /* WoosmapGeofencingCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WoosmapGeofencingCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A21E173026B99DFB00D2440C /* ConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigModel.swift; sourceTree = "<group>"; };
 		A21E173226B99E5C00D2440C /* liveTracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = liveTracking.json; sourceTree = "<group>"; };
@@ -206,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				5FB3E7A62872FD360035653E /* BL */,
+				5F0214BB2876CBD100A36776 /* LocationServiceImpl.swift */,
 			);
 			path = Enterprise;
 			sourceTree = "<group>";
@@ -214,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				A2AEE8082756273200FC1B0E /* RegionIsochrone.swift */,
+				5FD719CD287BFDD10048A711 /* EventDelegate.swift */,
 			);
 			path = BL;
 			sourceTree = "<group>";
@@ -242,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				5FB3E7A12872F26F0035653E /* Enterprise */,
+				5F0214B92876B78400A36776 /* WoosmapGeofencing.swift */,
 				A21E172F26B99DE900D2440C /* Config */,
 				A2710EE525B5C88100AF62F5 /* Business Logic */,
 				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
@@ -520,9 +529,11 @@
 				A21E173126B99DFB00D2440C /* ConfigModel.swift in Sources */,
 				A262A1192805DF2100E3A037 /* items.swift in Sources */,
 				A262A1152805DF2100E3A037 /* JSONPointer.swift in Sources */,
+				5FD719CE287BFDD10048A711 /* EventDelegate.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				A262A10F2805DF2100E3A037 /* Draft7Validator.swift in Sources */,
 				A262A1332805DF2200E3A037 /* Draft202012Validator.swift in Sources */,
+				5F0214BC2876CBD100A36776 /* LocationServiceImpl.swift in Sources */,
 				5FB3E7A52872F3170035653E /* LocationServiceCoreImpl.swift in Sources */,
 				A262A1162805DF2100E3A037 /* RefResolver.swift in Sources */,
 				A262A1292805DF2200E3A037 /* minMaxNumber.swift in Sources */,
@@ -549,6 +560,7 @@
 				A262B9D624E29B0000EB621F /* WoosmapGeofencingCore.swift in Sources */,
 				A262A11C2805DF2100E3A037 /* oneOf.swift in Sources */,
 				A262B9D424E29B0000EB621F /* Monitor.swift in Sources */,
+				5F0214BA2876B78400A36776 /* WoosmapGeofencing.swift in Sources */,
 				A262A1222805DF2100E3A037 /* not.swift in Sources */,
 				A2AEE8092756273200FC1B0E /* RegionIsochrone.swift in Sources */,
 				A262A1102805DF2100E3A037 /* ref.swift in Sources */,

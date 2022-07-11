@@ -33,6 +33,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5F0214B52876B60400A36776 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencingCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A216FBA923E9CEA70003AAC8;
+			remoteInfo = WoosmapGeofencingCore;
+		};
+		5F0214B72876B60400A36776 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencingCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A2C57C4824D95F7A00E5A080;
+			remoteInfo = WoosmapGeofencingCoreTests;
+		};
 		A2777915250FA3B900068AEA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A216FB8023E9CE720003AAC8 /* Project object */;
@@ -117,6 +131,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F0214B12876B60400A36776 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5F0214B62876B60400A36776 /* WoosmapGeofencingCore.framework */,
+				5F0214B82876B60400A36776 /* WoosmapGeofencingCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A20DDE7623EAFB5C00124E56 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,6 +318,12 @@
 			);
 			productRefGroup = A216FB8923E9CE720003AAC8 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 5F0214B12876B60400A36776 /* Products */;
+					ProjectRef = A216FBB423E9CEA70003AAC8 /* WoosmapGeofencingCore.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A216FB8723E9CE720003AAC8 /* Sample */,
@@ -302,6 +331,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5F0214B62876B60400A36776 /* WoosmapGeofencingCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = WoosmapGeofencingCore.framework;
+			remoteRef = 5F0214B52876B60400A36776 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5F0214B82876B60400A36776 /* WoosmapGeofencingCoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WoosmapGeofencingCoreTests.xctest;
+			remoteRef = 5F0214B72876B60400A36776 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A216FB8623E9CE720003AAC8 /* Resources */ = {

@@ -29,14 +29,7 @@ public protocol VisitServiceDelegate: AnyObject {
     func processVisit(visit: Visit)
 }
 
-public protocol AirshipEventsDelegate: AnyObject {
-    func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
-    func regionEnterEvent(regionEvent: Dictionary <String, Any>, eventName: String)
-    func regionExitEvent(regionEvent: Dictionary <String, Any>, eventName: String)
-    func visitEvent(visitEvent: Dictionary <String, Any>, eventName: String)
-    func ZOIclassifiedEnter(regionEvent: Dictionary <String, Any>, eventName: String)
-    func ZOIclassifiedExit(regionEvent: Dictionary <String, Any>, eventName: String)
-}
+
 
 public protocol MarketingCloudEventsDelegate: AnyObject {
     func poiEvent(POIEvent: Dictionary <String, Any>, eventName: String)
