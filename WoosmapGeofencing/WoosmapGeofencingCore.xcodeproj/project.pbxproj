@@ -229,7 +229,6 @@
 		A216FB9F23E9CEA70003AAC8 = {
 			isa = PBXGroup;
 			children = (
-				A262A0E42805DF2100E3A037 /* JSONSchema */,
 				A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */,
 				A2C57C4924D95F7A00E5A080 /* WoosmapGeofencingTests */,
 				A216FBAA23E9CEA70003AAC8 /* Products */,
@@ -249,6 +248,7 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
+				A262A0E42805DF2100E3A037 /* JSONSchema */,
 				5FB3E7A12872F26F0035653E /* Enterprise */,
 				5F0214B92876B78400A36776 /* WoosmapGeofencing.swift */,
 				A21E172F26B99DE900D2440C /* Config */,
