@@ -162,7 +162,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         self.handleRegionChange()
     }
 
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate: Bool, identifier: String) {
+    open func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate: Bool, identifier: String) {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return (false, "") }
         
         var nbrCustomGeofence = 0
@@ -233,7 +233,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         self.handleRegionChange()
     }
     
-    public func checkIfUserIsInRegion(region: CLCircularRegion) {
+    open func checkIfUserIsInRegion(region: CLCircularRegion) {
         printUnsupported()
     }
 
@@ -468,11 +468,11 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     }
     
 
-    internal func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
+    open func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
         printUnsupported()
     }
     
-    internal func removeOldPOIRegions(newPOIS: [POI]) {
+    open func removeOldPOIRegions(newPOIS: [POI]) {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return }
         for region in monitoredRegions {
             var exist = false
@@ -614,7 +614,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         }
     }
     
-    func addRegionLogTransition(region: CLRegion, didEnter: Bool, fromPositionDetection: Bool) {
+    open func addRegionLogTransition(region: CLRegion, didEnter: Bool, fromPositionDetection: Bool) {
         printUnsupported()
     }
     
