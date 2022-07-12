@@ -647,19 +647,19 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         }
     }
     
-    func sendASVisitEvents(visit: Visit) {
+    open func sendASVisitEvents(visit: Visit) {
        printUnsupported()
     }
     
-    func sendASPOIEvents(poi: POI) {
+    open func sendASPOIEvents(poi: POI) {
         printUnsupported()
     }
     
-    func sendASRegionEvents(region: Region) {
+    open func sendASRegionEvents(region: Region) {
         printUnsupported()
     }
     
-    func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>) {
+    public func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>) {
         let jsonStructure = try? JSONDecoder().decode(JSONAny.self, from:  poi.jsonData ?? Data.init())
         if let value = jsonStructure!.value as? [String: Any] {
             if let features = value["features"] as? [[String: Any]] {
