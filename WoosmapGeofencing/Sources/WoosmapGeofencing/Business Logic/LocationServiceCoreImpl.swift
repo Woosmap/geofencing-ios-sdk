@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-public class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInternal, CLLocationManagerDelegate  {
+open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInternal, CLLocationManagerDelegate  {
    
     public var locationManager: LocationManagerProtocol?
     var currentLocation: CLLocation?
