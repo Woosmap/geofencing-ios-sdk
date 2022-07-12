@@ -12,7 +12,7 @@ import CoreLocation
 open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInternal, CLLocationManagerDelegate  {
    
     public var locationManager: LocationManagerProtocol?
-    var currentLocation: CLLocation?
+    internal var currentLocation: CLLocation?
     var lastSearchLocation: LastSearhLocation = LastSearhLocation()
     var lastRefreshRegionPOILocationId: String = ""
     var lastRegionUpdate: Date?
