@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "WoosmapGeofencing",
+    name: "WoosmapGeofencingCore",
     platforms: [.iOS(.v11)],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
-            name: "WoosmapGeofencing",
-            targets: ["WoosmapGeofencing"])
+            name: "WoosmapGeofencingCore",
+            targets: ["WoosmapGeofencingCore"])
     ],
     dependencies: [
         // Surge Package
@@ -22,12 +22,12 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "WoosmapGeofencing",
+            name: "WoosmapGeofencingCore",
             dependencies: ["Surge","RealmSwift"],
             path: "WoosmapGeofencing/Sources/WoosmapGeofencing"),
         .testTarget(
             name: "WoosmapGeofencingTests",
-            dependencies: ["WoosmapGeofencing"],
+            dependencies: ["WoosmapGeofencingCore"],
             path: "WoosmapGeofencing/Tests/WoosmapGeofencingTests")
                     
         
