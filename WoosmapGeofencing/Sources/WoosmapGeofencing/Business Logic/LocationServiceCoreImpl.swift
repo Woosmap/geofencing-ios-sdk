@@ -598,7 +598,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         return RegionType.none
     }
     
-    func checkIfPositionIsInsideGeofencingRegions(location: CLLocation) {
+    public func checkIfPositionIsInsideGeofencingRegions(location: CLLocation) {
         guard let monitoredRegions = locationManager?.monitoredRegions else { return }
         for region in monitoredRegions {
             if (!region.identifier.contains(RegionType.position.rawValue)) {
