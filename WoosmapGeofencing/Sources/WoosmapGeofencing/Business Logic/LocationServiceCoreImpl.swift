@@ -193,7 +193,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         }
     }
     
-    public func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
+    open func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: Int, type: String) -> (isCreate: Bool, identifier: String){
         if(type == "circle"){
             let (regionIsCreated, identifier) = addRegion(identifier: identifier, center: center, radius: Double(radius))
             return (regionIsCreated, identifier)
