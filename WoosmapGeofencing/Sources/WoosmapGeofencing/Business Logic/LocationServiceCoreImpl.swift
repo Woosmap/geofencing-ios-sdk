@@ -299,7 +299,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         checkIfPositionIsInsideGeofencingRegions(location: location)
     }
 
-    public func searchAPIRequest(location: Location) {
+    open func searchAPIRequest(location: Location) {
 #if DEBUG
         let logAPI = LogSearchAPI()
         logAPI.date = Date()

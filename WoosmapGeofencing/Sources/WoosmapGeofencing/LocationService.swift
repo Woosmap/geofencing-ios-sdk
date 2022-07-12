@@ -14,10 +14,10 @@ public enum RegionType: String {
 }
 
 public class LastSearhLocation {
-    var date: Date = Date()
-    var latitude: Double = 0.0
-    var locationId: String = ""
-    var longitude: Double = 0.0
+    public var date: Date = Date()
+    public var latitude: Double = 0.0
+    public var locationId: String = ""
+    public var longitude: Double = 0.0
 }
 internal protocol LocationServiceInternal {
     
