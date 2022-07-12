@@ -23,7 +23,7 @@ public class Region: Object {
     @objc public dynamic var type = "circle";
     @objc public dynamic var origin = "";
 
-    convenience init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
+    convenience public init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
         self.init()
         self.latitude = latitude
         self.longitude = longitude
