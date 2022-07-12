@@ -38,7 +38,6 @@
 		A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */; };
 		A2DFFA202728254200ED2B48 /* DistanceAPIJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DFFA1F2728254200ED2B48 /* DistanceAPIJson.swift */; };
 		A2EF47FA27B27F49000025A0 /* TrackingSchema.json in Resources */ = {isa = PBXBuildFile; fileRef = A2EF47F927B27F49000025A0 /* TrackingSchema.json */; };
-		A2FF527326FDB9FD00E2202A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FF527226FDB9FD00E2202A /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,7 +96,6 @@
 		A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		A2DFFA1F2728254200ED2B48 /* DistanceAPIJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceAPIJson.swift; sourceTree = "<group>"; };
 		A2EF47F927B27F49000025A0 /* TrackingSchema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TrackingSchema.json; sourceTree = "<group>"; };
-		A2FF527226FDB9FD00E2202A /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,7 +155,6 @@
 				A262B9D024E29B0000EB621F /* WoosmapGeofencingCore.h */,
 				A262B9CD24E29AFF00EB621F /* WoosmapGeofencingCore.swift */,
 				A262B9D224E29B0000EB621F /* ZOIQualifiers.swift */,
-				A2FF527226FDB9FD00E2202A /* APIClient.swift */,
 				5FB3E7A22872F2BE0035653E /* LocationService.swift */,
 			);
 			name = WoosmapGeofencing;
@@ -337,7 +334,6 @@
 			files = (
 				A262B9D724E29B0000EB621F /* SearchAPiJson.swift in Sources */,
 				A2710EEB25B5C8C400AF62F5 /* POI.swift in Sources */,
-				A2FF527326FDB9FD00E2202A /* APIClient.swift in Sources */,
 				A262B9D524E29B0000EB621F /* FIGMM.swift in Sources */,
 				5FB3E7A52872F3170035653E /* LocationServiceCoreImpl.swift in Sources */,
 				A2710EEF25B5C9D100AF62F5 /* ZOI.swift in Sources */,
