@@ -12,10 +12,10 @@ import CoreLocation
 open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInternal, CLLocationManagerDelegate  {
    
     public var locationManager: LocationManagerProtocol?
-    internal var currentLocation: CLLocation?
-    var lastSearchLocation: LastSearhLocation = LastSearhLocation()
-    var lastRefreshRegionPOILocationId: String = ""
-    var lastRegionUpdate: Date?
+    public var currentLocation: CLLocation?
+    public var lastSearchLocation: LastSearhLocation = LastSearhLocation()
+    public var lastRefreshRegionPOILocationId: String = ""
+    public var lastRegionUpdate: Date?
  
     public weak var locationServiceDelegate: LocationServiceDelegate?
     public weak var searchAPIDataDelegate: SearchAPIDelegate?
@@ -451,7 +451,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         
     }
     
-    internal func getNumberOfAvailableSlotsGeofence() -> Int {
+    open func getNumberOfAvailableSlotsGeofence() -> Int {
         printUnsupported()
         return 0
     }
@@ -461,7 +461,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     }
 
    
-    internal func getDistanceFurthestMonitoredPOI() -> Double {
+    open func getDistanceFurthestMonitoredPOI() -> Double {
         let distance = 0.0
         printUnsupported()
         return distance
