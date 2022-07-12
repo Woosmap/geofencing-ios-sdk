@@ -106,14 +106,14 @@ public let GoogleMapStaticAPITwoMark = GoogleMapStaticAPIBaseURL + "?markers=col
 public var searchAPIParameters : [String: String] = [:]
 
 // filter for user_properties data
-internal var userPropertiesFilter : [String] = []
+public var userPropertiesFilter : [String] = []
 
 // credentials SFMC
-internal var SFMCCredentials : [String: String] = [:]
-internal var SFMCAccesToken = ""
+public var SFMCCredentials : [String: String] = [:]
+public var SFMCAccesToken = ""
 
-internal var poiRadius:Any = ""
+public var poiRadius:Any = ""
 
 // Save API consumption by not forcing ETA refresh when the user doesn't use the expected travel mode, Default: true
-internal var optimizeDistanceRequest: Bool = true
+public var optimizeDistanceRequest: Bool = true
 
