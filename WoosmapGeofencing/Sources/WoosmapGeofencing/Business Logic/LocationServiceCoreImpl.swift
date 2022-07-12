@@ -446,7 +446,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
 
     }
     
-    public func refreshSystemGeofencePOI(addCustomGeofence: Bool = false, locationId: String) {
+    open func refreshSystemGeofencePOI(addCustomGeofence: Bool = false, locationId: String) {
         printUnsupported()
         
     }
