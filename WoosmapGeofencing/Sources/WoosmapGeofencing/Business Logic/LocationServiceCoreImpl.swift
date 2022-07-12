@@ -260,7 +260,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         }
     }
 
-    func updateLocation(locations: [CLLocation]) {
+    open func updateLocation(locations: [CLLocation]) {
         guard let delegate = self.locationServiceDelegate else {
             return
         }
@@ -562,7 +562,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
 
     }
     
-    public func updateRegionWithDistance(distanceAr: [Distance]) {
+    open func updateRegionWithDistance(distanceAr: [Distance]) {
         printUnsupported()
     }
     
@@ -692,7 +692,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         propertyDictionary["openNow"] = poi.openNow
     }
     
-    func sendASZOIClassifiedEvents(region: Region) {
+    open func sendASZOIClassifiedEvents(region: Region) {
        printUnsupported()
     }
 
