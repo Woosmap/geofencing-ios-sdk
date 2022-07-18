@@ -34,11 +34,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
 
     }
 
-    public func printUnsupported(){
-        print("Use Enterprise edition to invoke this functionallity")
-    }
     public func initLocationManager() {
-
         guard var myLocationManager = self.locationManager else {
             return
         }
@@ -173,9 +169,6 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         }
         if(nbrCustomGeofence >= 3) {
             return (false, "number of custom geofence can be more than 3")
-        }
-        if(searchAPICreationRegionEnable){
-            refreshSystemGeofencePOI(addCustomGeofence: true, locationId: lastSearchLocation.locationId )
         }
         let id = RegionType.custom.rawValue + "<id>" + identifier
         self.locationManager?.startMonitoring(for: CLCircularRegion(center: center, radius: radius, identifier: id ))
@@ -450,11 +443,6 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
 
     }
     
-    open func refreshSystemGeofencePOI(addCustomGeofence: Bool = false, locationId: String) {
-        printUnsupported()
-        
-    }
-        
     public func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         print("WoosmapGeofencing Error : can't create geofence " + (region?.identifier ?? "") + error.localizedDescription)
     }
@@ -647,13 +635,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         }
     }
     
-    open func sendASVisitEvents(visit: Visit) {
-       printUnsupported()
-    }
-    
-    open func sendASPOIEvents(poi: POI) {
-        printUnsupported()
-    }
+   
     
     public func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>) {
         let jsonStructure = try? JSONDecoder().decode(JSONAny.self, from:  poi.jsonData ?? Data.init())
@@ -688,9 +670,16 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         propertyDictionary["openNow"] = poi.openNow
     }
     
-    open func sendASZOIClassifiedEvents(region: Region) {
-       printUnsupported()
+    //Empty shell method
+    open func refreshSystemGeofencePOI(addCustomGeofence: Bool = false, locationId: String) {
     }
-
+    
+    open func sendASVisitEvents(visit: Visit) {
+    }
+    
+    open func sendASPOIEvents(poi: POI) {
+    }
+    open func sendASZOIClassifiedEvents(region: Region) {
+    }
 }
 
