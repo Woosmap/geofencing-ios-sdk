@@ -559,12 +559,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         task.resume()
 
     }
-    
-    open func updateRegionWithDistance(distanceAr: [Distance]) {
-        printUnsupported()
-    }
-    
-    
+        
     public func tracingLocationDidFailWithError(error: Error) {
         print("\(error)")
     }

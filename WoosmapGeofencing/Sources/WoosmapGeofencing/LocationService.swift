@@ -53,8 +53,6 @@ internal protocol LocationServiceInternal {
     
     func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>)
     
-    func updateRegionWithDistance(distanceAr: [Distance])
-    
     func getNumberOfAvailableSlotsGeofence() -> Int
     
     func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double)
