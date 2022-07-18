@@ -47,15 +47,9 @@ internal protocol LocationServiceInternal {
     
     func sendASPOIEvents(poi: POI)
     
-    func sendASRegionEvents(region: Region)
-    
     func sendASZOIClassifiedEvents(region: Region)
     
     func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>)
-    
-    func getNumberOfAvailableSlotsGeofence() -> Int
-    
-    func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double)
     
     func removeOldPOIRegions(newPOIS: [POI])
     

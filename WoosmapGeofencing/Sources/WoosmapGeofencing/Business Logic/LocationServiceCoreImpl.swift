@@ -454,26 +454,9 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         printUnsupported()
         
     }
-    
-    open func getNumberOfAvailableSlotsGeofence() -> Int {
-        printUnsupported()
-        return 0
-    }
-    
+        
     public func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         print("WoosmapGeofencing Error : can't create geofence " + (region?.identifier ?? "") + error.localizedDescription)
-    }
-
-   
-    open func getDistanceFurthestMonitoredPOI() -> Double {
-        let distance = 0.0
-        printUnsupported()
-        return distance
-    }
-    
-
-    open func createRegionPOI(center: CLLocationCoordinate2D, name: String, radius: Double) {
-        printUnsupported()
     }
     
     open func removeOldPOIRegions(newPOIS: [POI]) {
@@ -669,10 +652,6 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     }
     
     open func sendASPOIEvents(poi: POI) {
-        printUnsupported()
-    }
-    
-    open func sendASRegionEvents(region: Region) {
         printUnsupported()
     }
     
