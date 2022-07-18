@@ -619,7 +619,31 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     }
     
     open func addRegionLogTransition(region: CLRegion, didEnter: Bool, fromPositionDetection: Bool) {
-        printUnsupported()
+        if let regionLog = Regions.getRegionFromId(id: region.identifier) {
+            if (regionLog.date.timeIntervalSinceNow > -5) {
+                return
+            }
+            if (regionLog.didEnter != didEnter) {
+                let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
+                if newRegionLog.identifier != "" {
+                    
+                    if (didEnter) {
+                        self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
+                    } else {
+                        self.regionDelegate?.didExitPOIRegion(POIregion: newRegionLog)
+                    }
+                }
+            }
+        } else if (didEnter) {
+            let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
+            if newRegionLog.identifier != "" {
+                if (didEnter) {
+                    self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
+                } else {
+                    self.regionDelegate?.didExitPOIRegion(POIregion: newRegionLog)
+                }
+            }
+        }
     }
     
 
