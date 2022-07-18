@@ -100,17 +100,6 @@ public protocol LocationService: NSObject {
     
     func refreshSystemGeofencePOI(addCustomGeofence: Bool, locationId: String)
     
-    
-    func calculateDistance(locationOrigin: CLLocation,
-                           coordinatesDest: [(Double, Double)],
-                           distanceProvider : DistanceProvider,
-                           distanceMode: DistanceMode,
-                           distanceUnits: DistanceUnits,
-                           distanceLanguage: String,
-                           trafficDistanceRouting: TrafficDistanceRouting,
-                           locationId: String,
-                           regionIsochroneToUpdate: Bool)
-    
     func calculateDistance(locationOrigin: CLLocation,
                            coordinatesDest: [(Double, Double)],
                            locationId: String)
@@ -157,26 +146,5 @@ public protocol LocationService: NSObject {
 public extension LocationService {
     func refreshSystemGeofencePOI(locationId: String){
         refreshSystemGeofencePOI(addCustomGeofence: false, locationId: locationId)
-    }
-    
-    func calculateDistance(locationOrigin: CLLocation,
-                           coordinatesDest: [(Double, Double)],
-                           distanceProvider : DistanceProvider = distanceProvider,
-                           distanceMode: DistanceMode = distanceMode,
-                           distanceUnits: DistanceUnits = distanceUnits,
-                           distanceLanguage: String = distanceLanguage,
-                           trafficDistanceRouting: TrafficDistanceRouting = trafficDistanceRouting,
-                           locationId: String = "",
-                           regionIsochroneToUpdate: Bool = false){
-        calculateDistance(locationOrigin: locationOrigin,
-                          coordinatesDest: coordinatesDest,
-                          distanceProvider: distanceProvider,
-                          distanceMode: distanceMode,
-                          distanceUnits: distanceUnits,
-                          distanceLanguage: distanceLanguage,
-                          trafficDistanceRouting: trafficDistanceRouting,
-                          locationId: locationId,
-                          regionIsochroneToUpdate: regionIsochroneToUpdate)
-        
     }
 }

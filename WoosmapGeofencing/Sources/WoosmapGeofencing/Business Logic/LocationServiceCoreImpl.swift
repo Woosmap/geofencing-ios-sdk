@@ -498,15 +498,14 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         calculateDistance(locationOrigin: locationOrigin, coordinatesDest: coordinatesDest, locationId: locationId)
     }
     
-    public func calculateDistance(locationOrigin: CLLocation,
+    private func calculateDistance(locationOrigin: CLLocation,
                                   coordinatesDest: [(Double, Double)],
                                   distanceProvider : DistanceProvider = distanceProvider,
                                   distanceMode: DistanceMode = distanceMode,
                                   distanceUnits: DistanceUnits = distanceUnits,
                                   distanceLanguage: String = distanceLanguage,
                                   trafficDistanceRouting: TrafficDistanceRouting = trafficDistanceRouting,
-                                  locationId: String = "",
-                                  regionIsochroneToUpdate: Bool = false) {
+                                  locationId: String = "") {
 
         guard let delegateDistance = self.distanceAPIDataDelegate else {
             return
@@ -551,11 +550,6 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                                                                      distanceUnits: distanceUnits,
                                                                      distanceLanguage: distanceLanguage,
                                                                      trafficDistanceRouting: trafficDistanceRouting)
-                        
-                        if (regionIsochroneToUpdate) {
-                            self?.updateRegionWithDistance(distanceAr: distance)
-                        }
-                        
                         delegateDistance.distanceAPIResponse(distance: distance)
                         
                     }
