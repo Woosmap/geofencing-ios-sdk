@@ -234,7 +234,11 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     }
     
     open func checkIfUserIsInRegion(region: CLCircularRegion) {
-        printUnsupported()
+        guard let location = currentLocation else { return }
+        if(region.contains(location.coordinate)) {
+            let regionEnter = Regions.add(POIregion: region, didEnter: true, fromPositionDetection: true)
+            self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
+        }
     }
 
     public func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
