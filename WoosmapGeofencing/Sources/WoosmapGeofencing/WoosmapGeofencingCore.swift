@@ -290,14 +290,6 @@ let TRACKING_SCHEMA: [String: Any] = {
         userPropertiesFilter = properties
     }
         
-    public var OptimizeDistanceRequest: Bool {
-        get {
-            return optimizeDistanceRequest
-        }
-        set {
-            optimizeDistanceRequest = newValue
-        }
-    }
 }
 
 extension WoosmapGeofencingCore {
