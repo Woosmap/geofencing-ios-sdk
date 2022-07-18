@@ -149,11 +149,6 @@ let TRACKING_SCHEMA: [String: Any] = {
     public func getSearchAPIRequestEnable() -> Bool {
         return searchAPIRequestEnable
     }
-
-    public func getSearchAPICreationRegionEnable() -> Bool {
-        return searchAPICreationRegionEnable
-    }
-
     
     public func getSearchAPILastRequestTimeStamp() -> Double {
         return searchAPILastRequestTimeStamp
