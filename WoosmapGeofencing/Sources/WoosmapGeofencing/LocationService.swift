@@ -90,7 +90,7 @@ public protocol LocationService: NSObject {
     
     func sendSearchAPIRequest(location: Location)
     
-    func refreshSystemGeofencePOI(addCustomGeofence: Bool, locationId: String)
+    func handleRefreshSystemGeofence(addCustomGeofence: Bool, locationId: String)
     
     func calculateDistance(locationOrigin: CLLocation,
                            coordinatesDest: [(Double, Double)],
@@ -136,7 +136,7 @@ public protocol LocationService: NSObject {
 }
 
 public extension LocationService {
-    func refreshSystemGeofencePOI(locationId: String){
-        refreshSystemGeofencePOI(addCustomGeofence: false, locationId: locationId)
+    func handleRefreshSystemGeofence(locationId: String){
+        handleRefreshSystemGeofence(addCustomGeofence: false, locationId: locationId)
     }
 }

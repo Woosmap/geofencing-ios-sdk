@@ -433,7 +433,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                     
                     
                     self.lastRefreshRegionPOILocationId = locationId
-                    self.refreshSystemGeofencePOI(locationId: locationId)
+                    self.handleRefreshSystemGeofence(locationId: locationId)
                    
                 }
             }
@@ -671,7 +671,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     }
     
     //Empty shell method
-    open func refreshSystemGeofencePOI(addCustomGeofence: Bool = false, locationId: String) {
+    open func handleRefreshSystemGeofence(addCustomGeofence: Bool = false, locationId: String) {
     }
     
     open func sendASVisitEvents(visit: Visit) {
