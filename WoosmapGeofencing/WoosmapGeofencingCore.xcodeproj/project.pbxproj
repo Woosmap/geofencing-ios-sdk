@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		5FB3E7A32872F2BE0035653E /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3E7A22872F2BE0035653E /* LocationService.swift */; };
 		5FB3E7A52872F3170035653E /* LocationServiceCoreImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */; };
-		A21E173326B99E5C00D2440C /* liveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173226B99E5C00D2440C /* liveTracking.json */; };
-		A21E173626BD751000D2440C /* passiveTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173426BD751000D2440C /* passiveTracking.json */; };
-		A21E173726BD751000D2440C /* visitsTracking.json in Resources */ = {isa = PBXBuildFile; fileRef = A21E173526BD751000D2440C /* visitsTracking.json */; };
 		A24796FF2726DF700081AADC /* Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24796FE2726DF700081AADC /* Distance.swift */; };
 		A248052E27DA5E8900E5B7CD /* LogSearchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A248052D27DA5E8900E5B7CD /* LogSearchAPI.swift */; };
 		A262B9C824E29ADF00EB621F /* FIGMMCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */; };
@@ -37,7 +34,6 @@
 		A2C57C4D24D95F7A00E5A080 /* WoosmapGeofencingCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A216FBA923E9CEA70003AAC8 /* WoosmapGeofencingCore.framework */; };
 		A2DDC91B25C86B0C00C90486 /* DatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */; };
 		A2DFFA202728254200ED2B48 /* DistanceAPIJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DFFA1F2728254200ED2B48 /* DistanceAPIJson.swift */; };
-		A2EF47FA27B27F49000025A0 /* TrackingSchema.json in Resources */ = {isa = PBXBuildFile; fileRef = A2EF47F927B27F49000025A0 /* TrackingSchema.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,9 +63,6 @@
 		5FB3E7A22872F2BE0035653E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		5FB3E7A42872F3170035653E /* LocationServiceCoreImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceCoreImpl.swift; sourceTree = "<group>"; };
 		A216FBA923E9CEA70003AAC8 /* WoosmapGeofencingCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WoosmapGeofencingCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A21E173226B99E5C00D2440C /* liveTracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = liveTracking.json; sourceTree = "<group>"; };
-		A21E173426BD751000D2440C /* passiveTracking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = passiveTracking.json; sourceTree = "<group>"; };
-		A21E173526BD751000D2440C /* visitsTracking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = visitsTracking.json; sourceTree = "<group>"; };
 		A24796FE2726DF700081AADC /* Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distance.swift; sourceTree = "<group>"; };
 		A248052D27DA5E8900E5B7CD /* LogSearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSearchAPI.swift; sourceTree = "<group>"; };
 		A262B9C524E29ADF00EB621F /* FIGMMCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FIGMMCreatorTests.swift; path = Tests/WoosmapGeofencingTests/FIGMMCreatorTests.swift; sourceTree = SOURCE_ROOT; };
@@ -95,7 +88,6 @@
 		A2C57C4824D95F7A00E5A080 /* WoosmapGeofencingCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoosmapGeofencingCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2DDC91A25C86B0C00C90486 /* DatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTests.swift; sourceTree = "<group>"; };
 		A2DFFA1F2728254200ED2B48 /* DistanceAPIJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceAPIJson.swift; sourceTree = "<group>"; };
-		A2EF47F927B27F49000025A0 /* TrackingSchema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TrackingSchema.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +134,6 @@
 		A216FBAB23E9CEA70003AAC8 /* WoosmapGeofencing */ = {
 			isa = PBXGroup;
 			children = (
-				A21E172F26B99DE900D2440C /* Config */,
 				A2710EE525B5C88100AF62F5 /* Business Logic */,
 				A262B9CC24E29AFF00EB621F /* FIGMM.swift */,
 				A262B9D324E29B0000EB621F /* Info.plist */,
@@ -159,17 +150,6 @@
 			);
 			name = WoosmapGeofencing;
 			path = Sources/WoosmapGeofencing;
-			sourceTree = "<group>";
-		};
-		A21E172F26B99DE900D2440C /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				A21E173426BD751000D2440C /* passiveTracking.json */,
-				A21E173526BD751000D2440C /* visitsTracking.json */,
-				A21E173226B99E5C00D2440C /* liveTracking.json */,
-				A2EF47F927B27F49000025A0 /* TrackingSchema.json */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		A2710EE525B5C88100AF62F5 /* Business Logic */ = {
@@ -311,10 +291,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A21E173726BD751000D2440C /* visitsTracking.json in Resources */,
-				A21E173626BD751000D2440C /* passiveTracking.json in Resources */,
-				A21E173326B99E5C00D2440C /* liveTracking.json in Resources */,
-				A2EF47FA27B27F49000025A0 /* TrackingSchema.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
