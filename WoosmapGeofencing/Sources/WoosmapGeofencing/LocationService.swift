@@ -43,11 +43,11 @@ internal protocol LocationServiceInternal {
     
     func detectVisitInZOIClassified(visit: CLVisit)
     
-    func sendASVisitEvents(visit: Visit)
+    func handleVisitEvent(visit: Visit)
     
-    func sendASPOIEvents(poi: POI)
+    func handlePOIEvent(poi: POI)
     
-    func sendASZOIClassifiedEvents(region: Region)
+    func handleZOIClassifiedEvent(region: Region)
     
     func setDataFromPOI(poi: POI, propertyDictionary: inout Dictionary <String, Any>)
     

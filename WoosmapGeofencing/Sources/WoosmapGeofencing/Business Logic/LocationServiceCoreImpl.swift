@@ -252,7 +252,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
             let visitRecorded = Visits.add(visit: visit)
             if visitRecorded.visitId != nil {
                 delegate.processVisit(visit: visitRecorded)
-                sendASVisitEvents(visit: visitRecorded)
+                handleVisitEvent(visit: visitRecorded)
             }
         }
     }
@@ -427,7 +427,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                     
                     
                     for poi in pois {
-                        self.sendASPOIEvents(poi: poi)
+                        self.handlePOIEvent(poi: poi)
                         delegate.searchAPIResponse(poi: poi)
                     }
                     
@@ -630,7 +630,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                 classifiedRegion.identifier = classifiedZOI.period ?? ""
                 Regions.add(classifiedRegion: classifiedRegion)
                 self.regionDelegate?.homeZOIEnter(classifiedRegion: classifiedRegion)
-                sendASZOIClassifiedEvents(region: classifiedRegion)
+                handleZOIClassifiedEvent(region: classifiedRegion)
             }
         }
     }
@@ -674,12 +674,12 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     open func handleRefreshSystemGeofence(addCustomGeofence: Bool = false, locationId: String) {
     }
     
-    open func sendASVisitEvents(visit: Visit) {
+    open func handleVisitEvent(visit: Visit) {
     }
     
-    open func sendASPOIEvents(poi: POI) {
+    open func handlePOIEvent(poi: POI) {
     }
-    open func sendASZOIClassifiedEvents(region: Region) {
+    open func handleZOIClassifiedEvent(region: Region) {
     }
 }
 
