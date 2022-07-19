@@ -22,7 +22,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     public weak var distanceAPIDataDelegate: DistanceAPIDelegate?
     public weak var regionDelegate: RegionsServiceDelegate?
     public weak var visitDelegate: VisitServiceDelegate?
-    public weak var marketingCloudEventsDelegate: MarketingCloudEventsDelegate?
+    
     
     
     required public init(locationManger: LocationManagerProtocol?) {

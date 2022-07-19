@@ -65,8 +65,6 @@ public protocol LocationService: NSObject {
     var distanceAPIDataDelegate: DistanceAPIDelegate? { get set }
     var regionDelegate: RegionsServiceDelegate? { get set }
     var visitDelegate: VisitServiceDelegate? { get set }
-//    var airshipEventsDelegate: AirshipEventsDelegate? { get set }
-    var marketingCloudEventsDelegate: MarketingCloudEventsDelegate? { get set }
     //MARK:  -
     
     //MARK: Public functions
