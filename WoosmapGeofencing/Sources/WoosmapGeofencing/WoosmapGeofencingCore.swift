@@ -3,16 +3,6 @@ import AdSupport
 import CoreLocation
 import RealmSwift
 
-let TRACKING_SCHEMA: [String: Any] = {
-    let bundle = Bundle(identifier: "WebGeoServices.WoosmapGeofencing")
-    let url = bundle!.url(forResource: "TrackingSchema", withExtension: ".json")
-    let jsonData = try! Data(contentsOf: url!)
-    let object = try! JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0))
-      return object as! [String: Any]
-}()
-
-
-
 /**
  WoosmapGeofencingCore main class. Cannot be instanciated, use `shared` property to access singleton
  */
