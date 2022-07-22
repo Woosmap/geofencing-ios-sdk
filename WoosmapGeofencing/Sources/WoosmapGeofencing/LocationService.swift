@@ -94,6 +94,13 @@ public protocol LocationService: NSObject {
                            coordinatesDest: [(Double, Double)],
                            locationId: String)
     
+    func calculateDistance(locationOrigin: CLLocation,
+                                  coordinatesDest: [(Double, Double)],
+                                  distanceProvider : DistanceProvider,
+                                  distanceMode: DistanceMode,
+                                  distanceUnits: DistanceUnits,
+                                  distanceLanguage: String)
+    
     
     func tracingLocationDidFailWithError(error: Error)
     

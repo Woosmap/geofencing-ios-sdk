@@ -469,6 +469,22 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         calculateDistance(locationOrigin: locationOrigin, coordinatesDest: coordinatesDest,distanceProvider:distanceProvider, locationId: locationId)
     }
     
+    public func calculateDistance(locationOrigin: CLLocation,
+                                  coordinatesDest: [(Double, Double)],
+                                  distanceProvider : DistanceProvider,
+                                  distanceMode: DistanceMode,
+                                  distanceUnits: DistanceUnits,
+                                  distanceLanguage: String){
+        calculateDistance(locationOrigin: locationOrigin,
+                          coordinatesDest: coordinatesDest,
+                          distanceProvider:distanceProvider,
+                          distanceMode: distanceMode,
+                          distanceUnits:distanceUnits,
+                          distanceLanguage:distanceLanguage,
+                          trafficDistanceRouting: trafficDistanceRouting)
+    }
+    
+    
     private func calculateDistance(locationOrigin: CLLocation,
                                   coordinatesDest: [(Double, Double)],
                                   distanceProvider : DistanceProvider = distanceProvider,
