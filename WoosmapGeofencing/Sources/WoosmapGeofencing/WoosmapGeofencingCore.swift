@@ -31,8 +31,8 @@ import RealmSwift
         Realm.Configuration.defaultConfiguration = Realm.Configuration(schemaVersion: 10)
     }
 
-    public func getLocationService() -> LocationService {
-        return locationService
+    public func getLocationService() -> LocationServiceCoreImpl {
+        return locationService as! LocationServiceCoreImpl
     }
 
     public func getSphericalMercator() -> SphericalMercator {

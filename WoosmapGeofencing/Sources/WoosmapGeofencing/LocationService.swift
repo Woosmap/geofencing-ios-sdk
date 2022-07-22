@@ -94,14 +94,6 @@ public protocol LocationService: NSObject {
                            coordinatesDest: [(Double, Double)],
                            locationId: String)
     
-    func calculateDistance(locationOrigin: CLLocation,
-                                  coordinatesDest: [(Double, Double)],
-                                  distanceProvider : DistanceProvider,
-                                  distanceMode: DistanceMode,
-                                  distanceUnits: DistanceUnits,
-                                  distanceLanguage: String)
-    
-    
     func tracingLocationDidFailWithError(error: Error)
     
     func addRegion(identifier: String, center: CLLocationCoordinate2D, radius: CLLocationDistance) -> (isCreate: Bool, identifier: String)

@@ -471,10 +471,10 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     
     public func calculateDistance(locationOrigin: CLLocation,
                                   coordinatesDest: [(Double, Double)],
-                                  distanceProvider : DistanceProvider,
-                                  distanceMode: DistanceMode,
-                                  distanceUnits: DistanceUnits,
-                                  distanceLanguage: String){
+                                  distanceProvider : DistanceProvider = distanceProvider,
+                                  distanceMode: DistanceMode = distanceMode,
+                                  distanceUnits: DistanceUnits = distanceUnits,
+                                  distanceLanguage: String = distanceLanguage){
         calculateDistance(locationOrigin: locationOrigin,
                           coordinatesDest: coordinatesDest,
                           distanceProvider:distanceProvider,
