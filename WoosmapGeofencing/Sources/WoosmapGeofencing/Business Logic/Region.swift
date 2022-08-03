@@ -38,38 +38,6 @@ public class Region: Object {
 }
 
 public class Regions {
-    private class func add(POIregion: CLRegion, didEnter: Bool, fromPositionDetection: Bool, eventName: String) -> Region {
-        do {
-            let realm = try Realm()
-            let latRegion = (POIregion as! CLCircularRegion).center.latitude
-            let lngRegion = (POIregion as! CLCircularRegion).center.longitude
-            let radius = (POIregion as! CLCircularRegion).radius
-            var identifier = POIregion.identifier
-            var origin = "custom"
-            if(POIregion.identifier.contains(RegionType.poi.rawValue)) {
-                identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
-                origin = "POI"
-            } else if (POIregion.identifier.contains(RegionType.custom.rawValue)) {
-                identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
-                origin = "custom"
-            }
-            let entry = Region(latitude: latRegion,
-                               longitude: lngRegion,
-                               radius: radius,
-                               dateCaptured: Date(),
-                               identifier: identifier,
-                               didEnter: didEnter,
-                               fromPositionDetection: fromPositionDetection,
-                               eventName: eventName)
-            entry.origin = origin
-            realm.beginWrite()
-            realm.add(entry)
-            try realm.commitWrite()
-            return entry
-        } catch {
-        }
-        return Region()
-    }
     
     public class func add(POIregion: CLRegion, didEnter: Bool, fromPositionDetection: Bool) -> Region {
         do {
