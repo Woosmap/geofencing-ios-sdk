@@ -229,7 +229,10 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
     open func checkIfUserIsInRegion(region: CLCircularRegion) {
         guard let location = currentLocation else { return }
         if(region.contains(location.coordinate)) {
-            let regionEnter = Regions.add(POIregion: region, didEnter: true, fromPositionDetection: true)
+            let regionEnter = Regions.add(POIregion: region,
+                                          didEnter: true,
+                                          fromPositionDetection: true,
+                                          eventName: "woos_geofence_entered_event")
             self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
         }
     }
@@ -600,7 +603,12 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                 return
             }
             if (regionLog.didEnter != didEnter) {
-                let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
+                let eventName = didEnter ? "woos_geofence_entered_event": "woos_geofence_exited_event"
+                
+                let newRegionLog = Regions.add(POIregion: region,
+                                               didEnter: didEnter,
+                                               fromPositionDetection:fromPositionDetection,
+                                               eventName: eventName)
                 if newRegionLog.identifier != "" {
                     
                     if (didEnter) {
@@ -611,7 +619,10 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                 }
             }
         } else if (didEnter) {
-            let newRegionLog = Regions.add(POIregion: region, didEnter: didEnter, fromPositionDetection:fromPositionDetection)
+            let newRegionLog = Regions.add(POIregion: region,
+                                           didEnter: didEnter,
+                                           fromPositionDetection:fromPositionDetection,
+                                           eventName: "woos_geofence_entered_event")
             if newRegionLog.identifier != "" {
                 if (didEnter) {
                     self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
@@ -637,8 +648,10 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                 classifiedRegion.date = Date()
                 if(calendar.component(.year, from: visit.departureDate) != 4001) {
                     classifiedRegion.didEnter = false
+                    classifiedRegion.eventName = "woos_zoi_classified_exited_event"
                 } else {
                     classifiedRegion.didEnter = true
+                    classifiedRegion.eventName = "woos_zoi_classified_entered_event"
                 }
                 classifiedRegion.radius = radiusDetectionClassifiedZOI
                 classifiedRegion.latitude = latitude

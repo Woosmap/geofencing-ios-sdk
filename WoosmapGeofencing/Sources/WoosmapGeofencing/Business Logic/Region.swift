@@ -22,8 +22,9 @@ public class Region: Object {
     @objc public dynamic var durationText = "";
     @objc public dynamic var type = "circle";
     @objc public dynamic var origin = "";
+    @objc public dynamic var eventName: String = "";
 
-    convenience public init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool) {
+    convenience public init(latitude: Double, longitude: Double, radius: Double, dateCaptured: Date, identifier: String, didEnter: Bool, fromPositionDetection: Bool, eventName: String) {
         self.init()
         self.latitude = latitude
         self.longitude = longitude
@@ -32,11 +33,12 @@ public class Region: Object {
         self.identifier = identifier
         self.radius = radius
         self.fromPositionDetection = fromPositionDetection
+        self.eventName = eventName
     }
 }
 
 public class Regions {
-    public class func add(POIregion: CLRegion, didEnter: Bool, fromPositionDetection: Bool) -> Region {
+    public class func add(POIregion: CLRegion, didEnter: Bool, fromPositionDetection: Bool, eventName: String) -> Region {
         do {
             let realm = try Realm()
             let latRegion = (POIregion as! CLCircularRegion).center.latitude
@@ -51,7 +53,14 @@ public class Regions {
                 identifier = POIregion.identifier.components(separatedBy: "<id>")[1]
                 origin = "custom"
             }
-            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: radius, dateCaptured: Date(), identifier: identifier, didEnter: didEnter, fromPositionDetection: fromPositionDetection)
+            let entry = Region(latitude: latRegion,
+                               longitude: lngRegion,
+                               radius: radius,
+                               dateCaptured: Date(),
+                               identifier: identifier,
+                               didEnter: didEnter,
+                               fromPositionDetection: fromPositionDetection,
+                               eventName: eventName)
             entry.origin = origin
             realm.beginWrite()
             realm.add(entry)
@@ -71,28 +80,6 @@ public class Regions {
         } catch {
         }
     }
-    //TODO: Move in enterprise version
-//    public class func add(regionIso: RegionIsochrone) -> Region {
-//        do {
-//            let realm = try Realm()
-//            let latRegion = regionIso.latitude
-//            let lngRegion = regionIso.longitude
-//            let radius = regionIso.radius
-//            let entry = Region(latitude: latRegion, longitude: lngRegion, radius: Double(radius), dateCaptured: Date(), identifier: regionIso.identifier!, didEnter: regionIso.didEnter, fromPositionDetection: true)
-//            entry.duration = regionIso.duration
-//            entry.durationText = regionIso.durationText
-//            entry.distance = regionIso.distance
-//            entry.distanceText = regionIso.distanceText
-//            entry.type = "isochrone"
-//            entry.origin = "custom"
-//            realm.beginWrite()
-//            realm.add(entry)
-//            try realm.commitWrite()
-//            return entry
-//        } catch {
-//        }
-//        return Region()
-//    }
     
     public class func getRegionFromId(id: String) -> Region? {
         do {
