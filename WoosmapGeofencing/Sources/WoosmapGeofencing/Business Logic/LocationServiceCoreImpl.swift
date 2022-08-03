@@ -231,8 +231,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         if(region.contains(location.coordinate)) {
             let regionEnter = Regions.add(POIregion: region,
                                           didEnter: true,
-                                          fromPositionDetection: true,
-                                          eventName: "woos_geofence_entered_event")
+                                          fromPositionDetection: true)
             self.regionDelegate?.didEnterPOIRegion(POIregion: regionEnter)
         }
     }
@@ -603,12 +602,9 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
                 return
             }
             if (regionLog.didEnter != didEnter) {
-                let eventName = didEnter ? "woos_geofence_entered_event": "woos_geofence_exited_event"
-                
                 let newRegionLog = Regions.add(POIregion: region,
                                                didEnter: didEnter,
-                                               fromPositionDetection:fromPositionDetection,
-                                               eventName: eventName)
+                                               fromPositionDetection:fromPositionDetection)
                 if newRegionLog.identifier != "" {
                     
                     if (didEnter) {
@@ -621,8 +617,7 @@ open class LocationServiceCoreImpl: NSObject,LocationService,LocationServiceInte
         } else if (didEnter) {
             let newRegionLog = Regions.add(POIregion: region,
                                            didEnter: didEnter,
-                                           fromPositionDetection:fromPositionDetection,
-                                           eventName: "woos_geofence_entered_event")
+                                           fromPositionDetection:fromPositionDetection)
             if newRegionLog.identifier != "" {
                 if (didEnter) {
                     self.regionDelegate?.didEnterPOIRegion(POIregion: newRegionLog)
