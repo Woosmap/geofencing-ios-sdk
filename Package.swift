@@ -16,7 +16,7 @@ let package = Package(
         // Surge Package
         .package(url: "https://github.com/Jounce/Surge.git", from: "2.3.0"),
         // Realm
-        .package(url: "https://github.com/realm/realm-cocoa", from: "10.5.1")
+        .package(url: "https://github.com/realm/realm-cocoa", from: "20.0.4")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
